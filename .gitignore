@@ -1,2 +1,5 @@
 __pycache__/
-gurobi.log
+*.log
+*.aux
+*bbl
+*.blg

@@ -1,7 +1,7 @@
 ToDo-Liste
 
 - README-File
-	- Modelbeschreibung
+	- kurze Modelbeschreibung
 
 fehlende Features:
 - Raumausstattung/Bedürfnisse des AKs im MILP berücksichtigen
