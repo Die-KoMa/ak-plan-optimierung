@@ -1,0 +1,135 @@
+{
+	"rooms": [
+		{
+			"name": "room0.003",
+			"capacity": 3,
+			"properties": [
+				"Beamer"
+			]
+		},{
+			"name": "room0.008",
+			"capacity": 6,
+			"properties": [
+				"Tafel",
+				"Beamer"
+			]
+		},{
+			"name": "Zeichensaal",
+			"capacity": 10,
+			"properties": [
+				"Tafel"
+			]
+		}
+	],
+	"slots": [
+		{
+			"name": "Do8",
+			"resoable": true,
+			"rooms": [
+				"room0.003",
+				"room0.008",
+				"Zeichensaal"
+			]
+		},{
+			"name": "Do10",
+			"resoable": true,
+			"rooms": [
+				"room0.003",
+				"room0.008",
+				"Zeichensaal"
+			]
+		},{
+			"name": "Fr14",
+			"resoable": true,
+			"rooms": [
+				"room0.003",
+				"Zeichensaal"
+			]
+		},{
+			"name": "Fr16",
+			"resoable": true,
+			"rooms": [
+				"room0.003",
+				"Zeichensaal"
+			]
+		},{
+			"name": "Sa8",
+			"resoable": false,
+			"rooms": [
+				"room0.003",
+				"room0.008",
+				"Zeichensaal"
+			]
+		},{
+			"name": "Sa10",
+			"resoable": false,
+			"rooms": [
+				"room0.003",
+				"room0.008",
+				"Zeichensaal"
+			]
+		}		
+	],
+	"aks":[
+		{
+			"name": "AK0_KoMa",
+			"reso": false
+		},{
+			"name": "AK1_Webseite",
+			"reso": false,
+			"needs": [
+				"Beamer"
+			]
+		},{
+			"name": "AK2_BMBF",
+			"reso": false,
+			"blacklist": [
+				"Sa10"
+			]
+		},{
+			"name": "AK3_Advent",
+			"reso": false,
+			"needs": [
+				"Tafel",
+				"Beamer"
+			]
+		},{
+			"name": "AK4_Minimalstandard",
+			"reso": false,
+			"needs": [
+				"Beamer"
+			]
+		},{
+			"name": "AK5_KdV",
+			"reso": false
+		},{
+			"name": "AK6_Handzeichen",
+			"reso": false,
+			"blacklist": [
+				"Do10",
+				"Sa10"
+			]
+		},{
+			"name": "AK7_Pella",
+			"reso": false
+		},{
+			"name": "AK8_r_Grundausstattung",
+			"reso": true,
+			"needs": [
+				"Tafel"
+			]
+		},{
+			"name": "AK9_r_Onlinewahlen",
+			"reso": true
+		},{
+			"name": "AK10_r_CHE",
+			"reso": true,
+			"needs": [
+				"Beamer"
+			]
+		},{
+			"name": "AK11_r_Taschenrechner",
+			"reso": true
+		}
+	]
+}
