@@ -1,0 +1,154 @@
+{
+	"rooms": [
+		{
+			"name": "Banach",
+			"capacity": 300
+		},{
+			"name": "Hausdorff",
+			"capacity": 300
+		},{
+			"name": "Hilbert",
+			"capacity": 300
+		},{
+			"name": "Sierpinski",
+			"capacity": 300
+		},{
+			"name": "Schwartz",
+			"capacity": 300
+		},{
+			"name": "Vektor",
+			"capacity": 300
+		}
+	],
+	"slots": [
+		{
+			"name": "Fr8",
+			"resoable": true,
+			"rooms": [
+				"Banach",
+				"Hausdorff",
+				"Hilbert",
+				"Sierpinski",
+				"Schwartz",
+				"Vektor"
+			]
+		},{
+			"name": "Fr10",
+			"resoable": true,
+			"rooms": [
+				"Banach",
+				"Hausdorff",
+				"Hilbert",
+				"Sierpinski",
+				"Schwartz",
+				"Vektor"
+			]
+		},{
+			"name": "Fr12",
+			"resoable": true,
+			"rooms": [
+				"Banach",
+				"Hausdorff",
+				"Hilbert",
+				"Sierpinski",
+				"Schwartz",
+				"Vektor"
+			]
+		},{
+			"name": "Fr14",
+			"resoable": true,
+			"rooms": [
+				"Banach",
+				"Hausdorff",
+				"Hilbert",
+				"Sierpinski",
+				"Schwartz",
+				"Vektor"
+			]
+		},{
+			"name": "Fr16",
+			"resoable": true,
+			"rooms": [
+				"Banach",
+				"Hausdorff",
+				"Hilbert",
+				"Sierpinski",
+				"Schwartz",
+				"Vektor"
+			]
+		},{
+			"name": "Fr18",
+			"resoable": true,
+			"rooms": [
+				"Banach",
+				"Hausdorff",
+				"Hilbert",
+				"Sierpinski",
+				"Schwartz",
+				"Vektor"
+			]
+		},{
+			"name": "Sa8",
+			"resoable": false,
+			"rooms": [
+				"Banach",
+				"Hausdorff",
+				"Hilbert",
+				"Sierpinski",
+				"Schwartz",
+				"Vektor"
+			]
+		},{
+			"name": "Sa10",
+			"resoable": false,
+			"rooms": [
+				"Banach",
+				"Hausdorff",
+				"Hilbert",
+				"Sierpinski",
+				"Schwartz",
+				"Vektor"
+			]
+		},{
+			"name": "Sa12",
+			"resoable": false,
+			"rooms": [
+				"Banach",
+				"Hausdorff",
+				"Hilbert",
+				"Sierpinski",
+				"Schwartz",
+				"Vektor"
+			]
+		},{
+			"name": "Sa14",
+			"resoable": false,
+			"rooms": [
+				"Banach",
+				"Hausdorff",
+				"Hilbert",
+				"Sierpinski",
+				"Schwartz",
+				"Vektor"
+			]
+		}
+	],
+	"aks":[
+		{
+			"name": "AK_Offener_Brief_Nichtsemester",
+			"reso": false,
+			"blacklist": [
+				"Sa14"
+			]
+		},{
+			"name": "AK_Gewaehrleistung_der_Lehre",
+			"reso": false
+		},{
+			"name": "AK_Vergleich_Videokonferenzplatformen",
+			"reso": false
+		},{
+			"name": "AK_Gleichstellung_in_anderen_Umstaenden",
+			"reso": false
+		}
+	]
+}
