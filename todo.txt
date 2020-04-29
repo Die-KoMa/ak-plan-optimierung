@@ -9,12 +9,13 @@ fehlende Features:
 - 1 Stunden- und 2 Studenslots (Überschneiden?)
 - lieber AKs Donnerstag als Samstag
 
-- Output
+
 
 anderes:
 - Inputs 
 	- Welches Format?
 	- Interface für die Teilnehmer zum Eintragen ihrer Teilnahme-Wünsche
+- Output - ueberarbeiten
 - Denglisch
 - von Gurobi zu einem anden MILP-Solver wie zum Beispiel mip wechseln
 - Steffen-Sort-Feature

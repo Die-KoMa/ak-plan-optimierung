@@ -89,7 +89,16 @@ def solve(room_dict, slot_dict, ak_dict, person_dict):
                 x[s,r,a].ub=0
 
     #Ueberschneidungs-Variablen:
-    rel_coeffs={(s,p): 1/len(person["attend"]) for s in slot_dict for p,person in person_dict.items()}
+#    rel_coeffs={(s,p): 1/len(person["attend"]) for s in slot_dict for p,person in person_dict.items()}
+    # may have devsion by 0 -> if you don´ẗ want to attend anything we don´t habe relative overlap => rel_coeff=0
+    for p,person in person_dict.items():
+        if len(person["attend"])==0:
+            print("test: ", p, "will nichts besuchen?")
+
+
+    rel_coeffs={(s,p): 1/len(person["attend"]) if len(person["attend"])>0 else  0
+            for s in slot_dict for p,person in person_dict.items()}
+
 
     overlap=model.addVars(slot_dict,person_dict,vtype=GRB.INTEGER,name="overlap")
 
@@ -145,6 +154,23 @@ def solve(room_dict, slot_dict, ak_dict, person_dict):
                 print(f"Uberschneidungen von {p} in {s}: ",overlap[s,p].x)
 
 
+    return solution
+
+def write_solution_file(csv_output_file_name,solution,room_list, slot_list, ak_list):
+    #todo: use csv package...
+    with open(csv_output_file_name, 'w') as f:
+        f.write(", "+", ".join(room_list)+"\n")
+        for s in slot_list:
+            f.write(s+", ")
+            for r in room_list:
+                for a in ak_list:
+                    if solution[s,r,a]> 0.9: #todo: change..
+                        print(a) #test...
+                        f.write(a)
+                        break
+                f.write(", ")
+            f.write("\n")
+
 
 
 
@@ -159,8 +185,11 @@ def _main():
 
     room_dict, slot_dict, ak_dict, person_dict=read(json_input_file_name, csv_input_file_name)
 
-    solve(room_dict, slot_dict, ak_dict, person_dict)
+    solution=solve(room_dict, slot_dict, ak_dict, person_dict)
 
+    csv_output_file_name=input("CSV Output Datei:")
+
+    write_solution_file(csv_output_file_name,solution,list(room_dict.keys()), list(slot_dict.keys()), list(ak_dict.keys()))
 
 
 
