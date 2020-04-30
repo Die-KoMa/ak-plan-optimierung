@@ -6,7 +6,8 @@ ToDo-Liste
 fehlende Features:
 - Raumausstattung/Bedürfnisse des AKs im MILP berücksichtigen
 - Zeitreihenfolge - der eine AK nach dem anderen Ak
-- 1 Stunden- und 2 Studenslots (Überschneiden?)
+- 1 Stunden- und 2 Studenslots:
+	- Überschneidsmoeglichkeiten
 - lieber AKs Donnerstag als Samstag
 
 
@@ -16,6 +17,8 @@ anderes:
 	- Welches Format?
 	- Interface für die Teilnehmer zum Eintragen ihrer Teilnahme-Wünsche
 - Output - ueberarbeiten
+- 1 Stunden- und 2 Studenslots:
+	- dokuentieren
 - Denglisch
 - von Gurobi zu einem anden MILP-Solver wie zum Beispiel mip wechseln
 - Steffen-Sort-Feature

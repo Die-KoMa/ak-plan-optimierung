@@ -15,6 +15,12 @@ def read(json_input_file_name, csv_input_file_name):
         for ak in ak_dict.values():
             if "blacklist" not in ak:
                 ak["blacklist"]=list()
+            if "length" not in ak:
+                ak["length"]=2
+
+        for slot in slot_dict.values():
+            if "length" not in slot:
+                slot["length"]=2
 
     with open(csv_input_file_name, newline='') as csv_file:
         reader = csv.reader(csv_file)
@@ -87,6 +93,13 @@ def solve(room_dict, slot_dict, ak_dict, person_dict):
         for s in ak["blacklist"]:
             for r in slot_dict[s]["rooms"]:
                 x[s,r,a].ub=0
+
+    #length
+    for s,slot in slot_dict.items():
+        for a,ak in ak_dict.items():
+            if ak["length"] > slot["length"]:
+                for r in slot["rooms"]:
+                    x[s,r,a].ub=0
 
     #Ueberschneidungs-Variablen:
 #    rel_coeffs={(s,p): 1/len(person["attend"]) for s in slot_dict for p,person in person_dict.items()}
