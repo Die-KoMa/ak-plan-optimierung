@@ -44,17 +44,6 @@
 				"Vektor"
 			]
 		},{
-			"name": "Fr12",
-			"resoable": true,
-			"rooms": [
-				"Banach",
-				"Hausdorff",
-				"Hilbert",
-				"Sierpinski",
-				"Schwartz",
-				"Vektor"
-			]
-		},{
 			"name": "Fr14",
 			"resoable": true,
 			"rooms": [
@@ -64,7 +53,20 @@
 				"Sierpinski",
 				"Schwartz",
 				"Vektor"
-			]
+			],
+			"length": 1
+		},{
+			"name": "Fr15",
+			"resoable": true,
+			"rooms": [
+				"Banach",
+				"Hausdorff",
+				"Hilbert",
+				"Sierpinski",
+				"Schwartz",
+				"Vektor"
+			],
+			"length": 1
 		},{
 			"name": "Fr16",
 			"resoable": true,
@@ -110,17 +112,6 @@
 				"Vektor"
 			]
 		},{
-			"name": "Sa12",
-			"resoable": false,
-			"rooms": [
-				"Banach",
-				"Hausdorff",
-				"Hilbert",
-				"Sierpinski",
-				"Schwartz",
-				"Vektor"
-			]
-		},{
 			"name": "Sa14",
 			"resoable": false,
 			"rooms": [
@@ -135,20 +126,97 @@
 	],
 	"aks":[
 		{
-			"name": "AK_Offener_Brief_Nichtsemester",
-			"reso": false,
+			"name": "AK1",
+			"reso": true,
 			"blacklist": [
-				"Sa14"
+				"Fr8","Fr10", "Fr14", "Fr15", "Fr16", "Fr18"
 			]
 		},{
-			"name": "AK_Gewaehrleistung_der_Lehre",
+			"name": "AK3",
 			"reso": false
 		},{
-			"name": "AK_Vergleich_Videokonferenzplatformen",
+			"name": "AK4",
+			"reso": false,
+			"blacklist": ["Fr8", "Fr10", "Fr14", "Fr15", "Fr16"]
+		},{
+			"name": "Orga/Meta",
+			"reso": false,
+			"blacklist": ["Fr8", "Fr10", "Fr14", "Fr15", "Fr16", "Fr18", "Sa8"]
+		},{
+			"name": "AK6",
+			"reso": false,
+			"blacklist": ["Fr8", "Fr10", "Fr14", "Fr15", "Fr16", "Fr18", "Sa14"]
+		},{
+			"name": "AK7",
 			"reso": false
 		},{
-			"name": "AK_Gleichstellung_in_anderen_Umstaenden",
+			"name": "AK8",
+			"reso": false,
+			"length": 1,
+			"blacklist": ["Sa10", "Sa14"]
+		},{
+			"name": "AK9",
+			"reso": true
+		},{
+			"name": "AK10",
+			"reso": false,
+			"blacklist": ["Fr8", "Fr10", "Fr14", "Fr15", "Fr16"]
+		},{
+			"name": "AK11",
+			"reso": false,
+			"length": 1
+		},{
+			"name": "AK12",
+			"reso": false,
+			"blacklist": ["Fr8", "Fr10", "Fr14", "Fr15", "Fr16", "Fr18", "Sa14"]
+		},{
+			"name": "AK13",
+			"reso": false,
+			"blacklist": ["Fr10", "Fr14", "Fr15", "Fr16", "Fr18", "Fr8", "Fr10", "Sa14"]
+		},{
+			"name": "AK14",
+			"reso": false,
+			"blacklist": ["Fr8", "Fr10", "Fr14", "Fr15", "Fr16"]
+		},{
+			"name": "AK15",
 			"reso": false
+		},{
+			"name": "AK16",
+			"reso": false
+		},{
+			"name": "AK17",
+			"reso": true
+		},{
+			"name": "AK18",
+			"reso": false
+		},{
+			"name": "AK19",
+			"reso": false, 
+			"length": 1
+		},{
+			"name": "AK20",
+			"reso": false,
+			"length": 1
+		},{
+			"name": "AK21",
+			"reso": false
+		},{
+			"name": "AK22",
+			"reso": false,
+			"length": 1
+		},{
+			"name": "AK23",
+			"reso": false,
+			"length": 1,
+			"blacklist": ["Fr8", "Fr10", "Fr14", "Fr15", "Fr16"]
+		},{
+			"name": "AK24",
+			"reso": false,
+			"blacklist": ["Sa10", "Sa14"]
+		},{
+			"name": "AK25",
+			"reso": false,
+			"length": 1
 		}
 	]
 }
