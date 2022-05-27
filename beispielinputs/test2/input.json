@@ -44,6 +44,30 @@
 				"Vektor"
 			]
 		},{
+			"name": "Fr12",
+			"resoable": true,
+			"rooms": [
+				"Banach",
+				"Hausdorff",
+				"Hilbert",
+				"Sierpinski",
+				"Schwartz",
+				"Vektor"
+			],
+			"length":1
+		},{
+			"name": "Fr13",
+			"resoable": true,
+			"rooms": [
+				"Banach",
+				"Hausdorff",
+				"Hilbert",
+				"Sierpinski",
+				"Schwartz",
+				"Vektor"
+			],
+			"length":1
+		},{
 			"name": "Fr14",
 			"resoable": true,
 			"rooms": [
@@ -53,20 +77,7 @@
 				"Sierpinski",
 				"Schwartz",
 				"Vektor"
-			],
-			"length": 1
-		},{
-			"name": "Fr15",
-			"resoable": true,
-			"rooms": [
-				"Banach",
-				"Hausdorff",
-				"Hilbert",
-				"Sierpinski",
-				"Schwartz",
-				"Vektor"
-			],
-			"length": 1
+			]
 		},{
 			"name": "Fr16",
 			"resoable": true,
@@ -112,6 +123,17 @@
 				"Vektor"
 			]
 		},{
+			"name": "Sa12",
+			"resoable": false,
+			"rooms": [
+				"Banach",
+				"Hausdorff",
+				"Hilbert",
+				"Sierpinski",
+				"Schwartz",
+				"Vektor"
+			]
+		},{
 			"name": "Sa14",
 			"resoable": false,
 			"rooms": [
@@ -127,25 +149,22 @@
 	"aks":[
 		{
 			"name": "AK1",
-			"reso": true,
-			"blacklist": [
-				"Fr8","Fr10", "Fr14", "Fr15", "Fr16", "Fr18"
-			]
+			"reso": true
 		},{
 			"name": "AK3",
 			"reso": false
 		},{
 			"name": "AK4",
 			"reso": false,
-			"blacklist": ["Fr8", "Fr10", "Fr14", "Fr15", "Fr16"]
+			"blacklist": ["Fr8", "Fr10", "Fr14", "Fr16"]
 		},{
 			"name": "Orga/Meta",
 			"reso": false,
-			"blacklist": ["Fr8", "Fr10", "Fr14", "Fr15", "Fr16", "Fr18", "Sa8"]
+			"blacklist": ["Fr8", "Fr10", "Fr14", "Fr16", "Fr18", "Sa8"]
 		},{
 			"name": "AK6",
 			"reso": false,
-			"blacklist": ["Fr8", "Fr10", "Fr14", "Fr15", "Fr16", "Fr18", "Sa14"]
+			"blacklist": ["Fr8", "Fr10", "Fr14", "Fr16", "Fr18", "Sa14"]
 		},{
 			"name": "AK7",
 			"reso": false
@@ -160,7 +179,7 @@
 		},{
 			"name": "AK10",
 			"reso": false,
-			"blacklist": ["Fr8", "Fr10", "Fr14", "Fr15", "Fr16"]
+			"blacklist": ["Fr10", "Fr14", "Fr16"]
 		},{
 			"name": "AK11",
 			"reso": false,
@@ -168,15 +187,15 @@
 		},{
 			"name": "AK12",
 			"reso": false,
-			"blacklist": ["Fr8", "Fr10", "Fr14", "Fr15", "Fr16", "Fr18", "Sa14"]
+			"blacklist": ["Fr8", "Fr10", "Fr14", "Fr16", "Fr18", "Sa14"]
 		},{
 			"name": "AK13",
 			"reso": false,
-			"blacklist": ["Fr10", "Fr14", "Fr15", "Fr16", "Fr18", "Fr8", "Fr10", "Sa14"]
+			"blacklist": ["Fr10", "Fr14", "Fr16", "Fr18", "Fr8", "Fr10", "Sa14"]
 		},{
 			"name": "AK14",
 			"reso": false,
-			"blacklist": ["Fr8", "Fr10", "Fr14", "Fr15", "Fr16"]
+			"blacklist": ["Fr8", "Fr10", "Fr14", "Fr16"]
 		},{
 			"name": "AK15",
 			"reso": false
@@ -207,16 +226,14 @@
 		},{
 			"name": "AK23",
 			"reso": false,
-			"length": 1,
-			"blacklist": ["Fr8", "Fr10", "Fr14", "Fr15", "Fr16"]
+			"blacklist": ["Fr8", "Fr10", "Fr14", "Fr16"]
 		},{
 			"name": "AK24",
 			"reso": false,
 			"blacklist": ["Sa10", "Sa14"]
 		},{
 			"name": "AK25",
-			"reso": false,
-			"length": 1
+			"reso": false
 		}
 	]
 }
