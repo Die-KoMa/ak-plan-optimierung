@@ -6,13 +6,13 @@ from pathlib import Path
 from typing import Dict, Optional, Set, Tuple
 
 from pulp import (
-    getSolver,
     LpAffineExpression,
     LpBinary,
-    LpProblem,
     LpMinimize,
+    LpProblem,
     LpStatus,
     LpVariable,
+    getSolver,
     lpSum,
     value,
 )
