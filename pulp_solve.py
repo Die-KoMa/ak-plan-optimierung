@@ -321,6 +321,60 @@ for room_id, timeslot_id in product(room_ids, timeslot_ids):
             )
 
 
+def _add_impossible_constraints(
+    prob: LpProblem,
+    constraint_supplier_type: str,
+    constraint_requester_type: str,
+    name: str,
+):
+    idx_sets = [ak_ids, timeslot_ids, room_ids, participant_ids]
+    requested_constraint_dict = {
+        "timeslot_id": {
+            "ak_id": ak_time_constraint_dict,
+            "participant_id": participant_time_constraint_dict,
+            "room_id": room_time_constraint_dict,
+        },
+        "room_id": {
+            "ak_id": ak_room_constraint_dict,
+            "participant_id": participant_room_constraint_dict,
+        },
+    }
+    supplied_constraint_dict = {
+        "timeslot_id": fulfilled_time_constraints,
+        "room_id": fulfilled_room_constraints,
+    }
+
+    id_dict = {
+        "timeslot_id": timeslot_ids,
+        "ak_id": ak_ids,
+        "room_id": room_ids,
+        "participant_id": participant_ids,
+    }
+
+    requester_ids = id_dict[constraint_requester_type]
+    supplier_ids = id_dict[constraint_supplier_type]
+    other_ids = {
+        label: id_dict[label]
+        for label in id_dict
+        if label not in [constraint_requester_type, constraint_supplier_type]
+    }
+
+    for requester_id, supplier_id in product(requester_ids, supplier_ids):
+        supplied_constraints = supplied_constraint_dict[supplier_id]
+        requested_constraints = requested_constraint_dict[constraint_supplier_type][
+            constraint_requester_type
+        ][requester_id]
+        if requested_constraints.difference(supplied_constraints):
+            for lbl_ids in product(other_ids.values()):
+                kwargs_dict = {
+                    key: lbl_ids[key_idx] for key_idx, key in enumerate(other_ids)
+                }
+                kwargs_dict[constraint_supplier_type] = supplier_id
+                kwargs_dict[constraint_requester_type] = requester_id
+
+                _set_decision_variable(prob, value=0, name=name, **kwargs_dict)
+
+
 ## TODO: Set intitial value for eq constraints
 
 # The problem data is written to an .lp file
