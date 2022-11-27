@@ -94,10 +94,9 @@ def create_lp(input_dict: Dict[str, object], mu: float):
     room_time_constraint_dict = {
         room["id"]: set(room["time_constraints"]) for room in input_dict["rooms"]
     }
-
     fulfilled_time_constraints = {
         timeslot["id"]: set(timeslot["fulfilled_time_constraints"])
-        for block in input_dict["timeslots"]
+        for block in input_dict["timeslots"]["blocks"]
         for timeslot in block
     }
     fulfilled_room_constraints = {
@@ -111,7 +110,7 @@ def create_lp(input_dict: Dict[str, object], mu: float):
     ak_ids = _retrieve_val_set("aks", "id")
     room_ids = _retrieve_val_set("rooms", "id")
     timeslot_ids = {
-        timeslot["id"] for block in input_dict["timeslots"] for timeslot in block
+        timeslot["id"] for block in input_dict["timeslots"]["blocks"] for timeslot in block
     }
 
     participant_ids = _retrieve_val_set("participants", "id")
@@ -121,7 +120,7 @@ def create_lp(input_dict: Dict[str, object], mu: float):
 
     timeslot_block_ids = {
         timeslot["id"]: (block_idx, timeslot_idx)
-        for block_idx, block in enumerate(input_dict["timeslots"])
+        for block_idx, block in enumerate(input_dict["timeslots"]["blocks"])
         for timeslot_idx, timeslot in enumerate(block)
     }
 
