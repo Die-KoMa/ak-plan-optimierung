@@ -1,5 +1,6 @@
 import argparse
 import json
+from collections import defaultdict
 from itertools import combinations, product
 from pathlib import Path
 from typing import Dict, Optional, Set, Tuple
@@ -428,7 +429,44 @@ def create_lp(input_dict: Dict[str, object], mu: float, solver_name: str):
 
                     _set_decision_variable(value=0, name=name, **kwargs_dict)
 
-    return prob
+    # The problem data is written to an .lp file
+    prob.writeLP("koma-plan.lp")
+
+    if solver_name == "HiGHS_CMD":
+        kwargs_dict = {
+            "path": "/home/fblanke/Private/git/HiGHS/build/bin/highs",
+            #"threads": 10,
+        }
+    else:
+        kwargs_dict = {"warmStart": True}
+    solver = getSolver(solver_name, **kwargs_dict)
+    # The problem is solved using PuLP's choice of Solver
+    res = prob.solve(solver)
+
+    # The status of the solution is printed to the screen
+    print("Status:", LpStatus[prob.status])
+
+    tmp_res_dir = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
+    for ak_id, timeslot_id, room_id, participant_id in product(ak_ids, timeslot_ids, room_ids, participant_ids):
+        if dec_vars[ak_id][timeslot_id][room_id][participant_id]:
+            tmp_res_dir[ak_id][room_id]["timeslot_ids"].append(timeslot_id)
+            tmp_res_dir[ak_id][room_id]["participant_ids"].append(participant_id)
+    
+    output_dict = {}
+    output_dict["scheduled_aks"] = [
+        {
+            "ak_id": ak_id,
+            "room_id": room_id,
+            "timeslot_ids": subsubdict["timeslot_ids"],
+            "participant_ids": subsubdict["participant_ids"],
+        }
+        for ak_id, subdict in tmp_res_dir.items()
+        for room_id, subsubdict in subdict.items()
+    ]
+    output_dict["input"] = input_dict
+
+    with open("output.json", "w") as output_file:
+        json.dump(output_dict, output_file)
 
 
 def main():
@@ -444,17 +482,7 @@ def main():
     with json_file.open("r") as fp:
         input_dict = json.load(fp)
 
-    prob = create_lp(input_dict, args.mu)
-
-    # The problem data is written to an .lp file
-    prob.writeLP("koma-plan.lp")
-
-    # The problem is solved using PuLP's choice of Solver
-    prob.solve()
-
-    # The status of the solution is printed to the screen
-    print("Status:", LpStatus[prob.status])
-
+    create_lp(input_dict, args.mu, args.solver)
 
 if __name__ == "__main__":
     main()
