@@ -133,7 +133,7 @@ cost_func = LpAffineExpression()
 for participant_id in participant_ids:
     normalizing_factor = len(preferences_dict[participant_id])
     for ak_id in ak_ids:
-        coeff = -weighted_preference_dict[participant_id][ak_id]  #
+        coeff = -weighted_preference_dict[participant_id][ak_id]
         coeff /= aks[ak_id]["duration"] * normalizing_factor
         affine_constraint = lpSum(
             [
@@ -231,8 +231,7 @@ for ak_id, room_id in product(ak_ids, room_ids):
 
         if (
             block_idx_a != block_idx_b
-            or abs(slot_in_block_idx_a - slot_in_block_idx_b)
-            >= aks[ak_id]["duration"]
+            or abs(slot_in_block_idx_a - slot_in_block_idx_b) >= aks[ak_id]["duration"]
         ):
             affine_constraint = lpSum(
                 [
@@ -245,7 +244,9 @@ for ak_id, room_id in product(ak_ids, room_ids):
             )
 
 # for all A, Z, R, P\neq P_A: 0 <= Y_{A, Z, R, P_A} - Y_{A, Z, R, P}
-for ak_id, timeslot_id, room_id, participant_id in product(ak_ids, timeslot_ids, room_ids, participant_ids):
+for ak_id, timeslot_id, room_id, participant_id in product(
+    ak_ids, timeslot_ids, room_ids, participant_ids
+):
     affine_constraint = LpAffineExpression(
         dec_vars[ak_id][timeslot_id][room_id][get_dummy_id(ak_id)]
     )
@@ -266,7 +267,9 @@ for room_id, timeslot_id in product(room_ids, timeslot_ids):
     prob += affine_constraint <= rooms[room_id]["capacity"], "Roomsizes"
 
 # for all Z, R, A'\neq A: Y_{A', Z, R, P_A} = 0
-for timeslot_id, room_id, ak_id, dummy_ak_id in product(timeslot_ids, room_ids, ak_ids, ak_ids):
+for timeslot_id, room_id, ak_id, dummy_ak_id in product(
+    timeslot_ids, room_ids, ak_ids, ak_ids
+):
     if ak_id == dummy_ak_id:
         continue
     _set_decision_variable(
@@ -284,7 +287,9 @@ for participant_id, preferences in preferences_dict.items():
     if is_dummy(participant_id):
         continue
     pref_aks = {pref["ak_id"] for pref in preferences}
-    for ak_id, timeslot_id, room_id in product(ak_ids.difference(pref_aks), timeslot_ids, room_ids):
+    for ak_id, timeslot_id, room_id in product(
+        ak_ids.difference(pref_aks), timeslot_ids, room_ids
+    ):
         _set_decision_variable(
             prob,
             ak_id,
