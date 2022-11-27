@@ -8,12 +8,14 @@ from pulp import LpAffineExpression, LpBinary, LpProblem, LpStatus, LpVariable, 
 
 
 def process_pref_score(preference_score: int, required: bool, mu: float) -> float:
-    if preference_score in [0, 1]:
+    if required or preference_score == -1:
+        return 0
+    elif preference_score in [0, 1]:
         return preference_score
     elif preference_score == 2:
         return mu
     else:
-        raise NotImplementedError
+        raise NotImplementedError(preference_score)
 
 
 def get_dummy_participant_id(
