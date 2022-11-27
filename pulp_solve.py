@@ -425,7 +425,7 @@ def create_lp(input_dict: Dict[str, object], mu: float, solver_name: str):
             if ak_room_constraint_dict[ak_id].difference(
                 fulfilled_room_constraints[room_id]
             ):
-                for participant_id, timeslot_id in participant_ids, timeslot_ids:
+                for participant_id, timeslot_id in product(participant_ids, timeslot_ids):
                     _set_decision_variable(
                         dec_vars,
                         ak_id,
