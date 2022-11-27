@@ -13,7 +13,7 @@ from pulp import (
     LpStatus,
     LpVariable,
     lpSum,
-    value
+    value,
 )
 
 
