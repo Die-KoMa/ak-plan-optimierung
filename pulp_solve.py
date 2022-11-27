@@ -449,7 +449,7 @@ def create_lp(input_dict: Dict[str, object], mu: float):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--mu", type=float, default=2)
-    parser.add_argument("path", type=str, required=True)
+    parser.add_argument("path", type=str)
     args = parser.parse_args()
 
     json_file = Path(args.path)
@@ -470,3 +470,7 @@ def main():
 
     # The status of the solution is printed to the screen
     print("Status:", LpStatus[prob.status])
+
+
+if __name__ == "__main__":
+    main()
