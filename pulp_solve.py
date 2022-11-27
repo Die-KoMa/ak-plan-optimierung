@@ -462,21 +462,21 @@ def create_lp(input_dict: Dict[str, object], mu: float, solver_name: str):
     # The status of the solution is printed to the screen
     print("Status:", LpStatus[prob.status])
 
-    tmp_res_dir = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
+    tmp_res_dir = defaultdict(lambda: defaultdict(lambda: defaultdict(set)))
     for ak_id, timeslot_id, room_id, participant_id in product(
         ak_ids, timeslot_ids, room_ids, participant_ids
     ):
         if value(dec_vars[ak_id][timeslot_id][room_id][participant_id]) == 1:
-            tmp_res_dir[ak_id][room_id]["timeslot_ids"].append(timeslot_id)
-            tmp_res_dir[ak_id][room_id]["participant_ids"].append(participant_id)
+            tmp_res_dir[ak_id][room_id]["timeslot_ids"].add(timeslot_id)
+            tmp_res_dir[ak_id][room_id]["participant_ids"].add(participant_id)
 
     output_dict = {}
     output_dict["scheduled_aks"] = [
         {
             "ak_id": ak_id,
             "room_id": room_id,
-            "timeslot_ids": subsubdict["timeslot_ids"],
-            "participant_ids": subsubdict["participant_ids"],
+            "timeslot_ids": list(subsubdict["timeslot_ids"]),
+            "participant_ids": list(subsubdict["participant_ids"]),
         }
         for ak_id, subdict in tmp_res_dir.items()
         for room_id, subsubdict in subdict.items()
