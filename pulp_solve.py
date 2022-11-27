@@ -261,7 +261,10 @@ def create_lp(input_dict: Dict[str, object], mu: float):
         )
         prob += affine_constraint >= 0, _construct_constraint_name(
             "PersonVisitingAKAtRightTimeAndRoom",
-            ak_id, timeslot_id, room_id, participant_id
+            ak_id,
+            timeslot_id,
+            room_id,
+            participant_id,
         )
 
     # for all R, Z: \sum_{A, P\neq P_A} Y_{A, Z, R, P} <= K_R
@@ -272,10 +275,9 @@ def create_lp(input_dict: Dict[str, object], mu: float):
                 for ak_id, participant_id in product(ak_ids, real_preferences_dict)
             ]
         )
-        prob += affine_constraint <= room_capacities[room_id], _construct_constraint_name(
-            "Roomsizes",
-            room_id, timeslot_id
-        )
+        prob += affine_constraint <= room_capacities[
+            room_id
+        ], _construct_constraint_name("Roomsizes", room_id, timeslot_id)
 
     # for all Z, R, A'\neq A: Y_{A', Z, R, P_A} = 0
     for timeslot_id, room_id, ak_id, dummy_ak_id in product(
