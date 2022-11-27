@@ -79,7 +79,7 @@ def create_lp(input_dict: Dict[str, object], mu: float):
     ak_ids = _retrieve_val_set("aks", "id")
     room_ids = _retrieve_val_set("rooms", "id")
     participant_ids = _retrieve_val_set("participants", "id")
-    timeslot_id = {
+    timeslot_ids = {
         timeslot["id"] for block in input_dict["timeslots"] for timeslot in block
     }
 
@@ -134,7 +134,7 @@ def create_lp(input_dict: Dict[str, object], mu: float):
         normalizing_factor = len(preferences_dict[participant_id])
         for ak_id in ak_ids:
             coeff = -weighted_preference_dict[participant_id][ak_id]
-            coeff /= aks[ak_id]["duration"] * normalizing_factor
+            coeff /= ak_durations[ak_id] * normalizing_factor
             affine_constraint = lpSum(
                 [
                     dec_vars[ak_id][timeslot_id][room_id][participant_id]
@@ -168,7 +168,7 @@ def create_lp(input_dict: Dict[str, object], mu: float):
                 for timeslot_id, room_id in product(timeslot_ids, room_ids)
             ]
         )
-        prob += affine_constraint == aks[ak_id]["duration"], _construct_constraint_name(
+        prob += affine_constraint == ak_durations[ak_id], _construct_constraint_name(
             "AKLength", ak_id
         )
 
@@ -186,7 +186,7 @@ def create_lp(input_dict: Dict[str, object], mu: float):
             if pref["ak_id"] == ak_id:
                 if pref["required"]:
                     prob += (
-                        affine_constraint == aks[ak_id]["duration"],
+                        affine_constraint == ak_durations[ak_id],
                         _construct_constraint_name(
                             "PersonNeededForAK",
                             ak_id,
@@ -194,7 +194,7 @@ def create_lp(input_dict: Dict[str, object], mu: float):
                         ),
                     )  ## TODO Check for fixed value
                 else:
-                    affine_constraint *= 1 / aks[ak_id]["duration"]
+                    affine_constraint *= 1 / ak_durations[ak_id]
                     prob += affine_constraint <= 1, _construct_constraint_name(
                         "NoPartialParticipation",
                         ak_id,
@@ -202,7 +202,7 @@ def create_lp(input_dict: Dict[str, object], mu: float):
                     )
                 break
         else:
-            affine_constraint *= 1 / aks[ak_id]["duration"]
+            affine_constraint *= 1 / ak_durations[ak_id]
             prob += affine_constraint <= 1, _construct_constraint_name(
                 "NoPartialParticipation",
                 ak_id,
@@ -218,7 +218,7 @@ def create_lp(input_dict: Dict[str, object], mu: float):
                 for timeslot_id in timeslot_ids
             ]
         )
-        affine_constraint *= 1 / aks[ak_id]["duration"]
+        affine_constraint *= 1 / ak_durations[ak_id]
         prob += affine_constraint <= 1, _construct_constraint_name(
             "FixedAKRooms", ak_id, room_id
         )
@@ -231,7 +231,7 @@ def create_lp(input_dict: Dict[str, object], mu: float):
 
             if (
                 block_idx_a != block_idx_b
-                or abs(slot_in_block_idx_a - slot_in_block_idx_b) >= aks[ak_id]["duration"]
+                or abs(slot_in_block_idx_a - slot_in_block_idx_b) >= ak_durations[ak_id]
             ):
                 affine_constraint = lpSum(
                     [
@@ -264,7 +264,7 @@ def create_lp(input_dict: Dict[str, object], mu: float):
                 if not is_dummy(participant_id)
             ]
         )
-        prob += affine_constraint <= rooms[room_id]["capacity"], "Roomsizes"
+        prob += affine_constraint <= room_capacities[room_id], "Roomsizes"
 
     # for all Z, R, A'\neq A: Y_{A', Z, R, P_A} = 0
     for timeslot_id, room_id, ak_id, dummy_ak_id in product(
