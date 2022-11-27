@@ -4,7 +4,7 @@ from itertools import combinations, product
 from pathlib import Path
 from typing import Dict, Optional, Set, Tuple
 
-from pulp import LpAffineExpression, LpBinary, LpProblem, LpStatus, LpVariable, lpSum
+from pulp import getSolver, LpAffineExpression, LpBinary, LpProblem, LpStatus, LpVariable, lpSum
 
 
 def process_pref_score(preference_score: int, required: bool, mu: float) -> float:
@@ -51,7 +51,7 @@ def _set_decision_variable(
     dec_vars[ak_id][timeslot_id][room_id][participant_id].fixValue()
 
 
-def create_lp(input_dict: Dict[str, object], mu: float):
+def create_lp(input_dict: Dict[str, object], mu: float, solver_name: str):
     room_capacities = {room["id"]: room["capacity"] for room in input_dict["rooms"]}
     ak_durations = {ak["id"]: ak["duration"] for ak in input_dict["aks"]}
     real_preferences_dict = {
@@ -434,6 +434,7 @@ def create_lp(input_dict: Dict[str, object], mu: float):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--mu", type=float, default=2)
+    parser.add_argument("--solver", type=str, default=None)
     parser.add_argument("path", type=str)
     args = parser.parse_args()
 
