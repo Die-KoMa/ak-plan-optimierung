@@ -3,7 +3,7 @@ import json
 from collections import defaultdict
 from itertools import combinations, product
 from pathlib import Path
-from typing import Dict, Optional, Set, Tuple
+from typing import Dict, Optional, Set
 
 from pulp import (
     LpAffineExpression,
