@@ -2,6 +2,7 @@ import json
 import random
 import argparse
 
+
 def generate():
     parser = argparse.ArgumentParser()
     parser.add_argument("--persons", type=int, default=30)
@@ -63,28 +64,28 @@ def generate():
         "info": {"name": "Raum1"},
         "capacity": 25,
         "fulfilled_room_constraints": ["barrierefrei"],
-        "time_constraints": [],#["Dienstag", "Mittwoch", "Donnerstag", "Freitag"],
+        "time_constraints": [],  # ["Dienstag", "Mittwoch", "Donnerstag", "Freitag"],
     }
     room2 = {
         "id": "2",
         "info": {"name": "Raum2"},
         "capacity": 30,
         "fulfilled_room_constraints": ["barrierefrei", "Beamer"],
-        "time_constraints": []#["Dienstag", "Mittwoch", "Donnerstag", "Freitag"],
+        "time_constraints": [],  # ["Dienstag", "Mittwoch", "Donnerstag", "Freitag"],
     }
     room3 = {
         "id": "3",
         "info": {"name": "Raum3"},
         "capacity": 20,
         "fulfilled_room_constraints": [],
-        "time_constraints": []#["Mittwoch", "Donnerstag", "Freitag"],
+        "time_constraints": [],  # ["Mittwoch", "Donnerstag", "Freitag"],
     }
     room4 = {
         "id": "4",
         "info": {"name": "Raum4"},
         "capacity": 25,
         "fulfilled_room_constraints": ["Beamer", "barrierefrei"],
-        "time_constraints": []#["Dienstag"],
+        "time_constraints": [],  # ["Dienstag"],
     }
 
     # create aks
@@ -93,7 +94,9 @@ def generate():
         # random number 1 or 2 for the duration
         duration = random.choice([1, 2])
         # with probability 10% the Ak needs a Beamer, with probability 90%, the AK doesn't
-        room_constraints = []#random.choices([[], ["Beamer"]], weights=[0.9, 0.1], k=1)[0]
+        room_constraints = (
+            []
+        )  # random.choices([[], ["Beamer"]], weights=[0.9, 0.1], k=1)[0]
         # with probability 20% the AK is a ResoAK
         is_reso_ak = random.choices([True, False], weights=[0.2, 0.8], k=1)[0]
         time_constraints = []
@@ -157,6 +160,7 @@ def generate():
     # print(dictionary)
     with open("dummy_set.json", "w") as output_file:
         json.dump(dictionary, output_file)
+
 
 if __name__ == "__main__":
     generate()

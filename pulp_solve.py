@@ -5,7 +5,15 @@ from itertools import combinations, product
 from pathlib import Path
 from typing import Dict, Optional, Set, Tuple
 
-from pulp import getSolver, LpAffineExpression, LpBinary, LpProblem, LpStatus, LpVariable, lpSum
+from pulp import (
+    getSolver,
+    LpAffineExpression,
+    LpBinary,
+    LpProblem,
+    LpStatus,
+    LpVariable,
+    lpSum,
+)
 
 
 def process_pref_score(preference_score: int, required: bool, mu: float) -> float:
@@ -32,7 +40,8 @@ def is_participant_dummy(
 
 
 def _construct_constraint_name(name: str, *args) -> str:
-    return name + "_" + "_".join(args)
+    name = name + "_" + "_".join(args)
+    return name
 
 
 def _set_decision_variable(
@@ -108,7 +117,9 @@ def create_lp(input_dict: Dict[str, object], mu: float, solver_name: str):
     ak_ids = _retrieve_val_set("aks", "id")
     room_ids = _retrieve_val_set("rooms", "id")
     timeslot_ids = {
-        timeslot["id"] for block in input_dict["timeslots"]["blocks"] for timeslot in block
+        timeslot["id"]
+        for block in input_dict["timeslots"]["blocks"]
+        for timeslot in block
     }
 
     participant_ids = _retrieve_val_set("participants", "id")
@@ -229,8 +240,12 @@ def create_lp(input_dict: Dict[str, object], mu: float, solver_name: str):
             ):
                 affine_constraint = lpSum(
                     [
-                        dec_vars[ak_id][timeslot_id_a][room_id][get_dummy_participant_id(ak_id)],
-                        dec_vars[ak_id][timeslot_id_b][room_id][get_dummy_participant_id(ak_id)],
+                        dec_vars[ak_id][timeslot_id_a][room_id][
+                            get_dummy_participant_id(ak_id)
+                        ],
+                        dec_vars[ak_id][timeslot_id_b][room_id][
+                            get_dummy_participant_id(ak_id)
+                        ],
                     ]
                 )
                 prob += affine_constraint <= 1, _construct_constraint_name(
@@ -435,7 +450,7 @@ def create_lp(input_dict: Dict[str, object], mu: float, solver_name: str):
     if solver_name == "HiGHS_CMD":
         kwargs_dict = {
             "path": "/home/fblanke/Private/git/HiGHS/build/bin/highs",
-            #"threads": 10,
+            # "threads": 10,
         }
     else:
         kwargs_dict = {"warmStart": True}
@@ -447,11 +462,13 @@ def create_lp(input_dict: Dict[str, object], mu: float, solver_name: str):
     print("Status:", LpStatus[prob.status])
 
     tmp_res_dir = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
-    for ak_id, timeslot_id, room_id, participant_id in product(ak_ids, timeslot_ids, room_ids, participant_ids):
+    for ak_id, timeslot_id, room_id, participant_id in product(
+        ak_ids, timeslot_ids, room_ids, participant_ids
+    ):
         if dec_vars[ak_id][timeslot_id][room_id][participant_id]:
             tmp_res_dir[ak_id][room_id]["timeslot_ids"].append(timeslot_id)
             tmp_res_dir[ak_id][room_id]["participant_ids"].append(participant_id)
-    
+
     output_dict = {}
     output_dict["scheduled_aks"] = [
         {
@@ -483,6 +500,7 @@ def main():
         input_dict = json.load(fp)
 
     create_lp(input_dict, args.mu, args.solver)
+
 
 if __name__ == "__main__":
     main()
