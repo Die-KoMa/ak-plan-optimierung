@@ -13,6 +13,7 @@ from pulp import (
     LpStatus,
     LpVariable,
     lpSum,
+    value
 )
 
 
@@ -465,7 +466,7 @@ def create_lp(input_dict: Dict[str, object], mu: float, solver_name: str):
     for ak_id, timeslot_id, room_id, participant_id in product(
         ak_ids, timeslot_ids, room_ids, participant_ids
     ):
-        if dec_vars[ak_id][timeslot_id][room_id][participant_id]:
+        if value(dec_vars[ak_id][timeslot_id][room_id][participant_id]) == 1:
             tmp_res_dir[ak_id][room_id]["timeslot_ids"].append(timeslot_id)
             tmp_res_dir[ak_id][room_id]["participant_ids"].append(participant_id)
 
