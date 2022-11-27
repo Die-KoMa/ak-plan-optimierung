@@ -20,9 +20,43 @@ def process_pref_score(preference_score: int, required: bool, mu: float):
         raise NotImplementedError
 
 
-def create_lp(input_dict: Dict[str, object], mu: float):
-    id_map = lambda x: x["id"]
+def get_dummy_participant_id(ak_id: str) -> str:
+    raise NotImplementedError
 
+
+def is_participant_dummy(participant_id: str) -> bool:
+    raise NotImplementedError
+
+
+def get_block_based_idx(timeslot_id: str) -> Tuple(int, int):
+    pass
+
+
+def _construct_constraint_name(name: str, *args) -> str:
+    return name + "_" + "_".join(args)
+
+
+def _set_decision_variable(
+    prob: LpProblem,
+    dec_vars: Dict[str, Dict[str, Dict[str, Dict[str, LpVariable]]]],
+    ak_id: str,
+    timeslot_id: str,
+    room_id: str,
+    participant_id: str,
+    value: float,
+    name: Optional[str] = None,
+) -> None:
+    if name is not None:
+        name = _construct_constraint_name(
+            name, ak_id, timeslot_id, room_id, participant_id
+        )
+    affine_constraint = LpAffineExpression(
+        dec_vars[ak_id][timeslot_id][room_id][participant_id]
+    )
+    prob += affine_constraint == value, name
+
+
+def create_lp(input_dict: Dict[str, object], mu: float):
     room_capacities = {room["id"]: room["capacity"] for room in input_dict["rooms"]}
     ak_durations = {ak["id"]: ak["duration"] for ak in input_dict["aks"]}
     preferences_dict = {
@@ -93,42 +127,6 @@ def create_lp(input_dict: Dict[str, object], mu: float):
     )
 
 
-    def get_dummy_id(ak_id: str) -> str:
-        raise NotImplementedError
-
-
-    def is_dummy(participant_id: str) -> bool:
-        raise NotImplementedError
-
-
-    def get_block_based_idx(timeslot_id: str) -> Tuple(int, int):
-        pass
-
-
-    def _construct_constraint_name(name: str, *args) -> str:
-        return name + "_" + "_".join(args)
-
-
-    def _set_decision_variable(
-        prob: LpProblem,
-        dec_vars: Dict[str, Dict[str, Dict[str, Dict[str, LpVariable]]]],
-        ak_id: str,
-        timeslot_id: str,
-        room_id: str,
-        participant_id: str,
-        value: float,
-        name: Optional[str] = None,
-    ) -> None:
-        if name is not None:
-            name = _construct_constraint_name(
-                name, ak_id, timeslot_id, room_id, participant_id
-            )
-        affine_constraint = LpAffineExpression(
-            dec_vars[ak_id][timeslot_id][room_id][participant_id]
-        )
-        prob += affine_constraint == value, name
-
-
     cost_func = LpAffineExpression()
     for participant_id in participant_ids:
         normalizing_factor = len(preferences_dict[participant_id])
@@ -148,7 +146,7 @@ def create_lp(input_dict: Dict[str, object], mu: float):
     # for all Z, P \neq P_A: \sum_{A, R} Y_{A, Z, R, P} <= 1
     for timeslot_id in timeslot_ids:
         for participant_id in participant_ids:
-            if is_dummy(participant_id):
+            if is_participant_dummy(participant_id):
                 continue
             affine_constraint = lpSum(
                 [
@@ -164,7 +162,7 @@ def create_lp(input_dict: Dict[str, object], mu: float):
     for ak_id in ak_ids:
         affine_constraint = lpSum(
             [
-                dec_vars[ak_id][timeslot_id][room_id][get_dummy_id(ak_id)]
+                dec_vars[ak_id][timeslot_id][room_id][get_dummy_participant_id(ak_id)]
                 for timeslot_id, room_id in product(timeslot_ids, room_ids)
             ]
         )
@@ -174,7 +172,7 @@ def create_lp(input_dict: Dict[str, object], mu: float):
 
     # for all A, P \neq P_A: \frac{1}{S_A} \sum_{Z, R} Y_{A, Z, R, P} <= 1
     for ak_id, participant_id in product(ak_ids, participant_ids):
-        if is_dummy(participant_id):
+        if is_participant_dummy(participant_id):
             continue
         affine_constraint = lpSum(
             [
@@ -214,7 +212,7 @@ def create_lp(input_dict: Dict[str, object], mu: float):
     for ak_id, room_id in product(ak_ids, room_ids):
         affine_constraint = lpSum(
             [
-                dec_vars[ak_id][timeslot_id][room_id][get_dummy_id(ak_id)]
+                dec_vars[ak_id][timeslot_id][room_id][get_dummy_participant_id(ak_id)]
                 for timeslot_id in timeslot_ids
             ]
         )
@@ -235,8 +233,8 @@ def create_lp(input_dict: Dict[str, object], mu: float):
             ):
                 affine_constraint = lpSum(
                     [
-                        dec_vars[ak_id, timeslot_id_a, room_id, get_dummy_id(ak_id)],
-                        dec_vars[ak_id, timeslot_id_b, room_id, get_dummy_id(ak_id)],
+                        dec_vars[ak_id, timeslot_id_a, room_id, get_dummy_participant_id(ak_id)],
+                        dec_vars[ak_id, timeslot_id_b, room_id, get_dummy_participant_id(ak_id)],
                     ]
                 )
                 prob += affine_constraint <= 1, _construct_constraint_name(
@@ -248,7 +246,7 @@ def create_lp(input_dict: Dict[str, object], mu: float):
         ak_ids, timeslot_ids, room_ids, participant_ids
     ):
         affine_constraint = LpAffineExpression(
-            dec_vars[ak_id][timeslot_id][room_id][get_dummy_id(ak_id)]
+            dec_vars[ak_id][timeslot_id][room_id][get_dummy_participant_id(ak_id)]
         )
         affine_constraint -= LpAffineExpression(
             dec_vars[ak_id][timeslot_id][room_id][participant_id]
@@ -261,7 +259,7 @@ def create_lp(input_dict: Dict[str, object], mu: float):
             [
                 dec_vars[ak_id][timeslot_id][room_id][participant_id]
                 for ak_id, participant_id in product(ak_ids, participant_ids)
-                if not is_dummy(participant_id)
+                if not is_participant_dummy(participant_id)
             ]
         )
         prob += affine_constraint <= room_capacities[room_id], "Roomsizes"
@@ -277,14 +275,14 @@ def create_lp(input_dict: Dict[str, object], mu: float):
             ak_id,
             timeslot_id,
             room_id,
-            get_dummy_id(dummy_ak_id),
+            get_dummy_participant_id(dummy_ak_id),
             value=0,
             name="DummyPersonOneAk",
         )
 
     # If P_{P, A} = 0: Y_{A,*,*,P} = 0 (non-dummy P)
     for participant_id, preferences in preferences_dict.items():
-        if is_dummy(participant_id):
+        if is_participant_dummy(participant_id):
             continue
         pref_aks = {pref["ak_id"] for pref in preferences}
         for ak_id, timeslot_id, room_id in product(
@@ -301,7 +299,7 @@ def create_lp(input_dict: Dict[str, object], mu: float):
             )
 
     for participant_id in participant_ids:
-        if is_dummy(participant_id):
+        if is_participant_dummy(participant_id):
             continue
         for timeslot_id in timeslot_ids:
             if participant_time_constraint_dict[participant_id].difference(
