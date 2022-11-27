@@ -55,7 +55,7 @@ def _set_decision_variable(
 def create_lp(input_dict: Dict[str, object], mu: float):
     room_capacities = {room["id"]: room["capacity"] for room in input_dict["rooms"]}
     ak_durations = {ak["id"]: ak["duration"] for ak in input_dict["aks"]}
-    preferences_dict = {
+    real_preferences_dict = {
         participant["id"]: participant["preferences"]
         for participant in input_dict["participants"]
     }
@@ -108,12 +108,20 @@ def create_lp(input_dict: Dict[str, object], mu: float):
 
     ak_ids = _retrieve_val_set("aks", "id")
     room_ids = _retrieve_val_set("rooms", "id")
-    participant_ids = _retrieve_val_set("participants", "id")
     timeslot_ids = {
         timeslot["id"] for block in input_dict["timeslots"] for timeslot in block
     }
 
-    # TODO Add dummy to participants
+    participant_ids = _retrieve_val_set("participants", "id")
+    participant_ids = participant_ids.union({
+        get_dummy_participant_id(ak_id) for ak_id in ak_ids
+    })
+
+    timeslot_block_ids = {
+        timeslot["id"]: (block_idx, timeslot_idx)
+        for block_idx, block in enumerate(input_dict["timeslots"])
+        for timeslot_idx, timeslot in enumerate(block)
+    }
 
     prob = LpProblem("MLP KoMa")
 
@@ -122,8 +130,8 @@ def create_lp(input_dict: Dict[str, object], mu: float):
     )
 
     cost_func = LpAffineExpression()
-    for participant_id in participant_ids:
-        normalizing_factor = len(preferences_dict[participant_id])
+    for participant_id, preferences in real_preferences_dict.items():
+        normalizing_factor = len(preferences)
         for ak_id in ak_ids:
             coeff = -weighted_preference_dict[participant_id][ak_id]
             coeff /= ak_durations[ak_id] * normalizing_factor
@@ -139,9 +147,7 @@ def create_lp(input_dict: Dict[str, object], mu: float):
 
     # for all Z, P \neq P_A: \sum_{A, R} Y_{A, Z, R, P} <= 1
     for timeslot_id in timeslot_ids:
-        for participant_id in participant_ids:
-            if is_participant_dummy(participant_id):
-                continue
+        for participant_id in real_preferences_dict:
             affine_constraint = lpSum(
                 [
                     dec_vars[ak_id][timeslot_id][room_id][participant_id]
@@ -165,41 +171,40 @@ def create_lp(input_dict: Dict[str, object], mu: float):
         )
 
     # for all A, P \neq P_A: \frac{1}{S_A} \sum_{Z, R} Y_{A, Z, R, P} <= 1
-    for ak_id, participant_id in product(ak_ids, participant_ids):
-        if is_participant_dummy(participant_id):
-            continue
-        affine_constraint = lpSum(
-            [
-                dec_vars[ak_id][timeslot_id][room_id][participant_id]
-                for ak_id, room_id in product(ak_id, room_ids)
-            ]
-        )
-        for pref in preferences_dict[participant_id]:
-            if pref["ak_id"] == ak_id:
-                if pref["required"]:
-                    prob += (
-                        affine_constraint == ak_durations[ak_id],
-                        _construct_constraint_name(
-                            "PersonNeededForAK",
+    for ak_id in ak_ids:
+        for participant_id, preferences in  real_preferences_dict.items():
+            affine_constraint = lpSum(
+                [
+                    dec_vars[ak_id][timeslot_id][room_id][participant_id]
+                    for ak_id, room_id in product(ak_id, room_ids)
+                ]
+            )
+            for pref in preferences:
+                if pref["ak_id"] == ak_id:
+                    if pref["required"]:
+                        prob += (
+                            affine_constraint == ak_durations[ak_id],
+                            _construct_constraint_name(
+                                "PersonNeededForAK",
+                                ak_id,
+                                participant_id,
+                            ),
+                        )  ## TODO Check for fixed value
+                    else:
+                        affine_constraint *= 1 / ak_durations[ak_id]
+                        prob += affine_constraint <= 1, _construct_constraint_name(
+                            "NoPartialParticipation",
                             ak_id,
                             participant_id,
-                        ),
-                    )  ## TODO Check for fixed value
-                else:
-                    affine_constraint *= 1 / ak_durations[ak_id]
-                    prob += affine_constraint <= 1, _construct_constraint_name(
-                        "NoPartialParticipation",
-                        ak_id,
-                        participant_id,
-                    )
-                break
-        else:
-            affine_constraint *= 1 / ak_durations[ak_id]
-            prob += affine_constraint <= 1, _construct_constraint_name(
-                "NoPartialParticipation",
-                ak_id,
-                participant_id,
-            )
+                        )
+                    break
+            else:
+                affine_constraint *= 1 / ak_durations[ak_id]
+                prob += affine_constraint <= 1, _construct_constraint_name(
+                    "NoPartialParticipation",
+                    ak_id,
+                    participant_id,
+                )
 
     # for all A, R: \sum_{Z} Y_{A, Z, R, P_A} <= 1
     for ak_id, room_id in product(ak_ids, room_ids):
@@ -217,8 +222,8 @@ def create_lp(input_dict: Dict[str, object], mu: float):
     # Ein AK findet konsekutiv statt:
     for ak_id, room_id in product(ak_ids, room_ids):
         for timeslot_id_a, timeslot_id_b in combinations(timeslot_ids, 2):
-            block_idx_a, slot_in_block_idx_a = get_block_based_idx(timeslot_id_a)
-            block_idx_b, slot_in_block_idx_b = get_block_based_idx(timeslot_id_b)
+            block_idx_a, slot_in_block_idx_a = timeslot_block_ids[timeslot_id_a]
+            block_idx_b, slot_in_block_idx_b = timeslot_block_ids[timeslot_id_b]
 
             if (
                 block_idx_a != block_idx_b
@@ -261,8 +266,7 @@ def create_lp(input_dict: Dict[str, object], mu: float):
         affine_constraint = lpSum(
             [
                 dec_vars[ak_id][timeslot_id][room_id][participant_id]
-                for ak_id, participant_id in product(ak_ids, participant_ids)
-                if not is_participant_dummy(participant_id)
+                for ak_id, participant_id in product(ak_ids, real_preferences_dict)
             ]
         )
         prob += affine_constraint <= room_capacities[room_id], "Roomsizes"
@@ -284,9 +288,7 @@ def create_lp(input_dict: Dict[str, object], mu: float):
         )
 
     # If P_{P, A} = 0: Y_{A,*,*,P} = 0 (non-dummy P)
-    for participant_id, preferences in preferences_dict.items():
-        if is_participant_dummy(participant_id):
-            continue
+    for participant_id, preferences in real_preferences_dict.items():
         pref_aks = {pref["ak_id"] for pref in preferences}
         for ak_id, timeslot_id, room_id in product(
             ak_ids.difference(pref_aks), timeslot_ids, room_ids
@@ -301,9 +303,7 @@ def create_lp(input_dict: Dict[str, object], mu: float):
                 name="PersonNotInterestedInAK",
             )
 
-    for participant_id in participant_ids:
-        if is_participant_dummy(participant_id):
-            continue
+    for participant_id in real_preferences_dict:
         for timeslot_id in timeslot_ids:
             if participant_time_constraint_dict[participant_id].difference(
                 fulfilled_time_constraints[timeslot_id]
