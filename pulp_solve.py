@@ -16,9 +16,7 @@ rooms = {"room_id": "room_dict"}
 aks = {"ak_id": "ak_dict"}
 
 # TODO Add dummy to participants
-weighted_preference_dict = {"participant_id": {
-    "ak_id": 0
-}}
+weighted_preference_dict = {"participant_id": {"ak_id": 0}}
 preferences_dict = {"participant_id": "preferences_set"}
 participant_time_constraint_dict = {"participant_id": "time_constraint_set"}
 participant_room_constraint_dict = {"participant_id": "room_constraint_set"}
@@ -80,12 +78,14 @@ cost_func = LpAffineExpression()
 for participant_id in participant_ids:
     normalizing_factor = len(preferences_dict[participant_id])
     for ak_id in ak_ids:
-        coeff = -weighted_preference_dict[participant_id][ak_id]#
+        coeff = -weighted_preference_dict[participant_id][ak_id]  #
         coeff /= aks[ak_id]["duration"] * normalizing_factor
-        affine_constraint = lpSum([
-            dec_vars[ak_id][timeslot_id][room_id][participant_id]
-            for timeslot_id, room_id in product(timeslot_ids, room_ids)
-        ])
+        affine_constraint = lpSum(
+            [
+                dec_vars[ak_id][timeslot_id][room_id][participant_id]
+                for timeslot_id, room_id in product(timeslot_ids, room_ids)
+            ]
+        )
         cost_func += coeff * affine_constraint
 
 prob += cost_func, "cost_function"
@@ -115,7 +115,9 @@ for ak_id in ak_ids:
             for room_id in room_ids
         ]
     )
-    prob += affine_constraint == aks[ak_id]["duration"], "AKLength"
+    prob += affine_constraint == aks[ak_id]["duration"], _construct_constraint_name(
+        "AKLength", ak_id
+    )
 
 # for all A, P \neq P_A: \frac{1}{S_A} \sum_{Z, R} Y_{A, Z, R, P} <= 1
 for ak_id in ak_ids:
@@ -134,15 +136,27 @@ for ak_id in ak_ids:
                 if pref["required"]:
                     prob += (
                         affine_constraint == aks[ak_id]["duration"],
-                        "PersonNeededForAK",
+                        _construct_constraint_name(
+                            "PersonNeededForAK",
+                            ak_id,
+                            participant_id,
+                        ),
                     )  ## TODO Check for fixed value
                 else:
                     affine_constraint *= 1 / aks[ak_id]["duration"]
-                    prob += affine_constraint <= 1, "NoPartialParticipation"
+                    prob += affine_constraint <= 1, _construct_constraint_name(
+                        "NoPartialParticipation",
+                        ak_id,
+                        participant_id,
+                    )
                 break
         else:
             affine_constraint *= 1 / aks[ak_id]["duration"]
-            prob += affine_constraint <= 1, "NoPartialParticipation"
+            prob += affine_constraint <= 1, _construct_constraint_name(
+                "NoPartialParticipation",
+                ak_id,
+                participant_id,
+            )
 
 
 # for all A, R: \sum_{Z} Y_{A, Z, R, P_A} <= 1
@@ -155,32 +169,31 @@ for ak_id in ak_ids:
             ]
         )
         affine_constraint *= 1 / aks[ak_id]["duration"]
-        prob += affine_constraint <= 1, "FixedAKRooms"
+        prob += affine_constraint <= 1, _construct_constraint_name(
+            "FixedAKRooms", ak_id, room_id
+        )
 
 # Ein AK findet konsekutiv statt:
 for ak_id in ak_ids:
     for room_id in room_ids:
-        for timeslot_id_a in timeslot_ids:
-            for timeslot_id_b in timeslot_ids:
-                block_idx_a, slot_in_block_idx_a = get_block_based_idx(timeslot_id_a)
-                block_idx_b, slot_in_block_idx_b = get_block_based_idx(timeslot_id_b)
+        for timeslot_id_a, timeslot_id_b in combinations(timeslot_ids, 2):
+            block_idx_a, slot_in_block_idx_a = get_block_based_idx(timeslot_id_a)
+            block_idx_b, slot_in_block_idx_b = get_block_based_idx(timeslot_id_b)
 
-                if (
-                    block_idx_a != block_idx_b
-                    or abs(slot_in_block_idx_a - slot_in_block_idx_b)
-                    >= aks[ak_id]["duration"]
-                ):
-                    affine_constraint = lpSum(
-                        [
-                            dec_vars[
-                                ak_id, timeslot_id_a, room_id, get_dummy_id(ak_id)
-                            ],
-                            dec_vars[
-                                ak_id, timeslot_id_b, room_id, get_dummy_id(ak_id)
-                            ],
-                        ]
-                    )
-                    prob += affine_constraint <= 1, "AKConsecutive"
+            if (
+                block_idx_a != block_idx_b
+                or abs(slot_in_block_idx_a - slot_in_block_idx_b)
+                >= aks[ak_id]["duration"]
+            ):
+                affine_constraint = lpSum(
+                    [
+                        dec_vars[ak_id, timeslot_id_a, room_id, get_dummy_id(ak_id)],
+                        dec_vars[ak_id, timeslot_id_b, room_id, get_dummy_id(ak_id)],
+                    ]
+                )
+                prob += affine_constraint <= 1, _construct_constraint_name(
+                    "AKConsecutive", ak_id, room_id, timeslot_id_a, timeslot_id_b
+                )
 
 # for all A, Z, R, P\neq P_A: 0 <= Y_{A, Z, R, P_A} - Y_{A, Z, R, P}
 for ak_id in ak_ids:
