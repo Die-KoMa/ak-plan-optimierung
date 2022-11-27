@@ -1,5 +1,5 @@
 from itertools import combinations, product
-from typing import Dict, Optional, Tuple
+from typing import Dict, Optional, Set, Tuple
 
 from pulp import (
     lpSum,
@@ -10,28 +10,83 @@ from pulp import (
     LpProblem,
 )
 
+
+def process_pref_score(preference_score: int, required: bool, mu: float):
+    if preference_score in [0, 1]:
+        return preference_score
+    elif preference_score == 2:
+        return mu
+    else:
+        raise NotImplementedError
+
+
+def create_lp(input_dict: Dict[str, object], mu: float):
+    id_map = lambda x: x["id"]
+
+    room_capacities = {room["id"]: room["capacity"] for room in input_dict["rooms"]}
+    ak_durations = {ak["id"]: ak["duration"] for ak in input_dict["aks"]}
+    preferences_dict = {
+        participant["id"]: participant["preferences"]
+        for participant in input_dict["participants"]
+    }
+
+    weighted_preference_dict = {
+        participant["id"]: {
+            pref["ak_id"]: process_pref_score(
+                pref["preference_score"],
+                pref["required"],
+                mu=mu,
+            )
+            for pref in participant["preferences"]
+        }
+        for participant in input_dict["participants"]
+    }
+
+    participant_time_constraint_dict = {
+        participant["id"]: set(participant["time_constraints"])
+        for participant in input_dict["participants"]
+    }
+
+    participant_room_constraint_dict = {
+        participant["id"]: set(participant["room_constraints"])
+        for participant in input_dict["participants"]
+    }
+
+    ak_time_constraint_dict = {
+        ak["id"]: set(ak["time_constraints"]) for ak in input_dict["aks"]
+    }
+    ak_room_constraint_dict = {
+        ak["id"]: set(ak["room_constraints"]) for ak in input_dict["aks"]
+    }
+
+    room_time_constraint_dict = {
+        room["id"]: set(room["time_constraints"]) for room in input_dict["rooms"]
+    }
+
+    fulfilled_time_constraints = {
+        timeslot["id"]: set(timeslot["fulfilled_time_constraints"])
+        for block in input_dict["timeslots"]
+        for timeslot in block
+    }
+    fulfilled_room_constraints = {
+        room["id"]: set(room["fulfilled_room_constraints"])
+        for room in input_dict["rooms"]
+    }
+
+    def _retrieve_val_set(object_key: str, val_key: str) -> Set:
+        return {obj[val_key] for obj in input_dict[object_key]}
+
+    ak_ids = _retrieve_val_set("aks", "id")
+    room_ids = _retrieve_val_set("rooms", "id")
+    participant_ids = _retrieve_val_set("participants", "id")
+    timeslot_id = {
+        timeslot["id"] for block in input_dict["timeslots"] for timeslot in block
+    }
+
+    # TODO Add dummy to participants
+
+
 prob = LpProblem("MLP KoMa")
-
-rooms = {"room_id": "room_dict"}
-aks = {"ak_id": "ak_dict"}
-
-# TODO Add dummy to participants
-weighted_preference_dict = {"participant_id": {"ak_id": 0}}
-preferences_dict = {"participant_id": "preferences_set"}
-participant_time_constraint_dict = {"participant_id": "time_constraint_set"}
-participant_room_constraint_dict = {"participant_id": "room_constraint_set"}
-ak_time_constraint_dict = {"ak_id": "time_constraint_set"}
-ak_room_constraint_dict = {"ak_id": "room_constraint_set"}
-room_time_constraint_dict = {"room_id": "time_constraint_set"}
-
-
-fulfilled_time_constraints = {"timeslot_id": "fulfilled_time_constraint_set"}
-fulfilled_room_constraints = {"room_id": "fulfilled_room_constraint_set"}
-
-ak_ids = {}
-timeslot_ids = {}
-room_ids = {}
-participant_ids = {}
 
 dec_vars = LpVariable.dicts(
     "DecVar", (ak_ids, timeslot_ids, room_ids, participant_ids), cat=LpBinary
