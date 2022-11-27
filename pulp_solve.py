@@ -124,7 +124,7 @@ def create_lp(input_dict: Dict[str, object], mu: float):
         for timeslot_idx, timeslot in enumerate(block)
     }
 
-    prob = LpProblem("MLP KoMa")
+    prob = LpProblem("MLPKoMa")
 
     dec_vars = LpVariable.dicts(
         "DecVar", (ak_ids, timeslot_ids, room_ids, participant_ids), cat=LpBinary
@@ -134,7 +134,7 @@ def create_lp(input_dict: Dict[str, object], mu: float):
     for participant_id, preferences in real_preferences_dict.items():
         normalizing_factor = len(preferences)
         for ak_id in ak_ids:
-            coeff = -weighted_preference_dict[participant_id][ak_id]
+            coeff = -weighted_preference_dict[participant_id].get(ak_id, 0)
             coeff /= ak_durations[ak_id] * normalizing_factor
             affine_constraint = lpSum(
                 [
