@@ -16,16 +16,16 @@ def process_pref_score(preference_score: int, required: bool, mu: float):
         raise NotImplementedError
 
 
-def get_dummy_participant_id(ak_id: str) -> str:
-    raise NotImplementedError
+def get_dummy_participant_id(
+    ak_id: str, dummy_prefix: str = "DUMMY_PARTICIPANT"
+) -> str:
+    return f"{dummy_prefix}_{ak_id}"
 
 
-def is_participant_dummy(participant_id: str) -> bool:
-    raise NotImplementedError
-
-
-def get_block_based_idx(timeslot_id: str) -> Tuple(int, int):
-    pass
+def is_participant_dummy(
+    participant_id: str, dummy_prefix: str = "DUMMY_PARTICIPANT"
+) -> bool:
+    return participant_id.startswith(dummy_prefix)
 
 
 def _construct_constraint_name(name: str, *args) -> str:
