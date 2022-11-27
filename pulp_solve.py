@@ -35,7 +35,6 @@ def _construct_constraint_name(name: str, *args) -> str:
 
 
 def _set_decision_variable(
-    prob: LpProblem,
     dec_vars: Dict[str, Dict[str, Dict[str, Dict[str, LpVariable]]]],
     ak_id: str,
     timeslot_id: str,
@@ -48,10 +47,8 @@ def _set_decision_variable(
         name = _construct_constraint_name(
             name, ak_id, timeslot_id, room_id, participant_id
         )
-    affine_constraint = LpAffineExpression(
-        dec_vars[ak_id][timeslot_id][room_id][participant_id]
-    )
-    prob += affine_constraint == value, name
+    dec_vars[ak_id][timeslot_id][room_id][participant_id].setInitialValue(value)
+    dec_vars[ak_id][timeslot_id][room_id][participant_id].fixValue()
 
 
 def create_lp(input_dict: Dict[str, object], mu: float):
@@ -276,7 +273,6 @@ def create_lp(input_dict: Dict[str, object], mu: float):
         if ak_id == dummy_ak_id:
             continue
         _set_decision_variable(
-            prob,
             dec_vars,
             ak_id,
             timeslot_id,
@@ -293,7 +289,6 @@ def create_lp(input_dict: Dict[str, object], mu: float):
             ak_ids.difference(pref_aks), timeslot_ids, room_ids
         ):
             _set_decision_variable(
-                prob,
                 dec_vars,
                 ak_id,
                 timeslot_id,
@@ -310,7 +305,6 @@ def create_lp(input_dict: Dict[str, object], mu: float):
             ):
                 for ak_id, room_id in product(ak_ids, room_ids):
                     _set_decision_variable(
-                        prob,
                         dec_vars,
                         ak_id,
                         timeslot_id,
@@ -326,7 +320,6 @@ def create_lp(input_dict: Dict[str, object], mu: float):
             ):
                 for ak_id, timeslot_id in product(ak_ids, timeslot_ids):
                     _set_decision_variable(
-                        prob,
                         dec_vars,
                         ak_id,
                         timeslot_id,
@@ -343,7 +336,6 @@ def create_lp(input_dict: Dict[str, object], mu: float):
             ):
                 for participant_id, room_id in product(participant_ids, room_ids):
                     _set_decision_variable(
-                        prob,
                         dec_vars,
                         ak_id,
                         timeslot_id,
@@ -359,7 +351,6 @@ def create_lp(input_dict: Dict[str, object], mu: float):
             ):
                 for participant_id, timeslot_id in participant_ids, timeslot_ids:
                     _set_decision_variable(
-                        prob,
                         dec_vars,
                         ak_id,
                         timeslot_id,
@@ -375,7 +366,6 @@ def create_lp(input_dict: Dict[str, object], mu: float):
         ):
             for participant_id, ak_id in product(participant_ids, ak_ids):
                 _set_decision_variable(
-                    prob,
                     dec_vars,
                     ak_id,
                     timeslot_id,
@@ -436,7 +426,7 @@ def create_lp(input_dict: Dict[str, object], mu: float):
                     kwargs_dict[constraint_supplier_type] = supplier_id
                     kwargs_dict[constraint_requester_type] = requester_id
 
-                    _set_decision_variable(prob, value=0, name=name, **kwargs_dict)
+                    _set_decision_variable(value=0, name=name, **kwargs_dict)
 
     return prob
 
@@ -454,8 +444,6 @@ def main():
         input_dict = json.load(fp)
 
     prob = create_lp(input_dict, args.mu)
-
-    ## TODO: Set intitial value for eq constraints
 
     # The problem data is written to an .lp file
     prob.writeLP("koma-plan.lp")
