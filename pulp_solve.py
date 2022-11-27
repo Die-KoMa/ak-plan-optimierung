@@ -433,6 +433,22 @@ def create_lp(input_dict: Dict[str, object], mu: float):
 
                     _set_decision_variable(prob, value=0, name=name, **kwargs_dict)
 
+    return prob
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--mu", type=float, default=2)
+    parser.add_argument("path", type=str, required=True)
+    args = parser.parse_args()
+
+    json_file = Path(args.path)
+    assert json_file.suffix == ".json"
+    # Load input json file
+    with json_file.open("r") as fp:
+        input_dict = json.load(fp)
+
+    prob = create_lp(input_dict, args.mu)
 
     ## TODO: Set intitial value for eq constraints
 
