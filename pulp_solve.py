@@ -113,9 +113,9 @@ def create_lp(input_dict: Dict[str, object], mu: float):
     }
 
     participant_ids = _retrieve_val_set("participants", "id")
-    participant_ids = participant_ids.union({
-        get_dummy_participant_id(ak_id) for ak_id in ak_ids
-    })
+    participant_ids = participant_ids.union(
+        {get_dummy_participant_id(ak_id) for ak_id in ak_ids}
+    )
 
     timeslot_block_ids = {
         timeslot["id"]: (block_idx, timeslot_idx)
@@ -172,7 +172,7 @@ def create_lp(input_dict: Dict[str, object], mu: float):
 
     # for all A, P \neq P_A: \frac{1}{S_A} \sum_{Z, R} Y_{A, Z, R, P} <= 1
     for ak_id in ak_ids:
-        for participant_id, preferences in  real_preferences_dict.items():
+        for participant_id, preferences in real_preferences_dict.items():
             affine_constraint = lpSum(
                 [
                     dec_vars[ak_id][timeslot_id][room_id][participant_id]
