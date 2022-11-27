@@ -18,6 +18,9 @@ from pulp import (
 )
 
 
+_DUMMY_PARTICIPANT_PREFIX = "DUMMY_PARTICIPANT"
+
+
 def process_pref_score(preference_score: int, required: bool, mu: float) -> float:
     if required or preference_score == -1:
         return 0
@@ -29,17 +32,18 @@ def process_pref_score(preference_score: int, required: bool, mu: float) -> floa
         raise NotImplementedError(preference_score)
 
 
-## TODO eventuell "DUMMY_PARTICIPANT" als Konstante oben definieren
 ## TODO könnte auch mit DUMMY_PARTICIPANT_{uuid.uuid4()}_{ak_id} für sichere eindeutigkeit gemacht werden
-def get_dummy_participant_id(
-    ak_id: str, dummy_prefix: str = "DUMMY_PARTICIPANT"
-) -> str:
+def get_dummy_participant_id(ak_id: str, dummy_prefix: Optional[str] = None) -> str:
+    if not dummy_prefix:
+        dummy_prefix = _DUMMY_PARTICIPANT_PREFIX
     return f"{dummy_prefix}_{ak_id}"
 
 
 def is_participant_dummy(
-    participant_id: str, dummy_prefix: str = "DUMMY_PARTICIPANT"
+    participant_id: str, dummy_prefix: Optional[str] = None
 ) -> bool:
+    if not dummy_prefix:
+        dummy_prefix = _DUMMY_PARTICIPANT_PREFIX
     return participant_id.startswith(dummy_prefix)
 
 
