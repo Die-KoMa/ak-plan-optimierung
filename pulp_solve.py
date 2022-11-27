@@ -225,25 +225,14 @@ def create_lp(input_dict: Dict[str, object], mu: float):
         for timeslot_id_a, timeslot_id_b in combinations(timeslot_ids, 2):
             block_idx_a, slot_in_block_idx_a = timeslot_block_ids[timeslot_id_a]
             block_idx_b, slot_in_block_idx_b = timeslot_block_ids[timeslot_id_b]
-
             if (
                 block_idx_a != block_idx_b
                 or abs(slot_in_block_idx_a - slot_in_block_idx_b) >= ak_durations[ak_id]
             ):
                 affine_constraint = lpSum(
                     [
-                        dec_vars[
-                            ak_id,
-                            timeslot_id_a,
-                            room_id,
-                            get_dummy_participant_id(ak_id),
-                        ],
-                        dec_vars[
-                            ak_id,
-                            timeslot_id_b,
-                            room_id,
-                            get_dummy_participant_id(ak_id),
-                        ],
+                        dec_vars[ak_id][timeslot_id_a][room_id][get_dummy_participant_id(ak_id)],
+                        dec_vars[ak_id][timeslot_id_b][room_id][get_dummy_participant_id(ak_id)],
                     ]
                 )
                 prob += affine_constraint <= 1, _construct_constraint_name(
@@ -288,6 +277,7 @@ def create_lp(input_dict: Dict[str, object], mu: float):
             continue
         _set_decision_variable(
             prob,
+            dec_vars,
             ak_id,
             timeslot_id,
             room_id,
@@ -304,6 +294,7 @@ def create_lp(input_dict: Dict[str, object], mu: float):
         ):
             _set_decision_variable(
                 prob,
+                dec_vars,
                 ak_id,
                 timeslot_id,
                 room_id,
@@ -320,6 +311,7 @@ def create_lp(input_dict: Dict[str, object], mu: float):
                 for ak_id, room_id in product(ak_ids, room_ids):
                     _set_decision_variable(
                         prob,
+                        dec_vars,
                         ak_id,
                         timeslot_id,
                         room_id,
@@ -335,6 +327,7 @@ def create_lp(input_dict: Dict[str, object], mu: float):
                 for ak_id, timeslot_id in product(ak_ids, timeslot_ids):
                     _set_decision_variable(
                         prob,
+                        dec_vars,
                         ak_id,
                         timeslot_id,
                         room_id,
@@ -351,6 +344,7 @@ def create_lp(input_dict: Dict[str, object], mu: float):
                 for participant_id, room_id in product(participant_ids, room_ids):
                     _set_decision_variable(
                         prob,
+                        dec_vars,
                         ak_id,
                         timeslot_id,
                         room_id,
@@ -366,6 +360,7 @@ def create_lp(input_dict: Dict[str, object], mu: float):
                 for participant_id, timeslot_id in participant_ids, timeslot_ids:
                     _set_decision_variable(
                         prob,
+                        dec_vars,
                         ak_id,
                         timeslot_id,
                         room_id,
@@ -381,6 +376,7 @@ def create_lp(input_dict: Dict[str, object], mu: float):
             for participant_id, ak_id in product(participant_ids, ak_ids):
                 _set_decision_variable(
                     prob,
+                    dec_vars,
                     ak_id,
                     timeslot_id,
                     room_id,
