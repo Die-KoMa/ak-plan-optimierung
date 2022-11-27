@@ -1,14 +1,10 @@
+import argparse
+import json
 from itertools import combinations, product
+from pathlib import Path
 from typing import Dict, Optional, Set, Tuple
 
-from pulp import (
-    lpSum,
-    LpAffineExpression,
-    LpBinary,
-    LpStatus,
-    LpVariable,
-    LpProblem,
-)
+from pulp import LpAffineExpression, LpBinary, LpProblem, LpStatus, LpVariable, lpSum
 
 
 def process_pref_score(preference_score: int, required: bool, mu: float):
@@ -119,13 +115,11 @@ def create_lp(input_dict: Dict[str, object], mu: float):
 
     # TODO Add dummy to participants
 
-
     prob = LpProblem("MLP KoMa")
 
     dec_vars = LpVariable.dicts(
         "DecVar", (ak_ids, timeslot_ids, room_ids, participant_ids), cat=LpBinary
     )
-
 
     cost_func = LpAffineExpression()
     for participant_id in participant_ids:
@@ -207,7 +201,6 @@ def create_lp(input_dict: Dict[str, object], mu: float):
                 participant_id,
             )
 
-
     # for all A, R: \sum_{Z} Y_{A, Z, R, P_A} <= 1
     for ak_id, room_id in product(ak_ids, room_ids):
         affine_constraint = lpSum(
@@ -233,8 +226,18 @@ def create_lp(input_dict: Dict[str, object], mu: float):
             ):
                 affine_constraint = lpSum(
                     [
-                        dec_vars[ak_id, timeslot_id_a, room_id, get_dummy_participant_id(ak_id)],
-                        dec_vars[ak_id, timeslot_id_b, room_id, get_dummy_participant_id(ak_id)],
+                        dec_vars[
+                            ak_id,
+                            timeslot_id_a,
+                            room_id,
+                            get_dummy_participant_id(ak_id),
+                        ],
+                        dec_vars[
+                            ak_id,
+                            timeslot_id_b,
+                            room_id,
+                            get_dummy_participant_id(ak_id),
+                        ],
                     ]
                 )
                 prob += affine_constraint <= 1, _construct_constraint_name(
@@ -362,7 +365,6 @@ def create_lp(input_dict: Dict[str, object], mu: float):
                         name="RoomImpossibleForPerson",
                     )
 
-
     for room_id, timeslot_id in product(room_ids, timeslot_ids):
         if room_time_constraint_dict[room_id].difference(
             fulfilled_time_constraints[timeslot_id]
@@ -377,7 +379,6 @@ def create_lp(input_dict: Dict[str, object], mu: float):
                     value=0,
                     name="TimeImpossibleForRoom",
                 )
-
 
     def _add_impossible_constraints(
         prob: LpProblem,
