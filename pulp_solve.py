@@ -7,7 +7,7 @@ from typing import Dict, Optional, Set, Tuple
 from pulp import LpAffineExpression, LpBinary, LpProblem, LpStatus, LpVariable, lpSum
 
 
-def process_pref_score(preference_score: int, required: bool, mu: float):
+def process_pref_score(preference_score: int, required: bool, mu: float) -> float:
     if preference_score in [0, 1]:
         return preference_score
     elif preference_score == 2:
@@ -259,7 +259,10 @@ def create_lp(input_dict: Dict[str, object], mu: float):
         affine_constraint -= LpAffineExpression(
             dec_vars[ak_id][timeslot_id][room_id][participant_id]
         )
-        prob += affine_constraint >= 0, "PersonVisitingAKAtRightTimeAndRoom"
+        prob += affine_constraint >= 0, _construct_constraint_name(
+            "PersonVisitingAKAtRightTimeAndRoom",
+            ak_id, timeslot_id, room_id, participant_id
+        )
 
     # for all R, Z: \sum_{A, P\neq P_A} Y_{A, Z, R, P} <= K_R
     for room_id, timeslot_id in product(room_ids, timeslot_ids):
@@ -269,7 +272,10 @@ def create_lp(input_dict: Dict[str, object], mu: float):
                 for ak_id, participant_id in product(ak_ids, real_preferences_dict)
             ]
         )
-        prob += affine_constraint <= room_capacities[room_id], "Roomsizes"
+        prob += affine_constraint <= room_capacities[room_id], _construct_constraint_name(
+            "Roomsizes",
+            room_id, timeslot_id
+        )
 
     # for all Z, R, A'\neq A: Y_{A', Z, R, P_A} = 0
     for timeslot_id, room_id, ak_id, dummy_ak_id in product(
