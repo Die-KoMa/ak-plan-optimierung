@@ -1,3 +1,4 @@
+from itertools import combinations, product
 from typing import Dict, Optional, Tuple
 
 from pulp import (
@@ -15,6 +16,9 @@ rooms = {"room_id": "room_dict"}
 aks = {"ak_id": "ak_dict"}
 
 # TODO Add dummy to participants
+weighted_preference_dict = {"participant_id": {
+    "ak_id": 0
+}}
 preferences_dict = {"participant_id": "preferences_set"}
 participant_time_constraint_dict = {"participant_id": "time_constraint_set"}
 participant_room_constraint_dict = {"participant_id": "room_constraint_set"}
@@ -71,6 +75,20 @@ def _set_decision_variable(
     )
     prob += affine_constraint == value, name
 
+
+cost_func = LpAffineExpression()
+for participant_id in participant_ids:
+    normalizing_factor = len(preferences_dict[participant_id])
+    for ak_id in ak_ids:
+        coeff = -weighted_preference_dict[participant_id][ak_id]#
+        coeff /= aks[ak_id]["duration"] * normalizing_factor
+        affine_constraint = lpSum([
+            dec_vars[ak_id][timeslot_id][room_id][participant_id]
+            for timeslot_id, room_id in product(timeslot_ids, room_ids)
+        ])
+        cost_func += coeff * affine_constraint
+
+prob += cost_func, "cost_function"
 
 # for all Z, P \neq P_A: \sum_{A, R} Y_{A, Z, R, P} <= 1
 for timeslot_id in timeslot_ids:
