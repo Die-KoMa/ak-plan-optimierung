@@ -37,7 +37,6 @@ def get_dummy_participant_id(
     return f"{dummy_prefix}_{ak_id}"
 
 
-
 def is_participant_dummy(
     participant_id: str, dummy_prefix: str = "DUMMY_PARTICIPANT"
 ) -> bool:
@@ -68,16 +67,16 @@ def _set_decision_variable(
 
 def create_lp(input_dict: Dict[str, object], mu: float, solver_name: str):
     """Create the milp problem as pulp object and solve it.
-    
+
     Creates the problem with all constraints, preferences and the objective function.
     Runs the solver on the created instance and stores the output as a json file.
-    
+
     TODO: Extend docstring.
     """
     # Get values needed from the input_dict
     room_capacities = {room["id"]: room["capacity"] for room in input_dict["rooms"]}
     ak_durations = {ak["id"]: ak["duration"] for ak in input_dict["aks"]}
-    
+
     # dict of real participants only (without dummy participants) with their preferences dicts
     real_preferences_dict = {
         participant["id"]: participant["preferences"]
@@ -141,8 +140,10 @@ def create_lp(input_dict: Dict[str, object], mu: float, solver_name: str):
     }
 
     participant_ids = _retrieve_val_set("participants", "id")
-    participant_ids = participant_ids.union( # contains all participants ids (incl. dummy ids)
-        {get_dummy_participant_id(ak_id) for ak_id in ak_ids}
+    participant_ids = (
+        participant_ids.union(  # contains all participants ids (incl. dummy ids)
+            {get_dummy_participant_id(ak_id) for ak_id in ak_ids}
+        )
     )
 
     timeslot_block_ids = {
@@ -222,7 +223,9 @@ def create_lp(input_dict: Dict[str, object], mu: float, solver_name: str):
             )
             for pref in preferences:
                 if pref["ak_id"] == ak_id:
-                    if pref["required"]:  # participant is essential for ak -> set constraint for "PersonNeededForAK"
+                    if pref[
+                        "required"
+                    ]:  # participant is essential for ak -> set constraint for "PersonNeededForAK"
                         prob += (
                             affine_constraint == ak_durations[ak_id],
                             _construct_constraint_name(
@@ -283,15 +286,18 @@ def create_lp(input_dict: Dict[str, object], mu: float, solver_name: str):
                         ],
                     ]
                 )
-                prob += affine_constraint <= 1, _construct_constraint_name(  # forbid the ak to happen in both of them
-                    "AKConsecutive", ak_id, room_id, timeslot_id_a, timeslot_id_b
+                prob += (
+                    affine_constraint <= 1,
+                    _construct_constraint_name(  # forbid the ak to happen in both of them
+                        "AKConsecutive", ak_id, room_id, timeslot_id_a, timeslot_id_b
+                    ),
                 )
 
     # PersonVisitingAKAtRightTimeAndRoom
     # for all A, Z, R, P\neq P_A: 0 <= Y_{A, Z, R, P_A} - Y_{A, Z, R, P}
     for ak_id, timeslot_id, room_id, participant_id in product(
         ak_ids, timeslot_ids, room_ids, participant_ids
-    ):   ## TODO dies geht auch durch die dummy participants durch. Ist das notwendig?
+    ):  ## TODO dies geht auch durch die dummy participants durch. Ist das notwendig?
         affine_constraint = LpAffineExpression(
             dec_vars[ak_id][timeslot_id][room_id][get_dummy_participant_id(ak_id)]
         )
@@ -339,7 +345,9 @@ def create_lp(input_dict: Dict[str, object], mu: float, solver_name: str):
     # PersonNotInterestedInAK
     # For all A, Z, R, P: If P_{P, A} = 0: Y_{A,Z,R,P} = 0 (non-dummy P)
     for participant_id, preferences in real_preferences_dict.items():
-        pref_aks = {pref["ak_id"] for pref in preferences}  # aks not in pref_aks have P_{P,A} = 0 implicitly
+        pref_aks = {
+            pref["ak_id"] for pref in preferences
+        }  # aks not in pref_aks have P_{P,A} = 0 implicitly
         for ak_id, timeslot_id, room_id in product(
             ak_ids.difference(pref_aks), timeslot_ids, room_ids
         ):
