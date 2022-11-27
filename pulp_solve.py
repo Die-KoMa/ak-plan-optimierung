@@ -453,7 +453,7 @@ def main():
     ## TODO: Set intitial value for eq constraints
 
     # The problem data is written to an .lp file
-    prob.writeLP("Sudoku.lp")
+    prob.writeLP("koma-plan.lp")
 
     # The problem is solved using PuLP's choice of Solver
     prob.solve()
