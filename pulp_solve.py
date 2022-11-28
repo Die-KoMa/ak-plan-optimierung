@@ -69,7 +69,9 @@ def _set_decision_variable(
     dec_vars[ak_id][timeslot_id][room_id][participant_id].fixValue()
 
 
-def create_lp(input_dict: Dict[str, object], mu: float, solver_name: str):
+def create_lp(
+    input_dict: Dict[str, object], mu: float, args: argparse.Namespace
+) -> None:
     """Create the milp problem as pulp object and solve it.
 
     Creates the problem with all constraints, preferences and the objective function.
@@ -425,7 +427,9 @@ def create_lp(input_dict: Dict[str, object], mu: float, solver_name: str):
             if ak_room_constraint_dict[ak_id].difference(
                 fulfilled_room_constraints[room_id]
             ):
-                for participant_id, timeslot_id in product(participant_ids, timeslot_ids):
+                for participant_id, timeslot_id in product(
+                    participant_ids, timeslot_ids
+                ):
                     _set_decision_variable(
                         dec_vars,
                         ak_id,
@@ -510,14 +514,16 @@ def create_lp(input_dict: Dict[str, object], mu: float, solver_name: str):
     # The problem data is written to an .lp file
     prob.writeLP("koma-plan.lp")
 
-    if solver_name == "HiGHS_CMD":
-        kwargs_dict = {
-            "path": "/home/fblanke/Private/git/HiGHS/build/bin/highs",
-            # "threads": 10,
-        }
+    kwargs_dict = {}
+    if args.solver_path:
+        kwargs_dict["path"] = args.solver_path
+    if args.warm_start:
+        kwargs_dict["warmStart"] = True
+
+    if args.solver:
+        solver = getSolver(args.solver, **kwargs_dict)
     else:
-        kwargs_dict = {"warmStart": True}
-    solver = getSolver(solver_name, **kwargs_dict)
+        solver = None
     # The problem is solved using PuLP's choice of Solver
     res = prob.solve(solver)
 
@@ -553,6 +559,8 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--mu", type=float, default=2)
     parser.add_argument("--solver", type=str, default=None)
+    parser.add_argument("--solver-path", type=str)
+    parser.add_argument("--warm-start", action="store_true", default=False)
     parser.add_argument("path", type=str)
     args = parser.parse_args()
 
@@ -562,7 +570,7 @@ def main():
     with json_file.open("r") as fp:
         input_dict = json.load(fp)
 
-    create_lp(input_dict, args.mu, args.solver)
+    create_lp(input_dict, args.mu, args)
 
 
 if __name__ == "__main__":
