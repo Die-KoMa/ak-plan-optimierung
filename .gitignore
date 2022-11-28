@@ -4,3 +4,6 @@ __pycache__/
 *bbl
 *.blg
 koroma
+
+*.lp
+*.json
