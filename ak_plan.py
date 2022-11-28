@@ -145,18 +145,40 @@ def solve(room_dict, slot_dict, ak_dict, person_dict):
 
     # Set objective
 #    model.setObjective( sum_rel_overlap + 1*len(person_dict)*max_rel_overlap , GRB.MINIMIZE )
-    model.setObjective( sum_rel_overlap + 1/2*len(person_dict)*max_rel_overlap , GRB.MINIMIZE )
+#    model.setObjective( sum_rel_overlap + 1/2*len(person_dict)*max_rel_overlap , GRB.MINIMIZE )
+#    model.setObjective( sum_rel_overlap  , GRB.MINIMIZE )
+    model.setObjective( sum_rel_overlap + 1/510*len(person_dict)*max_rel_overlap , GRB.MINIMIZE )
+
+    # set optimization params
+    model.Params.TimeLimit = 1200  # 20 minutes # alternatively: model.setParam('Timelimit', 1200)
 
     # Compute optimal solution
     model.optimize()
 
     #print solution
-    if model.status == GRB.OPTIMAL:
-        solution=model.getAttr('x',x)
-        for s,r in available:
-            for a in ak_dict:
-                if solution[s,r,a]> 0.5:
-                    print(f"{s}, {r}, {a} : {solution[s,r,a]}")
+    statusdict = {GRB.LOADED         : 'LOADED',
+                 GRB.OPTIMAL         : 'OPTIMAL',
+                 GRB.INFEASIBLE      : 'INFEASIBLE',
+                 GRB.INF_OR_UNBD       : 'INF_OR_UNBD',
+                 GRB.UNBOUNDED       : 'UNBOUNDED',
+                 GRB.CUTOFF          : 'CUTOFF',
+                 GRB.NODE_LIMIT      : 'NODE_LIMIT',
+                 GRB.NODE_LIMIT      : 'NODE_LIMIT',
+                 GRB.TIME_LIMIT      : 'TIME_LIMIT',
+                 GRB.SOLUTION_LIMIT  : 'SOLUTION_LIMIT',
+                 GRB.INTERRUPTED     : 'INTERRUPTED',
+                 GRB.NUMERIC         : 'NUMERIC',
+                 GRB.SUBOPTIMAL      : 'SUBOPTIMAL',
+                 GRB.INTERRUPTED     : 'INTERRUPTED',
+                 GRB.INPROGRESS      : 'INPROGRESS',
+                 GRB.USER_OBJ_LIMIT  : 'USER_OBJ_LIMIT'}
+    #if model.status == GRB.OPTIMAL or model.status >= 9:
+    print(f"Model Satus: ",statusdict[model.status])
+    solution=model.getAttr('x',x)
+    for s,r in available:
+        for a in ak_dict:
+            if solution[s,r,a]> 0.5:
+                print(f"{s}, {r}, {a} : {solution[s,r,a]}")
 
     print("max_rel_overlap<= ", max_rel_overlap.x)
     print("sum_rel_overlap: ", sum_rel_overlap.x)
@@ -164,7 +186,7 @@ def solve(room_dict, slot_dict, ak_dict, person_dict):
     for p in person_dict:
         for s in slot_dict:
             if overlap[s,p].x >0.5:
-                print(f"Uberschneidungen von {p} in {s}: ",overlap[s,p].x)
+                print(f"Ueberschneidungen von {p} in {s}: ",overlap[s,p].x)
 
 
     return solution
@@ -200,7 +222,10 @@ def _main():
 
     solution=solve(room_dict, slot_dict, ak_dict, person_dict)
 
-    csv_output_file_name=input("CSV Output Datei:")
+    if len(sys.argv)>=4:
+        csv_output_file_name=sys.argv[3]
+    else:
+       csv_output_file_name=input("CSV Output Datei:")
 
     write_solution_file(csv_output_file_name,solution,list(room_dict.keys()), list(slot_dict.keys()), list(ak_dict.keys()))
 
