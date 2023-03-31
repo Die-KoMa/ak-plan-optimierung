@@ -72,12 +72,27 @@ def _set_decision_variable(
 def create_lp(
     input_dict: Dict[str, object], mu: float, args: argparse.Namespace
 ) -> None:
-    """Create the milp problem as pulp object and solve it.
+    """Create the MILP problem as pulp object and solve it.
 
     Creates the problem with all constraints, preferences and the objective function.
     Runs the solver on the created instance and stores the output as a json file.
 
-    TODO: Extend docstring.
+    For a specification of the input JSON format, see
+    https://github.com/Die-KoMa/ak-plan-optimierung/wiki/Input-&-output-format
+
+    For a specification of the MILP, see
+    https://github.com/Die-KoMa/ak-plan-optimierung/wiki/LP-formulation
+
+    The MILP models each person to have three kinds of prefences for an AK:
+    0 (no preference), 1 (weak preference) and `mu` (strong preference).
+    The choice of `mu` is an hyperparameter of the MILP that weights the
+    balance between weak and strong preferences.
+
+    Args:
+        input_dict (dict): The input dictionary as read from the input JSON file.
+        mu (float): The weight associated with a strong preference for an AK.
+        args (argparse.Namespace): CLI arguments, used to pass options for the
+            MILP solver.
     """
     # Get values needed from the input_dict
     room_capacities = {room["id"]: room["capacity"] for room in input_dict["rooms"]}
