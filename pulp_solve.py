@@ -8,7 +8,8 @@ from typing import Dict, Optional, Set
 from pulp import (
     LpAffineExpression,
     LpBinary,
-    LpMinimize,
+    LpInteger,
+    LpMaximize,
     LpProblem,
     LpStatus,
     LpVariable,
@@ -18,10 +19,9 @@ from pulp import (
 )
 
 
-_DUMMY_PARTICIPANT_PREFIX = "DUMMY_PARTICIPANT"
-
-
-def process_pref_score(preference_score: int, required: bool, mu: float) -> float:
+def process_pref_score(
+    preference_score: int, required: bool, mu: float
+) -> float:
     if required or preference_score == -1:
         return 0
     elif preference_score in [0, 1]:
@@ -32,96 +32,8 @@ def process_pref_score(preference_score: int, required: bool, mu: float) -> floa
         raise NotImplementedError(preference_score)
 
 
-## TODO könnte auch mit DUMMY_PARTICIPANT_{uuid.uuid4()}_{ak_id} für sichere eindeutigkeit gemacht werden
-def get_dummy_participant_id(ak_id: str, dummy_prefix: Optional[str] = None) -> str:
-    if not dummy_prefix:
-        dummy_prefix = _DUMMY_PARTICIPANT_PREFIX
-    return f"{dummy_prefix}_{ak_id}"
-
-
-def is_participant_dummy(
-    participant_id: str, dummy_prefix: Optional[str] = None
-) -> bool:
-    if not dummy_prefix:
-        dummy_prefix = _DUMMY_PARTICIPANT_PREFIX
-    return participant_id.startswith(dummy_prefix)
-
-
 def _construct_constraint_name(name: str, *args) -> str:
     return name + "_" + "_".join(args)
-
-
-def _set_decision_variable(
-    dec_vars: Dict[str, Dict[str, Dict[str, Dict[str, LpVariable]]]],
-    ak_id: str,
-    timeslot_id: str,
-    room_id: str,
-    participant_id: str,
-    value: float,
-    name: Optional[str] = None,
-) -> None:
-    """Force a decision variable to be a fixed value."""
-    if name is not None:
-        name = _construct_constraint_name(
-            name, ak_id, timeslot_id, room_id, participant_id
-        )
-    dec_vars[ak_id][timeslot_id][room_id][participant_id].setInitialValue(value)
-    dec_vars[ak_id][timeslot_id][room_id][participant_id].fixValue()
-
-
-## TODO was passiert hier, i have no idea. Wäre cool wenn du das kommentieren könntest @Felix
-def _add_impossible_constraints(
-    prob: LpProblem,
-    constraint_supplier_type: str,
-    constraint_requester_type: str,
-    name: str,
-):
-    idx_sets = [ak_ids, timeslot_ids, room_ids, participant_ids]
-    requested_constraint_dict = {
-        "timeslot_id": {
-            "ak_id": ak_time_constraint_dict,
-            "participant_id": participant_time_constraint_dict,
-            "room_id": room_time_constraint_dict,
-        },
-        "room_id": {
-            "ak_id": ak_room_constraint_dict,
-            "participant_id": participant_room_constraint_dict,
-        },
-    }
-    supplied_constraint_dict = {
-        "timeslot_id": fulfilled_time_constraints,
-        "room_id": fulfilled_room_constraints,
-    }
-
-    id_dict = {
-        "timeslot_id": timeslot_ids,
-        "ak_id": ak_ids,
-        "room_id": room_ids,
-        "participant_id": participant_ids,
-    }
-
-    requester_ids = id_dict[constraint_requester_type]
-    supplier_ids = id_dict[constraint_supplier_type]
-    other_ids = {
-        label: id_dict[label]
-        for label in id_dict
-        if label not in [constraint_requester_type, constraint_supplier_type]
-    }
-
-    for requester_id, supplier_id in product(requester_ids, supplier_ids):
-        supplied_constraints = supplied_constraint_dict[supplier_id]
-        requested_constraints = requested_constraint_dict[constraint_supplier_type][
-            constraint_requester_type
-        ][requester_id]
-        if requested_constraints.difference(supplied_constraints):
-            for lbl_ids in product(other_ids.values()):
-                kwargs_dict = {
-                    key: lbl_ids[key_idx] for key_idx, key in enumerate(other_ids)
-                }
-                kwargs_dict[constraint_supplier_type] = supplier_id
-                kwargs_dict[constraint_requester_type] = requester_id
-
-                _set_decision_variable(value=0, name=name, **kwargs_dict)
 
 
 def create_lp(
@@ -149,27 +61,49 @@ def create_lp(
         args (argparse.Namespace): CLI arguments, used to pass options for the
             MILP solver.
     """
-    # Get values needed from the input_dict
-    room_capacities = {room["id"]: room["capacity"] for room in input_dict["rooms"]}
-    ak_durations = {ak["id"]: ak["duration"] for ak in input_dict["aks"]}
 
-    # dict of real participants only (without dummy participants) with their preferences dicts
-    real_preferences_dict = {
-        participant["id"]: participant["preferences"]
-        for participant in input_dict["participants"]
+    # Get ids from input_dict
+    def _retrieve_val_set(object_key: str, val_key: str) -> Set:
+        return {obj[val_key] for obj in input_dict[object_key]}
+
+    ak_ids = _retrieve_val_set("aks", "id")
+    room_ids = _retrieve_val_set("rooms", "id")
+    person_ids = _retrieve_val_set("participants", "id")
+    timeslot_ids = {
+        timeslot["id"]: timeslot_idx
+        for block in input_dict["timeslots"]["blocks"]
+        for timeslot_idx, timeslot in enumerate(block)
     }
+    block_ids = {
+        block_idx: {timeslot["id"] for timeslot in block}
+        for block_idx, block in enumerate(input_dict["timeslots"]["blocks"])
+    }
+    num_people = len(person_ids)
 
-    # dict of real participants only (without dummy participants) with numerical preferences
+    # Get values needed from the input_dict
+    room_capacities = {
+        room["id"]: room["capacity"] for room in input_dict["rooms"]
+    }
+    ak_durations = {ak["id"]: ak["duration"] for ak in input_dict["aks"]}
     weighted_preference_dict = {
-        participant["id"]: {
+        person["id"]: {
             pref["ak_id"]: process_pref_score(
                 pref["preference_score"],
                 pref["required"],
                 mu=mu,
             )
-            for pref in participant["preferences"]
+            for pref in person["preferences"]
         }
-        for participant in input_dict["participants"]
+        for person in input_dict["participants"]
+    }
+    required_persons = {
+        ak_id: {
+            person["id"]
+            for person in input_dict["participants"]
+            for pref in person["preferences"]
+            if pref["ak_id"] == ak_id and pref["required"]
+        }
+        for ak_id in ak_ids
     }
 
     # Get constraints from input_dict
@@ -177,22 +111,21 @@ def create_lp(
         participant["id"]: set(participant["time_constraints"])
         for participant in input_dict["participants"]
     }
-
     participant_room_constraint_dict = {
         participant["id"]: set(participant["room_constraints"])
         for participant in input_dict["participants"]
     }
-
     ak_time_constraint_dict = {
         ak["id"]: set(ak["time_constraints"]) for ak in input_dict["aks"]
     }
     ak_room_constraint_dict = {
         ak["id"]: set(ak["room_constraints"]) for ak in input_dict["aks"]
     }
-
     room_time_constraint_dict = {
-        room["id"]: set(room["time_constraints"]) for room in input_dict["rooms"]
+        room["id"]: set(room["time_constraints"])
+        for room in input_dict["rooms"]
     }
+
     fulfilled_time_constraints = {
         timeslot["id"]: set(timeslot["fulfilled_time_constraints"])
         for block in input_dict["timeslots"]["blocks"]
@@ -203,332 +136,185 @@ def create_lp(
         for room in input_dict["rooms"]
     }
 
-    # Get ids from input_dict
-    def _retrieve_val_set(object_key: str, val_key: str) -> Set:
-        return {obj[val_key] for obj in input_dict[object_key]}
-
-    ak_ids = _retrieve_val_set("aks", "id")
-    room_ids = _retrieve_val_set("rooms", "id")
-    timeslot_ids = {
-        timeslot["id"]
-        for block in input_dict["timeslots"]["blocks"]
-        for timeslot in block
-    }
-
-    participant_ids = _retrieve_val_set("participants", "id")
-    participant_ids = (
-        participant_ids.union(  # contains all participants ids (incl. dummy ids)
-            {get_dummy_participant_id(ak_id) for ak_id in ak_ids}
-        )
-    )
-
-    timeslot_block_ids = {
-        timeslot["id"]: (block_idx, timeslot_idx)
-        for block_idx, block in enumerate(input_dict["timeslots"]["blocks"])
-        for timeslot_idx, timeslot in enumerate(block)
-    }
-
     # Create problem
-    prob = LpProblem("MLPKoMa", sense=LpMinimize)
+    prob = LpProblem("MLPKoMa", sense=LpMaximize)
 
     # Create decision variables
-    dec_vars = LpVariable.dicts(
-        "DecVar", (ak_ids, timeslot_ids, room_ids, participant_ids), cat=LpBinary
+    room_var = LpVariable.dicts("Room", (ak_ids, room_ids), cat=LpBinary)
+    time_var = LpVariable.dicts(
+        "Time",
+        (ak_ids, timeslot_ids),
+        cat=LpBinary,
     )
+    block_var = LpVariable.dicts("Block", (ak_ids, block_ids), cat=LpBinary)
+    person_var = LpVariable.dicts("Part", (ak_ids, person_ids), cat=LpBinary)
 
     # Set objective function
-    #   ∑ᴬ⋅ᵀ⋅ᴿ⋅ᴾ -Pᴬ⋅ᴾ / (Sᴬ ∑_{Pᴬ⋅ᴾ≠0} 1) Yᴬ⋅ᵀ⋅ᴿ⋅ᴾ
-    cost_func = LpAffineExpression()
-    for participant_id, preferences in real_preferences_dict.items():
-        normalizing_factor = len(preferences)
-        if normalizing_factor == 0:
-            continue
-        for ak_id in ak_ids:
-            coeff = -weighted_preference_dict[participant_id].get(ak_id, 0)
-            coeff /= ak_durations[ak_id] * normalizing_factor
-            affine_constraint = lpSum(
-                [
-                    dec_vars[ak_id][timeslot_id][room_id][participant_id]
-                    for timeslot_id, room_id in product(timeslot_ids, room_ids)
-                ]
-            )
-            cost_func += coeff * affine_constraint
-
-    prob += cost_func, "cost_function"
+    # \sum_{P,A} \frac{P_{P,A}}{\sum_{P_{P,A}}\neq 0} T_{P,A}
+    prob += (
+        lpSum(
+            [
+                pref * person_var[ak_id][person_id] / len(preferences)
+                for person_id, preferences in weighted_preference_dict.items()
+                for ak_id, pref in preferences.items()
+            ]
+        ),
+        "cost_function",
+    )
 
     # Add constraints
-
-    # E1: MaxOneAKperPersonAndTime
-    #   ∀ T,P≠Pᴬ: ∑ᴬ⋅ᵀ Yᴬ⋅ᵀ⋅ᴿ⋅ᴾ ≤ 1
-    for timeslot_id, participant_id in product(
-        timeslot_ids, real_preferences_dict.keys()
+    # for all x, a, a', t time[a][t]+F[a][x]+time[a'][t]+F[a'][x] <= 3
+    # a,a' AKs, t timeslot, x Person or Room
+    for (ak_id1, ak_id2), timeslot_id in product(
+        combinations(ak_ids, 2), timeslot_ids
     ):
-        affine_constraint = lpSum(
-            [
-                dec_vars[ak_id][timeslot_id][room_id][participant_id]
-                for ak_id, room_id in product(ak_ids, room_ids)
-            ]
-        )
-        prob += affine_constraint <= 1, _construct_constraint_name(
-            "MaxOneAKperPersonAndTime", timeslot_id, participant_id
-        )
-
-    # E2: AKLength
-    #   ∀ A: ∑ᵀ⋅ᴿ Yᴬ⋅ᵀ⋅ᴿ⋅ᴾᴬ = Sᴬ
-    for ak_id in ak_ids:
-        affine_constraint = lpSum(
-            [
-                dec_vars[ak_id][timeslot_id][room_id][get_dummy_participant_id(ak_id)]
-                for timeslot_id, room_id in product(timeslot_ids, room_ids)
-            ]
-        )
-        prob += affine_constraint == ak_durations[ak_id], _construct_constraint_name(
-            "AKLength", ak_id
-        )
-
-    ## TODO FIXME BUG: Muss =1 oder =0 sein!
-    # E3: NoPartialParticipation
-    #   ∀ A,P≠Pᴬ: 1/Sᴬ ∑ᵀ⋅ᴿ Yᴬ⋅ᵀ⋅ᴿ⋅ᴾ ≤ 1
-    # Z2: PersonNeededForAK
-    #   ∀ A,P≠Pᴬ if P essential for A: ∑ᵀ⋅ᴿ Yᴬ⋅ᵀ⋅ᴿ⋅ᴾ = Sᴬ
-    for ak_id in ak_ids:
-        for participant_id, preferences in real_preferences_dict.items():
-            affine_constraint = lpSum(
-                [
-                    dec_vars[ak_id][timeslot_id][room_id][participant_id]
-                    for timeslot_id, room_id in product(timeslot_ids, room_ids)
-                ]
+        for person_id in person_ids:
+            prob += time_var[ak_id1][timeslot_id] + time_var[ak_id2][
+                timeslot_id
+            ] + person_var[ak_id1][person_id] + person_var[ak_id2][
+                person_id
+            ] <= 3, _construct_constraint_name(
+                "MaxOneAKPerPersonAndTime",
+                ak_id1,
+                ak_id2,
+                timeslot_id,
+                person_id,
             )
-            for pref in preferences:
-                if pref["ak_id"] == ak_id:
-                    if pref[
-                        "required"
-                    ]:  # participant is essential for ak -> set constraint for "PersonNeededForAK"
-                        prob += (
-                            affine_constraint == ak_durations[ak_id],
-                            _construct_constraint_name(
-                                "PersonNeededForAK",
-                                ak_id,
-                                participant_id,
-                            ),
-                        )  ## TODO Check for fixed value
-                    else:  # participant is not essential -> set constraint for "NoPartialParticipation"
-                        affine_constraint *= 1 / ak_durations[ak_id]
-                        prob += affine_constraint <= 1, _construct_constraint_name(
-                            "NoPartialParticipation",
-                            ak_id,
-                            participant_id,
-                        )
-                    break
-            else:  # participant is not essential -> set constraint for "NoPartialParticipation"
-                affine_constraint *= 1 / ak_durations[ak_id]
-                prob += affine_constraint <= 1, _construct_constraint_name(
-                    "NoPartialParticipation",
-                    ak_id,
-                    participant_id,
-                )
-
-    ## TODO FIXME BUG: Muss =1 oder =0 sein!
-    # E4: FixedAKRooms
-    #   ∀ A,R: 1 / Sᴬ ∑ᵀ Yᴬ⋅ᵀ⋅ᴿ⋅ᴾᴬ ≤ 1
-    for ak_id, room_id in product(ak_ids, room_ids):
-        affine_constraint = lpSum(
-            [
-                dec_vars[ak_id][timeslot_id][room_id][get_dummy_participant_id(ak_id)]
-                for timeslot_id in timeslot_ids
-            ]
-        )
-        affine_constraint *= 1 / ak_durations[ak_id]
-        prob += affine_constraint <= 1, _construct_constraint_name(
-            "FixedAKRooms", ak_id, room_id
-        )
-
-    # E5: AKConsecutive
-    #   ∀ A,R,Tᵃᵇ,Tᶜᵈ s.t. (a≠c ∨ |b-d|≥Sᴬ): Yᴬ⋅ᵀᵃᵇ⋅ᴿ⋅ᴾᴬ + Yᴬ⋅ᵀᶜᵈ⋅ᴿ⋅ᴾᴬ ≤ 1
-    for ak_id, room_id in product(ak_ids, room_ids):
-        for timeslot_id_a, timeslot_id_b in combinations(timeslot_ids, 2):
-            block_idx_a, slot_in_block_idx_a = timeslot_block_ids[timeslot_id_a]
-            block_idx_b, slot_in_block_idx_b = timeslot_block_ids[timeslot_id_b]
-            if (
-                block_idx_a != block_idx_b
-                or abs(slot_in_block_idx_a - slot_in_block_idx_b) >= ak_durations[ak_id]
-            ):  # if two timeslots are too far apart to be consecutive
-                affine_constraint = lpSum(
-                    [
-                        dec_vars[ak_id][timeslot_id_a][room_id][
-                            get_dummy_participant_id(ak_id)
-                        ],
-                        dec_vars[ak_id][timeslot_id_b][room_id][
-                            get_dummy_participant_id(ak_id)
-                        ],
-                    ]
-                )
-                prob += (
-                    affine_constraint <= 1,
-                    _construct_constraint_name(  # forbid the ak to happen in both of them
-                        "AKConsecutive", ak_id, room_id, timeslot_id_a, timeslot_id_b
-                    ),
-                )
-
-    # E6: PersonVisitingAKAtRightTimeAndRoom
-    #   ∀ A,T,R,P≠Pᴬ: Yᴬ⋅ᵀ⋅ᴿ⋅ᴾᴬ - Yᴬ⋅ᵀ⋅ᴿ⋅ᴾ ≥ 0
-    for ak_id, timeslot_id, room_id, participant_id in product(
-        ak_ids, timeslot_ids, room_ids, real_preferences_dict.keys()
-    ):
-        affine_constraint = LpAffineExpression(
-            dec_vars[ak_id][timeslot_id][room_id][get_dummy_participant_id(ak_id)]
-        )
-        affine_constraint -= LpAffineExpression(
-            dec_vars[ak_id][timeslot_id][room_id][participant_id]
-        )
-        prob += affine_constraint >= 0, _construct_constraint_name(
-            "PersonVisitingAKAtRightTimeAndRoom",
-            ak_id,
-            timeslot_id,
-            room_id,
-            participant_id,
-        )
-
-    # E7: Roomsizes
-    #   ∀ R,T: ∑_{A, P≠Pᴬ} Yᴬ⋅ᵀ⋅ᴿ⋅ᴾ ≤ Kᴿ
-    for room_id, timeslot_id in product(room_ids, timeslot_ids):
-        affine_constraint = lpSum(
-            [
-                dec_vars[ak_id][timeslot_id][room_id][participant_id]
-                for ak_id, participant_id in product(ak_ids, real_preferences_dict)
-            ]
-        )
-        prob += affine_constraint <= room_capacities[
-            room_id
-        ], _construct_constraint_name("Roomsizes", room_id, timeslot_id)
-
-    # E8: DummyPersonOneAk
-    #   ∀ T,R,B≠A: Yᴮ⋅ᵀ⋅ᴿ⋅ᴾᴬ = 0
-    for timeslot_id, room_id, ak_id, dummy_ak_id in product(
-        timeslot_ids, room_ids, ak_ids, ak_ids
-    ):
-        if ak_id == dummy_ak_id:
-            continue
-        _set_decision_variable(
-            dec_vars,
-            ak_id,
-            timeslot_id,
-            room_id,
-            get_dummy_participant_id(dummy_ak_id),
-            value=0,
-            name="DummyPersonOneAk",
-        )
-
-    # Z1: PersonNotInterestedInAK
-    #   ∀ A,T,R,P: If Pᴾ⋅ᴬ=0: Yᴬ⋅ᵀ⋅ᴿ⋅ᴾ = 0 (non-dummy P)
-    for participant_id, preferences in real_preferences_dict.items():
-        pref_aks = {
-            pref["ak_id"] for pref in preferences
-        }  # aks not in pref_aks have Pᴾ⋅ᴬ=0 implicitly
-        for ak_id, timeslot_id, room_id in product(
-            ak_ids.difference(pref_aks), timeslot_ids, room_ids
-        ):
-            _set_decision_variable(
-                dec_vars,
-                ak_id,
+        # MaxOneAKPerRoomAndTime
+        for room_id in room_ids:
+            prob += time_var[ak_id1][timeslot_id] + time_var[ak_id2][
+                timeslot_id
+            ] + room_var[ak_id1][room_id] + room_var[ak_id2][
+                room_id
+            ] <= 3, _construct_constraint_name(
+                "MaxOneAKPerRoomAndTime",
+                ak_id1,
+                ak_id2,
                 timeslot_id,
                 room_id,
-                participant_id,
-                value=0,
-                name="PersonNotInterestedInAK",
             )
 
-    for participant_id in real_preferences_dict:
-        # Z3: TimeImpossibleForPerson (real person P cannot attend AKs with timeslot T)
-        #   ∀ A,T,R,P: If P cannot attend at T: Yᴬ⋅ᵀ⋅ᴿ⋅ᴾ=0
-        for timeslot_id in timeslot_ids:
-            if participant_time_constraint_dict[participant_id].difference(
-                fulfilled_time_constraints[timeslot_id]
-            ):
-                for ak_id, room_id in product(ak_ids, room_ids):
-                    _set_decision_variable(
-                        dec_vars,
+    for ak_id in ak_ids:
+        # AKDurations
+        prob += lpSum(
+            [time_var[ak_id][timeslot_id] for timeslot_id in timeslot_ids]
+        ) >= ak_durations[ak_id], _construct_constraint_name(
+            "AKDuration", ak_id
+        )
+        # AKSingleBlock
+        prob += lpSum(
+            [block_var[ak_id][block_id] for block_id in block_ids]
+        ) <= 1, _construct_constraint_name("AKSingleBlock", ak_id)
+        for block_id, block in block_ids.items():
+            prob += lpSum(
+                [time_var[ak_id][timeslot_id] for timeslot_id in block]
+            ) <= ak_durations[ak_id] * block_var[ak_id][
+                block_id
+            ], _construct_constraint_name(
+                "AKSingleBlock", ak_id, str(block_id)
+            )
+            # AKConsecutive
+            for timeslot_id_a, timeslot_id_b in combinations(block, 2):
+                if (
+                    abs(
+                        timeslot_ids[timeslot_id_a]
+                        - timeslot_ids[timeslot_id_b]
+                    )
+                    >= ak_durations[ak_id]
+                ):
+                    prob += time_var[ak_id][timeslot_id_a] + time_var[ak_id][
+                        timeslot_id_b
+                    ] <= 1, _construct_constraint_name(
+                        "AKConsecutive",
                         ak_id,
-                        timeslot_id,
-                        room_id,
-                        participant_id,
-                        value=0,
-                        name="TimeImpossibleForPerson",
+                        str(block_id),
+                        timeslot_id_a,
+                        timeslot_id_b,
                     )
 
-        # Z4: RoomImpossibleForPerson (Real person P cannot attend AKs with room R)
-        #   ∀ A,T,R,P: If P cannot attend in R: Yᴬ⋅ᵀ⋅ᴿ⋅ᴾ=0
+    # Roomsizes
+    for room_id, ak_id in product(room_ids, ak_ids):
+        prob += lpSum(
+            [person_var[ak_id][person_id] for person_id in person_ids]
+        ) + num_people * room_var[ak_id][
+            room_id
+        ] <= num_people + room_capacities[
+            room_id
+        ], _construct_constraint_name(
+            "Roomsizes", room_id, ak_id
+        )
+
+    # PersonNotInterestedInAK
+    # For all A, Z, R, P: If P_{P, A} = 0: Y_{A,Z,R,P} = 0 (non-dummy P)
+    for person_id, preferences in weighted_preference_dict.items():
+        # aks not in pref_aks have P_{P,A} = 0 implicitly
+        for ak_id in ak_ids.difference(preferences.keys()):
+            person_var[ak_id][person_id].setInitialValue(0)
+            person_var[ak_id][person_id].fixValue()
+    for ak_id, persons in required_persons.items():
+        for person_id in persons:
+            person_var[ak_id][person_id].setInitialValue(1)
+            person_var[ak_id][person_id].fixValue()
+
+    for person_id in weighted_preference_dict:
+        # TimeImpossibleForPerson
+        # Real person P cannot attend AKs with timeslot Z
+        for timeslot_id in timeslot_ids:
+            if participant_time_constraint_dict[person_id].difference(
+                fulfilled_time_constraints[timeslot_id]
+            ):
+                for ak_id in ak_ids:
+                    prob += time_var[ak_id][timeslot_id] + person_var[ak_id][
+                        person_id
+                    ] <= 1, _construct_constraint_name(
+                        "TimeImpossibleForPerson",
+                        person_id,
+                        timeslot_id,
+                        ak_id,
+                    )
+
+        # RoomImpossibleForPerson
+        # Real person P cannot attend AKs with room R
         for room_id in room_ids:
-            if participant_room_constraint_dict[participant_id].difference(
+            if participant_room_constraint_dict[person_id].difference(
                 fulfilled_room_constraints[room_id]
             ):
-                for ak_id, timeslot_id in product(ak_ids, timeslot_ids):
-                    _set_decision_variable(
-                        dec_vars,
-                        ak_id,
-                        timeslot_id,
-                        room_id,
-                        participant_id,
-                        value=0,
-                        name="RoomImpossibleForPerson",
+                for ak_id in ak_ids:
+                    prob += room_var[ak_id][room_id] + person_id[ak_id][
+                        person_id
+                    ] <= 1, _construct_constraint_name(
+                        "RoomImpossibleFor Person", person_id, room_id, ak_id
                     )
 
     for ak_id in ak_ids:
-        # Z5: TimeImpossibleForAK
-        #   ∀ A,T,R,P: If A cannot happen in timeslot T: Yᴬ⋅ᵀ⋅ᴿ⋅ᴾ=0
+        # TimeImpossibleForAK
         for timeslot_id in timeslot_ids:
             if ak_time_constraint_dict[ak_id].difference(
                 fulfilled_time_constraints[timeslot_id]
             ):
-                for participant_id, room_id in product(participant_ids, room_ids):
-                    _set_decision_variable(
-                        dec_vars,
-                        ak_id,
-                        timeslot_id,
-                        room_id,
-                        participant_id,
-                        value=0,
-                        name="TimeImpossibleForAK",
-                    )
-        # Z6: RoomImpossibleForAK
-        #   ∀ A,T,R,P: If A cannot happen in room R: Yᴬ⋅ᵀ⋅ᴿ⋅ᴾ=0
+                time_var[ak_id][timeslot_id].setInitialValue(0)
+                time_var[ak_id][timeslot_id].fixValue()
+        # RoomImpossibleForAK
         for room_id in room_ids:
             if ak_room_constraint_dict[ak_id].difference(
                 fulfilled_room_constraints[room_id]
             ):
-                for participant_id, timeslot_id in product(
-                    participant_ids, timeslot_ids
-                ):
-                    _set_decision_variable(
-                        dec_vars,
-                        ak_id,
-                        timeslot_id,
-                        room_id,
-                        participant_id,
-                        value=0,
-                        name="RoomImpossibleForAK",
-                    )
+                room_var[ak_id][room_id].setInitialValue(0)
+                room_var[ak_id][room_id].fixValue()
+        prob += lpSum(
+            [room_var[ak_id][room_id] for room_id in room_ids]
+        ) >= 1, _construct_constraint_name("RoomForAK", ak_id)
 
-    # Z7: TimeImpossibleForRoom
-    #   ∀ A,T,R,P: If room R is not available in timeslot T: Yᴬ⋅ᵀ⋅ᴿ⋅ᴾ=0
-    for room_id, timeslot_id in product(room_ids, timeslot_ids):
-        if room_time_constraint_dict[room_id].difference(
-            fulfilled_time_constraints[timeslot_id]
-        ):
-            for participant_id, ak_id in product(participant_ids, ak_ids):
-                _set_decision_variable(
-                    dec_vars,
-                    ak_id,
-                    timeslot_id,
-                    room_id,
-                    participant_id,
-                    value=0,
-                    name="TimeImpossibleForRoom",
+        # TimeImpossibleForRoom
+        for room_id, timeslot_id in product(room_ids, timeslot_ids):
+            if room_time_constraint_dict[room_id].difference(
+                fulfilled_time_constraints[timeslot_id]
+            ):
+                prob += room_var[ak_id][room_id] + time_var[ak_id][
+                    timeslot_id
+                ] <= 1, _construct_constraint_name(
+                    "TimeImpossibleForRoom", room_id, timeslot_id, ak_id
                 )
-
-    # Z8: NoAKCollision
-    #   ∀ T, AKs A,B with A and B may not overlap: ∑ᴿ Yᴬ⋅ᵀ⋅ᴿ⋅ᴾᴬ + Yᴮ⋅ᵀ⋅ᴿ⋅ᴾᴮ ≤ 1
-    ## TODO: Not implemented yet
 
     # The problem data is written to an .lp file
     prob.writeLP("koma-plan.lp")
@@ -558,12 +344,21 @@ def create_lp(
     print("Status:", LpStatus[prob.status])
 
     tmp_res_dir = defaultdict(lambda: defaultdict(lambda: defaultdict(set)))
-    for ak_id, timeslot_id, room_id, participant_id in product(
-        ak_ids, timeslot_ids, room_ids, real_preferences_dict.keys()
-    ):
-        if value(dec_vars[ak_id][timeslot_id][room_id][participant_id]) == 1:
-            tmp_res_dir[ak_id][room_id]["timeslot_ids"].add(timeslot_id)
-            tmp_res_dir[ak_id][room_id]["participant_ids"].add(participant_id)
+    for ak_id in ak_ids:
+        room_for_ak = None
+        for room_id in room_ids:
+            if value(room_var[ak_id][room_id]) == 1:
+                room_for_ak = room_id
+        for timeslot_id in timeslot_ids:
+            if value(time_var[ak_id][timeslot_id]) == 1:
+                tmp_res_dir[ak_id][room_for_ak]["timeslot_ids"].add(
+                    timeslot_id
+                )
+        for person_id in person_ids:
+            if value(person_var[ak_id][person_id]) == 1:
+                tmp_res_dir[ak_id][room_for_ak]["participant_ids"].add(
+                    person_id
+                )
 
     output_dict = {}
     output_dict["scheduled_aks"] = [
@@ -588,10 +383,27 @@ def main():
     parser.add_argument("--solver", type=str, default=None)
     parser.add_argument("--solver-path", type=str)
     parser.add_argument("--warm-start", action="store_true", default=False)
-    parser.add_argument("--timelimit", type=float, default=None, help="Timelimit as stopping criterion (in seconds)")
-    parser.add_argument("--gap_rel", type=float, default=None, help="Relative gap as stopping criterion")
-    parser.add_argument("--gap_abs", type=float, default=None, help="Absolute gap as stopping criterion")
-    parser.add_argument("--threads", type=int, default=None, help="Number of threads to use")
+    parser.add_argument(
+        "--timelimit",
+        type=float,
+        default=None,
+        help="Timelimit as stopping criterion (in seconds)",
+    )
+    parser.add_argument(
+        "--gap_rel",
+        type=float,
+        default=None,
+        help="Relative gap as stopping criterion",
+    )
+    parser.add_argument(
+        "--gap_abs",
+        type=float,
+        default=None,
+        help="Absolute gap as stopping criterion",
+    )
+    parser.add_argument(
+        "--threads", type=int, default=None, help="Number of threads to use"
+    )
     parser.add_argument("path", type=str)
     args = parser.parse_args()
 
