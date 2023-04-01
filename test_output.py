@@ -54,7 +54,7 @@ class TestInstance:
                 self.test_participant_no_overlapping_timeslot(),
                 self.test_ak_lengths(),
                 self.test_room_capacities(),
-                # self.test_timeslots_consecutive(),
+                self.test_timeslots_consecutive(),
                 self.test_room_constraints(),
                 self.test_time_constraints(),
                 self.test_required(),
@@ -109,7 +109,9 @@ class TestInstance:
         for ak_id, ak in self.scheduled_aks.items():
             timeslots = set(ak["timeslot_ids"])
             if not (
-                len(ak["timeslot_ids"]) == len(timeslots) == self.ak_dict[ak_id]["duration"]
+                len(ak["timeslot_ids"])
+                == len(timeslots)
+                == self.ak_dict[ak_id]["duration"]
             ):
                 return False
         return True
@@ -127,8 +129,24 @@ class TestInstance:
         return True
 
     def test_timeslots_consecutive(self) -> bool:
-        # TODO
-        raise NotImplementedError
+        # test AK timeslot consecutive
+        for ak_id, ak in self.scheduled_aks.items():
+            timeslots = [
+                (timeslot_id, block_idx, timeslot_idx)
+                for block_idx, block in enumerate(self.timeslot_dict)
+                for timeslot_idx, timeslot_id in enumerate(block)
+                if timeslot_id in ak["timeslot_ids"]
+            ]
+            timeslots.sort(key=lambda x: x[2])
+            for idx, (id, block_idx, timeslot_idx) in enumerate(timeslots):
+                if idx == 0:
+                    continue
+                if (
+                    timeslots[idx - 1][2] + 1 != timeslot_idx
+                    or timeslots[idx - 1][1] != block_idx
+                ):
+                    return False
+        return True
 
     def test_room_constraints(self) -> bool:
         # test room constraints
@@ -266,10 +284,19 @@ class TestInstance:
                 out_lst.extend([f"{0:2d} / {0:2d}", f"({0*100: 6.2f}%)", "|"])
             print(f" ".join(out_lst))
 
-        weak_misses_perc = [num_weak_misses[participant_id] / num_weak_prefs[participant_id] for participant_id in self.participant_dict if num_weak_prefs[participant_id] > 0]
-        strong_misses_perc = [num_strong_misses[participant_id] / num_strong_prefs[participant_id] for participant_id in self.participant_dict if num_strong_prefs[participant_id] > 0]
+        weak_misses_perc = [
+            num_weak_misses[participant_id] / num_weak_prefs[participant_id]
+            for participant_id in self.participant_dict
+            if num_weak_prefs[participant_id] > 0
+        ]
+        strong_misses_perc = [
+            num_strong_misses[participant_id] / num_strong_prefs[participant_id]
+            for participant_id in self.participant_dict
+            if num_strong_prefs[participant_id] > 0
+        ]
 
         import matplotlib.pyplot as plt
+
         plt.title("Histogram of percentage of preference misses")
         plt.hist(weak_misses_perc, bins=25, alpha=0.7, label="weak prefs")
         plt.hist(strong_misses_perc, bins=25, alpha=0.7, label="strong prefs")
