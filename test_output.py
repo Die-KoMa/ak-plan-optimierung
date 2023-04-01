@@ -21,7 +21,6 @@ def main(filename: str):
         participant["id"]: participant for participant in input_vals["participants"]
     }
 
-
     def test_uniqueness(lst) -> tuple[np.ndarray, np.ndarray]:
         arr = np.asarray(lst)
         unique_vals, cnts = np.unique(arr, axis=0, return_counts=True)
@@ -187,7 +186,9 @@ def main(filename: str):
 
     # PRINT STATS ABOUT MISSING AKs
     print(f"\n{' ' * 5}=== STATS ON PARTICIPANT PREFERENCE MISSES ===\n")
-    max_participant_id_len = max(len(participant_id) for participant_id in participant_dict)
+    max_participant_id_len = max(
+        len(participant_id) for participant_id in participant_dict
+    )
     print(f"| {' ' * max_participant_id_len} |    WEAK MISSES    |   STRONG MISSES   |")
     print(f"| {'-' * max_participant_id_len} | {'-' * 17} | {'-' * 17} |")
     for participant_id in participant_dict:
@@ -197,35 +198,22 @@ def main(filename: str):
                 [
                     f"{num_weak_misses[participant_id]:2d} / {num_weak_prefs[participant_id]:2d}",
                     f"({num_weak_misses[participant_id] / num_weak_prefs[participant_id]*100: 6.2f}%)",
-                    "|"
+                    "|",
                 ]
             )
         else:
-            out_lst.extend(
-                [
-                    f"{0:2d} / {0:2d}",
-                    f"\t({0*100: 6.2f}%)",
-                    "|"
-                ]
-            )
+            out_lst.extend([f"{0:2d} / {0:2d}", f"\t({0*100: 6.2f}%)", "|"])
         if num_strong_prefs[participant_id] > 0:
             out_lst.extend(
                 [
                     f"{num_strong_misses[participant_id]:2d} / {num_strong_prefs[participant_id]:2d}",
                     f"({num_strong_misses[participant_id] / num_strong_prefs[participant_id]*100: 6.2f}%)",
-                    "|"
+                    "|",
                 ]
             )
         else:
-            out_lst.extend(
-                [
-                    f"{0:2d} / {0:2d}",
-                    f"({0*100: 6.2f}%)",
-                    "|"
-                ]
-            )
+            out_lst.extend([f"{0:2d} / {0:2d}", f"({0*100: 6.2f}%)", "|"])
         print(f" ".join(out_lst))
-
 
     print(f"\n=== PARTICIPANT SCHEDULES ===\n")
     participant_schedules = defaultdict(list)
