@@ -7,7 +7,6 @@ def generate():
     parser = argparse.ArgumentParser()
     parser.add_argument("--persons", type=int, default=30)
     parser.add_argument("--aks", type=int, default=10)
-    parser.add_argument("--rooms", type=int, default=4)
     args = parser.parse_args()
 
     # we have one hour time slots
