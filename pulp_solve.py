@@ -551,7 +551,7 @@ def create_lp(
 
     tmp_res_dir = defaultdict(lambda: defaultdict(lambda: defaultdict(set)))
     for ak_id, timeslot_id, room_id, participant_id in product(
-        ak_ids, timeslot_ids, room_ids, participant_ids
+        ak_ids, timeslot_ids, room_ids, real_preferences_dict.keys()
     ):
         if value(dec_vars[ak_id][timeslot_id][room_id][participant_id]) == 1:
             tmp_res_dir[ak_id][room_id]["timeslot_ids"].add(timeslot_id)
