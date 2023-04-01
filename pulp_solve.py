@@ -346,19 +346,22 @@ def create_lp(
     # The status of the solution is printed to the screen
     print("Status:", LpStatus[prob.status])
 
+    def _get_val(var):
+        return var.solverVar.X if args.solver == "GUROBI" else value(var)
+
     tmp_res_dir = defaultdict(lambda: defaultdict(lambda: defaultdict(set)))
     for ak_id in ak_ids:
         room_for_ak = None
         for room_id in room_ids:
-            if value(room_var[ak_id][room_id]) == 1:
+            if _get_val(room_var[ak_id][room_id]) == 1:
                 room_for_ak = room_id
         for timeslot_id in timeslot_ids:
-            if value(time_var[ak_id][timeslot_id]) == 1:
+            if _get_val(time_var[ak_id][timeslot_id]) == 1:
                 tmp_res_dir[ak_id][room_for_ak]["timeslot_ids"].add(
                     timeslot_id
                 )
         for person_id in person_ids:
-            if value(person_var[ak_id][person_id]) == 1:
+            if _get_val(person_var[ak_id][person_id]) == 1:
                 tmp_res_dir[ak_id][room_for_ak]["participant_ids"].add(
                     person_id
                 )
