@@ -8,6 +8,7 @@ nox.options.reuse_existing_virtualenvs = True
 def run_test(session):
     """Run pytest."""
     session.install("pulp")
+    session.install("numpy")
     session.install("pytest")
     session.run("pytest")
 
@@ -16,6 +17,7 @@ def run_test(session):
 def run_test_fast(session):
     """Run pytest."""
     session.install("pulp")
+    session.install("numpy")
     session.install("pytest")
     session.run("pytest", "-m", "not slow")
 
@@ -41,6 +43,7 @@ def lint(session):
 def mypy(session):
     """Check type hints."""
     session.install("pulp")
+    session.install("numpy")
     session.install("mypy")
     session.run(
         "mypy",
@@ -65,6 +68,7 @@ def format(session):
 def check_coverage(session):
     """Check test coverage and generate a html report."""
     session.install("pulp")
+    session.install("numpy")
     session.install("pytest")
     session.install("coverage")
     try:
