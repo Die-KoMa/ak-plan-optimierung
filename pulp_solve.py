@@ -538,6 +538,14 @@ def create_lp(
         kwargs_dict["path"] = args.solver_path
     if args.warm_start:
         kwargs_dict["warmStart"] = True
+    if args.timelimit:
+        kwargs_dict["timeLimit"] = args.timelimit
+    if args.gap_rel:
+        kwargs_dict["gapRel"] = args.gap_rel
+    if args.gap_abs:
+        kwargs_dict["gapAbs"] = args.gap_abs
+    if args.threads:
+        kwargs_dict["Threads"] = args.threads
 
     if args.solver:
         solver = getSolver(args.solver, **kwargs_dict)
@@ -580,6 +588,10 @@ def main():
     parser.add_argument("--solver", type=str, default=None)
     parser.add_argument("--solver-path", type=str)
     parser.add_argument("--warm-start", action="store_true", default=False)
+    parser.add_argument("--timelimit", type=float, default=None, help="Timelimit as stopping criterion (in seconds)")
+    parser.add_argument("--gap_rel", type=float, default=None, help="Relative gap as stopping criterion")
+    parser.add_argument("--gap_abs", type=float, default=None, help="Absolute gap as stopping criterion")
+    parser.add_argument("--threads", type=int, default=None, help="Number of threads to use")
     parser.add_argument("path", type=str)
     args = parser.parse_args()
 
