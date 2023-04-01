@@ -182,7 +182,7 @@ def create_lp(
     )
 
     # Set objective function
-    # \sum_{P,A,Z,R} - \frac{P_{P,A}}{S_A\sum_{P_{P,A}\neq 0}1} Y_{A,Z,R,P}
+    #   ∑ᴬ⋅ᵀ⋅ᴿ⋅ᴾ -Pᴬ⋅ᴾ / (Sᴬ ∑_{Pᴬ⋅ᴾ≠0} 1) Yᴬ⋅ᵀ⋅ᴿ⋅ᴾ
     cost_func = LpAffineExpression()
     for participant_id, preferences in real_preferences_dict.items():
         normalizing_factor = len(preferences)
@@ -201,8 +201,8 @@ def create_lp(
 
     # Add constraints
 
-    # MaxOneAKperPersonAndTime
-    # for all Z, P \neq P_A: \sum_{A, R} Y_{A, Z, R, P} <= 1
+    # E1: MaxOneAKperPersonAndTime
+    #   ∀ T,P≠Pᴬ: ∑ᴬ⋅ᵀ Yᴬ⋅ᵀ⋅ᴿ⋅ᴾ ≤ 1
     for timeslot_id in timeslot_ids:
         for participant_id in real_preferences_dict:
             affine_constraint = lpSum(
@@ -215,8 +215,8 @@ def create_lp(
                 "MaxOneAKperPersonAndTime", timeslot_id, participant_id
             )
 
-    # AKLength
-    # for all A: \sum_{Z, R} Y_{A, Z, R, P_A} = S_A
+    # E2: AKLength
+    #   ∀ A: ∑ᵀ⋅ᴿ Yᴬ⋅ᵀ⋅ᴿ⋅ᴾᴬ = Sᴬ
     for ak_id in ak_ids:
         affine_constraint = lpSum(
             [
@@ -228,12 +228,11 @@ def create_lp(
             "AKLength", ak_id
         )
 
-    # NoPartialParticipation
     ## TODO FIXME BUG: Muss =1 oder =0 sein!
-    # for all A, P \neq P_A: \frac{1}{S_A} \sum_{Z, R} Y_{A, Z, R, P} <= 1
-    # and
-    # PersonNeededForAK (stronger than the above)
-    # for all A, P \neq P_A: if P essential for A: \sum_{Z,R}Y_{A,Z,R,P}=S_A
+    # E3: NoPartialParticipation
+    #   ∀ A,P≠Pᴬ: 1/Sᴬ ∑ᵀ⋅ᴿ Yᴬ⋅ᵀ⋅ᴿ⋅ᴾ ≤ 1
+    # Z2: PersonNeededForAK
+    #   ∀ A,P≠Pᴬ if P essential for A: ∑ᵀ⋅ᴿ Yᴬ⋅ᵀ⋅ᴿ⋅ᴾ = Sᴬ
     for ak_id in ak_ids:
         for participant_id, preferences in real_preferences_dict.items():
             affine_constraint = lpSum(
@@ -271,9 +270,9 @@ def create_lp(
                     participant_id,
                 )
 
-    # FixedAKRooms
     ## TODO FIXME BUG: Muss =1 oder =0 sein!
-    # for all A, R: \frac{1}{S_A} \sum_{Z} Y_{A, Z, R, P_A} <= 1
+    # E4: FixedAKRooms
+    #   ∀ A,R: 1 / Sᴬ ∑ᵀ Yᴬ⋅ᵀ⋅ᴿ⋅ᴾᴬ ≤ 1
     for ak_id, room_id in product(ak_ids, room_ids):
         affine_constraint = lpSum(
             [
@@ -286,9 +285,8 @@ def create_lp(
             "FixedAKRooms", ak_id, room_id
         )
 
-    # AKConsecutive
-    # AKs happen consecutively
-    # \forall A,R,Z_{(a, b)},Z_{(c,d)} \text{ s.t. } (a \neq c \vee |b-d| \ge S_A ) : Y_{A,Z_{(a,b)},R,P_A} + Y_{A,Z_{(c,d)},R,P_A} \leq 1
+    # E5: AKConsecutive
+    #   ∀ A,R,Tᵃᵇ,Tᶜᵈ s.t. (a≠c ∨ |b-d|≥Sᴬ): Yᴬ⋅ᵀᵃᵇ⋅ᴿ⋅ᴾᴬ + Yᴬ⋅ᵀᶜᵈ⋅ᴿ⋅ᴾᴬ ≤ 1
     for ak_id, room_id in product(ak_ids, room_ids):
         for timeslot_id_a, timeslot_id_b in combinations(timeslot_ids, 2):
             block_idx_a, slot_in_block_idx_a = timeslot_block_ids[timeslot_id_a]
@@ -314,10 +312,10 @@ def create_lp(
                     ),
                 )
 
-    # PersonVisitingAKAtRightTimeAndRoom
-    # for all A, Z, R, P\neq P_A: 0 <= Y_{A, Z, R, P_A} - Y_{A, Z, R, P}
+    # E6: PersonVisitingAKAtRightTimeAndRoom
+    #   ∀ A,T,R,P≠Pᴬ: Yᴬ⋅ᵀ⋅ᴿ⋅ᴾᴬ - Yᴬ⋅ᵀ⋅ᴿ⋅ᴾ ≥ 0
     for ak_id, timeslot_id, room_id, participant_id in product(
-        ak_ids, timeslot_ids, room_ids, participant_ids
+        ak_ids, timeslot_ids, room_ids, real_preferences_dict.keys()
     ):  ## TODO dies geht auch durch die dummy participants durch. Ist das notwendig?
         affine_constraint = LpAffineExpression(
             dec_vars[ak_id][timeslot_id][room_id][get_dummy_participant_id(ak_id)]
@@ -333,8 +331,8 @@ def create_lp(
             participant_id,
         )
 
-    # Roomsizes
-    # for all R, Z: \sum_{A, P\neq P_A} Y_{A, Z, R, P} <= K_R
+    # E7: Roomsizes
+    #   ∀ R,T: ∑_{A, P≠Pᴬ} Yᴬ⋅ᵀ⋅ᴿ⋅ᴾ <= Kᴿ
     for room_id, timeslot_id in product(room_ids, timeslot_ids):
         affine_constraint = lpSum(
             [
@@ -346,8 +344,8 @@ def create_lp(
             room_id
         ], _construct_constraint_name("Roomsizes", room_id, timeslot_id)
 
-    # DummyPersonOneAk
-    # for all Z, R, A'\neq A: Y_{A', Z, R, P_A} = 0
+    # E8: DummyPersonOneAk
+    #   ∀ T,R,B≠A: Yᴮ⋅ᵀ⋅ᴿ⋅ᴾᴬ = 0
     for timeslot_id, room_id, ak_id, dummy_ak_id in product(
         timeslot_ids, room_ids, ak_ids, ak_ids
     ):
@@ -363,12 +361,12 @@ def create_lp(
             name="DummyPersonOneAk",
         )
 
-    # PersonNotInterestedInAK
-    # For all A, Z, R, P: If P_{P, A} = 0: Y_{A,Z,R,P} = 0 (non-dummy P)
+    # Z1: PersonNotInterestedInAK
+    #   ∀ A,T,R,P: If Pᴾ⋅ᴬ=0: Yᴬ⋅ᵀ⋅ᴿ⋅ᴾ = 0 (non-dummy P)
     for participant_id, preferences in real_preferences_dict.items():
         pref_aks = {
             pref["ak_id"] for pref in preferences
-        }  # aks not in pref_aks have P_{P,A} = 0 implicitly
+        }  # aks not in pref_aks have Pᴾ⋅ᴬ=0 implicitly
         for ak_id, timeslot_id, room_id in product(
             ak_ids.difference(pref_aks), timeslot_ids, room_ids
         ):
@@ -383,9 +381,8 @@ def create_lp(
             )
 
     for participant_id in real_preferences_dict:
-        # TimeImpossibleForPerson
-        # Real person P cannot attend AKs with timeslot Z
-        # \forall A,Z,R,P: If P cannot attend at Z: Y_{A,Z,R,P}=0
+        # Z3: TimeImpossibleForPerson (real person P cannot attend AKs with timeslot T)
+        #   ∀ A,T,R,P: If P cannot attend at T: Yᴬ⋅ᵀ⋅ᴿ⋅ᴾ=0
         for timeslot_id in timeslot_ids:
             if participant_time_constraint_dict[participant_id].difference(
                 fulfilled_time_constraints[timeslot_id]
@@ -401,9 +398,8 @@ def create_lp(
                         name="TimeImpossibleForPerson",
                     )
 
-        # RoomImpossibleForPerson
-        # Real person P cannot attend AKs with room R
-        # \forall A,Z,R,P: If P cannot attend in R: Y_{A,Z,R,P}=0
+        # Z4: RoomImpossibleForPerson (Real person P cannot attend AKs with room R)
+        #   ∀ A,T,R,P: If P cannot attend in R: Yᴬ⋅ᵀ⋅ᴿ⋅ᴾ=0
         for room_id in room_ids:
             if participant_room_constraint_dict[participant_id].difference(
                 fulfilled_room_constraints[room_id]
@@ -420,8 +416,8 @@ def create_lp(
                     )
 
     for ak_id in ak_ids:
-        # TimeImpossibleForAK
-        # \forall A,Z,R,P: If A cannot happen in timeslot Z: Y_{A,Z,R,P} = 0
+        # Z5: TimeImpossibleForAK
+        #   ∀ A,T,R,P: If A cannot happen in timeslot T: Yᴬ⋅ᵀ⋅ᴿ⋅ᴾ=0
         for timeslot_id in timeslot_ids:
             if ak_time_constraint_dict[ak_id].difference(
                 fulfilled_time_constraints[timeslot_id]
@@ -436,8 +432,8 @@ def create_lp(
                         value=0,
                         name="TimeImpossibleForAK",
                     )
-        # RoomImpossibleForAK
-        # \forall A,Z,R,P: If A cannot happen in room R: Y_{A,Z,R,P} = 0
+        # Z6: RoomImpossibleForAK
+        #   ∀ A,T,R,P: If A cannot happen in room R: Yᴬ⋅ᵀ⋅ᴿ⋅ᴾ=0
         for room_id in room_ids:
             if ak_room_constraint_dict[ak_id].difference(
                 fulfilled_room_constraints[room_id]
@@ -455,8 +451,8 @@ def create_lp(
                         name="RoomImpossibleForAK",
                     )
 
-    # TimeImpossibleForRoom
-    # \forall A,Z,R,P: If room R is not available in timeslot Z: Y_{A,Z,R,P}=0
+    # Z7: TimeImpossibleForRoom
+    #   ∀ A,T,R,P: If room R is not available in timeslot T: Yᴬ⋅ᵀ⋅ᴿ⋅ᴾ=0
     for room_id, timeslot_id in product(room_ids, timeslot_ids):
         if room_time_constraint_dict[room_id].difference(
             fulfilled_time_constraints[timeslot_id]
