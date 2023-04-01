@@ -109,7 +109,7 @@ def generate():
         preferences = []
         # generate preferences for each AK:
         for ak_index in range(args.aks):
-            is_required = random.choices([True, False], weights=[0.1, 0.9], k=1)[0]
+            is_required = random.choices([True, False], weights=[0, 1], k=1)[0]
             preference_score = -1 if is_required else random.choice([0, 1, 2])
 
             if preference_score != 0:
