@@ -52,28 +52,28 @@ def generate():
         "info": {"name": "Raum1"},
         "capacity": 25,
         "fulfilled_room_constraints": ["barrierefrei"],
-        "time_constraints": ["Dienstag", "Mittwoch", "Donnerstag", "Freitag"],
+        "time_constraints": [],
     }
     room2 = {
         "id": "2",
         "info": {"name": "Raum2"},
         "capacity": 30,
         "fulfilled_room_constraints": ["barrierefrei", "Beamer"],
-        "time_constraints": ["Dienstag", "Mittwoch", "Donnerstag", "Freitag"],
+        "time_constraints": [],
     }
     room3 = {
         "id": "3",
         "info": {"name": "Raum3"},
         "capacity": 20,
         "fulfilled_room_constraints": [],
-        "time_constraints": ["Mittwoch", "Donnerstag", "Freitag"],
+        "time_constraints": [],
     }
     room4 = {
         "id": "4",
         "info": {"name": "Raum4"},
         "capacity": 25,
         "fulfilled_room_constraints": ["Beamer", "barrierefrei"],
-        "time_constraints": ["Dienstag"],
+        "time_constraints": [],
     }
 
     # create aks
