@@ -380,7 +380,7 @@ def create_lp(
     output_dict["input"] = input_dict
 
     with open("output.json", "w") as output_file:
-        json.dump(output_dict, output_file)
+        json.dump(output_dict, output_file, indent=4)
 
 
 def main():
