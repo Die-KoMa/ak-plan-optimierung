@@ -19,9 +19,7 @@ from pulp import (
 )
 
 
-def process_pref_score(
-    preference_score: int, required: bool, mu: float
-) -> float:
+def process_pref_score(preference_score: int, required: bool, mu: float) -> float:
     if required or preference_score == -1:
         return 0
     elif preference_score in [0, 1]:
@@ -85,9 +83,7 @@ def create_lp(
     num_people = len(person_ids)
 
     # Get values needed from the input_dict
-    room_capacities = {
-        room["id"]: room["capacity"] for room in input_dict["rooms"]
-    }
+    room_capacities = {room["id"]: room["capacity"] for room in input_dict["rooms"]}
     ak_durations = {ak["id"]: ak["duration"] for ak in input_dict["aks"]}
     weighted_preference_dict = {
         person["id"]: {
@@ -126,8 +122,7 @@ def create_lp(
         ak["id"]: set(ak["room_constraints"]) for ak in input_dict["aks"]
     }
     room_time_constraint_dict = {
-        room["id"]: set(room["time_constraints"])
-        for room in input_dict["rooms"]
+        room["id"]: set(room["time_constraints"]) for room in input_dict["rooms"]
     }
 
     fulfilled_time_constraints = {
@@ -169,9 +164,7 @@ def create_lp(
     # Add constraints
     # for all x, a, a', t time[a][t]+F[a][x]+time[a'][t]+F[a'][x] <= 3
     # a,a' AKs, t timeslot, x Person or Room
-    for (ak_id1, ak_id2), timeslot_id in product(
-        combinations(ak_ids, 2), timeslot_ids
-    ):
+    for (ak_id1, ak_id2), timeslot_id in product(combinations(ak_ids, 2), timeslot_ids):
         for person_id in person_ids:
             prob += time_var[ak_id1][timeslot_id] + time_var[ak_id2][
                 timeslot_id
@@ -202,9 +195,7 @@ def create_lp(
         # AKDurations
         prob += lpSum(
             [time_var[ak_id][timeslot_id] for timeslot_id in timeslot_ids]
-        ) >= ak_durations[ak_id], _construct_constraint_name(
-            "AKDuration", ak_id
-        )
+        ) >= ak_durations[ak_id], _construct_constraint_name("AKDuration", ak_id)
         # AKSingleBlock
         prob += lpSum(
             [block_var[ak_id][block_id] for block_id in block_ids]
@@ -220,10 +211,7 @@ def create_lp(
             # AKConsecutive
             for timeslot_id_a, timeslot_id_b in combinations(block, 2):
                 if (
-                    abs(
-                        timeslot_ids[timeslot_id_a]
-                        - timeslot_ids[timeslot_id_b]
-                    )
+                    abs(timeslot_ids[timeslot_id_a] - timeslot_ids[timeslot_id_b])
                     >= ak_durations[ak_id]
                 ):
                     prob += time_var[ak_id][timeslot_id_a] + time_var[ak_id][
@@ -240,9 +228,7 @@ def create_lp(
     for room_id, ak_id in product(room_ids, ak_ids):
         prob += lpSum(
             [person_var[ak_id][person_id] for person_id in person_ids]
-        ) + num_people * room_var[ak_id][
-            room_id
-        ] <= num_people + room_capacities[
+        ) + num_people * room_var[ak_id][room_id] <= num_people + room_capacities[
             room_id
         ], _construct_constraint_name(
             "Roomsizes", room_id, ak_id
@@ -361,14 +347,10 @@ def create_lp(
                 room_for_ak = room_id
         for timeslot_id in timeslot_ids:
             if _get_val(time_var[ak_id][timeslot_id]) == 1:
-                tmp_res_dir[ak_id][room_for_ak]["timeslot_ids"].add(
-                    timeslot_id
-                )
+                tmp_res_dir[ak_id][room_for_ak]["timeslot_ids"].add(timeslot_id)
         for person_id in person_ids:
             if _get_val(person_var[ak_id][person_id]) == 1:
-                tmp_res_dir[ak_id][room_for_ak]["participant_ids"].add(
-                    person_id
-                )
+                tmp_res_dir[ak_id][room_for_ak]["participant_ids"].add(person_id)
 
     output_dict = {}
     output_dict["scheduled_aks"] = [
