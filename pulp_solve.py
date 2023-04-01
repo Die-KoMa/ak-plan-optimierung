@@ -37,7 +37,10 @@ def _construct_constraint_name(name: str, *args) -> str:
 
 
 def create_lp(
-    input_dict: Dict[str, object], mu: float, args: argparse.Namespace
+    input_dict: Dict[str, object],
+    mu: float,
+    args: argparse.Namespace,
+    outpath: str = "output.json",
 ) -> None:
     """Create the MILP problem as pulp object and solve it.
 
@@ -60,6 +63,7 @@ def create_lp(
         mu (float): The weight associated with a strong preference for an AK.
         args (argparse.Namespace): CLI arguments, used to pass options for the
             MILP solver.
+        outpath (str): The path where the result is stored as a JSON file.
     """
 
     # Get ids from input_dict
@@ -379,8 +383,9 @@ def create_lp(
     ]
     output_dict["input"] = input_dict
 
-    with open("output.json", "w") as output_file:
+    with open(outpath, "w") as output_file:
         json.dump(output_dict, output_file, indent=4)
+    print(f"Result stored at '{outpath}'")
 
 
 def main():
