@@ -241,6 +241,8 @@ def create_lp(
     cost_func = LpAffineExpression()
     for participant_id, preferences in real_preferences_dict.items():
         normalizing_factor = len(preferences)
+        if normalizing_factor == 0:
+            continue
         for ak_id in ak_ids:
             coeff = -weighted_preference_dict[participant_id].get(ak_id, 0)
             coeff /= ak_durations[ak_id] * normalizing_factor
