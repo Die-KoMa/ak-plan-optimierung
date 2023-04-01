@@ -17,7 +17,6 @@ from pulp import (
     value,
 )
 
-
 _DUMMY_PARTICIPANT_PREFIX = "DUMMY_PARTICIPANT"
 
 
@@ -588,10 +587,21 @@ def main():
     parser.add_argument("--solver", type=str, default=None)
     parser.add_argument("--solver-path", type=str)
     parser.add_argument("--warm-start", action="store_true", default=False)
-    parser.add_argument("--timelimit", type=float, default=None, help="Timelimit as stopping criterion (in seconds)")
-    parser.add_argument("--gap_rel", type=float, default=None, help="Relative gap as stopping criterion")
-    parser.add_argument("--gap_abs", type=float, default=None, help="Absolute gap as stopping criterion")
-    parser.add_argument("--threads", type=int, default=None, help="Number of threads to use")
+    parser.add_argument(
+        "--timelimit",
+        type=float,
+        default=None,
+        help="Timelimit as stopping criterion (in seconds)",
+    )
+    parser.add_argument(
+        "--gap_rel", type=float, default=None, help="Relative gap as stopping criterion"
+    )
+    parser.add_argument(
+        "--gap_abs", type=float, default=None, help="Absolute gap as stopping criterion"
+    )
+    parser.add_argument(
+        "--threads", type=int, default=None, help="Number of threads to use"
+    )
     parser.add_argument("path", type=str)
     args = parser.parse_args()
 
