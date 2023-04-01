@@ -258,17 +258,18 @@ def create_lp(
 
     # E1: MaxOneAKperPersonAndTime
     #   ∀ T,P≠Pᴬ: ∑ᴬ⋅ᵀ Yᴬ⋅ᵀ⋅ᴿ⋅ᴾ ≤ 1
-    for timeslot_id in timeslot_ids:
-        for participant_id in real_preferences_dict:
-            affine_constraint = lpSum(
-                [
-                    dec_vars[ak_id][timeslot_id][room_id][participant_id]
-                    for ak_id, room_id in product(ak_ids, room_ids)
-                ]
-            )
-            prob += affine_constraint <= 1, _construct_constraint_name(
-                "MaxOneAKperPersonAndTime", timeslot_id, participant_id
-            )
+    for timeslot_id, participant_id in product(
+        timeslot_ids, real_preferences_dict.keys()
+    ):
+        affine_constraint = lpSum(
+            [
+                dec_vars[ak_id][timeslot_id][room_id][participant_id]
+                for ak_id, room_id in product(ak_ids, room_ids)
+            ]
+        )
+        prob += affine_constraint <= 1, _construct_constraint_name(
+            "MaxOneAKperPersonAndTime", timeslot_id, participant_id
+        )
 
     # E2: AKLength
     #   ∀ A: ∑ᵀ⋅ᴿ Yᴬ⋅ᵀ⋅ᴿ⋅ᴾᴬ = Sᴬ
@@ -371,7 +372,7 @@ def create_lp(
     #   ∀ A,T,R,P≠Pᴬ: Yᴬ⋅ᵀ⋅ᴿ⋅ᴾᴬ - Yᴬ⋅ᵀ⋅ᴿ⋅ᴾ ≥ 0
     for ak_id, timeslot_id, room_id, participant_id in product(
         ak_ids, timeslot_ids, room_ids, real_preferences_dict.keys()
-    ):  ## TODO dies geht auch durch die dummy participants durch. Ist das notwendig?
+    ):
         affine_constraint = LpAffineExpression(
             dec_vars[ak_id][timeslot_id][room_id][get_dummy_participant_id(ak_id)]
         )
@@ -387,7 +388,7 @@ def create_lp(
         )
 
     # E7: Roomsizes
-    #   ∀ R,T: ∑_{A, P≠Pᴬ} Yᴬ⋅ᵀ⋅ᴿ⋅ᴾ <= Kᴿ
+    #   ∀ R,T: ∑_{A, P≠Pᴬ} Yᴬ⋅ᵀ⋅ᴿ⋅ᴾ ≤ Kᴿ
     for room_id, timeslot_id in product(room_ids, timeslot_ids):
         affine_constraint = lpSum(
             [
