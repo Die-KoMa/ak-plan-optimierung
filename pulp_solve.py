@@ -524,6 +524,10 @@ def create_lp(
                     name="TimeImpossibleForRoom",
                 )
 
+    # Z8: NoAKCollision
+    #   ∀ T, AKs A,B with A and B may not overlap: ∑ᴿ Yᴬ⋅ᵀ⋅ᴿ⋅ᴾᴬ + Yᴮ⋅ᵀ⋅ᴿ⋅ᴾᴮ ≤ 1
+    ## TODO: Not implemented yet
+
     # The problem data is written to an .lp file
     prob.writeLP("koma-plan.lp")
 
