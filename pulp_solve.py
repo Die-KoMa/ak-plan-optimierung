@@ -319,7 +319,11 @@ def create_lp(
     if args.gap_rel:
         kwargs_dict["gapRel"] = args.gap_rel
     if args.gap_abs:
-        kwargs_dict["gapAbs"] = args.gap_abs
+        if args.solver == "GUROBI":
+            kwargs_dict["MIPGapAbs"] = args.gap_abs
+        else:
+            kwargs_dict["gapAbs"] = args.gap_abs
+
     if args.threads:
         kwargs_dict["Threads"] = args.threads
 
