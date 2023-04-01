@@ -7,3 +7,4 @@ koroma
 
 *.lp
 ./*.json
+venv
