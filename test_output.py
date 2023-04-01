@@ -266,6 +266,16 @@ class TestInstance:
                 out_lst.extend([f"{0:2d} / {0:2d}", f"({0*100: 6.2f}%)", "|"])
             print(f" ".join(out_lst))
 
+        weak_misses_perc = [num_weak_misses[participant_id] / num_weak_prefs[participant_id] for participant_id in self.participant_dict if num_weak_prefs[participant_id] > 0]
+        strong_misses_perc = [num_strong_misses[participant_id] / num_strong_prefs[participant_id] for participant_id in self.participant_dict if num_strong_prefs[participant_id] > 0]
+
+        import matplotlib.pyplot as plt
+        plt.title("Histogram of percentage of preference misses")
+        plt.hist(weak_misses_perc, bins=25, alpha=0.7, label="weak prefs")
+        plt.hist(strong_misses_perc, bins=25, alpha=0.7, label="strong prefs")
+        plt.legend(loc="upper right")
+        plt.show()
+
     def print_ak_stats(self) -> None:
         # PRINT STATS ABOUT MISSING AKs
         print("\n=== AK STATS ===\n")
