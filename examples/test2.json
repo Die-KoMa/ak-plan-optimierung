@@ -1,0 +1,3910 @@
+{
+    "rooms": [
+		{
+            "id": "room0",
+            "info": {
+                "name": "Banach"
+            },
+			"capacity": 300,
+			"fulfilled_room_constraints": [],
+            "time_constraints": ["Banach"]
+		},{
+			"id": "room1",
+            "info": {
+                "name": "Hausdorff"
+            },
+			"capacity": 300,
+			"fulfilled_room_constraints": [],
+            "time_constraints": ["Hausdorff"]
+		},{
+			"id": "room2",
+            "info": {
+                "name": "Hilbert"
+            },"capacity": 300,
+			"fulfilled_room_constraints": [],
+            "time_constraints": ["Hilbert"]
+		},{
+			"id": "room3",
+            "info": {
+                "name": "Sierpinski"
+            },"capacity": 300,
+			"fulfilled_room_constraints": [],
+            "time_constraints": ["Sierpinski"]
+		},{
+			"id": "room4",
+            "info": {
+                "name": "Schwartz"
+            },"capacity": 300,
+			"fulfilled_room_constraints": [],
+            "time_constraints": ["Schwartz"]
+		},{
+			"id": "room5",
+            "info": {
+                "name": "Vektor"
+            },"capacity": 300,
+			"fulfilled_room_constraints": [],
+            "time_constraints": ["Vektor"]
+		}
+	],
+	"timeslots": {
+        "info": {
+            "duration": "1 hour blocks"
+        },
+        "blocks": [
+            [
+                {
+                    "id": "timeslot0",
+                    "info": {
+                        "start": "Freitag 8:00"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Reso",
+                        "Banach",
+                        "Hausdorff",
+                        "Hilbert",
+                        "Sierpinski",
+                        "Schwartz",
+                        "Vektor",
+                        "not-saturday",
+                        "ak08",
+                        "ak10",
+                        "ak24"
+                    ]
+                },
+                {
+                    "id": "timeslot1",
+                    "info": {
+                        "start": "Freitag 9:00"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Reso",
+                        "Banach",
+                        "Hausdorff",
+                        "Hilbert",
+                        "Sierpinski",
+                        "Schwartz",
+                        "Vektor",
+                        "not-saturday",
+                        "ak08",
+                        "ak10",
+                        "ak24"
+                    ]
+                },
+                {
+                    "id": "timeslot2",
+                    "info": {
+                        "start": "Freitag 10:00"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Reso",
+                        "Banach",
+                        "Hausdorff",
+                        "Hilbert",
+                        "Sierpinski",
+                        "Schwartz",
+                        "Vektor",
+                        "not-saturday",
+                        "ak08",
+                        "ak24"
+                    ]
+                },
+                {
+                    "id": "timeslot3",
+                    "info": {
+                        "start": "Freitag 11:00"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Reso",
+                        "Banach",
+                        "Hausdorff",
+                        "Hilbert",
+                        "Sierpinski",
+                        "Schwartz",
+                        "Vektor",
+                        "not-saturday",
+                        "ak08",
+                        "ak24"
+                    ]
+                },
+                {
+                    "id": "timeslot4",
+                    "info": {
+                        "start": "Freitag 12:00"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Reso",
+                        "Banach",
+                        "Hausdorff",
+                        "Hilbert",
+                        "Sierpinski",
+                        "Schwartz",
+                        "Vektor",
+                        "not-saturday",
+                        "ak08",
+                        "ak24"
+                    ]
+                },
+                {
+                    "id": "timeslot5",
+                    "info": {
+                        "start": "Freitag 13:00"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Reso",
+                        "Banach",
+                        "Hausdorff",
+                        "Hilbert",
+                        "Sierpinski",
+                        "Schwartz",
+                        "Vektor",
+                        "not-saturday",
+                        "ak08",
+                        "ak24"
+                    ]
+                },
+                {
+                    "id": "timeslot6",
+                    "info": {
+                        "start": "Freitag 14:00"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Reso",
+                        "Banach",
+                        "Hausdorff",
+                        "Hilbert",
+                        "Sierpinski",
+                        "Schwartz",
+                        "Vektor",
+                        "not-saturday",
+                        "ak08",
+                        "ak24"
+                    ]
+                },
+                {
+                    "id": "timeslot7",
+                    "info": {
+                        "start": "Freitag 15:00"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Reso",
+                        "Banach",
+                        "Hausdorff",
+                        "Hilbert",
+                        "Sierpinski",
+                        "Schwartz",
+                        "Vektor",
+                        "not-saturday",
+                        "ak08",
+                        "ak24"
+                    ]
+                },
+                {
+                    "id": "timeslot8",
+                    "info": {
+                        "start": "Freitag 16:00"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Reso",
+                        "Banach",
+                        "Hausdorff",
+                        "Hilbert",
+                        "Sierpinski",
+                        "Schwartz",
+                        "Vektor",
+                        "not-saturday",
+                        "ak08",
+                        "ak24"
+                    ]
+                },
+                {
+                    "id": "timeslot9",
+                    "info": {
+                        "start": "Freitag 17:00"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Reso",
+                        "Banach",
+                        "Hausdorff",
+                        "Hilbert",
+                        "Sierpinski",
+                        "Schwartz",
+                        "Vektor",
+                        "not-saturday",
+                        "ak08",
+                        "ak24"
+                    ]
+                },
+                {
+                    "id": "timeslot10",
+                    "info": {
+                        "start": "Freitag 18:00"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Reso",
+                        "Banach",
+                        "Hausdorff",
+                        "Hilbert",
+                        "Sierpinski",
+                        "Schwartz",
+                        "Vektor",
+                        "not-saturday",
+                        "ak04",
+                        "ak08",
+                        "ak10",
+                        "ak14",
+                        "ak24"
+                    ]
+                },
+                {
+                    "id": "timeslot10",
+                    "info": {
+                        "start": "Freitag 19:00"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Reso",
+                        "Banach",
+                        "Hausdorff",
+                        "Hilbert",
+                        "Sierpinski",
+                        "Schwartz",
+                        "Vektor",
+                        "not-saturday",
+                        "ak04",
+                        "ak08",
+                        "ak10",
+                        "ak14",
+                        "ak24"
+                    ]
+                }
+            ],[
+                {
+                    "id": "timeslot11",
+                    "info": {
+                        "start": "Samstag 08:00"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Banach",
+                        "Hausdorff",
+                        "Hilbert",
+                        "Sierpinski",
+                        "Schwartz",
+                        "Vektor",
+                        "not-friday",
+                        "ak04",
+                        "ak06",
+                        "ak08",
+                        "ak10",
+                        "ak14",
+                        "ak24"
+                    ]
+                },
+                {
+                    "id": "timeslot12",
+                    "info": {
+                        "start": "Samstag 09:00"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Banach",
+                        "Hausdorff",
+                        "Hilbert",
+                        "Sierpinski",
+                        "Schwartz",
+                        "Vektor",
+                        "not-friday",
+                        "ak04",
+                        "ak06",
+                        "ak08",
+                        "ak10",
+                        "ak14",
+                        "ak24"
+                    ]
+                },
+                {
+                    "id": "timeslot13",
+                    "info": {
+                        "start": "Samstag 10:00"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Banach",
+                        "Hausdorff",
+                        "Hilbert",
+                        "Sierpinski",
+                        "Schwartz",
+                        "Vektor",
+                        "not-friday",
+                        "ak04",
+                        "ak05",
+                        "ak06",
+                        "ak10",
+                        "ak14"
+                    ]
+                },
+                {
+                    "id": "timeslot14",
+                    "info": {
+                        "start": "Samstag 11:00"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Banach",
+                        "Hausdorff",
+                        "Hilbert",
+                        "Sierpinski",
+                        "Schwartz",
+                        "Vektor",
+                        "not-friday",
+                        "ak04",
+                        "ak05",
+                        "ak06",
+                        "ak10",
+                        "ak14"
+                    ]
+                },
+                {
+                    "id": "timeslot15",
+                    "info": {
+                        "start": "Samstag 12:00"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Banach",
+                        "Hausdorff",
+                        "Hilbert",
+                        "Sierpinski",
+                        "Schwartz",
+                        "Vektor",
+                        "not-friday",
+                        "ak04",
+                        "ak05",
+                        "ak06",
+                        "ak08",
+                        "ak10",
+                        "ak14",
+                        "ak24"
+                    ]
+                },
+                {
+                    "id": "timeslot16",
+                    "info": {
+                        "start": "Samstag 13:00"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Banach",
+                        "Hausdorff",
+                        "Hilbert",
+                        "Sierpinski",
+                        "Schwartz",
+                        "Vektor",
+                        "not-friday",
+                        "ak04",
+                        "ak05",
+                        "ak06",
+                        "ak08",
+                        "ak10",
+                        "ak14",
+                        "ak24"
+                    ]
+                },
+                {
+                    "id": "timeslot17",
+                    "info": {
+                        "start": "Samstag 14:00"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Banach",
+                        "Hausdorff",
+                        "Hilbert",
+                        "Sierpinski",
+                        "Schwartz",
+                        "Vektor",
+                        "not-friday",
+                        "ak04",
+                        "ak05",
+                        "ak10",
+                        "ak12",
+                        "ak14"
+                    ]
+                },
+                {
+                    "id": "timeslot18",
+                    "info": {
+                        "start": "Samstag 15:00"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Banach",
+                        "Hausdorff",
+                        "Hilbert",
+                        "Sierpinski",
+                        "Schwartz",
+                        "Vektor",
+                        "not-friday",
+                        "ak04",
+                        "ak05",
+                        "ak10",
+                        "ak12",
+                        "ak14"
+                    ]
+                }
+            ]
+        ]
+    },
+    "aks": [
+		{
+			"id": "ak01",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": ["Reso"],
+            "info": {
+                "name": "AK01",
+                "head": "N/A",
+                "description": "N/A",
+                "reso": true
+            }
+		},
+        {
+			"id": "ak03",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK03",
+                "head": "N/A",
+                "description": "N/A",
+                "reso": false
+            }
+		},
+        {
+			"id": "ak04",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": ["ak04"],
+            "info": {
+                "name": "AK04",
+                "head": "N/A",
+                "description": "N/A",
+                "reso": false
+            }
+		},
+        {
+			"id": "ak05",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": ["ak05", "not-friday"],
+            "info": {
+                "name": "AK Orga/Meta",
+                "head": "N/A",
+                "description": "N/A",
+                "reso": false
+            }
+		},
+        {
+			"id": "ak06",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": ["ak06", "not-friday"],
+            "info": {
+                "name": "AK06",
+                "head": "N/A",
+                "description": "N/A",
+                "reso": false
+            }
+		},
+        {
+			"id": "ak07",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK07",
+                "head": "N/A",
+                "description": "N/A",
+                "reso": false
+            }
+		},
+        {
+			"id": "ak08",
+            "duration": 1,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": ["ak08"],
+            "info": {
+                "name": "AK08",
+                "head": "N/A",
+                "description": "N/A",
+                "reso": false
+            }
+		},
+        {
+			"id": "ak09",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": ["Reso"],
+            "info": {
+                "name": "AK09",
+                "head": "N/A",
+                "description": "N/A",
+                "reso": true
+            }
+		},
+        {
+			"id": "ak10",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": ["ak10"],
+            "info": {
+                "name": "AK10",
+                "head": "N/A",
+                "description": "N/A",
+                "reso": false
+            }
+		},
+        {
+			"id": "ak11",
+            "duration": 1,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK11",
+                "head": "N/A",
+                "description": "N/A",
+                "reso": false
+            }
+		},
+        {
+			"id": "ak12",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": ["ak12", "not-friday"],
+            "info": {
+                "name": "AK12",
+                "head": "N/A",
+                "description": "N/A",
+                "reso": false
+            }
+		},
+        {
+			"id": "ak13",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": ["ak12", "not-friday"],
+            "info": {
+                "name": "AK13",
+                "head": "N/A",
+                "description": "N/A",
+                "reso": false
+            }
+		},
+        {
+			"id": "ak14",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": ["ak14"],
+            "info": {
+                "name": "AK14",
+                "head": "N/A",
+                "description": "N/A",
+                "reso": false
+            }
+		},
+        {
+			"id": "ak15",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK15",
+                "head": "N/A",
+                "description": "N/A",
+                "reso": false
+            }
+		},
+        {
+			"id": "ak16",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK16",
+                "head": "N/A",
+                "description": "N/A",
+                "reso": false
+            }
+		},
+        {
+			"id": "ak17",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": ["Reso"],
+            "info": {
+                "name": "AK17",
+                "head": "N/A",
+                "description": "N/A",
+                "reso": true
+            }
+		},
+        {
+			"id": "ak18",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK18",
+                "head": "N/A",
+                "description": "N/A",
+                "reso": false
+            }
+		},
+        {
+			"id": "ak19",
+            "duration": 1,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK19",
+                "head": "N/A",
+                "description": "N/A",
+                "reso": false
+            }
+		},
+        {
+			"id": "ak20",
+            "duration": 1,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK20",
+                "head": "N/A",
+                "description": "N/A",
+                "reso": false
+            }
+		},
+        {
+			"id": "ak21",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK21",
+                "head": "N/A",
+                "description": "N/A",
+                "reso": false
+            }
+		},
+        {
+			"id": "ak22",
+            "duration": 1,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK22",
+                "head": "N/A",
+                "description": "N/A",
+                "reso": false
+            }
+		},
+        {
+			"id": "ak23",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": ["ak14"],
+            "info": {
+                "name": "AK23",
+                "head": "N/A",
+                "description": "N/A",
+                "reso": false
+            }
+		},
+        {
+			"id": "ak24",
+            "duration": 1,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": ["ak24"],
+            "info": {
+                "name": "AK24",
+                "head": "N/A",
+                "description": "N/A",
+                "reso": false
+            }
+		},
+        {
+			"id": "ak25",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK25",
+                "head": "N/A",
+                "description": "N/A",
+                "reso": false
+            }
+		}
+    ],
+    "participants": [
+        {
+            "id": "participant00",
+            "info": {
+                "name": "AKLeiter5"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak05",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak08",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak11",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak23",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant01",
+            "info": {
+                "name": "Person2"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak06",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak10",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak17",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak25",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant02",
+            "info": {
+                "name": "Person3"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak01",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak03",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak06",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak08",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak10",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak13",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak14",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak16",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak17",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak21",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak22",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak23",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak25",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant03",
+            "info": {
+                "name": "Person4"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak01",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak04",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak05",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak07",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak09",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak11",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak14",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak18",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak21",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak22",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak23",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant04",
+            "info": {
+                "name": "AKLeiter19"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak04",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak08",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak09",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak10",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak14",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak15",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak16",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak19",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak24",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant05",
+            "info": {
+                "name": "AKLeiter9"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak01",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak08",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak09",
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
+                    "ak_id": "ak10",
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
+                    "ak_id": "ak14",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak18",
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
+                    "ak_id": "ak22",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak23",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak25",
+                    "required": true,
+                    "preference_score": -1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant06",
+            "info": {
+                "name": "AKLeiter12"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak01",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak03",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak05",
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
+                    "ak_id": "ak12",
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
+                    "ak_id": "ak23",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant07",
+            "info": {
+                "name": "Person8"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak01",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak03",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak05",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak07",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak08",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak09",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak12",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak17",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak19",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak22",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak23",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak24",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak25",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant08",
+            "info": {
+                "name": "Person9"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak04",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak06",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak14",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak15",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak18",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak20",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant09",
+            "info": {
+                "name": "Person10"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak05",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak10",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak17",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak20",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant10",
+            "info": {
+                "name": "Person11"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak01",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak03",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak04",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak05",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak06",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak09",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak11",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak12",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak13",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak15",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak17",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak19",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak20",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak24",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant11",
+            "info": {
+                "name": "Person12"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak12",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak14",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak23",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant12",
+            "info": {
+                "name": "Person13"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak01",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak04",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak08",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak09",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak10",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak12",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak14",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak15",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak16",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak17",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak24",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant13",
+            "info": {
+                "name": "Person14"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak16",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak20",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant14",
+            "info": {
+                "name": "Person15"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak01",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak05",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak20",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak24",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant15",
+            "info": {
+                "name": "Person16"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak04",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak09",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak12",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak15",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak17",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak24",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant16",
+            "info": {
+                "name": "Person17"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak04",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak10",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak22",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant17",
+            "info": {
+                "name": "AKLeiter11"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak01",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak05",
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
+                    "ak_id": "ak06",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak11",
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
+                    "ak_id": "ak13",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak14",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak15",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak20",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak23",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak25",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant18",
+            "info": {
+                "name": "Person19"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak04",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak06",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak17",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak22",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant19",
+            "info": {
+                "name": "AKLeiter4 "
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak01",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak03",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak04",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak08",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant20",
+            "info": {
+                "name": "Person21"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak01",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak04",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak06",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak08",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak10",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak13",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak14",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak15",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak16",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak17",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak20",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant21",
+            "info": {
+                "name": "Person22"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak04",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak08",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak10",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak12",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak14",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak16",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak17",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak21",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak22",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak23",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant22",
+            "info": {
+                "name": "Person23"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak09",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak14",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak15",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak17",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak20",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak22",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak23",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak24",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant23",
+            "info": {
+                "name": "Person24"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak01",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak04",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak05",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak06",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak08",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak09",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak10",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak12",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak13",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak14",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak16",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak17",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak18",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak23",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak24",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant24",
+            "info": {
+                "name": "AKLeiter20"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak01",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak05",
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
+                    "ak_id": "ak12",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak16",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak17",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak18",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak20",
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
+                    "ak_id": "ak25",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant25",
+            "info": {
+                "name": "Person26"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak01",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak04",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak06",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak09",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak13",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak14",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak16",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak17",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak18",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak20",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak21",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak22",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak23",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant26",
+            "info": {
+                "name": "Person27"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak01",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak03",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak04",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak05",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak06",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak07",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak08",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak15",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak16",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak17",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak24",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant27",
+            "info": {
+                "name": "AKLeiter7"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak03",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak05",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak06",
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
+                    "ak_id": "ak21",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak22",
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
+                    "ak_id": "ak23",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak24",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak25",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant28",
+            "info": {
+                "name": "Person29"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak01",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak04",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak05",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak06",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak08",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak09",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak10",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak12",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak13",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak14",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak15",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak16",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak17",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak18",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak20",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak22",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak23",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak24",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant29",
+            "info": {
+                "name": "Person30"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak04",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak09",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak10",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak13",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak14",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak15",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak17",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak18",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak20",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant30",
+            "info": {
+                "name": "Person31"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak13",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak15",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak23",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant31",
+            "info": {
+                "name": "Person32"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak01",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak04",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak08",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak18",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak23",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant32",
+            "info": {
+                "name": "Person33"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak01",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak08",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak16",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak19",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak22",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant33",
+            "info": {
+                "name": "Person34"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak12",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak14",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant34",
+            "info": {
+                "name": "Person35"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak04",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak05",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak06",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak16",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak17",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak18",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant35",
+            "info": {
+                "name": "AkLieter23"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak01",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak05",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak12",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak14",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak15",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak17",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak23",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant36",
+            "info": {
+                "name": "Person37"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak04",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak06",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak07",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak08",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak09",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak10",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak12",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak13",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak14",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak16",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak17",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak18",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak19",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak21",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak23",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak24",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant37",
+            "info": {
+                "name": "Person38"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak04",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak06",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak07",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak08",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak10",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak17",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak18",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant38",
+            "info": {
+                "name": "AKLeiter24"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak01",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak04",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak05",
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
+                    "ak_id": "ak09",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak11",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak17",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak24",
+                    "required": true,
+                    "preference_score": -1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant39",
+            "info": {
+                "name": "Person40"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak01",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak05",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak09",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak10",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak11",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak12",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak16",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak17",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak21",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak22",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak23",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak24",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant40",
+            "info": {
+                "name": "Person41"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak01",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak04",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak06",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak08",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak10",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak13",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak14",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak15",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak16",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak17",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak20",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak23",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak24",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant41",
+            "info": {
+                "name": "AKLeiter21"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak21",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant42",
+            "info": {
+                "name": "Person43"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak03",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak04",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak06",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak09",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak11",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak12",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak15",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak16",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak17",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak18",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak21",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak23",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant43",
+            "info": {
+                "name": "AkLeiter15"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak06",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak15",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak16",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak17",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant44",
+            "info": {
+                "name": "AKLeiter2"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak01",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant45",
+            "info": {
+                "name": "Person46"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak03",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak04",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak08",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak09",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak11",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak15",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak16",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak17",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak18",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak21",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak23",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant46",
+            "info": {
+                "name": "Person47"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak01",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak04",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak06",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak13",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak16",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak23",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant47",
+            "info": {
+                "name": "AKLeiter14"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak01",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak04",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak09",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak12",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak14",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak18",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant48",
+            "info": {
+                "name": "Person49"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak05",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak06",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak16",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak17",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak22",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant49",
+            "info": {
+                "name": "Person50"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak09",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak18",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak20",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak22",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak23",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant50",
+            "info": {
+                "name": "Person51"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak01",
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
+                    "ak_id": "ak04",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak05",
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
+                    "ak_id": "ak06",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak08",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak09",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak10",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak11",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak13",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak14",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak16",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak17",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak18",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak19",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak20",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak22",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak23",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak24",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant51",
+            "info": {
+                "name": "Person52"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak01",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak03",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak10",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak20",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak22",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak23",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak24",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant52",
+            "info": {
+                "name": "Person53"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak04",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak06",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak08",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak09",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak13",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak14",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak15",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak16",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak17",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak20",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak22",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak23",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant53",
+            "info": {
+                "name": "Person54"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak01",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak03",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak05",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak12",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak16",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak17",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak20",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant54",
+            "info": {
+                "name": "AKLeiter16"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak14",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak15",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak16",
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
+                    "ak_id": "ak17",
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
+                    "ak_id": "ak18",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak24",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant55",
+            "info": {
+                "name": "AkLeiter13"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak06",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak13",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak14",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant56",
+            "info": {
+                "name": "Person57"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak06",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant57",
+            "info": {
+                "name": "Person58"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak01",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak04",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak05",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak06",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak08",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak12",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak15",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak18",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant58",
+            "info": {
+                "name": "Person59"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak03",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak04",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak08",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak10",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak14",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak17",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak20",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak23",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant59",
+            "info": {
+                "name": "Person60"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak06",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak07",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak08",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak12",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak14",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak15",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak17",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak23",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant60",
+            "info": {
+                "name": "Person61"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak03",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak08",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak12",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak14",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak15",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak16",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak17",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak20",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak24",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant61",
+            "info": {
+                "name": "AKLeiter3 "
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak01",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak03",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak04",
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
+                    "ak_id": "ak05",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak06",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak08",
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
+                    "ak_id": "ak09",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak14",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak15",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak16",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak17",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak19",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak23",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak24",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant62",
+            "info": {
+                "name": "Person63"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak14",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak21",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak22",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak23",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant63",
+            "info": {
+                "name": "Person64"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak01",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak06",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak08",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak10",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak12",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak18",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak19",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak21",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "ak22",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        },
+        {
+            "id": "participant64",
+            "info": {
+                "name": "Person65"
+            },
+            "preferences": [
+                {
+                    "ak_id": "ak01",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "time_constraints": [],
+            "room_constraints": []
+        }
+    ]
+}
