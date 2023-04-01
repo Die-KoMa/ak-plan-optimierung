@@ -296,7 +296,7 @@ def create_lp(
             affine_constraint = lpSum(
                 [
                     dec_vars[ak_id][timeslot_id][room_id][participant_id]
-                    for ak_id, room_id in product(ak_id, room_ids)
+                    for timeslot_id, room_id in product(timeslot_ids, room_ids)
                 ]
             )
             for pref in preferences:
