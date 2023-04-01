@@ -286,7 +286,7 @@
             "info": {"name": "Alice"},
             "preferences": [
                 {
-                    "ak_id": "ak0",
+                    "ak_id": "ak00",
                     "required": false,
                     "preference_score": 1
                 },
