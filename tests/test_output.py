@@ -1,7 +1,7 @@
 import argparse
-from collections import defaultdict
 import json
 import warnings
+from collections import defaultdict
 
 import numpy as np
 
