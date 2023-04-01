@@ -338,7 +338,10 @@ def create_lp(
     else:
         solver = None
     # The problem is solved using PuLP's choice of Solver
-    res = prob.solve(solver)
+    try:
+        res = prob.solve(solver)
+    except KeyboardInterrupt:
+        pass
 
     # The status of the solution is printed to the screen
     print("Status:", LpStatus[prob.status])
