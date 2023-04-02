@@ -128,6 +128,7 @@ def _add_impossible_constraints(
 def create_lp(
     input_data: SchedulingInput,
     mu: float,
+    output_file: str | None = "koma-plan.lp",
     solver_name: str | None = None,
     **solver_kwargs,
 ) -> None:
@@ -150,6 +151,8 @@ def create_lp(
     Args:
         input_data (SchedulingInput): The input data used to construct the MILP.
         mu (float): The weight associated with a strong preference for an AK.
+        output_file (str, optional): If not None, the created LP is written
+            as an `.lp` file to this location. Defaults to `koma-plan.lp`.
         solver_name (str, optional): The solver to use. If None, uses pulp's
             default solver. Defaults to None.
         **solver_kwargs: kwargs are passed to the solver.
@@ -524,7 +527,8 @@ def create_lp(
     ## TODO: Not implemented yet
 
     # The problem data is written to an .lp file
-    prob.writeLP("koma-plan.lp")
+    if output_file is not None:
+        prob.writeLP(output_file)
 
     if solver_name:
         solver = getSolver(solver_name, **kwargs_dict)
