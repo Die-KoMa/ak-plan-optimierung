@@ -1,7 +1,7 @@
 import argparse
 import json
 from collections import defaultdict
-from itertools import combinations, product
+from itertools import chain, combinations, product
 from pathlib import Path
 from typing import Dict, Optional, Set
 
@@ -17,6 +17,8 @@ from pulp import (
     lpSum,
     value,
 )
+
+from .util import SchedulingInput
 
 
 def process_pref_score(preference_score: int, required: bool, mu: float) -> float:
@@ -35,15 +37,13 @@ def _construct_constraint_name(name: str, *args) -> str:
 
 
 def create_lp(
-    input_dict: Dict[str, object],
+    input_data: SchedulingInput,
     mu: float,
-    args: argparse.Namespace,
-    outpath: str = "output.json",
-) -> None:
-    """Create the MILP problem as pulp object and solve it.
+    output_file: str | None = "koma-plan.lp",
+) -> tuple[LpProblem, dict]:
+    """Create the MILP problem as pulp object.
 
     Creates the problem with all constraints, preferences and the objective function.
-    Runs the solver on the created instance and stores the output as a json file.
 
     For a specification of the input JSON format, see
     https://github.com/Die-KoMa/ak-plan-optimierung/wiki/Input-&-output-format
@@ -57,11 +57,10 @@ def create_lp(
     balance between weak and strong preferences.
 
     Args:
-        input_dict (dict): The input dictionary as read from the input JSON file.
+        input_data (SchedulingInput): The input data used to construct the MILP.
         mu (float): The weight associated with a strong preference for an AK.
-        args (argparse.Namespace): CLI arguments, used to pass options for the
-            MILP solver.
-        outpath (str): The path where the result is stored as a JSON file.
+        output_file (str, optional): If not None, the created LP is written
+            as an `.lp` file to this location. Defaults to `koma-plan.lp`.
     """
 
     # Get ids from input_dict
@@ -82,57 +81,59 @@ def create_lp(
     }
     num_people = len(person_ids)
 
+    ak_ids, participant_ids, room_ids, timeslot_ids = get_ids(input_data)
     # Get values needed from the input_dict
-    room_capacities = {room["id"]: room["capacity"] for room in input_dict["rooms"]}
-    ak_durations = {ak["id"]: ak["duration"] for ak in input_dict["aks"]}
-    weighted_preference_dict = {
-        person["id"]: {
-            pref["ak_id"]: process_pref_score(
-                pref["preference_score"],
-                pref["required"],
-                mu=mu,
-            )
-            for pref in person["preferences"]
-        }
-        for person in input_dict["participants"]
-    }
     required_persons = {
         ak_id: {
-            person["id"]
-            for person in input_dict["participants"]
-            for pref in person["preferences"]
-            if pref["ak_id"] == ak_id and pref["required"]
+            participant.id
+            for participant in input_data.participants
+            for pref in participant.preferences
+            if pref.ak_id == ak_id and pref.required
         }
         for ak_id in ak_ids
+    }
+    room_capacities = {room.id: room.capacity for room in input_data.rooms}
+    ak_durations = {ak.id: ak.duration for ak in input_data.aks}
+
+    # dict of real participants only (without dummy participants) with their preferences dicts
+
+    # dict of real participants only (without dummy participants) with numerical preferences
+    weighted_preference_dict = {
+        participant.id: {
+            pref.ak_id: process_pref_score(
+                pref.preference_score,
+                pref.required,
+                mu=mu,
+            )
+            for pref in participant.preferences
+        }
+        for participant in input_data.participants
     }
 
     # Get constraints from input_dict
     participant_time_constraint_dict = {
-        participant["id"]: set(participant["time_constraints"])
-        for participant in input_dict["participants"]
+        participant.id: set(participant.time_constraints)
+        for participant in input_data.participants
     }
     participant_room_constraint_dict = {
-        participant["id"]: set(participant["room_constraints"])
-        for participant in input_dict["participants"]
+        participant.id: set(participant.room_constraints)
+        for participant in input_data.participants
     }
-    ak_time_constraint_dict = {
-        ak["id"]: set(ak["time_constraints"]) for ak in input_dict["aks"]
-    }
-    ak_room_constraint_dict = {
-        ak["id"]: set(ak["room_constraints"]) for ak in input_dict["aks"]
-    }
+
+    ak_time_constraint_dict = {ak.id: set(ak.time_constraints) for ak in input_data.aks}
+    ak_room_constraint_dict = {ak.id: set(ak.room_constraints) for ak in input_data.aks}
+
     room_time_constraint_dict = {
-        room["id"]: set(room["time_constraints"]) for room in input_dict["rooms"]
+        room.id: set(room.time_constraints) for room in input_data.rooms
     }
 
     fulfilled_time_constraints = {
-        timeslot["id"]: set(timeslot["fulfilled_time_constraints"])
-        for block in input_dict["timeslots"]["blocks"]
+        timeslot.id: set(timeslot.fulfilled_time_constraints)
+        for block in input_data.timeslot_blocks
         for timeslot in block
     }
     fulfilled_room_constraints = {
-        room["id"]: set(room["fulfilled_room_constraints"])
-        for room in input_dict["rooms"]
+        room.id: set(room.fulfilled_room_constraints) for room in input_data.rooms
     }
 
     # Create problem
@@ -307,54 +308,29 @@ def create_lp(
                 )
 
     # The problem data is written to an .lp file
-    prob.writeLP("koma-plan.lp")
+    if output_file is not None:
+        prob.writeLP(output_file)
 
-    kwargs_dict = {}
-    if args.solver_path:
-        kwargs_dict["path"] = args.solver_path
-    if args.warm_start:
-        kwargs_dict["warmStart"] = True
-    if args.timelimit:
-        kwargs_dict["timeLimit"] = args.timelimit
-    if args.gap_rel:
-        kwargs_dict["gapRel"] = args.gap_rel
-    if args.gap_abs:
-        if args.solver == "GUROBI":
-            kwargs_dict["MIPGapAbs"] = args.gap_abs
-        else:
-            kwargs_dict["gapAbs"] = args.gap_abs
+    return prob, dec_vars
 
-    if args.threads:
-        kwargs_dict["Threads"] = args.threads
 
-    if args.solver:
-        solver = getSolver(args.solver, **kwargs_dict)
-    else:
-        solver = None
-    # The problem is solved using PuLP's choice of Solver
-    try:
-        res = prob.solve(solver)
-    except KeyboardInterrupt:
-        pass
-
-    # The status of the solution is printed to the screen
-    print("Status:", LpStatus[prob.status])
+def export_scheduling_result(
+    input_data: SchedulingInput,
+    solved_lp_problem: LpProblem,
+    dec_vars,
+) -> dict[str, dict | list]:
+    ak_ids, participant_ids, room_ids, timeslot_ids = get_ids(input_data)
 
     def _get_val(var):
         return var.solverVar.X if args.solver == "GUROBI" else value(var)
 
     tmp_res_dir = defaultdict(lambda: defaultdict(lambda: defaultdict(set)))
-    for ak_id in ak_ids:
-        room_for_ak = None
-        for room_id in room_ids:
-            if _get_val(room_var[ak_id][room_id]) == 1:
-                room_for_ak = room_id
-        for timeslot_id in timeslot_ids:
-            if _get_val(time_var[ak_id][timeslot_id]) == 1:
-                tmp_res_dir[ak_id][room_for_ak]["timeslot_ids"].add(timeslot_id)
-        for person_id in person_ids:
-            if _get_val(person_var[ak_id][person_id]) == 1:
-                tmp_res_dir[ak_id][room_for_ak]["participant_ids"].add(person_id)
+    for ak_id, participant_id, room_id, timeslot_id in product(
+        ak_ids, participant_ids, room_ids, timeslot_ids
+    ):
+        if value(dec_vars[ak_id][timeslot_id][room_id][participant_id]) == 1:
+            tmp_res_dir[ak_id][room_id]["timeslot_ids"].add(timeslot_id)
+            tmp_res_dir[ak_id][room_id]["participant_ids"].add(participant_id)
 
     output_dict = {}
     output_dict["scheduled_aks"] = [
@@ -367,11 +343,63 @@ def create_lp(
         for ak_id, subdict in tmp_res_dir.items()
         for room_id, subsubdict in subdict.items()
     ]
-    output_dict["input"] = input_dict
+    output_dict["input"] = input_data.to_dict()
 
-    with open(outpath, "w") as output_file:
-        json.dump(output_dict, output_file, indent=4)
-    print(f"Result stored at '{outpath}'")
+    return output_dict
+
+
+def solve_scheduling(
+    input_data: SchedulingInput,
+    mu: float,
+    solver_name: str | None = None,
+    output_lp_file: str | None = "koma-plan.lp",
+    output_json_file: str | None = "output.json",
+    **solver_kwargs,
+) -> dict[str, dict | list]:
+    """Solve the scheduling problem.
+
+    Solves the MILP scheduling problem described by the input data using an MILP
+    formulation.
+
+    For a specification of the input format, see
+    https://github.com/Die-KoMa/ak-plan-optimierung/wiki/Input-&-output-format
+
+    For a specification of the MILP used, see
+    https://github.com/Die-KoMa/ak-plan-optimierung/wiki/LP-formulation
+
+    The MILP models each person to have three kinds of prefences for an AK:
+    0 (no preference), 1 (weak preference) and `mu` (strong preference).
+    The choice of `mu` is an hyperparameter of the MILP that weights the
+    balance between weak and strong preferences.
+
+    Args:
+        input_data (SchedulingInput): The input data used to construct the MILP.
+        mu (float): The weight associated with a strong preference for an AK.
+        output_lp_file (str, optional): If not None, the created LP is written
+            as an `.lp` file to this location. Defaults to `koma-plan.lp`.
+        solver_name (str, optional): The solver to use. If None, uses pulp's
+            default solver. Defaults to None.
+        **solver_kwargs: kwargs are passed to the solver.
+    """
+    lp_problem, dec_vars = create_lp(input_data, mu, output_lp_file)
+
+    if solver_name:
+        solver = getSolver(solver_name, **kwargs_dict)
+    else:
+        # The problem is solved using PuLP's choice of Solver
+        solver = None
+    res = lp_problem.solve(solver)
+
+    # The status of the solution is printed to the screen
+    print("Status:", LpStatus[lp_problem.status])
+
+    output_dict = export_scheduling_result(input_data, lp_problem, dec_vars)
+
+    if output_json_file is not None:
+        with open(output_json_file, "w") as output_file:
+            json.dump(output_dict, output_file)
+
+    return output_dict
 
 
 def main():
@@ -387,16 +415,10 @@ def main():
         help="Timelimit as stopping criterion (in seconds)",
     )
     parser.add_argument(
-        "--gap_rel",
-        type=float,
-        default=None,
-        help="Relative gap as stopping criterion",
+        "--gap_rel", type=float, default=None, help="Relative gap as stopping criterion"
     )
     parser.add_argument(
-        "--gap_abs",
-        type=float,
-        default=None,
-        help="Absolute gap as stopping criterion",
+        "--gap_abs", type=float, default=None, help="Absolute gap as stopping criterion"
     )
     parser.add_argument(
         "--threads", type=int, default=None, help="Number of threads to use"
@@ -404,13 +426,28 @@ def main():
     parser.add_argument("path", type=str)
     args = parser.parse_args()
 
+    solver_kwargs = {}
+    if args.solver_path:
+        solver_kwargs["path"] = args.solver_path
+    if args.warm_start:
+        solver_kwargs["warmStart"] = True
+    if args.timelimit:
+        solver_kwargs["timeLimit"] = args.timelimit
+    if args.gap_rel:
+        solver_kwargs["gapRel"] = args.gap_rel
+    if args.gap_abs:
+        solver_kwargs["gapAbs"] = args.gap_abs
+    if args.threads:
+        solver_kwargs["Threads"] = args.threads
+
     json_file = Path(args.path)
     assert json_file.suffix == ".json"
-    # Load input json file
-    with json_file.open("r") as fp:
-        input_dict = json.load(fp)
+    with json_file.open("r") as f:
+        input_dict = json.load(f)
 
-    create_lp(input_dict, args.mu, args)
+    output_dict = solve_scheduling(
+        SchedulingInput.from_dict(input_dict), args.mu, args.solver, **solver_kwargs
+    )
 
 
 if __name__ == "__main__":
