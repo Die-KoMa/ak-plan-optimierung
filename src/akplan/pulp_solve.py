@@ -3,7 +3,7 @@ import json
 from collections import defaultdict
 from itertools import chain, combinations, product
 from pathlib import Path
-from typing import Dict, Optional, Set
+from typing import Any, Dict, Iterable, Optional, Sequence, Set
 
 from pulp import (
     LpAffineExpression,
@@ -17,7 +17,7 @@ from pulp import (
     value,
 )
 
-from .util import SchedulingInput
+from .util import AKData, ParticipantData, RoomData, SchedulingInput, TimeSlotData
 
 _DUMMY_PARTICIPANT_PREFIX = "DUMMY_PARTICIPANT"
 
@@ -48,7 +48,7 @@ def is_participant_dummy(
     return participant_id.startswith(dummy_prefix)
 
 
-def _construct_constraint_name(name: str, *args) -> str:
+def _construct_constraint_name(name: str, *args: str) -> str:
     return name + "_" + "_".join(args)
 
 
@@ -73,7 +73,9 @@ def _set_decision_variable(
 def get_ids(
     input_data: SchedulingInput,
 ) -> tuple[set[str], set[str], set[str], set[str]]:
-    def _retrieve_ids(input_iterable) -> set[str]:
+    def _retrieve_ids(
+        input_iterable: Iterable[AKData | ParticipantData | RoomData | TimeSlotData],
+    ) -> set[str]:
         return {obj.id for obj in input_iterable}
 
     ak_ids = _retrieve_ids(input_data.aks)
@@ -87,7 +89,7 @@ def create_lp(
     input_data: SchedulingInput,
     mu: float,
     output_file: str | None = "koma-plan.lp",
-) -> tuple[LpProblem, dict]:
+) -> tuple[LpProblem, dict[str, dict[str, dict[str, dict[str, LpVariable]]]]]:
     """Create the MILP problem as pulp object.
 
     Creates the problem with all constraints, preferences and the objective function.
@@ -483,11 +485,13 @@ def create_lp(
 def export_scheduling_result(
     input_data: SchedulingInput,
     solved_lp_problem: LpProblem,
-    dec_vars,
-) -> dict[str, dict | list]:
+    dec_vars: dict[str, dict[str, dict[str, dict[str, LpVariable]]]],
+) -> dict[str, Any]:
     ak_ids, participant_ids, room_ids, timeslot_ids = get_ids(input_data)
 
-    tmp_res_dir = defaultdict(lambda: defaultdict(lambda: defaultdict(set)))
+    tmp_res_dir: dict[str, dict[str, dict[str, set[str]]]] = defaultdict(
+        lambda: defaultdict(lambda: defaultdict(set))
+    )
     for ak_id, participant_id, room_id, timeslot_id in product(
         ak_ids, participant_ids, room_ids, timeslot_ids
     ):
@@ -495,7 +499,7 @@ def export_scheduling_result(
             tmp_res_dir[ak_id][room_id]["timeslot_ids"].add(timeslot_id)
             tmp_res_dir[ak_id][room_id]["participant_ids"].add(participant_id)
 
-    output_dict = {}
+    output_dict: dict[str, Any] = {}
     output_dict["scheduled_aks"] = [
         {
             "ak_id": ak_id,
@@ -517,8 +521,8 @@ def solve_scheduling(
     solver_name: str | None = None,
     output_lp_file: str | None = "koma-plan.lp",
     output_json_file: str | None = "output.json",
-    **solver_kwargs,
-) -> dict[str, dict | list]:
+    **solver_kwargs: dict[str, Any],
+) -> dict[str, Any]:
     """Solve the scheduling problem.
 
     Solves the MILP scheduling problem described by the input data using an MILP
@@ -547,7 +551,7 @@ def solve_scheduling(
     lp_problem, dec_vars = create_lp(input_data, mu, output_lp_file)
 
     if solver_name:
-        solver = getSolver(solver_name, **kwargs_dict)
+        solver = getSolver(solver_name, **solver_kwargs)
     else:
         # The problem is solved using PuLP's choice of Solver
         solver = None
@@ -565,7 +569,7 @@ def solve_scheduling(
     return output_dict
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--mu", type=float, default=2)
     parser.add_argument("--solver", type=str, default=None)
