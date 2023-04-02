@@ -17,7 +17,6 @@ from pulp import (
     lpSum,
     value,
 )
-
 from util import AKData, ParticipantData, RoomData, SchedulingInput, TimeSlotData
 
 
