@@ -1,8 +1,10 @@
 import json
 from collections import defaultdict
+from itertools import product
 from pathlib import Path
 
 import numpy as np
+import pulp
 import pytest
 
 from src.akplan.pulp_solve import solve_scheduling
@@ -37,7 +39,13 @@ def scheduling_input(request) -> SchedulingInput:
     return SchedulingInput.from_dict(input_dict)
 
 
-@pytest.fixture(scope="module", params=[(2, None)])
+@pytest.fixture(
+    scope="module",
+    params=[
+        (mu, solver)
+        for mu, solver in product([2], pulp.listSolvers(onlyAvailable=True) + [None])
+    ],
+)
 def scheduled_aks(request, scheduling_input) -> dict[str, dict]:
     aks = solve_scheduling(
         scheduling_input,
