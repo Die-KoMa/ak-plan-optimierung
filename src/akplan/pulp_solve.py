@@ -17,7 +17,7 @@ from pulp import (
     lpSum,
     value,
 )
-from util import AKData, ParticipantData, RoomData, SchedulingInput, TimeSlotData
+from .util import AKData, ParticipantData, RoomData, SchedulingInput, TimeSlotData
 
 
 def process_pref_score(preference_score: int, required: bool, mu: float) -> float:
