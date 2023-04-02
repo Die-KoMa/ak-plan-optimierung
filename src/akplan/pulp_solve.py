@@ -69,7 +69,10 @@ def _set_decision_variable(
     dec_vars[ak_id][timeslot_id][room_id][participant_id].setInitialValue(value)
     dec_vars[ak_id][timeslot_id][room_id][participant_id].fixValue()
 
-def get_ids(input_data: SchedulingInput) -> tuple[set[str], set[str], set[str], set[str]]:
+
+def get_ids(
+    input_data: SchedulingInput,
+) -> tuple[set[str], set[str], set[str], set[str]]:
     def _retrieve_ids(input_iterable) -> set[str]:
         return {obj.id for obj in input_iterable}
 
@@ -545,8 +548,8 @@ def solve_scheduling(
     if solver_name:
         solver = getSolver(solver_name, **kwargs_dict)
     else:
+        # The problem is solved using PuLP's choice of Solver
         solver = None
-    # The problem is solved using PuLP's choice of Solver
     res = lp_problem.solve(solver)
 
     # The status of the solution is printed to the screen
