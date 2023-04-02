@@ -9,6 +9,7 @@ def run_test(session):
     """Run pytest."""
     session.install(".")
     session.install("pytest")
+    session.install("pytest-timeout")
     session.run("pytest", *session.posargs)
 
 
@@ -17,6 +18,7 @@ def run_test_fast(session):
     """Run pytest."""
     session.install(".")
     session.install("pytest")
+    session.install("pytest-timeout")
     session.run("pytest", "-m", "not slow", *session.posargs)
 
 
@@ -67,6 +69,7 @@ def check_coverage(session):
     """Check test coverage and generate a html report."""
     session.install(".")
     session.install("pytest")
+    session.install("pytest-timeout")
     session.install("coverage")
     try:
         session.run("coverage", "run", "-m", "pytest", *session.posargs)
