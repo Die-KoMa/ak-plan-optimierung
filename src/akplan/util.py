@@ -10,7 +10,7 @@ from dacite import from_dict
 class AKData:
     id: str
     duration: int
-    properties: list[str]
+    properties: dict[str, Any]
     room_constraints: list[str]
     time_constraints: list[str]
     info: dict[str, Any]
