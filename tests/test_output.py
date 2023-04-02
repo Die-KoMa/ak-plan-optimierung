@@ -1,9 +1,14 @@
+from __future__ import annotations
+
 import argparse
 import json
 import warnings
 from collections import defaultdict
+from dataclasses import dataclass
+from typing import Any
 
 import numpy as np
+import pytest
 
 
 def _test_uniqueness(lst) -> tuple[np.ndarray, np.ndarray, bool]:
@@ -12,9 +17,24 @@ def _test_uniqueness(lst) -> tuple[np.ndarray, np.ndarray, bool]:
     return unique_vals, cnts, not bool(np.abs(cnts - 1).sum())
 
 
-def check_ak_list(scheduled_aks) -> None:
-    # test all AKs only occur once
-    assert _test_uniqueness([ak["ak_id"] for ak in scheduled_aks.values()])[-1]
+@pytest.fixture
+def ak_dict(scheduling_input: SchedulingInput):
+    return scheduling_input.ak_dict
+
+
+@pytest.fixture
+def participant_dict(scheduling_input: SchedulingInput):
+    return scheduling_input.participant_dict
+
+
+@pytest.fixture
+def room_dict(scheduling_input: SchedulingInput):
+    return scheduling_input.room_dict
+
+
+@pytest.fixture
+def room_dict(scheduling_input: SchedulingInput):
+    return scheduling_input.participant_dict
 
 
 def test_rooms_not_overbooked(scheduled_aks) -> None:
