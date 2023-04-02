@@ -10,7 +10,7 @@ from dacite import from_dict
 class AKData:
     id: str
     duration: int
-    properties: dict[str, Any]
+    properties: list[str]
     room_constraints: list[str]
     time_constraints: list[str]
     info: dict[str, Any]
@@ -53,8 +53,8 @@ class SchedulingInput:
     aks: list[AKData]
     participants: list[ParticipantData]
     rooms: list[RoomData]
-    timeslot_blocks: list[list[TimeSlotData]]
     timeslot_info: dict[str, str]
+    timeslot_blocks: list[list[TimeSlotData]]
     info: dict[str, str]
 
     @classmethod

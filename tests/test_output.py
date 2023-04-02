@@ -106,7 +106,7 @@ def test_participant_no_overlapping_timeslot(scheduled_aks) -> None:
     )[-1]
 
 
-def test_ak_lengths(scheduled_aks, ak_dict: dict[str, AKData]) -> None:
+def test_ak_lengths(scheduled_aks) -> None:
     # test AK length
     for ak_id, ak in scheduled_aks.items():
         timeslots = set(ak["timeslot_ids"])

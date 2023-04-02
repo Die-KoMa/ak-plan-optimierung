@@ -18,7 +18,7 @@ from pulp import (
     value,
 )
 
-from .util import SchedulingInput
+from util import SchedulingInput
 
 
 def process_pref_score(preference_score: int, required: bool, mu: float) -> float:
@@ -34,6 +34,19 @@ def process_pref_score(preference_score: int, required: bool, mu: float) -> floa
 
 def _construct_constraint_name(name: str, *args) -> str:
     return name + "_" + "_".join(args)
+
+
+def get_ids(
+    input_data: SchedulingInput,
+) -> tuple[set[str], set[str], set[str], set[str]]:
+    def _retrieve_ids(input_iterable) -> set[str]:
+        return {obj.id for obj in input_iterable}
+
+    ak_ids = _retrieve_ids(input_data.aks)
+    participant_ids = _retrieve_ids(input_data.participants)
+    room_ids = _retrieve_ids(input_data.rooms)
+    timeslot_ids = _retrieve_ids(chain.from_iterable(input_data.timeslot_blocks))
+    return ak_ids, participant_ids, room_ids, timeslot_ids
 
 
 def create_lp(
@@ -64,50 +77,41 @@ def create_lp(
     """
 
     # Get ids from input_dict
-    def _retrieve_val_set(object_key: str, val_key: str) -> Set:
-        return {obj[val_key] for obj in input_dict[object_key]}
+    ak_ids, person_ids, room_ids, timeslot_ids = get_ids(input_data)
+    num_people = len(person_ids)
 
-    ak_ids = _retrieve_val_set("aks", "id")
-    room_ids = _retrieve_val_set("rooms", "id")
-    person_ids = _retrieve_val_set("participants", "id")
     timeslot_ids = {
-        timeslot["id"]: timeslot_idx
-        for block in input_dict["timeslots"]["blocks"]
+        timeslot.id: timeslot_idx
+        for block in input_data.timeslot_blocks
         for timeslot_idx, timeslot in enumerate(block)
     }
     block_ids = {
-        block_idx: {timeslot["id"] for timeslot in block}
-        for block_idx, block in enumerate(input_dict["timeslots"]["blocks"])
+        block_idx: {timeslot.id for timeslot in block}
+        for block_idx, block in enumerate(input_data.timeslot_blocks)
     }
-    num_people = len(person_ids)
-
-    ak_ids, participant_ids, room_ids, timeslot_ids = get_ids(input_data)
     # Get values needed from the input_dict
-    required_persons = {
-        ak_id: {
-            participant.id
-            for participant in input_data.participants
-            for pref in participant.preferences
-            if pref.ak_id == ak_id and pref.required
-        }
-        for ak_id in ak_ids
-    }
     room_capacities = {room.id: room.capacity for room in input_data.rooms}
     ak_durations = {ak.id: ak.duration for ak in input_data.aks}
 
-    # dict of real participants only (without dummy participants) with their preferences dicts
-
-    # dict of real participants only (without dummy participants) with numerical preferences
     weighted_preference_dict = {
-        participant.id: {
+        person.id: {
             pref.ak_id: process_pref_score(
                 pref.preference_score,
                 pref.required,
                 mu=mu,
             )
-            for pref in participant.preferences
+            for pref in person.preferences
         }
-        for participant in input_data.participants
+        for person in input_data.participants
+    }
+    required_persons = {
+        ak_id: {
+            person.id
+            for person in input_data.participants
+            for pref in person.preferences
+            if pref.ak_id == ak_id and pref.required
+        }
+        for ak_id in ak_ids
     }
 
     # Get constraints from input_dict
@@ -311,7 +315,7 @@ def create_lp(
     if output_file is not None:
         prob.writeLP(output_file)
 
-    return prob, dec_vars
+    return prob, (room_var, time_var, person_var)
 
 
 def export_scheduling_result(
@@ -319,18 +323,26 @@ def export_scheduling_result(
     solved_lp_problem: LpProblem,
     dec_vars,
 ) -> dict[str, dict | list]:
-    ak_ids, participant_ids, room_ids, timeslot_ids = get_ids(input_data)
+    ak_ids, person_ids, room_ids, timeslot_ids = get_ids(input_data)
+    (room_var, time_var, person_var) = dec_vars
 
     def _get_val(var):
-        return var.solverVar.X if args.solver == "GUROBI" else value(var)
+        return var.solverVar.X
+
+    # TODO: if args.solver == "GUROBI" else value(var)
 
     tmp_res_dir = defaultdict(lambda: defaultdict(lambda: defaultdict(set)))
-    for ak_id, participant_id, room_id, timeslot_id in product(
-        ak_ids, participant_ids, room_ids, timeslot_ids
-    ):
-        if value(dec_vars[ak_id][timeslot_id][room_id][participant_id]) == 1:
-            tmp_res_dir[ak_id][room_id]["timeslot_ids"].add(timeslot_id)
-            tmp_res_dir[ak_id][room_id]["participant_ids"].add(participant_id)
+    for ak_id in ak_ids:
+        room_for_ak = None
+        for room_id in room_ids:
+            if _get_val(room_var[ak_id][room_id]) == 1:
+                room_for_ak = room_id
+        for timeslot_id in timeslot_ids:
+            if _get_val(time_var[ak_id][timeslot_id]) == 1:
+                tmp_res_dir[ak_id][room_for_ak]["timeslot_ids"].add(timeslot_id)
+        for person_id in person_ids:
+            if _get_val(person_var[ak_id][person_id]) == 1:
+                tmp_res_dir[ak_id][room_for_ak]["participant_ids"].add(person_id)
 
     output_dict = {}
     output_dict["scheduled_aks"] = [
@@ -353,7 +365,6 @@ def solve_scheduling(
     mu: float,
     solver_name: str | None = None,
     output_lp_file: str | None = "koma-plan.lp",
-    output_json_file: str | None = "output.json",
     **solver_kwargs,
 ) -> dict[str, dict | list]:
     """Solve the scheduling problem.
@@ -384,7 +395,7 @@ def solve_scheduling(
     lp_problem, dec_vars = create_lp(input_data, mu, output_lp_file)
 
     if solver_name:
-        solver = getSolver(solver_name, **kwargs_dict)
+        solver = getSolver(solver_name, **solver_kwargs)
     else:
         # The problem is solved using PuLP's choice of Solver
         solver = None
@@ -393,13 +404,7 @@ def solve_scheduling(
     # The status of the solution is printed to the screen
     print("Status:", LpStatus[lp_problem.status])
 
-    output_dict = export_scheduling_result(input_data, lp_problem, dec_vars)
-
-    if output_json_file is not None:
-        with open(output_json_file, "w") as output_file:
-            json.dump(output_dict, output_file)
-
-    return output_dict
+    return export_scheduling_result(input_data, lp_problem, dec_vars)
 
 
 def main():
@@ -448,6 +453,8 @@ def main():
     output_dict = solve_scheduling(
         SchedulingInput.from_dict(input_dict), args.mu, args.solver, **solver_kwargs
     )
+    with open("output.json", "w") as output_file:
+        json.dump(output_dict, output_file)
 
 
 if __name__ == "__main__":
