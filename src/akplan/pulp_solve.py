@@ -604,13 +604,7 @@ def main():
     parser.add_argument("path", type=str)
     args = parser.parse_args()
 
-    json_file = Path(args.path)
-    assert json_file.suffix == ".json"
-    # Load input json file
-    with json_file.open("r") as fp:
-        input_dict = json.load(fp)
-
-    create_lp(input_dict, args.mu, args)
+    create_lp(SchedulingInput.from_json(args.path), args.mu, args)
 
 
 if __name__ == "__main__":

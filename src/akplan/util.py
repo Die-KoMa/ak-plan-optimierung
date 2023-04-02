@@ -1,3 +1,8 @@
+import json
+from dataclasses import dataclass
+from pathlib import Path
+
+
 @dataclass(frozen=True)
 class SchedulingInput:
     ak_dict: dict[str, str | int | list[str] | dict[str, str | bool]]
@@ -12,9 +17,11 @@ class SchedulingInput:
 
     @classmethod
     def from_json(cls, filename: str) -> "SchedulingInput":
-        with open(filename, "r") as f:
-            output_dict = json.load(f)
-        input_vals = output_dict["input"]
+        json_file = Path(filename)
+        assert json_file.suffix == ".json"
+        with json_file.open("r") as f:
+            input_dict = json.load(f)
+        input_vals = input_dict["input"]
         ak_dict = {ak["id"]: ak for ak in input_vals["aks"]}
         room_dict = {room["id"]: room for room in input_vals["rooms"]}
         timeslot_dict = {}
