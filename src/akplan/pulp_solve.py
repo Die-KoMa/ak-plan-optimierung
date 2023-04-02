@@ -125,7 +125,12 @@ def _add_impossible_constraints(
                 _set_decision_variable(value=0, name=name, **kwargs_dict)
 
 
-def create_lp(input_data: SchedulingInput, mu: float, args: argparse.Namespace) -> None:
+def create_lp(
+    input_data: SchedulingInput,
+    mu: float,
+    solver_name: str | None = None,
+    **solver_kwargs,
+) -> None:
     """Create the MILP problem as pulp object and solve it.
 
     Creates the problem with all constraints, preferences and the objective function.
@@ -528,22 +533,8 @@ def create_lp(input_data: SchedulingInput, mu: float, args: argparse.Namespace) 
     # The problem data is written to an .lp file
     prob.writeLP("koma-plan.lp")
 
-    kwargs_dict = {}
-    if args.solver_path:
-        kwargs_dict["path"] = args.solver_path
-    if args.warm_start:
-        kwargs_dict["warmStart"] = True
-    if args.timelimit:
-        kwargs_dict["timeLimit"] = args.timelimit
-    if args.gap_rel:
-        kwargs_dict["gapRel"] = args.gap_rel
-    if args.gap_abs:
-        kwargs_dict["gapAbs"] = args.gap_abs
-    if args.threads:
-        kwargs_dict["Threads"] = args.threads
-
-    if args.solver:
-        solver = getSolver(args.solver, **kwargs_dict)
+    if solver_name:
+        solver = getSolver(solver_name, **kwargs_dict)
     else:
         solver = None
     # The problem is solved using PuLP's choice of Solver
@@ -601,12 +592,28 @@ def main():
     parser.add_argument("path", type=str)
     args = parser.parse_args()
 
+    solver_kwargs = {}
+    if args.solver_path:
+        solver_kwargs["path"] = args.solver_path
+    if args.warm_start:
+        solver_kwargs["warmStart"] = True
+    if args.timelimit:
+        solver_kwargs["timeLimit"] = args.timelimit
+    if args.gap_rel:
+        solver_kwargs["gapRel"] = args.gap_rel
+    if args.gap_abs:
+        solver_kwargs["gapAbs"] = args.gap_abs
+    if args.threads:
+        solver_kwargs["Threads"] = args.threads
+
     json_file = Path(args.path)
     assert json_file.suffix == ".json"
     with json_file.open("r") as f:
         input_dict = json.load(f)
 
-    create_lp(SchedulingInput.from_dict(input_dict), args.mu, args)
+    create_lp(
+        SchedulingInput.from_dict(input_dict), args.mu, args.solver, **solver_kwargs
+    )
 
 
 if __name__ == "__main__":
