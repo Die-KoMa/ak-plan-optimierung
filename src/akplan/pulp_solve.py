@@ -129,13 +129,10 @@ def create_lp(
     input_data: SchedulingInput,
     mu: float,
     output_file: str | None = "koma-plan.lp",
-    solver_name: str | None = None,
-    **solver_kwargs,
 ) -> None:
-    """Create the MILP problem as pulp object and solve it.
+    """Create the MILP problem as pulp object.
 
     Creates the problem with all constraints, preferences and the objective function.
-    Runs the solver on the created instance and stores the output as a json file.
 
     For a specification of the input JSON format, see
     https://github.com/Die-KoMa/ak-plan-optimierung/wiki/Input-&-output-format
@@ -153,9 +150,6 @@ def create_lp(
         mu (float): The weight associated with a strong preference for an AK.
         output_file (str, optional): If not None, the created LP is written
             as an `.lp` file to this location. Defaults to `koma-plan.lp`.
-        solver_name (str, optional): The solver to use. If None, uses pulp's
-            default solver. Defaults to None.
-        **solver_kwargs: kwargs are passed to the solver.
     """
     # Get values needed from the input_dict
     room_capacities = {room.id: room.capacity for room in input_data.rooms}
@@ -530,6 +524,42 @@ def create_lp(
     if output_file is not None:
         prob.writeLP(output_file)
 
+    return prob
+
+def solve_scheduling(
+    input_data: SchedulingInput,
+    mu: float,
+    solver_name: str | None = None,
+    output_file: str | None = "koma-plan.lp",
+    **solver_kwargs,
+) -> None:
+    """Solve the scheduling problem.
+
+    Solves the MILP scheduling problem described by the input data using an MILP
+    formulation.
+
+    For a specification of the input format, see
+    https://github.com/Die-KoMa/ak-plan-optimierung/wiki/Input-&-output-format
+
+    For a specification of the MILP used, see
+    https://github.com/Die-KoMa/ak-plan-optimierung/wiki/LP-formulation
+
+    The MILP models each person to have three kinds of prefences for an AK:
+    0 (no preference), 1 (weak preference) and `mu` (strong preference).
+    The choice of `mu` is an hyperparameter of the MILP that weights the
+    balance between weak and strong preferences.
+
+    Args:
+        input_data (SchedulingInput): The input data used to construct the MILP.
+        mu (float): The weight associated with a strong preference for an AK.
+        output_file (str, optional): If not None, the created LP is written
+            as an `.lp` file to this location. Defaults to `koma-plan.lp`.
+        solver_name (str, optional): The solver to use. If None, uses pulp's
+            default solver. Defaults to None.
+        **solver_kwargs: kwargs are passed to the solver.
+    """
+    prob = create_lp(input_data, mu)
+
     if solver_name:
         solver = getSolver(solver_name, **kwargs_dict)
     else:
@@ -608,7 +638,7 @@ def main():
     with json_file.open("r") as f:
         input_dict = json.load(f)
 
-    create_lp(
+    solve_scheduling(
         SchedulingInput.from_dict(input_dict), args.mu, args.solver, **solver_kwargs
     )
 
