@@ -11,6 +11,7 @@ from typing import Any
 import numpy as np
 import pytest
 
+from src.akplan.pulp_solve import solve_scheduling
 from src.akplan.util import AKData, ParticipantData, PreferenceData, RoomData, TimeSlotData, SchedulingInput
 
 
@@ -18,6 +19,30 @@ def _test_uniqueness(lst) -> tuple[np.ndarray, np.ndarray, bool]:
     arr = np.asarray(lst)
     unique_vals, cnts = np.unique(arr, axis=0, return_counts=True)
     return unique_vals, cnts, not bool(np.abs(cnts - 1).sum())
+
+
+@pytest.fixture(params=["examples/test1.json"])
+def scheduling_input(request) -> SchedulingInput:
+    json_file = Path(request.param)
+    assert json_file.suffix == ".json"
+    with json_file.open("r") as f:
+        input_dict = json.load(f)
+
+    return SchedulingInput.from_dict(input_dict)
+
+
+@pytest.fixture(params=[(2, None)])
+def scheduled_aks(request, scheduling_input) -> dict[str, dict]:
+    aks = solve_scheduling(
+        scheduling_input,
+        mu=request.param[0],
+        solver_name=request.param[1],
+        output_lp_file=None,
+        output_json_file=None,
+        **{"timelimit": 60},
+    )["scheduled_aks"]
+
+    return {ak["ak_id"]: ak for ak in aks}
 
 
 @pytest.fixture
