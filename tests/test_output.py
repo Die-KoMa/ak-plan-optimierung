@@ -1,6 +1,7 @@
 import json
 from collections import defaultdict
 from itertools import product
+import multiprocessing
 from pathlib import Path
 
 import numpy as np
@@ -51,6 +52,7 @@ scheduled_aks_params = [
     params=scheduled_aks_params,
 )
 def scheduled_aks(request, scheduling_input) -> dict[str, dict]:
+    threads = max(1, multiprocessing.cpu_count() - 1)
     aks = solve_scheduling(
         scheduling_input,
         mu=request.param[0],
@@ -58,6 +60,7 @@ def scheduled_aks(request, scheduling_input) -> dict[str, dict]:
         output_lp_file=None,
         output_json_file=None,
         timeLimit=60,
+        threads=threads,
     )["scheduled_aks"]
 
     return {ak["ak_id"]: ak for ak in aks}

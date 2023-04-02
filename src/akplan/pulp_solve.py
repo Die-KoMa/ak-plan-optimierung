@@ -556,7 +556,7 @@ def main() -> None:
     if args.gap_abs:
         solver_kwargs["gapAbs"] = args.gap_abs
     if args.threads:
-        solver_kwargs["Threads"] = args.threads
+        solver_kwargs["threads"] = args.threads
     if args.seed:
         solver_kwargs["RandomC"] = args.seed
 
