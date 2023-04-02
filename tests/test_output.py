@@ -5,10 +5,13 @@ import json
 import warnings
 from collections import defaultdict
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any
 
 import numpy as np
 import pytest
+
+from src.akplan.util import AKData, ParticipantData, PreferenceData, RoomData, TimeSlotData, SchedulingInput
 
 
 def _test_uniqueness(lst) -> tuple[np.ndarray, np.ndarray, bool]:
@@ -18,23 +21,27 @@ def _test_uniqueness(lst) -> tuple[np.ndarray, np.ndarray, bool]:
 
 
 @pytest.fixture
-def ak_dict(scheduling_input: SchedulingInput):
-    return scheduling_input.ak_dict
+def ak_dict(scheduling_input: SchedulingInput) -> dict[str, AKData]:
+    return {ak.id: ak for ak in scheduling_input.aks}
 
 
 @pytest.fixture
-def participant_dict(scheduling_input: SchedulingInput):
-    return scheduling_input.participant_dict
+def participant_dict(scheduling_input: SchedulingInput) -> dict[str, ParticipantData]:
+    return {participant.id: participant for participant in scheduling_input.participants}
 
 
 @pytest.fixture
-def room_dict(scheduling_input: SchedulingInput):
-    return scheduling_input.room_dict
+def room_dict(scheduling_input: SchedulingInput) -> dict[str, RoomData]:
+    return {room.id: room for room in scheduling_input.rooms}
 
 
 @pytest.fixture
-def room_dict(scheduling_input: SchedulingInput):
-    return scheduling_input.participant_dict
+def timeslot_dict(scheduling_input: SchedulingInput) -> dict[str, TimeSlotData]:
+    return {timeslot.id: timeslot for block in scheduling_input.timeslot_blocks for timeslot in block}
+
+@pytest.fixture
+def timeslot_blocks(scheduling_input: SchedulingInput) -> list[list[TimeSlotData]]:
+    return scheduling_input.timeslot_blocks
 
 
 def test_rooms_not_overbooked(scheduled_aks) -> None:
@@ -60,30 +67,30 @@ def test_participant_no_overlapping_timeslot(scheduled_aks) -> None:
     )[-1]
 
 
-def test_ak_lengths(scheduled_aks) -> None:
+def test_ak_lengths(scheduled_aks, ak_dict: dict[str, AKData]) -> None:
     # test AK length
     for ak_id, ak in scheduled_aks.items():
         timeslots = set(ak["timeslot_ids"])
         assert len(ak["timeslot_ids"]) == len(timeslots)
-        assert len(timeslots) == self.ak_dict[ak_id]["duration"]
+        assert len(timeslots) == ak_dict[ak_id].duration
 
 
-def test_room_capacities(scheduled_aks, room_dict) -> None:
+def test_room_capacities(scheduled_aks, room_dict: dict[str, RoomData]) -> None:
     # test room capacity not exceeded
     for ak in scheduled_aks.values():
         participants = set(ak["participant_ids"])
         assert len(ak["participant_ids"]) == len(participants)
-        assert len(participants) <= room_dict[ak["room_id"]]["capacity"]
+        assert len(participants) <= room_dict[ak["room_id"]].capacity
 
 
-def test_timeslots_consecutive(scheduled_aks, timeslot_dict) -> bool:
+def test_timeslots_consecutive(scheduled_aks, timeslot_blocks: list[list[TimeSlotData]]) -> bool:
     # test AK timeslot consecutive
     for ak_id, ak in scheduled_aks.items():
         timeslots = [
             (block_idx, timeslot_idx)
-            for block_idx, block in enumerate(timeslot_dict)
-            for timeslot_idx, timeslot_id in enumerate(block)
-            if timeslot_id in ak["timeslot_ids"]
+            for block_idx, block in enumerate(timeslot_blocks)
+            for timeslot_idx, timeslot in enumerate(block)
+            if timeslot.id in ak["timeslot_ids"]
         ]
         timeslots.sort()
 
@@ -95,16 +102,16 @@ def test_timeslots_consecutive(scheduled_aks, timeslot_dict) -> bool:
             assert prev_block_idx == next_block_idx
 
 
-def test_room_constraints(scheduled_aks, ak_dict, participant_dict, room_dict) -> None:
+def test_room_constraints(scheduled_aks, ak_dict: dict[str, AKData], participant_dict: dict[str, ParticipantData], room_dict: dict[str, RoomData]) -> None:
     # test room constraints
     for ak_id, ak in scheduled_aks.items():
         fulfilled_room_constraints = set(
-            room_dict[ak["room_id"]]["fulfilled_room_constraints"]
+            room_dict[ak["room_id"]].fulfilled_room_constraints
         )
-        room_constraints_ak = set(ak_dict[ak_id]["room_constraints"])
+        room_constraints_ak = set(ak_dict[ak_id].room_constraints)
         room_constraints_participants = set.union(
             *(
-                set(participant_dict[participant_id]["room_constraints"])
+                set(participant_dict[participant_id].room_constraints)
                 for participant_id in ak["participant_ids"]
             )
         )
@@ -113,26 +120,26 @@ def test_room_constraints(scheduled_aks, ak_dict, participant_dict, room_dict) -
 
 
 def test_time_constraints(
-    scheduled_aks, ak_dict, participant_dict, room_dict, timeslot_dict
+    scheduled_aks, ak_dict: dict[str, AKData], participant_dict: dict[str, ParticipantData], room_dict: dict[str, RoomData], timeslot_dict: dict[str, TimeSlotData]
 ) -> None:
     # test time constraints
     for ak_id, ak in scheduled_aks.items():
-        time_constraints_room = set(room_dict[ak["room_id"]]["time_constraints"])
-        time_constraints_ak = set(ak_dict[ak_id]["time_constraints"])
+        time_constraints_room = set(room_dict[ak["room_id"]].time_constraints)
+        time_constraints_ak = set(ak_dict[ak_id].time_constraints)
 
         fullfilled_time_constraints = None
         for timeslot_id in ak["timeslot_ids"]:
             if fullfilled_time_constraints is None:
                 fullfilled_time_constraints = set(
-                    timeslot_dict[timeslot_id]["fulfilled_time_constraints"]
+                    timeslot_dict[timeslot_id].fulfilled_time_constraints
                 )
             else:
                 fullfilled_time_constraints = fullfilled_time_constraints.intersection(
-                    set(timeslot_dict[timeslot_id]["fulfilled_time_constraints"])
+                    set(timeslot_dict[timeslot_id].fulfilled_time_constraints)
                 )
         time_constraints_participants = set.union(
             *(
-                set(participant_dict[participant_id]["time_constraints"])
+                set(participant_dict[participant_id].time_constraints)
                 for participant_id in ak["participant_ids"]
             )
         )
@@ -141,35 +148,35 @@ def test_time_constraints(
         assert not time_constraints_participants.difference(fullfilled_time_constraints)
 
 
-def test_required(scheduled_aks, participant_dict) -> None:
+def test_required(scheduled_aks, participant_dict: dict[str, ParticipantData]) -> None:
     # test required preferences fulfilled
     for participant_id, participant in participant_dict.items():
-        for pref in participant["preferences"]:
+        for pref in participant.preferences:
             pref_fulfilled = (
-                participant_id in scheduled_aks[pref["ak_id"]]["participant_ids"]
+                participant_id in scheduled_aks[pref.ak_id]["participant_ids"]
             )
             # required => pref_fulfilled
             # equivalent to (not required) or pref_fulfilled
-            assert not pref["required"] or pref_fulfilled
+            assert not pref.required or pref_fulfilled
 
 
-def _print_missing_stats(scheduled_aks, participant_dict) -> None:
+def _print_missing_stats(scheduled_aks, participant_dict: dict[str, ParticipantData]) -> None:
     num_weak_misses = defaultdict(int)
     num_strong_misses = defaultdict(int)
     num_weak_prefs = defaultdict(int)
     num_strong_prefs = defaultdict(int)
     for participant_id, participant in participant_dict.items():
-        for pref in participant["preferences"]:
+        for pref in participant.preferences:
             pref_fulfilled = (
-                participant_id in scheduled_aks[pref["ak_id"]]["participant_ids"]
+                participant_id in scheduled_aks[pref.ak_id]["participant_ids"]
             )
-            if pref["preference_score"] == 1:
+            if pref.preference_score == 1:
                 num_weak_misses[participant_id] += not pref_fulfilled
                 num_weak_prefs[participant_id] += 1
-            elif pref["preference_score"] == 2:
+            elif pref.preference_score == 2:
                 num_strong_misses[participant_id] += not pref_fulfilled
                 num_strong_prefs[participant_id] += 1
-            elif pref["required"] and pref["preference_score"] == -1:
+            elif pref.required and pref.preference_score == -1:
                 continue
             else:
                 raise ValueError
@@ -226,18 +233,18 @@ def _print_missing_stats(scheduled_aks, participant_dict) -> None:
 
 
 def _print_ak_stats(
-    scheduled_aks, ak_dict, participant_dict, room_dict, timeslot_dict
+    scheduled_aks, ak_dict: dict[str, AKData], participant_dict: dict[str, ParticipantData], room_dict: dict[str, RoomData], timeslot_dict: dict[str, TimeSlotData]
 ) -> None:
     # PRINT STATS ABOUT MISSING AKs
     print("\n=== AK STATS ===\n")
     out_lst = []
     for ak_id, ak in scheduled_aks.items():
-        ak_name = ak_dict[ak_id]["info"]["name"]
-        room_name = room_dict[ak["room_id"]]["info"]["name"]
-        begin = timeslot_dict[ak["timeslot_ids"][0]]["info"]["start"]
+        ak_name = ak_dict[ak_id].info["name"]
+        room_name = room_dict[ak["room_id"]].info["name"]
+        begin = timeslot_dict[ak["timeslot_ids"][0]].info["start"]
         participant_names = sorted(
             [
-                participant_dict[participant_id]["info"]["name"]
+                participant_dict[participant_id].info["name"]
                 for participant_id in ak["participant_ids"]
             ]
         )
@@ -248,14 +255,14 @@ def _print_ak_stats(
 
 
 def _print_participant_schedules(
-    scheduled_aks, ak_dict, room_dict, timeslot_dict
+    scheduled_aks, ak_dict: dict[str, AKData], room_dict: dict[str, RoomData], timeslot_dict: dict[str, TimeSlotData]
 ) -> None:
     print(f"\n=== PARTICIPANT SCHEDULES ===\n")
     participant_schedules = defaultdict(list)
     for ak_id, ak in scheduled_aks.items():
-        ak_name = ak_dict[ak_id]["info"]["name"]
-        room_name = room_dict[ak["room_id"]]["info"]["name"]
-        begin = timeslot_dict[ak["timeslot_ids"][0]]["info"]["start"]
+        ak_name = ak_dict[ak_id].info["name"]
+        room_name = room_dict[ak["room_id"]].info["name"]
+        begin = timeslot_dict[ak["timeslot_ids"][0]].info["start"]
         for participant_id in ak["participant_ids"]:
             participant_schedules[participant_id].append(ak_id)
 
