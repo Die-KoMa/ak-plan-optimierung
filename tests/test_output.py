@@ -39,12 +39,16 @@ def scheduling_input(request) -> SchedulingInput:
     return SchedulingInput.from_dict(input_dict)
 
 
+scheduled_aks_params = [
+    (mu, solver)
+    for mu, solver in product([2], pulp.listSolvers(onlyAvailable=True) + [None])
+]
+
+
 @pytest.fixture(
     scope="module",
-    params=[
-        (mu, solver)
-        for mu, solver in product([2], pulp.listSolvers(onlyAvailable=True) + [None])
-    ],
+    ids=[f"mu={mu}-{solver}" for mu, solver in scheduled_aks_params],
+    params=scheduled_aks_params,
 )
 def scheduled_aks(request, scheduling_input) -> dict[str, dict]:
     aks = solve_scheduling(
