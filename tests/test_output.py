@@ -77,11 +77,11 @@ def test_timeslots_consecutive(scheduled_aks, timeslot_dict) -> bool:
 
 def test_room_constraints(scheduled_aks, ak_dict, participant_dict, room_dict) -> None:
     # test room constraints
-    for ak in scheduled_aks.values():
+    for ak_id, ak in scheduled_aks.items():
         fulfilled_room_constraints = set(
             room_dict[ak["room_id"]]["fulfilled_room_constraints"]
         )
-        room_constraints_ak = set(ak_dict[ak["ak_id"]]["room_constraints"])
+        room_constraints_ak = set(ak_dict[ak_id]["room_constraints"])
         room_constraints_participants = set.union(
             *(
                 set(participant_dict[participant_id]["room_constraints"])
@@ -96,9 +96,9 @@ def test_time_constraints(
     scheduled_aks, ak_dict, participant_dict, room_dict, timeslot_dict
 ) -> None:
     # test time constraints
-    for ak in scheduled_aks.values():
+    for ak_id, ak in scheduled_aks.items():
         time_constraints_room = set(room_dict[ak["room_id"]]["time_constraints"])
-        time_constraints_ak = set(ak_dict[ak["ak_id"]]["time_constraints"])
+        time_constraints_ak = set(ak_dict[ak_id]["time_constraints"])
 
         fullfilled_time_constraints = None
         for timeslot_id in ak["timeslot_ids"]:
@@ -237,7 +237,7 @@ def _print_participant_schedules(
         room_name = room_dict[ak["room_id"]]["info"]["name"]
         begin = timeslot_dict[ak["timeslot_ids"][0]]["info"]["start"]
         for participant_id in ak["participant_ids"]:
-            participant_schedules[participant_id].append(ak["ak_id"])
+            participant_schedules[participant_id].append(ak_id)
 
     for name, schedule in sorted(participant_schedules.items()):
         print(f"{name}:\t {sorted(schedule)}")
