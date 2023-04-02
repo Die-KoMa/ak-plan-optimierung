@@ -184,16 +184,13 @@ def test_time_constraints(
         time_constraints_room = set(room_dict[ak["room_id"]].time_constraints)
         time_constraints_ak = set(ak_dict[ak_id].time_constraints)
 
-        fullfilled_time_constraints = None
-        for timeslot_id in ak["timeslot_ids"]:
-            if fullfilled_time_constraints is None:
-                fullfilled_time_constraints = set(
-                    timeslot_dict[timeslot_id].fulfilled_time_constraints
-                )
-            else:
-                fullfilled_time_constraints = fullfilled_time_constraints.intersection(
-                    set(timeslot_dict[timeslot_id].fulfilled_time_constraints)
-                )
+        fullfilled_time_constraints = set(
+            timeslot_dict[ak["timeslot_ids"][0]].fulfilled_time_constraints
+        )
+        for timeslot_id in ak["timeslot_ids"][1:]:
+            fullfilled_time_constraints = fullfilled_time_constraints.intersection(
+                set(timeslot_dict[timeslot_id].fulfilled_time_constraints)
+            )
         time_constraints_participants = set.union(
             *(
                 set(participant_dict[participant_id].time_constraints)
