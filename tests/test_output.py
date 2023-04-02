@@ -1,7 +1,7 @@
 import json
+import multiprocessing
 from collections import defaultdict
 from itertools import product
-import multiprocessing
 from pathlib import Path
 
 import numpy as np
