@@ -59,7 +59,7 @@ def generate(
                 {
                     "id": str(global_timeslot_cnt + slot_idx),
                     "info": {"start": f"{block_label}, {8 + slot_idx} Uhr"},
-                    "fulfilled_time_constraints": fulfilled_time_constraints,
+                    "fulfilled_time_constraints": list(fulfilled_time_constraints),
                 }
                 for slot_idx in range(block_size)
             ]
@@ -79,11 +79,13 @@ def generate(
         {
             "id": str(room_idx),
             "info": {"name": f"room {room_idx}"},
-            "capacity": rng.integers(low=10, high=51),
-            "fulfilled_room_constraints": rng.choice(
-                all_room_constraints,
-                size=rng.integers(low=0, high=len(all_room_constraints) + 1),
-                replace=False,
+            "capacity": int(rng.integers(low=10, high=51)),
+            "fulfilled_room_constraints": list(
+                rng.choice(
+                    all_room_constraints,
+                    size=rng.integers(low=0, high=len(all_room_constraints) + 1),
+                    replace=False,
+                )
             ),
             "time_constraints": [],
         }
@@ -91,32 +93,35 @@ def generate(
     ]
 
     # create aks
-    room_constraint_arr = rng.choice(
-        all_room_constraints,
-        replace=False,
-        size=np.minimum(
-            len(all_room_constraints),
-            rng.poisson(lam=room_poisson_mean, size=num_aks),
-        ),
-    )
+    room_constraint_arr = [
+        rng.choice(
+            all_room_constraints,
+            replace=False,
+            size=np.minimum(
+                len(all_room_constraints),
+                rng.poisson(lam=room_poisson_mean),
+            ),
+        )
+        for _ak_idx in range(num_aks)
+    ]
     reso_ak_arr = rng.choice(2, p=[0.8, 0.2], size=num_aks).astype(bool)
     duration_arr = rng.choice(2, size=num_aks) + 1
 
     aks = [
         {
-            "id": str(idx),
-            "duration": duration,
-            "properties": [],
-            "room_constraints": room_constraints,
+            "id": str(ak_idx),
+            "duration": int(duration),
+            "properties": {},
+            "room_constraints": list(room_constraints),
             "time_constraints": ["ResoAK"] if is_reso_ak else [],
             "info": {
-                "name": f"AK {idx}",
+                "name": f"AK {ak_idx}",
                 "head": "N/A",
                 "description": "N/A",
-                "reso": is_reso_ak,
+                "reso": bool(is_reso_ak),
             },
         }
-        for idx, (room_constraints, is_reso_ak, duration) in enumerate(
+        for ak_idx, (room_constraints, is_reso_ak, duration) in enumerate(
             zip(room_constraint_arr, reso_ak_arr, duration_arr, strict=True)
         )
     ]
@@ -152,7 +157,7 @@ def generate(
     def _calc_preferred_score(person_idx: int, ak_idx: int) -> int:
         if ak_idx in required_aks[person_idx]:
             return -1
-        return rng.choice(2) + 1
+        return int(rng.choice(2)) + 1
 
     # TODO: Generate room & time constraints
     participants = [
@@ -161,8 +166,8 @@ def generate(
             "info": {"name": f"Person {person_idx}"},
             "preferences": [
                 {
-                    "ak_id": ak_idx,
-                    "required": ak_idx in required_aks[person_idx],
+                    "ak_id": str(ak_idx),
+                    "required": bool(ak_idx in required_aks[person_idx]),
                     "preference_score": _calc_preferred_score(person_idx, ak_idx),
                 }
                 for ak_idx in preferred_aks.union(required_aks[person_idx])
