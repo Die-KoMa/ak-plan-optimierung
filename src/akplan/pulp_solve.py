@@ -3,7 +3,7 @@ import json
 from collections import defaultdict
 from itertools import chain, combinations, product
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any, Iterable, cast
 
 from pulp import (
     LpBinary,
@@ -30,7 +30,7 @@ def process_pref_score(preference_score: int, required: bool, mu: float) -> floa
         raise NotImplementedError(preference_score)
 
 
-def _construct_constraint_name(name: str, *args) -> str:
+def _construct_constraint_name(name: str, *args: str) -> str:
     return name + "_" + "_".join(args)
 
 
@@ -53,7 +53,14 @@ def create_lp(
     input_data: SchedulingInput,
     mu: float,
     output_file: str | None = "koma-plan.lp",
-) -> tuple[LpProblem, dict[str, dict[str, dict[str, dict[str, LpVariable]]]]]:
+) -> tuple[
+    LpProblem,
+    tuple[
+        dict[str, dict[str, LpVariable]],
+        dict[str, dict[str, LpVariable]],
+        dict[str, dict[str, LpVariable]],
+    ],
+]:
     """Create the MILP problem as pulp object.
 
     Creates the problem with all constraints, preferences and the objective function.
@@ -84,12 +91,12 @@ def create_lp(
     ak_ids, person_ids, room_ids, timeslot_ids = get_ids(input_data)
     num_people = len(person_ids)
 
-    timeslot_ids = {
+    timeslot_idx_dict = {
         timeslot.id: timeslot_idx
         for block in input_data.timeslot_blocks
         for timeslot_idx, timeslot in enumerate(block)
     }
-    block_ids = {
+    block_idx_dict = {
         block_idx: {timeslot.id for timeslot in block}
         for block_idx, block in enumerate(input_data.timeslot_blocks)
     }
@@ -150,14 +157,20 @@ def create_lp(
     prob = LpProblem("MLPKoMa", sense=LpMaximize)
 
     # Create decision variables
-    room_var = LpVariable.dicts("Room", (ak_ids, room_ids), cat=LpBinary)
-    time_var = LpVariable.dicts(
+    room_var: dict[str, dict[str, LpVariable]] = LpVariable.dicts(
+        "Room", (ak_ids, room_ids), cat=LpBinary
+    )
+    time_var: dict[str, dict[str, LpVariable]] = LpVariable.dicts(
         "Time",
         (ak_ids, timeslot_ids),
         cat=LpBinary,
     )
-    block_var = LpVariable.dicts("Block", (ak_ids, block_ids), cat=LpBinary)
-    person_var = LpVariable.dicts("Part", (ak_ids, person_ids), cat=LpBinary)
+    block_var: dict[str, dict[int, LpVariable]] = LpVariable.dicts(
+        "Block", (ak_ids, block_idx_dict.keys()), cat=LpBinary
+    )
+    person_var: dict[str, dict[str, LpVariable]] = LpVariable.dicts(
+        "Part", (ak_ids, person_ids), cat=LpBinary
+    )
 
     # Set objective function
     # \sum_{P,A} \frac{P_{P,A}}{\sum_{P_{P,A}}\neq 0} T_{P,A}
@@ -209,9 +222,9 @@ def create_lp(
         ) >= ak_durations[ak_id], _construct_constraint_name("AKDuration", ak_id)
         # AKSingleBlock
         prob += lpSum(
-            [block_var[ak_id][block_id] for block_id in block_ids]
+            [block_var[ak_id][block_id] for block_id in block_idx_dict]
         ) <= 1, _construct_constraint_name("AKSingleBlock", ak_id)
-        for block_id, block in block_ids.items():
+        for block_id, block in block_idx_dict.items():
             prob += lpSum(
                 [time_var[ak_id][timeslot_id] for timeslot_id in block]
             ) <= ak_durations[ak_id] * block_var[ak_id][
@@ -222,7 +235,10 @@ def create_lp(
             # AKConsecutive
             for timeslot_id_a, timeslot_id_b in combinations(block, 2):
                 if (
-                    abs(timeslot_ids[timeslot_id_a] - timeslot_ids[timeslot_id_b])
+                    abs(
+                        timeslot_idx_dict[timeslot_id_a]
+                        - timeslot_idx_dict[timeslot_id_b]
+                    )
                     >= ak_durations[ak_id]
                 ):
                     prob += time_var[ak_id][timeslot_id_a] + time_var[ak_id][
@@ -327,16 +343,23 @@ def create_lp(
 def export_scheduling_result(
     input_data: SchedulingInput,
     solved_lp_problem: LpProblem,
-    dec_vars: dict[str, dict[str, dict[str, dict[str, LpVariable]]]],
+    dec_vars: tuple[
+        dict[str, dict[str, LpVariable]],
+        dict[str, dict[str, LpVariable]],
+        dict[str, dict[str, LpVariable]],
+    ],
 ) -> dict[str, Any]:
     ak_ids, person_ids, room_ids, timeslot_ids = get_ids(input_data)
 
     (room_var, time_var, person_var) = dec_vars
 
-    def _get_val(var):
-        return (
-            var.solverVar.X if solved_lp_problem.solver.name == "GUROBI" else value(var)
+    def _get_val(var: LpVariable) -> int:
+        ret_val = (
+            round(var.solverVar.X)
+            if solved_lp_problem.solver.name == "GUROBI"
+            else value(var)
         )
+        return cast(int, ret_val)
 
     tmp_res_dir: dict[str, dict[str, dict[str, set[str]]]] = defaultdict(
         lambda: defaultdict(lambda: defaultdict(set))
