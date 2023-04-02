@@ -97,7 +97,7 @@ def create_lp(
         for timeslot_idx, timeslot in enumerate(block)
     }
     block_idx_dict = {
-        block_idx: {timeslot.id for timeslot in block}
+        block_idx: [timeslot.id for timeslot in block]
         for block_idx, block in enumerate(input_data.timeslot_blocks)
     }
     # Get values needed from the input_dict
