@@ -155,9 +155,7 @@ def create_lp(
         **solver_kwargs: kwargs are passed to the solver.
     """
     # Get values needed from the input_dict
-    room_capacities = {
-        room.id: room.capacity for room in input_data.rooms
-    }
+    room_capacities = {room.id: room.capacity for room in input_data.rooms}
     ak_durations = {ak.id: ak.duration for ak in input_data.aks}
 
     # dict of real participants only (without dummy participants) with their preferences dicts
@@ -190,16 +188,11 @@ def create_lp(
         for participant in input_data.participants
     }
 
-    ak_time_constraint_dict = {
-        ak.id: set(ak.time_constraints) for ak in input_data.aks
-    }
-    ak_room_constraint_dict = {
-        ak.id: set(ak.room_constraints) for ak in input_data.aks
-    }
+    ak_time_constraint_dict = {ak.id: set(ak.time_constraints) for ak in input_data.aks}
+    ak_room_constraint_dict = {ak.id: set(ak.room_constraints) for ak in input_data.aks}
 
     room_time_constraint_dict = {
-        room.id: set(room.time_constraints)
-        for room in input_data.rooms
+        room.id: set(room.time_constraints) for room in input_data.rooms
     }
     fulfilled_time_constraints = {
         timeslot.id: set(timeslot.fulfilled_time_constraints)
@@ -207,8 +200,7 @@ def create_lp(
         for timeslot in block
     }
     fulfilled_room_constraints = {
-        room.id: set(room.fulfilled_room_constraints)
-        for room in input_data.rooms
+        room.id: set(room.fulfilled_room_constraints) for room in input_data.rooms
     }
 
     def _retrieve_ids(input_iterable) -> Set:

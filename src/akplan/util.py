@@ -5,6 +5,7 @@ from typing import Any
 
 from dacite import from_dict
 
+
 @dataclass(frozen=True)
 class AKData:
     id: str
@@ -14,11 +15,13 @@ class AKData:
     time_constraints: list[str]
     info: dict[str, Any]
 
+
 @dataclass(frozen=True)
 class PreferenceData:
     ak_id: str
     required: bool
     preference_score: int
+
 
 @dataclass(frozen=True)
 class ParticipantData:
@@ -27,6 +30,7 @@ class ParticipantData:
     room_constraints: list[str]
     time_constraints: list[str]
     info: dict[str, Any]
+
 
 @dataclass(frozen=True)
 class RoomData:
@@ -53,23 +57,16 @@ class SchedulingInput:
 
     @classmethod
     def from_dict(cls, input_dict: str) -> "SchedulingInput":
-        aks = [
-            from_dict(data_class=AKData, data=ak)
-            for ak in input_dict["aks"]
-        ]
+        aks = [from_dict(data_class=AKData, data=ak) for ak in input_dict["aks"]]
         rooms = [
-            from_dict(data_class=RoomData, data=room)
-            for room in input_dict["rooms"]
+            from_dict(data_class=RoomData, data=room) for room in input_dict["rooms"]
         ]
         participants = [
             from_dict(data_class=ParticipantData, data=participant)
             for participant in input_dict["participants"]
         ]
         timeslot_blocks = [
-            [
-                from_dict(data_class=TimeSlotData, data=timeslot)
-                for timeslot in block
-            ]
+            [from_dict(data_class=TimeSlotData, data=timeslot) for timeslot in block]
             for block in input_dict["timeslots"]["blocks"]
         ]
 
