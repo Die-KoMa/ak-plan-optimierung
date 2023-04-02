@@ -10,6 +10,7 @@ from pulp import (
     LpBinary,
     LpMaximize,
     LpProblem,
+    LpStatusInfeasible,
     LpStatus,
     LpVariable,
     getSolver,
@@ -472,7 +473,7 @@ def solve_scheduling(
     output_lp_file: str | None = "koma-plan.lp",
     output_json_file: str | None = "output.json",
     **solver_kwargs: dict[str, Any],
-) -> dict[str, Any]:
+) -> dict[str, Any] | None:
     """Solve the scheduling problem.
 
     Solves the MILP scheduling problem described by the input data using an MILP
@@ -512,8 +513,9 @@ def solve_scheduling(
     solver = getSolver(solver_name, **solver_kwargs)
     lp_problem.solve(solver)
 
-    # The status of the solution is printed to the screen
     print("Status:", LpStatus[lp_problem.status])
+    if lp_problem.status == LpStatusInfeasible:
+        return None
 
     return export_scheduling_result(input_data, lp_problem, dec_vars)
 
