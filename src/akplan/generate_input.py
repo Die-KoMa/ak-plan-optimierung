@@ -2,33 +2,30 @@
 import argparse
 import json
 from collections import defaultdict
+from typing import Any
 
 import numpy as np
 
 
-def generate():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--persons", type=int, default=30)
-    parser.add_argument("--aks", type=int, default=10)
-    parser.add_argument("--rooms", type=int, default=4)
-    parser.add_argument("--num_room_constraints", type=int, default=2)
-    parser.add_argument("--seed", type=int, default=0)
-    parser.add_argument("--room_poisson_mean", type=float, default=1)
-    args = parser.parse_args()
-
-    rng = np.random.default_rng(seed=args.seed)
+def generate(
+    num_persons: int,
+    num_aks: int,
+    num_rooms: int,
+    num_room_constraints: int,
+    seed: int,
+    room_poisson_mean: float,
+) -> dict[str, Any]:
+    rng = np.random.default_rng(seed=seed)
 
     # we have one hour time slots
-    # on Tuesday we go from 8-18, Wednesday from 8-16, Thursday from 8-16, Friday from 8-18
-    block_sizes = [10, 8, 8, 10]
+    # on Tuesday we go from 8-18, Wednesday from 8-16,
+    #    Thursday from 8-16, Friday from 8-18
     block_properties = [
         ("Dienstag", 10),
         ("Mittwoch", 8),
         ("Donnerstag", 8),
         ("Freitag", 10),
     ]
-
-    possible_room_constraints = ["barrierefrei", "Beamer"]
 
     # create timeslots:
     list_of_time_blocks = []
@@ -56,7 +53,7 @@ def generate():
     }
 
     all_room_constraints = [
-        f"room-constraint-{idx}" for idx in range(args.num_room_constraints)
+        f"room-constraint-{idx}" for idx in range(num_room_constraints)
     ]
     # create rooms:
     rooms = [
@@ -71,7 +68,7 @@ def generate():
             ),
             "time_constraints": [],
         }
-        for room_idx in range(args.rooms)
+        for room_idx in range(num_rooms)
     ]
 
     # create aks
@@ -80,11 +77,11 @@ def generate():
         replace=False,
         size=np.minimum(
             len(all_room_constraints),
-            rng.poisson(lam=args.room_poisson_mean, size=args.aks),
+            rng.poisson(lam=room_poisson_mean, size=num_aks),
         ),
     )
-    reso_ak_arr = rng.choice(2, p=[0.8, 0.2], size=args.aks).astype(bool)
-    duration_arr = rng.choice(2, size=args.aks) + 1
+    reso_ak_arr = rng.choice(2, p=[0.8, 0.2], size=num_aks).astype(bool)
+    duration_arr = rng.choice(2, size=num_aks) + 1
 
     aks = [
         {
@@ -107,23 +104,23 @@ def generate():
 
     num_preferences_arr = np.minimum(
         rng.poisson(
-            lam=max(10, round(0.2 * args.aks)),
-            size=args.persons,
+            lam=max(10, round(0.2 * num_aks)),
+            size=num_persons,
         ),
-        args.aks,
+        num_aks,
     )
 
     sampled_aks = {
-        person_idx: set(rng.choice(args.aks, replace=False, size=num_prefs))
+        person_idx: set(rng.choice(num_aks, replace=False, size=num_prefs))
         for person_idx, num_prefs in enumerate(num_preferences_arr)
     }
 
     # 1. Ignore one half of participants
     required_indices = rng.choice(
-        args.persons, size=round(0.5 * args.persons), replace=False
+        num_persons, size=round(0.5 * num_persons), replace=False
     )
     # 2. For each ak sample the person(s) required for the ak (0.1/0.8/0.1 split)
-    num_persons_required = rng.choice(3, size=args.aks, p=[0.1, 0.8, 0.1])
+    num_persons_required = rng.choice(3, size=num_aks, p=[0.1, 0.8, 0.1])
 
     required_aks = defaultdict(set)
     for ak_idx, num_required in enumerate(num_persons_required):
@@ -158,7 +155,7 @@ def generate():
     ]
 
     # create dictionary that we later write into the json-file
-    dictionary = {
+    return {
         "aks": aks,
         "rooms": rooms,
         "participants": participants,
@@ -166,10 +163,25 @@ def generate():
         "info": "DummySet",
     }
 
-    # print(dictionary)
-    with open("dummy_set.json", "w") as output_file:
-        json.dump(dictionary, output_file)
-
 
 if __name__ == "__main__":
-    generate()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--persons", type=int, default=30)
+    parser.add_argument("--aks", type=int, default=10)
+    parser.add_argument("--rooms", type=int, default=4)
+    parser.add_argument("--num_room_constraints", type=int, default=2)
+    parser.add_argument("--seed", type=int, default=0)
+    parser.add_argument("--room_poisson_mean", type=float, default=1)
+    args = parser.parse_args()
+
+    output_dict = generate(
+        num_persons=args.persons,
+        num_aks=args.aks,
+        num_rooms=args.rooms,
+        num_room_constraints=args.num_room_constraints,
+        seed=args.seed,
+        room_poisson_mean=args.room_poisson_mean,
+    )
+
+    with open("dummy_set.json", "w") as output_file:
+        json.dump(output_dict, output_file)
