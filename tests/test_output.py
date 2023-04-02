@@ -1,3 +1,4 @@
+"""Unit tests to check feasibility of the constructed schedules."""
 import json
 import multiprocessing
 from collections import defaultdict
@@ -32,6 +33,7 @@ def _test_uniqueness(lst) -> tuple[np.ndarray, np.ndarray, bool]:
     ],
 )
 def scheduling_input(request) -> SchedulingInput:
+    """Load scheduling input from a JSON file."""
     json_file = Path(request.param)
     assert json_file.suffix == ".json"
     with json_file.open("r") as f:
@@ -52,6 +54,7 @@ scheduled_aks_params = [
     params=scheduled_aks_params,
 )
 def scheduled_aks(request, scheduling_input) -> dict[str, dict]:
+    """Construct a schedule by solving an MILP."""
     mu, solver_name = request.param
     solver_kwargs = {}
     if solver_name not in ["GLPK_CMD"]:
@@ -72,11 +75,13 @@ def scheduled_aks(request, scheduling_input) -> dict[str, dict]:
 
 @pytest.fixture
 def ak_dict(scheduling_input: SchedulingInput) -> dict[str, AKData]:
+    """Construct dict mapping AK ids to AKs."""
     return {ak.id: ak for ak in scheduling_input.aks}
 
 
 @pytest.fixture
 def participant_dict(scheduling_input: SchedulingInput) -> dict[str, ParticipantData]:
+    """Construct dict mapping participant ids to participant."""
     return {
         participant.id: participant for participant in scheduling_input.participants
     }
@@ -84,11 +89,13 @@ def participant_dict(scheduling_input: SchedulingInput) -> dict[str, Participant
 
 @pytest.fixture
 def room_dict(scheduling_input: SchedulingInput) -> dict[str, RoomData]:
+    """Construct dict mapping room ids to rooms."""
     return {room.id: room for room in scheduling_input.rooms}
 
 
 @pytest.fixture
 def timeslot_dict(scheduling_input: SchedulingInput) -> dict[str, TimeSlotData]:
+    """Construct dict mapping timeslot ids to timeslots."""
     return {
         timeslot.id: timeslot
         for block in scheduling_input.timeslot_blocks
@@ -98,11 +105,12 @@ def timeslot_dict(scheduling_input: SchedulingInput) -> dict[str, TimeSlotData]:
 
 @pytest.fixture
 def timeslot_blocks(scheduling_input: SchedulingInput) -> list[list[TimeSlotData]]:
+    """Timeslot blocks of the scheduling input."""
     return scheduling_input.timeslot_blocks
 
 
 def test_rooms_not_overbooked(scheduled_aks) -> None:
-    # test no room is used more than once at a time
+    """Test that no room is used more than once at a time."""
     assert _test_uniqueness(
         [
             (ak["room_id"], timeslot_id)
@@ -113,7 +121,7 @@ def test_rooms_not_overbooked(scheduled_aks) -> None:
 
 
 def test_participant_no_overlapping_timeslot(scheduled_aks) -> None:
-    # test no participant visits more than once at a time
+    """Test that no participant visits more than one AK at a time."""
     assert _test_uniqueness(
         [
             (participant_id, timeslot_id)
@@ -125,7 +133,7 @@ def test_participant_no_overlapping_timeslot(scheduled_aks) -> None:
 
 
 def test_ak_lengths(scheduled_aks, ak_dict: dict[str, AKData]) -> None:
-    # test AK length
+    """Test that the scheduled AK length matched the specified one."""
     for ak_id, ak in scheduled_aks.items():
         timeslots = set(ak["timeslot_ids"])
         assert len(ak["timeslot_ids"]) == len(timeslots)
@@ -133,7 +141,7 @@ def test_ak_lengths(scheduled_aks, ak_dict: dict[str, AKData]) -> None:
 
 
 def test_room_capacities(scheduled_aks, room_dict: dict[str, RoomData]) -> None:
-    # test room capacity not exceeded
+    """Test that the room capacity is not exceeded."""
     for ak in scheduled_aks.values():
         participants = set(ak["participant_ids"])
         assert len(ak["participant_ids"]) == len(participants)
@@ -143,7 +151,7 @@ def test_room_capacities(scheduled_aks, room_dict: dict[str, RoomData]) -> None:
 def test_timeslots_consecutive(
     scheduled_aks, timeslot_blocks: list[list[TimeSlotData]]
 ) -> bool:
-    # test AK timeslot consecutive
+    """Test that the scheduled timeslots for an AK are consecutive."""
     for ak in scheduled_aks.values():
         timeslots = [
             (block_idx, timeslot_idx)
@@ -167,7 +175,7 @@ def test_room_constraints(
     participant_dict: dict[str, ParticipantData],
     room_dict: dict[str, RoomData],
 ) -> None:
-    # test room constraints
+    """Test that the room constraints are fulfilled."""
     for ak_id, ak in scheduled_aks.items():
         fulfilled_room_constraints = set(
             room_dict[ak["room_id"]].fulfilled_room_constraints
@@ -190,7 +198,7 @@ def test_time_constraints(
     room_dict: dict[str, RoomData],
     timeslot_dict: dict[str, TimeSlotData],
 ) -> None:
-    # test time constraints
+    """Test that the time constraints are fulfilled."""
     for ak_id, ak in scheduled_aks.items():
         time_constraints_room = set(room_dict[ak["room_id"]].time_constraints)
         time_constraints_ak = set(ak_dict[ak_id].time_constraints)
@@ -214,7 +222,7 @@ def test_time_constraints(
 
 
 def test_required(scheduled_aks, participant_dict: dict[str, ParticipantData]) -> None:
-    # test required preferences fulfilled
+    """Test that the required preferences are fulfilled."""
     for participant_id, participant in participant_dict.items():
         for pref in participant.preferences:
             pref_fulfilled = (
