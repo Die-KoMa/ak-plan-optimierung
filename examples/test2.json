@@ -1,4 +1,8 @@
 {
+    "info": {
+        "name": "Second example from the legacy code base",
+        "author": "Tim Racs"
+    },
     "rooms": [
 		{
             "id": "room0",

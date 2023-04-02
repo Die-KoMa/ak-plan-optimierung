@@ -413,11 +413,10 @@ def solve_scheduling(
     """
     lp_problem, dec_vars = create_lp(input_data, mu, output_lp_file)
 
-    if solver_name:
-        solver = getSolver(solver_name, **solver_kwargs)
-    else:
-        # The problem is solved using PuLP's choice of Solver
-        solver = None
+    if not solver_name:
+        # The problem is solved using PuLP's default solver
+        solver_name = "PULP_CBC_CMD"
+    solver = getSolver(solver_name, **solver_kwargs)
     lp_problem.solve(solver)
 
     # The status of the solution is printed to the screen

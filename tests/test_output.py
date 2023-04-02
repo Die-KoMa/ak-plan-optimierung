@@ -21,7 +21,13 @@ def _test_uniqueness(lst) -> tuple[np.ndarray, np.ndarray, bool]:
     return unique_vals, cnts, not bool(np.abs(cnts - 1).sum())
 
 
-@pytest.fixture(scope="module", params=["examples/test1.json"])
+@pytest.fixture(
+    scope="module",
+    params=[
+        "examples/test1.json",
+        pytest.param("examples/test2.json", marks=pytest.mark.slow),
+    ],
+)
 def scheduling_input(request) -> SchedulingInput:
     json_file = Path(request.param)
     assert json_file.suffix == ".json"
@@ -39,7 +45,7 @@ def scheduled_aks(request, scheduling_input) -> dict[str, dict]:
         solver_name=request.param[1],
         output_lp_file=None,
         output_json_file=None,
-        **{"timelimit": 60},
+        timeLimit=60,
     )["scheduled_aks"]
 
     return {ak["ak_id"]: ak for ak in aks}
