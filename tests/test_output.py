@@ -60,19 +60,19 @@ def test_timeslots_consecutive(scheduled_aks, timeslot_dict) -> bool:
     # test AK timeslot consecutive
     for ak_id, ak in scheduled_aks.items():
         timeslots = [
-            (timeslot_id, block_idx, timeslot_idx)
+            (block_idx, timeslot_idx)
             for block_idx, block in enumerate(timeslot_dict)
             for timeslot_idx, timeslot_id in enumerate(block)
             if timeslot_id in ak["timeslot_ids"]
         ]
-        timeslots.sort(key=lambda x: x[2])
-        for idx, (id, block_idx, timeslot_idx) in enumerate(timeslots)[
-            1:
-        ]:
-            assert (
-                timeslots[idx - 1][2] + 1 == timeslot_idx
-                and timeslots[idx - 1][1] == block_idx
-            )
+        timeslots.sort()
+
+        for (prev_block_idx, prev_timeslot_idx), (
+            next_block_idx,
+            next_timeslot_idx,
+        ) in zip(timeslots, timeslots[1:]):
+            assert prev_timeslot_idx + 1 == next_timeslot_idx
+            assert prev_block_idx == next_block_idx
 
 
 def test_room_constraints(scheduled_aks, ak_dict, participant_dict, room_dict) -> None:
