@@ -1,5 +1,5 @@
 import json
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
 
@@ -82,4 +82,14 @@ class SchedulingInput:
         )
 
     def to_dict(self) -> dict:
-        raise NotImplementedError
+        return_dict = {
+            "aks": [asdict(ak) for ak in self.aks],
+            "rooms": [asdict(room) for room in self.rooms],
+            "participants": [asdict(participant) for participant in self.participants],
+            "info": self.info,
+        }
+        blocks = [
+            [asdict(timeslot) for timeslot in block] for block in self.timeslot_blocks
+        ]
+        return_dict["timeslots"] = {"info": self.timeslot_info, "blocks": blocks}
+        return return_dict
