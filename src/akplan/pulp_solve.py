@@ -370,7 +370,10 @@ def export_scheduling_result(
         room_for_ak = None
         for room_id in room_ids:
             if _get_val(room_var[ak_id][room_id]) == 1:
-                room_for_ak = room_id
+                if room_for_ak is None:
+                    room_for_ak = room_id
+                else:
+                    raise ValueError(f"AK {ak_id} is assigned multiple rooms")
         if room_for_ak is None:
             if allow_unscheduled_aks:
                 continue
