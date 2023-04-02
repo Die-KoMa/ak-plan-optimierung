@@ -488,7 +488,7 @@ def export_scheduling_result(
     ak_ids, participant_ids, room_ids, timeslot_ids = get_ids(input_data)
 
     tmp_res_dir = defaultdict(lambda: defaultdict(lambda: defaultdict(set)))
-    for ak_id, timeslot_id, room_id, participant_id in product(
+    for ak_id, participant_id, room_id, timeslot_id in product(
         ak_ids, participant_ids, room_ids, timeslot_ids
     ):
         if value(dec_vars[ak_id][timeslot_id][room_id][participant_id]) == 1:
@@ -553,7 +553,7 @@ def solve_scheduling(
     res = lp_problem.solve(solver)
 
     # The status of the solution is printed to the screen
-    print("Status:", LpStatus[prob.status])
+    print("Status:", LpStatus[lp_problem.status])
 
     return export_scheduling_result(input_data, lp_problem, dec_vars)
 
