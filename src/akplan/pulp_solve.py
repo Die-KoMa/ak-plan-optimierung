@@ -148,10 +148,11 @@ def create_lp(
     balance between weak and strong preferences.
 
     Args:
-        input_dict (SchedulingInput): The input data used to construct the MILP.
+        input_data (SchedulingInput): The input data used to construct the MILP.
         mu (float): The weight associated with a strong preference for an AK.
-        args (argparse.Namespace): CLI arguments, used to pass options for the
-            MILP solver.
+        solver_name (str, optional): The solver to use. If None, uses pulp's
+            default solver. Defaults to None.
+        **solver_kwargs: kwargs are passed to the solver.
     """
     # Get values needed from the input_dict
     room_capacities = {
