@@ -336,9 +336,7 @@ def export_scheduling_result(
     (room_var, time_var, person_var) = dec_vars
 
     def _get_val(var):
-        return var.solverVar.X
-
-    # TODO: if args.solver == "GUROBI" else value(var)
+        return var.solverVar.X if solved_lp_problem.solver.name == "GUROBI" else value(var)
 
     tmp_res_dir: dict[str, dict[str, dict[str, set[str]]]] = defaultdict(
         lambda: defaultdict(lambda: defaultdict(set))
