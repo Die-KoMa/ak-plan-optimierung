@@ -1,19 +1,53 @@
 import json
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Any
+
+@dataclass(frozen=True)
+class AKData:
+    id: str
+    duration: int
+    properties: dict[str, Any]
+    room_constraints: list[str]
+    time_constraints: list[str]
+    info: dict[str, Any]
+
+@dataclass(frozen=True)
+class PreferenceData:
+    ak_id: str
+    required: bool
+    preference_score: int
+
+@dataclass(frozen=True)
+class ParticipantData:
+    id: str
+    preferences: list[PreferenceData]
+    room_constraints: list[str]
+    time_constraints: list[str]
+    info: dict[str, Any]
+
+@dataclass(frozen=True)
+class RoomData:
+    id: str
+    capacity: int
+    fulfilled_room_constraints: list[str]
+    time_constraints: list[str]
+    info: dict[str, Any]
+
+
+@dataclass(frozen=True)
+class TimeSlotData:
+    id: str
+    fulfilled_time_constraints: list[str]
+    info: dict[str, Any]
 
 
 @dataclass(frozen=True)
 class SchedulingInput:
-    ak_dict: dict[str, str | int | list[str] | dict[str, str | bool]]
-    participant_dict: dict[
-        str, str | dict[str, str], list[dict[str, str | bool | int]] | list[str]
-    ]
-    room_dict: dict[str, str | int | list[str] | dict[str, str]]
-    timeslot_dict: dict[
-        str,
-        dict[str, str] | list[list[dict[str, str | dict[str, str] | list[str]]]],
-    ]
+    aks: list[AKData]
+    participants: list[ParticipantData]
+    rooms: list[RoomData]
+    timeslot_blocks: list[list[TimeSlotData]]
 
     @classmethod
     def from_json(cls, filename: str) -> "SchedulingInput":
