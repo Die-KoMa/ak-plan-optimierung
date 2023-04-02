@@ -1,6 +1,6 @@
-import json
+from __future__ import annotations
+
 from dataclasses import asdict, dataclass
-from pathlib import Path
 from typing import Any
 
 from dacite import from_dict
@@ -58,7 +58,7 @@ class SchedulingInput:
     info: dict[str, str]
 
     @classmethod
-    def from_dict(cls, input_dict: dict[str, Any]) -> "SchedulingInput":
+    def from_dict(cls, input_dict: dict[str, Any]) -> SchedulingInput:
         aks = [from_dict(data_class=AKData, data=ak) for ak in input_dict["aks"]]
         rooms = [
             from_dict(data_class=RoomData, data=room) for room in input_dict["rooms"]

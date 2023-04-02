@@ -3,7 +3,7 @@ import json
 from collections import defaultdict
 from itertools import chain, combinations, product
 from pathlib import Path
-from typing import Any, Dict, Iterable, Optional, Sequence, Set
+from typing import Any, Dict, Iterable
 
 from pulp import (
     LpAffineExpression,
@@ -33,16 +33,15 @@ def process_pref_score(preference_score: int, required: bool, mu: float) -> floa
         raise NotImplementedError(preference_score)
 
 
-## TODO könnte auch mit DUMMY_PARTICIPANT_{uuid.uuid4()}_{ak_id} für sichere eindeutigkeit gemacht werden
-def get_dummy_participant_id(ak_id: str, dummy_prefix: Optional[str] = None) -> str:
+# TODO könnte auch mit DUMMY_PARTICIPANT_{uuid.uuid4()}_{ak_id}
+#      für sichere eindeutigkeit gemacht werden
+def get_dummy_participant_id(ak_id: str, dummy_prefix: str | None = None) -> str:
     if not dummy_prefix:
         dummy_prefix = _DUMMY_PARTICIPANT_PREFIX
     return f"{dummy_prefix}_{ak_id}"
 
 
-def is_participant_dummy(
-    participant_id: str, dummy_prefix: Optional[str] = None
-) -> bool:
+def is_participant_dummy(participant_id: str, dummy_prefix: str | None = None) -> bool:
     if not dummy_prefix:
         dummy_prefix = _DUMMY_PARTICIPANT_PREFIX
     return participant_id.startswith(dummy_prefix)
@@ -59,7 +58,7 @@ def _set_decision_variable(
     room_id: str,
     participant_id: str,
     value: float,
-    name: Optional[str] = None,
+    name: str | None = None,
 ) -> None:
     """Force a decision variable to be a fixed value."""
     if name is not None:
@@ -110,18 +109,25 @@ def create_lp(
         mu (float): The weight associated with a strong preference for an AK.
         output_file (str, optional): If not None, the created LP is written
             as an `.lp` file to this location. Defaults to `koma-plan.lp`.
+
+    Returns:
+        A tuple (`lp_problem`, `dec_vars`) where `lp_problem` is the
+        constructed MILP instance and `dec_vars` is the nested dictionary
+        containing the MILP variables.
     """
     # Get values needed from the input_dict
     room_capacities = {room.id: room.capacity for room in input_data.rooms}
     ak_durations = {ak.id: ak.duration for ak in input_data.aks}
 
-    # dict of real participants only (without dummy participants) with their preferences dicts
+    # dict of real participants only (without dummy participants)
+    # with their preferences dicts
     real_preferences_dict = {
         participant.id: participant.preferences
         for participant in input_data.participants
     }
 
-    # dict of real participants only (without dummy participants) with numerical preferences
+    # dict of real participants only (without dummy participants)
+    # with numerical preferences
     weighted_preference_dict = {
         participant.id: {
             pref.ak_id: process_pref_score(
@@ -232,7 +238,7 @@ def create_lp(
             "AKLength", ak_id
         )
 
-    ## TODO FIXME BUG: Muss =1 oder =0 sein!
+    # TODO FIXME BUG: Muss =1 oder =0 sein!
     # E3: NoPartialParticipation
     #   ∀ A,P≠Pᴬ: 1/Sᴬ ∑ᵀ⋅ᴿ Yᴬ⋅ᵀ⋅ᴿ⋅ᴾ ≤ 1
     # Z2: PersonNeededForAK
@@ -247,7 +253,8 @@ def create_lp(
             )
             for pref in preferences:
                 if pref.ak_id == ak_id:
-                    # participant is essential for ak -> set constraint for "PersonNeededForAK"
+                    # participant is essential for ak
+                    #   -> set constraint for "PersonNeededForAK"
                     if pref.required:
                         prob += (
                             affine_constraint == ak_durations[ak_id],
@@ -256,8 +263,10 @@ def create_lp(
                                 ak_id,
                                 participant_id,
                             ),
-                        )  ## TODO Check for fixed value
-                    else:  # participant is not essential -> set constraint for "NoPartialParticipation"
+                        )  # TODO Check for fixed value
+                    # participant is not essential
+                    #   -> set constraint for "NoPartialParticipation"
+                    else:
                         affine_constraint *= 1 / ak_durations[ak_id]
                         prob += affine_constraint <= 1, _construct_constraint_name(
                             "NoPartialParticipation",
@@ -265,7 +274,9 @@ def create_lp(
                             participant_id,
                         )
                     break
-            else:  # participant is not essential -> set constraint for "NoPartialParticipation"
+            # participant is not essential
+            #   -> set constraint for "NoPartialParticipation"
+            else:
                 affine_constraint *= 1 / ak_durations[ak_id]
                 prob += affine_constraint <= 1, _construct_constraint_name(
                     "NoPartialParticipation",
@@ -273,7 +284,7 @@ def create_lp(
                     participant_id,
                 )
 
-    ## TODO FIXME BUG: Muss =1 oder =0 sein!
+    # TODO FIXME BUG: Muss =1 oder =0 sein!
     # E4: FixedAKRooms
     #   ∀ A,R: 1 / Sᴬ ∑ᵀ Yᴬ⋅ᵀ⋅ᴿ⋅ᴾᴬ ≤ 1
     for ak_id, room_id in product(ak_ids, room_ids):
@@ -308,9 +319,10 @@ def create_lp(
                         ],
                     ]
                 )
+                # forbid the ak to happen in both of them
                 prob += (
                     affine_constraint <= 1,
-                    _construct_constraint_name(  # forbid the ak to happen in both of them
+                    _construct_constraint_name(
                         "AKConsecutive", ak_id, room_id, timeslot_id_a, timeslot_id_b
                     ),
                 )
@@ -473,7 +485,7 @@ def create_lp(
 
     # Z8: NoAKCollision
     #   ∀ T, AKs A,B with A and B may not overlap: ∑ᴿ Yᴬ⋅ᵀ⋅ᴿ⋅ᴾᴬ + Yᴮ⋅ᵀ⋅ᴿ⋅ᴾᴮ ≤ 1
-    ## TODO: Not implemented yet
+    # TODO: Not implemented yet
 
     # The problem data is written to an .lp file
     if output_file is not None:
@@ -542,11 +554,17 @@ def solve_scheduling(
     Args:
         input_data (SchedulingInput): The input data used to construct the MILP.
         mu (float): The weight associated with a strong preference for an AK.
-        output_lp_file (str, optional): If not None, the created LP is written
-            as an `.lp` file to this location. Defaults to `koma-plan.lp`.
         solver_name (str, optional): The solver to use. If None, uses pulp's
             default solver. Defaults to None.
+        output_lp_file (str, optional): If not None, the created LP is written
+            as an `.lp` file to this location. Defaults to `koma-plan.lp`.
+        output_json_file (str, optional): If not None, the result dict is written
+            as an `.json` file to this location. Defaults to `output.json`.
         **solver_kwargs: kwargs are passed to the solver.
+
+    Returns:
+        A dictionary containing the scheduled aks as well as the scheduling
+        input.
     """
     lp_problem, dec_vars = create_lp(input_data, mu, output_lp_file)
 
@@ -555,7 +573,7 @@ def solve_scheduling(
     else:
         # The problem is solved using PuLP's choice of Solver
         solver = None
-    res = lp_problem.solve(solver)
+    lp_problem.solve(solver)
 
     # The status of the solution is printed to the screen
     print("Status:", LpStatus[lp_problem.status])
@@ -612,7 +630,7 @@ def main() -> None:
     with json_file.open("r") as f:
         input_dict = json.load(f)
 
-    output_dict = solve_scheduling(
+    solve_scheduling(
         SchedulingInput.from_dict(input_dict), args.mu, args.solver, **solver_kwargs
     )
 
