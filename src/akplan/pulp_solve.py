@@ -518,7 +518,7 @@ def solve_scheduling(
     output_lp_file: str | None = "koma-plan.lp",
     output_json_file: str | None = "output.json",
     **solver_kwargs,
-)-> dict[str, dict | list]:
+) -> dict[str, dict | list]:
     """Solve the scheduling problem.
 
     Solves the MILP scheduling problem described by the input data using an MILP

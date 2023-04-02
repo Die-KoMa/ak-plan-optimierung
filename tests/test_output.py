@@ -12,7 +12,14 @@ import numpy as np
 import pytest
 
 from src.akplan.pulp_solve import solve_scheduling
-from src.akplan.util import AKData, ParticipantData, PreferenceData, RoomData, TimeSlotData, SchedulingInput
+from src.akplan.util import (
+    AKData,
+    ParticipantData,
+    PreferenceData,
+    RoomData,
+    SchedulingInput,
+    TimeSlotData,
+)
 
 
 def _test_uniqueness(lst) -> tuple[np.ndarray, np.ndarray, bool]:
@@ -52,7 +59,9 @@ def ak_dict(scheduling_input: SchedulingInput) -> dict[str, AKData]:
 
 @pytest.fixture
 def participant_dict(scheduling_input: SchedulingInput) -> dict[str, ParticipantData]:
-    return {participant.id: participant for participant in scheduling_input.participants}
+    return {
+        participant.id: participant for participant in scheduling_input.participants
+    }
 
 
 @pytest.fixture
@@ -62,7 +71,12 @@ def room_dict(scheduling_input: SchedulingInput) -> dict[str, RoomData]:
 
 @pytest.fixture
 def timeslot_dict(scheduling_input: SchedulingInput) -> dict[str, TimeSlotData]:
-    return {timeslot.id: timeslot for block in scheduling_input.timeslot_blocks for timeslot in block}
+    return {
+        timeslot.id: timeslot
+        for block in scheduling_input.timeslot_blocks
+        for timeslot in block
+    }
+
 
 @pytest.fixture
 def timeslot_blocks(scheduling_input: SchedulingInput) -> list[list[TimeSlotData]]:
@@ -108,7 +122,9 @@ def test_room_capacities(scheduled_aks, room_dict: dict[str, RoomData]) -> None:
         assert len(participants) <= room_dict[ak["room_id"]].capacity
 
 
-def test_timeslots_consecutive(scheduled_aks, timeslot_blocks: list[list[TimeSlotData]]) -> bool:
+def test_timeslots_consecutive(
+    scheduled_aks, timeslot_blocks: list[list[TimeSlotData]]
+) -> bool:
     # test AK timeslot consecutive
     for ak_id, ak in scheduled_aks.items():
         timeslots = [
@@ -127,7 +143,12 @@ def test_timeslots_consecutive(scheduled_aks, timeslot_blocks: list[list[TimeSlo
             assert prev_block_idx == next_block_idx
 
 
-def test_room_constraints(scheduled_aks, ak_dict: dict[str, AKData], participant_dict: dict[str, ParticipantData], room_dict: dict[str, RoomData]) -> None:
+def test_room_constraints(
+    scheduled_aks,
+    ak_dict: dict[str, AKData],
+    participant_dict: dict[str, ParticipantData],
+    room_dict: dict[str, RoomData],
+) -> None:
     # test room constraints
     for ak_id, ak in scheduled_aks.items():
         fulfilled_room_constraints = set(
@@ -145,7 +166,11 @@ def test_room_constraints(scheduled_aks, ak_dict: dict[str, AKData], participant
 
 
 def test_time_constraints(
-    scheduled_aks, ak_dict: dict[str, AKData], participant_dict: dict[str, ParticipantData], room_dict: dict[str, RoomData], timeslot_dict: dict[str, TimeSlotData]
+    scheduled_aks,
+    ak_dict: dict[str, AKData],
+    participant_dict: dict[str, ParticipantData],
+    room_dict: dict[str, RoomData],
+    timeslot_dict: dict[str, TimeSlotData],
 ) -> None:
     # test time constraints
     for ak_id, ak in scheduled_aks.items():
@@ -185,7 +210,9 @@ def test_required(scheduled_aks, participant_dict: dict[str, ParticipantData]) -
             assert not pref.required or pref_fulfilled
 
 
-def _print_missing_stats(scheduled_aks, participant_dict: dict[str, ParticipantData]) -> None:
+def _print_missing_stats(
+    scheduled_aks, participant_dict: dict[str, ParticipantData]
+) -> None:
     num_weak_misses = defaultdict(int)
     num_strong_misses = defaultdict(int)
     num_weak_prefs = defaultdict(int)
@@ -258,7 +285,11 @@ def _print_missing_stats(scheduled_aks, participant_dict: dict[str, ParticipantD
 
 
 def _print_ak_stats(
-    scheduled_aks, ak_dict: dict[str, AKData], participant_dict: dict[str, ParticipantData], room_dict: dict[str, RoomData], timeslot_dict: dict[str, TimeSlotData]
+    scheduled_aks,
+    ak_dict: dict[str, AKData],
+    participant_dict: dict[str, ParticipantData],
+    room_dict: dict[str, RoomData],
+    timeslot_dict: dict[str, TimeSlotData],
 ) -> None:
     # PRINT STATS ABOUT MISSING AKs
     print("\n=== AK STATS ===\n")
@@ -280,7 +311,10 @@ def _print_ak_stats(
 
 
 def _print_participant_schedules(
-    scheduled_aks, ak_dict: dict[str, AKData], room_dict: dict[str, RoomData], timeslot_dict: dict[str, TimeSlotData]
+    scheduled_aks,
+    ak_dict: dict[str, AKData],
+    room_dict: dict[str, RoomData],
+    timeslot_dict: dict[str, TimeSlotData],
 ) -> None:
     print(f"\n=== PARTICIPANT SCHEDULES ===\n")
     participant_schedules = defaultdict(list)
