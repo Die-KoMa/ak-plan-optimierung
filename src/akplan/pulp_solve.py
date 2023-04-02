@@ -84,7 +84,7 @@ def create_lp(
     input_data: SchedulingInput,
     mu: float,
     output_file: str | None = "koma-plan.lp",
-) -> None:
+) -> tuple[LpProblem, dict]:
     """Create the MILP problem as pulp object.
 
     Creates the problem with all constraints, preferences and the objective function.
@@ -474,13 +474,13 @@ def create_lp(
     if output_file is not None:
         prob.writeLP(output_file)
 
-    return prob
+    return prob, dec_vars
 
 def solve_scheduling(
     input_data: SchedulingInput,
     mu: float,
     solver_name: str | None = None,
-    output_file: str | None = "koma-plan.lp",
+    output_lp_file: str | None = "koma-plan.lp",
     **solver_kwargs,
 ) -> None:
     """Solve the scheduling problem.
@@ -502,20 +502,20 @@ def solve_scheduling(
     Args:
         input_data (SchedulingInput): The input data used to construct the MILP.
         mu (float): The weight associated with a strong preference for an AK.
-        output_file (str, optional): If not None, the created LP is written
+        output_lp_file (str, optional): If not None, the created LP is written
             as an `.lp` file to this location. Defaults to `koma-plan.lp`.
         solver_name (str, optional): The solver to use. If None, uses pulp's
             default solver. Defaults to None.
         **solver_kwargs: kwargs are passed to the solver.
     """
-    prob = create_lp(input_data, mu)
+    lp_problem, dec_vars = create_lp(input_data, mu, output_lp_file)
 
     if solver_name:
         solver = getSolver(solver_name, **kwargs_dict)
     else:
         solver = None
     # The problem is solved using PuLP's choice of Solver
-    res = prob.solve(solver)
+    res = lp_problem.solve(solver)
 
     # The status of the solution is printed to the screen
     print("Status:", LpStatus[prob.status])
