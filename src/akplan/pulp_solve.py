@@ -297,7 +297,7 @@ def create_lp(
                 fulfilled_room_constraints[room_id]
             ):
                 for ak_id in ak_ids:
-                    prob += room_var[ak_id][room_id] + person_id[ak_id][
+                    prob += room_var[ak_id][room_id] + person_var[ak_id][
                         person_id
                     ] <= 1, _construct_constraint_name(
                         "RoomImpossibleFor Person", person_id, room_id, ak_id
