@@ -3,12 +3,10 @@ import json
 from collections import defaultdict
 from itertools import chain, combinations, product
 from pathlib import Path
-from typing import Any, Dict, Iterable
+from typing import Any, Iterable
 
 from pulp import (
-    LpAffineExpression,
     LpBinary,
-    LpInteger,
     LpMaximize,
     LpProblem,
     LpStatus,
@@ -17,6 +15,7 @@ from pulp import (
     lpSum,
     value,
 )
+
 from .util import AKData, ParticipantData, RoomData, SchedulingInput, TimeSlotData
 
 
@@ -81,7 +80,6 @@ def create_lp(
         constructed MILP instance and `dec_vars` is the nested dictionary
         containing the MILP variables.
     """
-
     # Get ids from input_dict
     ak_ids, person_ids, room_ids, timeslot_ids = get_ids(input_data)
     num_people = len(person_ids)
@@ -336,7 +334,9 @@ def export_scheduling_result(
     (room_var, time_var, person_var) = dec_vars
 
     def _get_val(var):
-        return var.solverVar.X if solved_lp_problem.solver.name == "GUROBI" else value(var)
+        return (
+            var.solverVar.X if solved_lp_problem.solver.name == "GUROBI" else value(var)
+        )
 
     tmp_res_dir: dict[str, dict[str, dict[str, set[str]]]] = defaultdict(
         lambda: defaultdict(lambda: defaultdict(set))
