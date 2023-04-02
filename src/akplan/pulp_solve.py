@@ -1,7 +1,7 @@
 import argparse
 import json
 from collections import defaultdict
-from itertools import combinations, product
+from itertools import chain, combinations, product
 from pathlib import Path
 from typing import Dict, Optional, Set
 
@@ -150,70 +150,68 @@ def create_lp(input_data: SchedulingInput, mu: float, args: argparse.Namespace) 
     """
     # Get values needed from the input_dict
     room_capacities = {
-        room_id: room["capacity"] for room_id, room in input_data.room_dict.items()
+        room.id: room.capacity for room in input_data.rooms
     }
-    ak_durations = {ak_id: ak["duration"] for ak_id, ak in input_data.ak_dict.items()}
+    ak_durations = {ak.id: ak.duration for ak in input_data.aks}
 
     # dict of real participants only (without dummy participants) with their preferences dicts
     real_preferences_dict = {
-        participant_id: participant["preferences"]
-        for participant_id, participant in input_data.participant_dict.items()
+        participant.id: participant.preferences
+        for participant in input_data.participants
     }
 
     # dict of real participants only (without dummy participants) with numerical preferences
     weighted_preference_dict = {
-        participant_id: {
-            pref["ak_id"]: process_pref_score(
-                pref["preference_score"],
-                pref["required"],
+        participant.id: {
+            pref.ak_id: process_pref_score(
+                pref.preference_score,
+                pref.required,
                 mu=mu,
             )
-            for pref in participant["preferences"]
+            for pref in participant.preferences
         }
-        for participant_id, participant in input_data.participant_dict.items()
+        for participant in input_data.participants
     }
 
     # Get constraints from input_dict
     participant_time_constraint_dict = {
-        participant_id: set(participant["time_constraints"])
-        for participant_id, participant in input_data.participant_dict.items()
+        participant.id: set(participant.time_constraints)
+        for participant in input_data.participants
     }
 
     participant_room_constraint_dict = {
-        participant_id: set(participant["room_constraints"])
-        for participant_id, participant in input_data.participant_dict.items()
+        participant.id: set(participant.room_constraints)
+        for participant in input_data.participants
     }
 
     ak_time_constraint_dict = {
-        ak_id: set(ak["time_constraints"]) for ak_id, ak in input_data.ak_dict.items()
+        ak.id: set(ak.time_constraints) for ak in input_data.aks
     }
     ak_room_constraint_dict = {
-        ak_id: set(ak["room_constraints"]) for ak_id, ak in input_data.ak_dict.items()
+        ak.id: set(ak.room_constraints) for ak in input_data.aks
     }
 
     room_time_constraint_dict = {
-        room_id: set(room["time_constraints"])
-        for room_id, room in input_data.room_dict.items()
+        room.id: set(room.time_constraints)
+        for room in input_data.rooms
     }
     fulfilled_time_constraints = {
-        timeslot["id"]: set(timeslot["fulfilled_time_constraints"])
-        for block in input_data.timeslot_dict["blocks"]
+        timeslot.id: set(timeslot.fulfilled_time_constraints)
+        for block in input_data.timeslot_blocks
         for timeslot in block
     }
     fulfilled_room_constraints = {
-        room_id: set(room["fulfilled_room_constraints"])
-        for room_id, room in input_data.room_dict.items()
+        room.id: set(room.fulfilled_room_constraints)
+        for room in input_data.rooms
     }
 
-    ak_ids = input_data.ak_dict.keys()
-    room_ids = input_data.room_dict.keys()
-    timeslot_ids = {
-        timeslot["id"]
-        for block in input_data.timeslot_dict["blocks"]
-        for timeslot in block
-    }
+    def _retrieve_ids(input_iterable) -> Set:
+        return {obj.id for obj in input_iterable}
 
-    participant_ids = input_data.participant_dict.keys()
+    ak_ids = _retrieve_ids(input_data.aks)
+    room_ids = _retrieve_ids(input_data.rooms)
+    timeslot_ids = _retrieve_ids(chain.from_iterable(input_data.timeslot_blocks))
+    participant_ids = _retrieve_ids(input_data.participants)
     participant_ids = (
         participant_ids.union(  # contains all participants ids (incl. dummy ids)
             {get_dummy_participant_id(ak_id) for ak_id in ak_ids}
@@ -221,8 +219,8 @@ def create_lp(input_data: SchedulingInput, mu: float, args: argparse.Namespace) 
     )
 
     timeslot_block_ids = {
-        timeslot["id"]: (block_idx, timeslot_idx)
-        for block_idx, block in enumerate(input_data.timeslot_dict["blocks"])
+        timeslot.id: (block_idx, timeslot_idx)
+        for block_idx, block in enumerate(input_data.timeslot_blocks)
         for timeslot_idx, timeslot in enumerate(block)
     }
 
@@ -298,10 +296,9 @@ def create_lp(input_data: SchedulingInput, mu: float, args: argparse.Namespace) 
                 ]
             )
             for pref in preferences:
-                if pref["ak_id"] == ak_id:
-                    if pref[
-                        "required"
-                    ]:  # participant is essential for ak -> set constraint for "PersonNeededForAK"
+                if pref.ak_id == ak_id:
+                    # participant is essential for ak -> set constraint for "PersonNeededForAK"
+                    if pref.required:
                         prob += (
                             affine_constraint == ak_durations[ak_id],
                             _construct_constraint_name(
@@ -421,7 +418,7 @@ def create_lp(input_data: SchedulingInput, mu: float, args: argparse.Namespace) 
     #   ∀ A,T,R,P: If Pᴾ⋅ᴬ=0: Yᴬ⋅ᵀ⋅ᴿ⋅ᴾ = 0 (non-dummy P)
     for participant_id, preferences in real_preferences_dict.items():
         pref_aks = {
-            pref["ak_id"] for pref in preferences
+            pref.ak_id for pref in preferences
         }  # aks not in pref_aks have Pᴾ⋅ᴬ=0 implicitly
         for ak_id, timeslot_id, room_id in product(
             ak_ids.difference(pref_aks), timeslot_ids, room_ids
@@ -604,7 +601,12 @@ def main():
     parser.add_argument("path", type=str)
     args = parser.parse_args()
 
-    create_lp(SchedulingInput.from_json(args.path), args.mu, args)
+    json_file = Path(args.path)
+    assert json_file.suffix == ".json"
+    with json_file.open("r") as f:
+        input_dict = json.load(f)
+
+    create_lp(SchedulingInput.from_dict(input_dict), args.mu, args)
 
 
 if __name__ == "__main__":
