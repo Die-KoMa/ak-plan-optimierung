@@ -484,7 +484,7 @@ def export_scheduling_result(
     input_data: SchedulingInput,
     solved_lp_problem: LpProblem,
     dec_vars,
-):
+) -> dict[str, dict | list]:
     ak_ids, participant_ids, room_ids, timeslot_ids = get_ids(input_data)
 
     tmp_res_dir = defaultdict(lambda: defaultdict(lambda: defaultdict(set)))
@@ -517,7 +517,7 @@ def solve_scheduling(
     solver_name: str | None = None,
     output_lp_file: str | None = "koma-plan.lp",
     **solver_kwargs,
-) -> None:
+)-> dict[str, dict | list]:
     """Solve the scheduling problem.
 
     Solves the MILP scheduling problem described by the input data using an MILP
@@ -555,9 +555,8 @@ def solve_scheduling(
     # The status of the solution is printed to the screen
     print("Status:", LpStatus[prob.status])
 
-    output_dict = export_scheduling_result(input_data, lp_problem, dec_vars)
-    with open("output.json", "w") as output_file:
-        json.dump(output_dict, output_file)
+    return export_scheduling_result(input_data, lp_problem, dec_vars)
+
 
 
 def main():
@@ -603,9 +602,11 @@ def main():
     with json_file.open("r") as f:
         input_dict = json.load(f)
 
-    solve_scheduling(
+    output_dict = solve_scheduling(
         SchedulingInput.from_dict(input_dict), args.mu, args.solver, **solver_kwargs
     )
+    with open("output.json", "w") as output_file:
+        json.dump(output_dict, output_file)
 
 
 if __name__ == "__main__":
