@@ -249,9 +249,9 @@ def create_lp(
                     )
                     >= ak_durations[ak_id]
                 ):
-                    prob += time_var[ak_id][timeslot_id_a] + time_var[ak_id][
-                        timeslot_id_b
-                    ] <= 1, _construct_constraint_name(
+                    prob += lpSum(
+                        [time_var[ak_id][timeslot_id_a], time_var[ak_id][timeslot_id_b]]
+                    ) <= 1, _construct_constraint_name(
                         "AKConsecutive",
                         ak_id,
                         str(block_id),
@@ -289,9 +289,9 @@ def create_lp(
                 fulfilled_time_constraints[timeslot_id]
             ):
                 for ak_id in ak_ids:
-                    prob += time_var[ak_id][timeslot_id] + person_var[ak_id][
-                        person_id
-                    ] <= 1, _construct_constraint_name(
+                    prob += lpSum(
+                        [time_var[ak_id][timeslot_id], person_var[ak_id][person_id]]
+                    ) <= 1, _construct_constraint_name(
                         "TimeImpossibleForPerson",
                         person_id,
                         timeslot_id,
@@ -305,9 +305,9 @@ def create_lp(
                 fulfilled_room_constraints[room_id]
             ):
                 for ak_id in ak_ids:
-                    prob += room_var[ak_id][room_id] + person_var[ak_id][
-                        person_id
-                    ] <= 1, _construct_constraint_name(
+                    prob += lpSum(
+                        [room_var[ak_id][room_id], person_var[ak_id][person_id]]
+                    ) <= 1, _construct_constraint_name(
                         "RoomImpossibleFor Person", person_id, room_id, ak_id
                     )
 
@@ -335,9 +335,9 @@ def create_lp(
             if room_time_constraint_dict[room_id].difference(
                 fulfilled_time_constraints[timeslot_id]
             ):
-                prob += room_var[ak_id][room_id] + time_var[ak_id][
-                    timeslot_id
-                ] <= 1, _construct_constraint_name(
+                prob += lpSum(
+                    [room_var[ak_id][room_id], time_var[ak_id][timeslot_id]]
+                ) <= 1, _construct_constraint_name(
                     "TimeImpossibleForRoom", room_id, timeslot_id, ak_id
                 )
 
