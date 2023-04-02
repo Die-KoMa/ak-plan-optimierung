@@ -516,6 +516,7 @@ def solve_scheduling(
     mu: float,
     solver_name: str | None = None,
     output_lp_file: str | None = "koma-plan.lp",
+    output_json_file: str | None = "output.json",
     **solver_kwargs,
 )-> dict[str, dict | list]:
     """Solve the scheduling problem.
@@ -555,8 +556,13 @@ def solve_scheduling(
     # The status of the solution is printed to the screen
     print("Status:", LpStatus[lp_problem.status])
 
-    return export_scheduling_result(input_data, lp_problem, dec_vars)
+    output_dict = export_scheduling_result(input_data, lp_problem, dec_vars)
 
+    if output_json_file is not None:
+        with open(output_json_file, "w") as output_file:
+            json.dump(output_dict, output_file)
+
+    return output_dict
 
 
 def main():
@@ -605,8 +611,6 @@ def main():
     output_dict = solve_scheduling(
         SchedulingInput.from_dict(input_dict), args.mu, args.solver, **solver_kwargs
     )
-    with open("output.json", "w") as output_file:
-        json.dump(output_dict, output_file)
 
 
 if __name__ == "__main__":
