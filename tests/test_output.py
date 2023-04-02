@@ -1,12 +1,6 @@
-from __future__ import annotations
-
-import argparse
 import json
-import warnings
 from collections import defaultdict
-from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
 
 import numpy as np
 import pytest
@@ -15,7 +9,6 @@ from src.akplan.pulp_solve import solve_scheduling
 from src.akplan.util import (
     AKData,
     ParticipantData,
-    PreferenceData,
     RoomData,
     SchedulingInput,
     TimeSlotData,
@@ -126,7 +119,7 @@ def test_timeslots_consecutive(
     scheduled_aks, timeslot_blocks: list[list[TimeSlotData]]
 ) -> bool:
     # test AK timeslot consecutive
-    for ak_id, ak in scheduled_aks.items():
+    for ak in scheduled_aks.values():
         timeslots = [
             (block_idx, timeslot_idx)
             for block_idx, block in enumerate(timeslot_blocks)
@@ -243,26 +236,34 @@ def _print_missing_stats(
     for participant_id in participant_dict:
         out_lst = ["|", f"{participant_id}", "|"]
         if num_weak_prefs[participant_id] > 0:
+            weak_perc = num_weak_misses[participant_id] / num_weak_prefs[participant_id]
             out_lst.extend(
                 [
-                    f"{num_weak_misses[participant_id]:2d} / {num_weak_prefs[participant_id]:2d}",
-                    f"({num_weak_misses[participant_id] / num_weak_prefs[participant_id]*100: 6.2f}%)",
+                    f"{num_weak_misses[participant_id]:2d}",
+                    "/",
+                    f"{num_weak_prefs[participant_id]:2d}",
+                    f"({weak_perc*100: 6.2f}%)",
                     "|",
                 ]
             )
         else:
             out_lst.extend([f"{0:2d} / {0:2d}", f"\t({0*100: 6.2f}%)", "|"])
         if num_strong_prefs[participant_id] > 0:
+            strong_perc = (
+                num_strong_misses[participant_id] / num_strong_prefs[participant_id]
+            )
             out_lst.extend(
                 [
-                    f"{num_strong_misses[participant_id]:2d} / {num_strong_prefs[participant_id]:2d}",
-                    f"({num_strong_misses[participant_id] / num_strong_prefs[participant_id]*100: 6.2f}%)",
+                    f"{num_strong_misses[participant_id]:2d}",
+                    "/",
+                    f"{num_strong_prefs[participant_id]:2d}",
+                    f"({strong_perc*100: 6.2f}%)",
                     "|",
                 ]
             )
         else:
             out_lst.extend([f"{0:2d} / {0:2d}", f"({0*100: 6.2f}%)", "|"])
-        print(f" ".join(out_lst))
+        print(" ".join(out_lst))
 
     weak_misses_perc = [
         num_weak_misses[participant_id] / num_weak_prefs[participant_id]
@@ -295,17 +296,10 @@ def _print_ak_stats(
     print("\n=== AK STATS ===\n")
     out_lst = []
     for ak_id, ak in scheduled_aks.items():
-        ak_name = ak_dict[ak_id].info["name"]
-        room_name = room_dict[ak["room_id"]].info["name"]
-        begin = timeslot_dict[ak["timeslot_ids"][0]].info["start"]
-        participant_names = sorted(
-            [
-                participant_dict[participant_id].info["name"]
-                for participant_id in ak["participant_ids"]
-            ]
-        )
         out_lst.append(
-            f"{ak['ak_id']}\t room {ak['room_id']} timeslots{sorted(ak['timeslot_ids'])} - {len(ak['participant_ids'])} paricipants"
+            f"{ak_id}\t room {ak['room_id']}"
+            f" timeslots{sorted(ak['timeslot_ids'])}"
+            f" - {len(ak['participant_ids'])} paricipants"
         )
     print("\n".join(sorted(out_lst)))
 
@@ -316,12 +310,9 @@ def _print_participant_schedules(
     room_dict: dict[str, RoomData],
     timeslot_dict: dict[str, TimeSlotData],
 ) -> None:
-    print(f"\n=== PARTICIPANT SCHEDULES ===\n")
+    print("\n=== PARTICIPANT SCHEDULES ===\n")
     participant_schedules = defaultdict(list)
     for ak_id, ak in scheduled_aks.items():
-        ak_name = ak_dict[ak_id].info["name"]
-        room_name = room_dict[ak["room_id"]].info["name"]
-        begin = timeslot_dict[ak["timeslot_ids"][0]].info["start"]
         for participant_id in ak["participant_ids"]:
             participant_schedules[participant_id].append(ak_id)
 

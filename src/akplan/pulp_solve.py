@@ -3,7 +3,7 @@ import json
 from collections import defaultdict
 from itertools import chain, combinations, product
 from pathlib import Path
-from typing import Dict, Optional, Set
+from typing import Any, Dict, Iterable
 
 from pulp import (
     LpAffineExpression,
@@ -18,7 +18,7 @@ from pulp import (
     value,
 )
 
-from util import SchedulingInput
+from util import AKData, ParticipantData, RoomData, SchedulingInput, TimeSlotData
 
 
 def process_pref_score(preference_score: int, required: bool, mu: float) -> float:
@@ -39,7 +39,9 @@ def _construct_constraint_name(name: str, *args) -> str:
 def get_ids(
     input_data: SchedulingInput,
 ) -> tuple[set[str], set[str], set[str], set[str]]:
-    def _retrieve_ids(input_iterable) -> set[str]:
+    def _retrieve_ids(
+        input_iterable: Iterable[AKData | ParticipantData | RoomData | TimeSlotData],
+    ) -> set[str]:
         return {obj.id for obj in input_iterable}
 
     ak_ids = _retrieve_ids(input_data.aks)
@@ -53,7 +55,7 @@ def create_lp(
     input_data: SchedulingInput,
     mu: float,
     output_file: str | None = "koma-plan.lp",
-) -> tuple[LpProblem, dict]:
+) -> tuple[LpProblem, dict[str, dict[str, dict[str, dict[str, LpVariable]]]]]:
     """Create the MILP problem as pulp object.
 
     Creates the problem with all constraints, preferences and the objective function.
@@ -74,6 +76,11 @@ def create_lp(
         mu (float): The weight associated with a strong preference for an AK.
         output_file (str, optional): If not None, the created LP is written
             as an `.lp` file to this location. Defaults to `koma-plan.lp`.
+
+    Returns:
+        A tuple (`lp_problem`, `dec_vars`) where `lp_problem` is the
+        constructed MILP instance and `dec_vars` is the nested dictionary
+        containing the MILP variables.
     """
 
     # Get ids from input_dict
@@ -93,6 +100,8 @@ def create_lp(
     room_capacities = {room.id: room.capacity for room in input_data.rooms}
     ak_durations = {ak.id: ak.duration for ak in input_data.aks}
 
+    # dict of real participants only (without dummy participants)
+    # with numerical preferences
     weighted_preference_dict = {
         person.id: {
             pref.ak_id: process_pref_score(
@@ -321,9 +330,10 @@ def create_lp(
 def export_scheduling_result(
     input_data: SchedulingInput,
     solved_lp_problem: LpProblem,
-    dec_vars,
-) -> dict[str, dict | list]:
+    dec_vars: dict[str, dict[str, dict[str, dict[str, LpVariable]]]],
+) -> dict[str, Any]:
     ak_ids, person_ids, room_ids, timeslot_ids = get_ids(input_data)
+
     (room_var, time_var, person_var) = dec_vars
 
     def _get_val(var):
@@ -331,6 +341,9 @@ def export_scheduling_result(
 
     # TODO: if args.solver == "GUROBI" else value(var)
 
+    tmp_res_dir: dict[str, dict[str, dict[str, set[str]]]] = defaultdict(
+        lambda: defaultdict(lambda: defaultdict(set))
+    )
     tmp_res_dir = defaultdict(lambda: defaultdict(lambda: defaultdict(set)))
     for ak_id in ak_ids:
         room_for_ak = None
@@ -344,7 +357,7 @@ def export_scheduling_result(
             if _get_val(person_var[ak_id][person_id]) == 1:
                 tmp_res_dir[ak_id][room_for_ak]["participant_ids"].add(person_id)
 
-    output_dict = {}
+    output_dict: dict[str, Any] = {}
     output_dict["scheduled_aks"] = [
         {
             "ak_id": ak_id,
@@ -365,8 +378,9 @@ def solve_scheduling(
     mu: float,
     solver_name: str | None = None,
     output_lp_file: str | None = "koma-plan.lp",
-    **solver_kwargs,
-) -> dict[str, dict | list]:
+    output_json_file: str | None = "output.json",
+    **solver_kwargs: dict[str, Any],
+) -> dict[str, Any]:
     """Solve the scheduling problem.
 
     Solves the MILP scheduling problem described by the input data using an MILP
@@ -386,11 +400,17 @@ def solve_scheduling(
     Args:
         input_data (SchedulingInput): The input data used to construct the MILP.
         mu (float): The weight associated with a strong preference for an AK.
-        output_lp_file (str, optional): If not None, the created LP is written
-            as an `.lp` file to this location. Defaults to `koma-plan.lp`.
         solver_name (str, optional): The solver to use. If None, uses pulp's
             default solver. Defaults to None.
+        output_lp_file (str, optional): If not None, the created LP is written
+            as an `.lp` file to this location. Defaults to `koma-plan.lp`.
+        output_json_file (str, optional): If not None, the result dict is written
+            as an `.json` file to this location. Defaults to `output.json`.
         **solver_kwargs: kwargs are passed to the solver.
+
+    Returns:
+        A dictionary containing the scheduled aks as well as the scheduling
+        input.
     """
     lp_problem, dec_vars = create_lp(input_data, mu, output_lp_file)
 
@@ -399,7 +419,7 @@ def solve_scheduling(
     else:
         # The problem is solved using PuLP's choice of Solver
         solver = None
-    res = lp_problem.solve(solver)
+    lp_problem.solve(solver)
 
     # The status of the solution is printed to the screen
     print("Status:", LpStatus[lp_problem.status])
@@ -407,7 +427,7 @@ def solve_scheduling(
     return export_scheduling_result(input_data, lp_problem, dec_vars)
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--mu", type=float, default=2)
     parser.add_argument("--solver", type=str, default=None)
@@ -450,11 +470,9 @@ def main():
     with json_file.open("r") as f:
         input_dict = json.load(f)
 
-    output_dict = solve_scheduling(
+    solve_scheduling(
         SchedulingInput.from_dict(input_dict), args.mu, args.solver, **solver_kwargs
     )
-    with open("output.json", "w") as output_file:
-        json.dump(output_dict, output_file)
 
 
 if __name__ == "__main__":

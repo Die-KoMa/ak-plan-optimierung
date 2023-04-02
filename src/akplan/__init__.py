@@ -1,1 +1,1 @@
-""" Conference scheduling using MILPs. """
+"""Conference scheduling using MILPs."""
