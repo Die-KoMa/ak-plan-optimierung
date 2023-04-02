@@ -52,15 +52,19 @@ scheduled_aks_params = [
     params=scheduled_aks_params,
 )
 def scheduled_aks(request, scheduling_input) -> dict[str, dict]:
-    threads = max(1, multiprocessing.cpu_count() - 1)
+    mu, solver_name = request.param
+    solver_kwargs = {}
+    if solver_name not in ["GLPK_CMD"]:
+        solver_kwargs["threads"] = max(1, multiprocessing.cpu_count() - 1)
+
     aks = solve_scheduling(
         scheduling_input,
-        mu=request.param[0],
-        solver_name=request.param[1],
+        mu=mu,
+        solver_name=solver_name,
         output_lp_file=None,
         output_json_file=None,
         timeLimit=60,
-        threads=threads,
+        **solver_kwargs,
     )["scheduled_aks"]
 
     return {ak["ak_id"]: ak for ak in aks}
