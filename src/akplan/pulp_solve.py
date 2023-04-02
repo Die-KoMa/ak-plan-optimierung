@@ -397,9 +397,13 @@ def export_scheduling_result(
         for timeslot_id in timeslot_ids:
             if _get_val(time_var[ak_id][timeslot_id]) == 1:
                 tmp_res_dir[ak_id][room_for_ak]["timeslot_ids"].add(timeslot_id)
+        if not tmp_res_dir[ak_id][room_for_ak]["timeslot_ids"] and not allow_unscheduled_aks:
+            raise ValueError(f"AK {ak_id} has no assigned timeslots")
         for person_id in person_ids:
             if _get_val(person_var[ak_id][person_id]) == 1:
                 tmp_res_dir[ak_id][room_for_ak]["participant_ids"].add(person_id)
+        if not tmp_res_dir[ak_id][room_for_ak]["participant_ids"] and not allow_unscheduled_aks:
+            raise ValueError(f"AK {ak_id} has no assigned participants")
 
     output_dict: dict[str, Any] = {}
     output_dict["scheduled_aks"] = [
