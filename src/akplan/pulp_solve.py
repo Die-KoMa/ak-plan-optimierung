@@ -1,3 +1,4 @@
+"""Solving the MILPs for conference scheduling."""
 import argparse
 import json
 from collections import defaultdict
@@ -20,6 +21,21 @@ from .util import AKData, ParticipantData, RoomData, SchedulingInput, TimeSlotDa
 
 
 def process_pref_score(preference_score: int, required: bool, mu: float) -> float:
+    """Process the input preference score for the MILP constraints.
+
+    Args:
+        preference_score (int): The input score of preference: not interested (0),
+            weakly interested (1), strongly interested (2) or required (-1).
+        required (bool): Whether the participant is required for the AK or not.
+        mu (float): The weight associated with a strong preference for an AK.
+
+    Returns:
+        float: The processed preference score: Required AKs are weighted with 0,
+        weakly preferred AKs with 1 and strongly preferred AKs with `mu`.
+
+    Raises:
+        ValueError: if `preference_score` is not in [0, 1, 2, -1].
+    """
     if required or preference_score == -1:
         return 0
     elif preference_score in [0, 1]:
@@ -27,7 +43,7 @@ def process_pref_score(preference_score: int, required: bool, mu: float) -> floa
     elif preference_score == 2:
         return mu
     else:
-        raise NotImplementedError(preference_score)
+        raise ValueError(preference_score)
 
 
 def _construct_constraint_name(name: str, *args: str) -> str:
@@ -37,6 +53,8 @@ def _construct_constraint_name(name: str, *args: str) -> str:
 def get_ids(
     input_data: SchedulingInput,
 ) -> tuple[set[str], set[str], set[str], set[str]]:
+    """Create id sets from scheduling input."""
+
     def _retrieve_ids(
         input_iterable: Iterable[AKData | ParticipantData | RoomData | TimeSlotData],
     ) -> set[str]:
@@ -365,6 +383,26 @@ def export_scheduling_result(
     ],
     allow_unscheduled_aks: bool = False,
 ) -> dict[str, Any]:
+    """Create a dictionary from the solved MILP.
+
+    For a specification of the output format, see
+    https://github.com/Die-KoMa/ak-plan-optimierung/wiki/Input-&-output-format
+
+    Args:
+        input_data (SchedulingInput): The input data for the scheduling problem.
+        solved_lp_problem (LpProblem): The solved MILP instance.
+        dec_vars (tuple): A 3-tuple (room_var, time_var, person_var) of dicts of
+            decision variables of the MILP.
+        allow_unscheduled_aks (bool): Whether not scheduling an AK is allowed or not.
+            Defaults to False.
+
+    Returns:
+        dict: The constructed output dict (as specified).
+
+    Raises:
+        ValueError: might be raised if the solution of the MILP is infeasible or
+            if an AK is not scheduled and allow_unscheduled_aks is False.
+    """
     ak_ids, person_ids, room_ids, timeslot_ids = get_ids(input_data)
 
     (room_var, time_var, person_var) = dec_vars
@@ -481,6 +519,7 @@ def solve_scheduling(
 
 
 def main() -> None:
+    """Run solve_scheduling from CLI."""
     parser = argparse.ArgumentParser()
     parser.add_argument("--mu", type=float, default=2)
     parser.add_argument("--solver", type=str, default=None)
