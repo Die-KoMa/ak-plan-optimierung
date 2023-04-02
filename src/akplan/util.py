@@ -54,6 +54,8 @@ class SchedulingInput:
     participants: list[ParticipantData]
     rooms: list[RoomData]
     timeslot_blocks: list[list[TimeSlotData]]
+    timeslot_info: dict[str, str]
+    info: dict[str, str]
 
     @classmethod
     def from_dict(cls, input_dict: str) -> "SchedulingInput":
@@ -75,6 +77,8 @@ class SchedulingInput:
             participants=participants,
             rooms=rooms,
             timeslot_blocks=timeslot_blocks,
+            timeslot_info=input_dict["timeslots"]["info"],
+            info=input_dict["info"],
         )
 
     def to_dict(self) -> dict:
