@@ -69,7 +69,15 @@ def _set_decision_variable(
     dec_vars[ak_id][timeslot_id][room_id][participant_id].setInitialValue(value)
     dec_vars[ak_id][timeslot_id][room_id][participant_id].fixValue()
 
+def get_ids(input_data: SchedulingInput) -> tuple[set[str], set[str], set[str], set[str]]:
+    def _retrieve_ids(input_iterable) -> set[str]:
+        return {obj.id for obj in input_iterable}
 
+    ak_ids = _retrieve_ids(input_data.aks)
+    participant_ids = _retrieve_ids(input_data.participants)
+    room_ids = _retrieve_ids(input_data.rooms)
+    timeslot_ids = _retrieve_ids(chain.from_iterable(input_data.timeslot_blocks))
+    return ak_ids, participant_ids, room_ids, timeslot_ids
 
 
 def create_lp(
@@ -147,13 +155,8 @@ def create_lp(
         room.id: set(room.fulfilled_room_constraints) for room in input_data.rooms
     }
 
-    def _retrieve_ids(input_iterable) -> Set:
-        return {obj.id for obj in input_iterable}
+    ak_ids, participant_ids, room_ids, timeslot_ids = get_ids(input_data)
 
-    ak_ids = _retrieve_ids(input_data.aks)
-    room_ids = _retrieve_ids(input_data.rooms)
-    timeslot_ids = _retrieve_ids(chain.from_iterable(input_data.timeslot_blocks))
-    participant_ids = _retrieve_ids(input_data.participants)
     participant_ids = (
         participant_ids.union(  # contains all participants ids (incl. dummy ids)
             {get_dummy_participant_id(ak_id) for ak_id in ak_ids}
