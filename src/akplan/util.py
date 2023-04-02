@@ -3,6 +3,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from dacite import from_dict
+
 @dataclass(frozen=True)
 class AKData:
     id: str
@@ -50,30 +52,32 @@ class SchedulingInput:
     timeslot_blocks: list[list[TimeSlotData]]
 
     @classmethod
-    def from_json(cls, filename: str) -> "SchedulingInput":
-        json_file = Path(filename)
-        assert json_file.suffix == ".json"
-        with json_file.open("r") as f:
-            input_dict = json.load(f)
-        input_vals = input_dict["input"]
-        ak_dict = {ak["id"]: ak for ak in input_vals["aks"]}
-        room_dict = {room["id"]: room for room in input_vals["rooms"]}
-        timeslot_dict = {}
-        for block_id, block in enumerate(input_vals["timeslots"]["blocks"]):
-            for timeslot in block:
-                timeslot_dict[timeslot["id"]] = timeslot
-
-        participant_dict = {
-            participant["id"]: participant for participant in input_vals["participants"]
-        }
-
-        # scheduled_aks = self.check_ak_list(output_dict["scheduled_aks"])
+    def from_dict(cls, input_dict: str) -> "SchedulingInput":
+        aks = [
+            from_dict(data_class=AKData, data=ak)
+            for ak in input_dict["aks"]
+        ]
+        rooms = [
+            from_dict(data_class=RoomData, data=room)
+            for room in input_dict["rooms"]
+        ]
+        participants = [
+            from_dict(data_class=ParticipantData, data=participant)
+            for participant in input_dict["participants"]
+        ]
+        timeslot_blocks = [
+            [
+                from_dict(data_class=TimeSlotData, data=timeslot)
+                for timeslot in block
+            ]
+            for block in input_dict["timeslots"]["blocks"]
+        ]
 
         return cls(
-            ak_dict=ak_dict,
-            participant_dict=participant_dict,
-            room_dict=room_dict,
-            timeslot_dict=timeslot_dict,
+            aks=aks,
+            participants=participants,
+            rooms=rooms,
+            timeslot_blocks=timeslot_blocks,
         )
 
     def to_dict(self) -> dict:
