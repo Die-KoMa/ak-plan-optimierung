@@ -348,6 +348,7 @@ def export_scheduling_result(
         dict[str, dict[str, LpVariable]],
         dict[str, dict[str, LpVariable]],
     ],
+    allow_unscheduled_aks: bool = False,
 ) -> dict[str, Any]:
     ak_ids, person_ids, room_ids, timeslot_ids = get_ids(input_data)
 
@@ -370,6 +371,11 @@ def export_scheduling_result(
         for room_id in room_ids:
             if _get_val(room_var[ak_id][room_id]) == 1:
                 room_for_ak = room_id
+        if room_for_ak is None:
+            if allow_unscheduled_aks:
+                continue
+            else:
+                raise ValueError(f"no room assigned to ak {ak_id}")
         for timeslot_id in timeslot_ids:
             if _get_val(time_var[ak_id][timeslot_id]) == 1:
                 tmp_res_dir[ak_id][room_for_ak]["timeslot_ids"].add(timeslot_id)
