@@ -268,6 +268,13 @@ def create_lp(
         ], _construct_constraint_name(
             "Roomsizes", room_id, ak_id
         )
+    for ak_id in ak_ids:
+        prob += lpSum(
+            [room_var[ak_id][room_id] for room_id in room_ids]
+        ) <= 1, _construct_constraint_name("AtMostOneRoomPerAK", ak_id, room_id)
+        prob += lpSum(
+            [room_var[ak_id][room_id] for room_id in room_ids]
+        ) >= 1, _construct_constraint_name("AtLeastOneRoomPerAK", ak_id, room_id)
 
     # PersonNotInterestedInAK
     # For all A, Z, R, P: If P_{P, A} = 0: Y_{A,Z,R,P} = 0 (non-dummy P)
