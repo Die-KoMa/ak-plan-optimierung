@@ -17,6 +17,8 @@ from pulp import (
     value,
 )
 
+from .util import SchedulingInput
+
 _DUMMY_PARTICIPANT_PREFIX = "DUMMY_PARTICIPANT"
 
 
@@ -123,9 +125,7 @@ def _add_impossible_constraints(
                 _set_decision_variable(value=0, name=name, **kwargs_dict)
 
 
-def create_lp(
-    input_dict: Dict[str, object], mu: float, args: argparse.Namespace
-) -> None:
+def create_lp(input_data: SchedulingInput, mu: float, args: argparse.Namespace) -> None:
     """Create the MILP problem as pulp object and solve it.
 
     Creates the problem with all constraints, preferences and the objective function.
@@ -143,24 +143,26 @@ def create_lp(
     balance between weak and strong preferences.
 
     Args:
-        input_dict (dict): The input dictionary as read from the input JSON file.
+        input_dict (SchedulingInput): The input data used to construct the MILP.
         mu (float): The weight associated with a strong preference for an AK.
         args (argparse.Namespace): CLI arguments, used to pass options for the
             MILP solver.
     """
     # Get values needed from the input_dict
-    room_capacities = {room["id"]: room["capacity"] for room in input_dict["rooms"]}
-    ak_durations = {ak["id"]: ak["duration"] for ak in input_dict["aks"]}
+    room_capacities = {
+        room_id: room["capacity"] for room_id, room in input_data.room_dict.items()
+    }
+    ak_durations = {ak_id: ak["duration"] for ak_id, ak in input_data.ak_dict.items()}
 
     # dict of real participants only (without dummy participants) with their preferences dicts
     real_preferences_dict = {
-        participant["id"]: participant["preferences"]
-        for participant in input_dict["participants"]
+        participant_id: participant["preferences"]
+        for participant_id, participant in input_data.participant_dict.items()
     }
 
     # dict of real participants only (without dummy participants) with numerical preferences
     weighted_preference_dict = {
-        participant["id"]: {
+        participant_id: {
             pref["ak_id"]: process_pref_score(
                 pref["preference_score"],
                 pref["required"],
@@ -168,53 +170,50 @@ def create_lp(
             )
             for pref in participant["preferences"]
         }
-        for participant in input_dict["participants"]
+        for participant_id, participant in input_data.participant_dict.items()
     }
 
     # Get constraints from input_dict
     participant_time_constraint_dict = {
-        participant["id"]: set(participant["time_constraints"])
-        for participant in input_dict["participants"]
+        participant_id: set(participant["time_constraints"])
+        for participant_id, participant in input_data.participant_dict.items()
     }
 
     participant_room_constraint_dict = {
-        participant["id"]: set(participant["room_constraints"])
-        for participant in input_dict["participants"]
+        participant_id: set(participant["room_constraints"])
+        for participant_id, participant in input_data.participant_dict.items()
     }
 
     ak_time_constraint_dict = {
-        ak["id"]: set(ak["time_constraints"]) for ak in input_dict["aks"]
+        ak_id: set(ak["time_constraints"]) for ak_id, ak in input_data.ak_dict.items()
     }
     ak_room_constraint_dict = {
-        ak["id"]: set(ak["room_constraints"]) for ak in input_dict["aks"]
+        ak_id: set(ak["room_constraints"]) for ak_id, ak in input_data.ak_dict.items()
     }
 
     room_time_constraint_dict = {
-        room["id"]: set(room["time_constraints"]) for room in input_dict["rooms"]
+        room_id: set(room["time_constraints"])
+        for room_id, room in input_data.room_dict.items()
     }
     fulfilled_time_constraints = {
         timeslot["id"]: set(timeslot["fulfilled_time_constraints"])
-        for block in input_dict["timeslots"]["blocks"]
+        for block in input_data.timeslot_dict["blocks"]
         for timeslot in block
     }
     fulfilled_room_constraints = {
-        room["id"]: set(room["fulfilled_room_constraints"])
-        for room in input_dict["rooms"]
+        room_id: set(room["fulfilled_room_constraints"])
+        for room_id, room in input_data.room_dict.items()
     }
 
-    # Get ids from input_dict
-    def _retrieve_val_set(object_key: str, val_key: str) -> Set:
-        return {obj[val_key] for obj in input_dict[object_key]}
-
-    ak_ids = _retrieve_val_set("aks", "id")
-    room_ids = _retrieve_val_set("rooms", "id")
+    ak_ids = input_data.ak_dict.keys()
+    room_ids = input_data.room_dict.keys()
     timeslot_ids = {
         timeslot["id"]
-        for block in input_dict["timeslots"]["blocks"]
+        for block in input_data.timeslot_dict["blocks"]
         for timeslot in block
     }
 
-    participant_ids = _retrieve_val_set("participants", "id")
+    participant_ids = input_data.participant_dict.keys()
     participant_ids = (
         participant_ids.union(  # contains all participants ids (incl. dummy ids)
             {get_dummy_participant_id(ak_id) for ak_id in ak_ids}
@@ -223,7 +222,7 @@ def create_lp(
 
     timeslot_block_ids = {
         timeslot["id"]: (block_idx, timeslot_idx)
-        for block_idx, block in enumerate(input_dict["timeslots"]["blocks"])
+        for block_idx, block in enumerate(input_data.timeslot_dict["blocks"])
         for timeslot_idx, timeslot in enumerate(block)
     }
 
@@ -575,7 +574,7 @@ def create_lp(
         for ak_id, subdict in tmp_res_dir.items()
         for room_id, subsubdict in subdict.items()
     ]
-    output_dict["input"] = input_dict
+    output_dict["input"] = input_data.to_dict()
 
     with open("output.json", "w") as output_file:
         json.dump(output_dict, output_file)
