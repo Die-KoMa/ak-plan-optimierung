@@ -207,5 +207,19 @@ if __name__ == "__main__":
         room_poisson_mean=args.room_poisson_mean,
     )
 
-    with open("dummy_set.json", "w") as output_file:
-        json.dump(output_dict, output_file)
+    filename = "_".join(
+        [
+            "examples/test",
+            f"{args.aks}a",
+            f"{args.persons}p",
+            f"{args.rooms}r",
+            f"{args.num_room_constraints}rc",
+            f"{args.room_poisson_mean:.2f}rc-lam",
+            f"{args.seed}.json",
+        ]
+    )
+
+    with open(filename, "w") as output_file:
+        json.dump(output_dict, output_file, indent=4)
+
+    print(f"Generated {filename}")
