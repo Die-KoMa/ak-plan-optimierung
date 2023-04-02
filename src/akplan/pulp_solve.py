@@ -476,6 +476,38 @@ def create_lp(
 
     return prob, dec_vars
 
+
+def export_scheduling_result(
+    input_data: SchedulingInput,
+    solved_lp_problem: LpProblem,
+    dec_vars,
+):
+    ak_ids, participant_ids, room_ids, timeslot_ids = get_ids(input_data)
+
+    tmp_res_dir = defaultdict(lambda: defaultdict(lambda: defaultdict(set)))
+    for ak_id, timeslot_id, room_id, participant_id in product(
+        ak_ids, participant_ids, room_ids, timeslot_ids
+    ):
+        if value(dec_vars[ak_id][timeslot_id][room_id][participant_id]) == 1:
+            tmp_res_dir[ak_id][room_id]["timeslot_ids"].add(timeslot_id)
+            tmp_res_dir[ak_id][room_id]["participant_ids"].add(participant_id)
+
+    output_dict = {}
+    output_dict["scheduled_aks"] = [
+        {
+            "ak_id": ak_id,
+            "room_id": room_id,
+            "timeslot_ids": list(subsubdict["timeslot_ids"]),
+            "participant_ids": list(subsubdict["participant_ids"]),
+        }
+        for ak_id, subdict in tmp_res_dir.items()
+        for room_id, subsubdict in subdict.items()
+    ]
+    output_dict["input"] = input_data.to_dict()
+
+    return output_dict
+
+
 def solve_scheduling(
     input_data: SchedulingInput,
     mu: float,
@@ -520,27 +552,7 @@ def solve_scheduling(
     # The status of the solution is printed to the screen
     print("Status:", LpStatus[prob.status])
 
-    tmp_res_dir = defaultdict(lambda: defaultdict(lambda: defaultdict(set)))
-    for ak_id, timeslot_id, room_id, participant_id in product(
-        ak_ids, timeslot_ids, room_ids, real_preferences_dict.keys()
-    ):
-        if value(dec_vars[ak_id][timeslot_id][room_id][participant_id]) == 1:
-            tmp_res_dir[ak_id][room_id]["timeslot_ids"].add(timeslot_id)
-            tmp_res_dir[ak_id][room_id]["participant_ids"].add(participant_id)
-
-    output_dict = {}
-    output_dict["scheduled_aks"] = [
-        {
-            "ak_id": ak_id,
-            "room_id": room_id,
-            "timeslot_ids": list(subsubdict["timeslot_ids"]),
-            "participant_ids": list(subsubdict["participant_ids"]),
-        }
-        for ak_id, subdict in tmp_res_dir.items()
-        for room_id, subsubdict in subdict.items()
-    ]
-    output_dict["input"] = input_data.to_dict()
-
+    output_dict = export_scheduling_result(input_data, lp_problem, dec_vars)
     with open("output.json", "w") as output_file:
         json.dump(output_dict, output_file)
 
