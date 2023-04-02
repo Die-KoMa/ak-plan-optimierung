@@ -15,6 +15,25 @@ def generate(
     seed: int,
     room_poisson_mean: float,
 ) -> dict[str, Any]:
+    """Generate a test input to test scheduling.
+
+    TODO: describe test assumptions
+
+    Args:
+        num_persons (int): The number of persons in the example.
+        num_aks (int): The number of AKs in the example.
+        num_rooms (int): The number of rooms in the example.
+        num_room_constraints (int): The number of different possible room constraints
+            in the example.
+        seed (int): The seed to make the generation reproducible.
+        room_poisson_mean (float): The number of room constraints a AK requests is
+            modelled with a Poisson distribution with this mean.
+
+    Returns:
+        dict: The generated test input as a dict. For a format
+            specification, see
+            https://github.com/Die-KoMa/ak-plan-optimierung/wiki/Input-&-output-format
+    """
     rng = np.random.default_rng(seed=seed)
 
     # we have one hour time slots
