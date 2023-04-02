@@ -496,6 +496,7 @@ def main() -> None:
         "--threads", type=int, default=None, help="Number of threads to use"
     )
     parser.add_argument("path", type=str)
+    parser.add_argument("--seed", type=int, default=42, help="Seed for the solver")
     args = parser.parse_args()
 
     solver_kwargs = {}
@@ -511,6 +512,8 @@ def main() -> None:
         solver_kwargs["gapAbs"] = args.gap_abs
     if args.threads:
         solver_kwargs["Threads"] = args.threads
+    if args.seed:
+        solver_kwargs["RandomC"] = args.seed
 
     json_file = Path(args.path)
     assert json_file.suffix == ".json"
