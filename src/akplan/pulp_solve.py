@@ -190,11 +190,15 @@ def create_lp(
     # a,a' AKs, t timeslot, x Person or Room
     for (ak_id1, ak_id2), timeslot_id in product(combinations(ak_ids, 2), timeslot_ids):
         for person_id in person_ids:
-            prob += time_var[ak_id1][timeslot_id] + time_var[ak_id2][
-                timeslot_id
-            ] + person_var[ak_id1][person_id] + person_var[ak_id2][
-                person_id
-            ] <= 3, _construct_constraint_name(
+            constraint = lpSum(
+                [
+                    time_var[ak_id1][timeslot_id],
+                    time_var[ak_id2][timeslot_id],
+                    person_var[ak_id1][person_id],
+                    person_var[ak_id2][person_id],
+                ]
+            )
+            prob += constraint <= 3, _construct_constraint_name(
                 "MaxOneAKPerPersonAndTime",
                 ak_id1,
                 ak_id2,
@@ -203,11 +207,15 @@ def create_lp(
             )
         # MaxOneAKPerRoomAndTime
         for room_id in room_ids:
-            prob += time_var[ak_id1][timeslot_id] + time_var[ak_id2][
-                timeslot_id
-            ] + room_var[ak_id1][room_id] + room_var[ak_id2][
-                room_id
-            ] <= 3, _construct_constraint_name(
+            constraint = lpSum(
+                [
+                    time_var[ak_id1][timeslot_id],
+                    time_var[ak_id2][timeslot_id],
+                    room_var[ak_id1][room_id],
+                    room_var[ak_id2][room_id],
+                ]
+            )
+            prob += constraint <= 3, _construct_constraint_name(
                 "MaxOneAKPerRoomAndTime",
                 ak_id1,
                 ak_id2,
