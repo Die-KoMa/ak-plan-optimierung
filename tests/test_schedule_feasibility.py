@@ -55,15 +55,21 @@ def scheduling_input(request) -> SchedulingInput:
     return SchedulingInput.from_dict(input_dict)
 
 
+fast_scheduled_ak_params = [(2, "HiGHS_CMD"), (2, "GUROBI")]
 scheduled_aks_params = [
-    (mu, solver)
-    for mu, solver in product([2], pulp.listSolvers(onlyAvailable=True) + [None])
+    pytest.param(param_pair)
+    if param_pair in fast_scheduled_ak_params
+    else pytest.param(param_pair, marks=pytest.mark.slow)
+    for param_pair in product([2, 1, 5], pulp.listSolvers(onlyAvailable=True) + [None])
 ]
 
 
 @pytest.fixture(
     scope="module",
-    ids=[f"mu={mu}-{solver}" for mu, solver in scheduled_aks_params],
+    ids=[
+        f"mu={param.values[0][0]}-{param.values[0][1]}"
+        for param in scheduled_aks_params
+    ],
     params=scheduled_aks_params,
 )
 def scheduled_aks(request, scheduling_input) -> dict[str, dict]:
