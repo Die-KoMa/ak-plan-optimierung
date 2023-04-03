@@ -68,9 +68,12 @@ def scheduled_aks(request, scheduling_input) -> dict[str, dict]:
         output_json_file=None,
         timeLimit=60,
         **solver_kwargs,
-    )["scheduled_aks"]
+    )
 
-    return {ak["ak_id"]: ak for ak in aks}
+    if aks is None:
+        pytest.fail("No LP solution found")
+
+    return {ak["ak_id"]: ak for ak in aks["scheduled_aks"]}
 
 
 @pytest.fixture
