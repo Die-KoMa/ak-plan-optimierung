@@ -76,13 +76,13 @@ def scheduled_aks(request, scheduling_input) -> dict[str, dict]:
     return {ak["ak_id"]: ak for ak in aks["scheduled_aks"]}
 
 
-@pytest.fixture
+@pytest.fixture(scope="module")
 def ak_dict(scheduling_input: SchedulingInput) -> dict[str, AKData]:
     """Construct dict mapping AK ids to AKs."""
     return {ak.id: ak for ak in scheduling_input.aks}
 
 
-@pytest.fixture
+@pytest.fixture(scope="module")
 def participant_dict(scheduling_input: SchedulingInput) -> dict[str, ParticipantData]:
     """Construct dict mapping participant ids to participant."""
     return {
@@ -90,13 +90,13 @@ def participant_dict(scheduling_input: SchedulingInput) -> dict[str, Participant
     }
 
 
-@pytest.fixture
+@pytest.fixture(scope="module")
 def room_dict(scheduling_input: SchedulingInput) -> dict[str, RoomData]:
     """Construct dict mapping room ids to rooms."""
     return {room.id: room for room in scheduling_input.rooms}
 
 
-@pytest.fixture
+@pytest.fixture(scope="module")
 def timeslot_dict(scheduling_input: SchedulingInput) -> dict[str, TimeSlotData]:
     """Construct dict mapping timeslot ids to timeslots."""
     return {
@@ -106,7 +106,7 @@ def timeslot_dict(scheduling_input: SchedulingInput) -> dict[str, TimeSlotData]:
     }
 
 
-@pytest.fixture
+@pytest.fixture(scope="module")
 def timeslot_blocks(scheduling_input: SchedulingInput) -> list[list[TimeSlotData]]:
     """Timeslot blocks of the scheduling input."""
     return scheduling_input.timeslot_blocks
