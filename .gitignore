@@ -6,7 +6,9 @@ __pycache__/
 koroma
 bin
 venv
+notebooks
 
+examples/out-*
 *.lp
 /*.json
 *.sol
