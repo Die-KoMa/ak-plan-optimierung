@@ -559,8 +559,8 @@ def main() -> None:
         solver_kwargs["gapAbs"] = args.gap_abs
     if args.threads:
         solver_kwargs["threads"] = args.threads
-    if args.seed:
-        solver_kwargs["RandomC"] = args.seed
+    # if args.seed:
+    #     solver_kwargs["RandomC"] = args.seed
 
     json_file = Path(args.path)
     assert json_file.suffix == ".json"
