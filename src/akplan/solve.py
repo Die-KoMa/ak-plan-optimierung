@@ -567,9 +567,15 @@ def main() -> None:
     with json_file.open("r") as f:
         input_dict = json.load(f)
 
-    solve_scheduling(
+    output_dict = solve_scheduling(
         SchedulingInput.from_dict(input_dict), args.mu, args.solver, **solver_kwargs
     )
+
+    if output_dict is not None:
+        out_file = json_file.parent / f"out-{json_file.name}"
+        with out_file.open("w") as f:
+            json.dump(output_dict, f)
+        print(f"Stored result at {out_file}")
 
 
 if __name__ == "__main__":
