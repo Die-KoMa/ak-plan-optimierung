@@ -66,7 +66,7 @@ def scheduled_aks(request, scheduling_input) -> dict[str, dict]:
         solver_name=solver_name,
         output_lp_file=None,
         output_json_file=None,
-        timeLimit=300,
+        timeLimit=60,
         **solver_kwargs,
     )["scheduled_aks"]
 
