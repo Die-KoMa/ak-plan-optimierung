@@ -28,7 +28,20 @@ def _test_uniqueness(lst) -> tuple[np.ndarray, np.ndarray, bool]:
 @pytest.fixture(
     scope="module",
     params=[
+        "examples/test_20a_20p_3r_5rc_0.25rc-lam_0.json",
+        "examples/test_20a_40p_4r_5rc_0.25rc-lam_0.json",
+        "examples/test_20a_100p_4r_5rc_0.25rc-lam_0.json",
+        "examples/test_10a_15p_4r_5rc_0.25rc-lam_0.json",
         "examples/test1.json",
+        pytest.param(
+            "examples/test_30a_20p_3r_5rc_0.25rc-lam_0.json", marks=pytest.mark.slow
+        ),
+        pytest.param(
+            "examples/test_40a_10p_4r_5rc_0.25rc-lam_0.json", marks=pytest.mark.slow
+        ),
+        pytest.param(
+            "examples/test_40a_70p_4r_10rc_1.00rc-lam_0.json", marks=pytest.mark.slow
+        ),
         pytest.param("examples/test2.json", marks=pytest.mark.slow),
     ],
 )

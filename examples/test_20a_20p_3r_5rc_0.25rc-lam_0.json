@@ -1,0 +1,2129 @@
+{
+    "aks": [
+        {
+            "id": "0",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [
+                "room-constraint-1"
+            ],
+            "time_constraints": [
+                "ResoAK"
+            ],
+            "info": {
+                "name": "AK 0",
+                "head": "N/A",
+                "description": "N/A",
+                "reso": true
+            }
+        },
+        {
+            "id": "1",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [
+                "ResoAK"
+            ],
+            "info": {
+                "name": "AK 1",
+                "head": "N/A",
+                "description": "N/A",
+                "reso": true
+            }
+        },
+        {
+            "id": "2",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK 2",
+                "head": "N/A",
+                "description": "N/A",
+                "reso": false
+            }
+        },
+        {
+            "id": "3",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK 3",
+                "head": "N/A",
+                "description": "N/A",
+                "reso": false
+            }
+        },
+        {
+            "id": "4",
+            "duration": 1,
+            "properties": {},
+            "room_constraints": [
+                "room-constraint-4"
+            ],
+            "time_constraints": [],
+            "info": {
+                "name": "AK 4",
+                "head": "N/A",
+                "description": "N/A",
+                "reso": false
+            }
+        },
+        {
+            "id": "5",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK 5",
+                "head": "N/A",
+                "description": "N/A",
+                "reso": false
+            }
+        },
+        {
+            "id": "6",
+            "duration": 1,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK 6",
+                "head": "N/A",
+                "description": "N/A",
+                "reso": false
+            }
+        },
+        {
+            "id": "7",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK 7",
+                "head": "N/A",
+                "description": "N/A",
+                "reso": false
+            }
+        },
+        {
+            "id": "8",
+            "duration": 1,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [
+                "ResoAK"
+            ],
+            "info": {
+                "name": "AK 8",
+                "head": "N/A",
+                "description": "N/A",
+                "reso": true
+            }
+        },
+        {
+            "id": "9",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK 9",
+                "head": "N/A",
+                "description": "N/A",
+                "reso": false
+            }
+        },
+        {
+            "id": "10",
+            "duration": 1,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK 10",
+                "head": "N/A",
+                "description": "N/A",
+                "reso": false
+            }
+        },
+        {
+            "id": "11",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK 11",
+                "head": "N/A",
+                "description": "N/A",
+                "reso": false
+            }
+        },
+        {
+            "id": "12",
+            "duration": 1,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [
+                "ResoAK"
+            ],
+            "info": {
+                "name": "AK 12",
+                "head": "N/A",
+                "description": "N/A",
+                "reso": true
+            }
+        },
+        {
+            "id": "13",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [
+                "room-constraint-3",
+                "room-constraint-4"
+            ],
+            "time_constraints": [],
+            "info": {
+                "name": "AK 13",
+                "head": "N/A",
+                "description": "N/A",
+                "reso": false
+            }
+        },
+        {
+            "id": "14",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK 14",
+                "head": "N/A",
+                "description": "N/A",
+                "reso": false
+            }
+        },
+        {
+            "id": "15",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [
+                "ResoAK"
+            ],
+            "info": {
+                "name": "AK 15",
+                "head": "N/A",
+                "description": "N/A",
+                "reso": true
+            }
+        },
+        {
+            "id": "16",
+            "duration": 1,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK 16",
+                "head": "N/A",
+                "description": "N/A",
+                "reso": false
+            }
+        },
+        {
+            "id": "17",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK 17",
+                "head": "N/A",
+                "description": "N/A",
+                "reso": false
+            }
+        },
+        {
+            "id": "18",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK 18",
+                "head": "N/A",
+                "description": "N/A",
+                "reso": false
+            }
+        },
+        {
+            "id": "19",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK 19",
+                "head": "N/A",
+                "description": "N/A",
+                "reso": false
+            }
+        }
+    ],
+    "rooms": [
+        {
+            "id": "0",
+            "info": {
+                "name": "room 0"
+            },
+            "capacity": 44,
+            "fulfilled_room_constraints": [
+                "room-constraint-3",
+                "room-constraint-4",
+                "room-constraint-1"
+            ],
+            "time_constraints": []
+        },
+        {
+            "id": "1",
+            "info": {
+                "name": "room 1"
+            },
+            "capacity": 10,
+            "fulfilled_room_constraints": [
+                "room-constraint-4"
+            ],
+            "time_constraints": []
+        },
+        {
+            "id": "2",
+            "info": {
+                "name": "room 2"
+            },
+            "capacity": 36,
+            "fulfilled_room_constraints": [
+                "room-constraint-0",
+                "room-constraint-4",
+                "room-constraint-1",
+                "room-constraint-2",
+                "room-constraint-3"
+            ],
+            "time_constraints": []
+        }
+    ],
+    "participants": [
+        {
+            "id": "0",
+            "info": {
+                "name": "Person 0"
+            },
+            "preferences": [
+                {
+                    "ak_id": "0",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "1",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "2",
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
+                    "ak_id": "4",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "6",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "7",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "8",
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
+                    "ak_id": "9",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "10",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "11",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "12",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "13",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "15",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "17",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "18",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "19",
+                    "required": false,
+                    "preference_score": 2
+                }
+            ],
+            "room_constraints": [],
+            "time_constraints": []
+        },
+        {
+            "id": "1",
+            "info": {
+                "name": "Person 1"
+            },
+            "preferences": [
+                {
+                    "ak_id": "0",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "1",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "4",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "9",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "11",
+                    "required": false,
+                    "preference_score": 2
+                }
+            ],
+            "room_constraints": [],
+            "time_constraints": []
+        },
+        {
+            "id": "2",
+            "info": {
+                "name": "Person 2"
+            },
+            "preferences": [
+                {
+                    "ak_id": "0",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "1",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "2",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "5",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "6",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "7",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "8",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "9",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "11",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "12",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "13",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "14",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "16",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "17",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "18",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "19",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "room_constraints": [],
+            "time_constraints": []
+        },
+        {
+            "id": "3",
+            "info": {
+                "name": "Person 3"
+            },
+            "preferences": [
+                {
+                    "ak_id": "0",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "1",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "2",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "3",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "4",
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
+                    "ak_id": "7",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "8",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "9",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "10",
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
+                    "ak_id": "11",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "12",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "14",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "15",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "16",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "17",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "18",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "19",
+                    "required": false,
+                    "preference_score": 2
+                }
+            ],
+            "room_constraints": [],
+            "time_constraints": []
+        },
+        {
+            "id": "4",
+            "info": {
+                "name": "Person 4"
+            },
+            "preferences": [
+                {
+                    "ak_id": "6",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "8",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "11",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "13",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "14",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "15",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "16",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "17",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "19",
+                    "required": false,
+                    "preference_score": 2
+                }
+            ],
+            "room_constraints": [],
+            "time_constraints": []
+        },
+        {
+            "id": "5",
+            "info": {
+                "name": "Person 5"
+            },
+            "preferences": [
+                {
+                    "ak_id": "2",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "5",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "8",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "9",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "10",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "11",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "13",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "14",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "16",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "18",
+                    "required": false,
+                    "preference_score": 2
+                }
+            ],
+            "room_constraints": [],
+            "time_constraints": []
+        },
+        {
+            "id": "6",
+            "info": {
+                "name": "Person 6"
+            },
+            "preferences": [
+                {
+                    "ak_id": "0",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "6",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "7",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "8",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "10",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "13",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "14",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "17",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "18",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "19",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "room_constraints": [],
+            "time_constraints": []
+        },
+        {
+            "id": "7",
+            "info": {
+                "name": "Person 7"
+            },
+            "preferences": [
+                {
+                    "ak_id": "1",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "5",
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
+                    "ak_id": "6",
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
+                    "ak_id": "8",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "9",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "10",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "12",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "14",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "15",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "16",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "17",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "18",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "19",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "room_constraints": [],
+            "time_constraints": []
+        },
+        {
+            "id": "8",
+            "info": {
+                "name": "Person 8"
+            },
+            "preferences": [
+                {
+                    "ak_id": "1",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "2",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "4",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "5",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "7",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "11",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "12",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "14",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "15",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "16",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "18",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "19",
+                    "required": true,
+                    "preference_score": -1
+                }
+            ],
+            "room_constraints": [],
+            "time_constraints": []
+        },
+        {
+            "id": "9",
+            "info": {
+                "name": "Person 9"
+            },
+            "preferences": [
+                {
+                    "ak_id": "0",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "1",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "2",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "3",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "4",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "5",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "7",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "8",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "9",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "10",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "11",
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
+                    "ak_id": "12",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "13",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "15",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "17",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "18",
+                    "required": false,
+                    "preference_score": 2
+                }
+            ],
+            "room_constraints": [],
+            "time_constraints": []
+        },
+        {
+            "id": "10",
+            "info": {
+                "name": "Person 10"
+            },
+            "preferences": [
+                {
+                    "ak_id": "0",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "1",
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
+                    "ak_id": "2",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "3",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "4",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "5",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "6",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "7",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "8",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "9",
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
+                    "ak_id": "10",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "11",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "12",
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
+                    "ak_id": "13",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "14",
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
+                    "ak_id": "15",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "16",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "17",
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
+                    "ak_id": "18",
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
+                    "ak_id": "19",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "room_constraints": [],
+            "time_constraints": []
+        },
+        {
+            "id": "11",
+            "info": {
+                "name": "Person 11"
+            },
+            "preferences": [
+                {
+                    "ak_id": "0",
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
+                    "ak_id": "1",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "2",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "3",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "4",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "5",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "6",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "7",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "8",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "10",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "12",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "13",
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
+                    "ak_id": "14",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "15",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "16",
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
+                    "ak_id": "17",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "19",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "room_constraints": [],
+            "time_constraints": []
+        },
+        {
+            "id": "12",
+            "info": {
+                "name": "Person 12"
+            },
+            "preferences": [
+                {
+                    "ak_id": "3",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "4",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "5",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "6",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "7",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "8",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "9",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "10",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "12",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "14",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "15",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "17",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "18",
+                    "required": false,
+                    "preference_score": 2
+                }
+            ],
+            "room_constraints": [],
+            "time_constraints": []
+        },
+        {
+            "id": "13",
+            "info": {
+                "name": "Person 13"
+            },
+            "preferences": [
+                {
+                    "ak_id": "0",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "1",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "18",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "19",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "7",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "8",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "12",
+                    "required": false,
+                    "preference_score": 2
+                }
+            ],
+            "room_constraints": [],
+            "time_constraints": []
+        },
+        {
+            "id": "14",
+            "info": {
+                "name": "Person 14"
+            },
+            "preferences": [
+                {
+                    "ak_id": "0",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "1",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "2",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "4",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "5",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "6",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "7",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "9",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "10",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "11",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "12",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "13",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "15",
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
+                    "ak_id": "16",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "17",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "19",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "room_constraints": [],
+            "time_constraints": []
+        },
+        {
+            "id": "15",
+            "info": {
+                "name": "Person 15"
+            },
+            "preferences": [
+                {
+                    "ak_id": "2",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "3",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "5",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "7",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "8",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "9",
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
+                    "ak_id": "11",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "13",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "16",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "17",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "19",
+                    "required": false,
+                    "preference_score": 2
+                }
+            ],
+            "room_constraints": [],
+            "time_constraints": []
+        },
+        {
+            "id": "16",
+            "info": {
+                "name": "Person 16"
+            },
+            "preferences": [
+                {
+                    "ak_id": "0",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "1",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "2",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "3",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "4",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "5",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "6",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "7",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "10",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "11",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "12",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "13",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "15",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "16",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "18",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "19",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "room_constraints": [],
+            "time_constraints": []
+        },
+        {
+            "id": "17",
+            "info": {
+                "name": "Person 17"
+            },
+            "preferences": [
+                {
+                    "ak_id": "0",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "2",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "5",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "6",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "8",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "11",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "12",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "14",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "15",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "16",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "18",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "19",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "room_constraints": [],
+            "time_constraints": []
+        },
+        {
+            "id": "18",
+            "info": {
+                "name": "Person 18"
+            },
+            "preferences": [
+                {
+                    "ak_id": "16",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "1",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "13",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "17",
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "room_constraints": [],
+            "time_constraints": []
+        },
+        {
+            "id": "19",
+            "info": {
+                "name": "Person 19"
+            },
+            "preferences": [
+                {
+                    "ak_id": "1",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "2",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "4",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "5",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "6",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "7",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "10",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "12",
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": "15",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "17",
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": "18",
+                    "required": false,
+                    "preference_score": 2
+                }
+            ],
+            "room_constraints": [],
+            "time_constraints": []
+        }
+    ],
+    "timeslots": {
+        "info": {
+            "duration": "1 Stunde"
+        },
+        "blocks": [
+            [
+                {
+                    "id": "0",
+                    "info": {
+                        "start": "Dienstag, 8 Uhr"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Dienstag",
+                        "ResoAK"
+                    ]
+                },
+                {
+                    "id": "1",
+                    "info": {
+                        "start": "Dienstag, 9 Uhr"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Dienstag",
+                        "ResoAK"
+                    ]
+                },
+                {
+                    "id": "2",
+                    "info": {
+                        "start": "Dienstag, 10 Uhr"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Dienstag",
+                        "ResoAK"
+                    ]
+                },
+                {
+                    "id": "3",
+                    "info": {
+                        "start": "Dienstag, 11 Uhr"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Dienstag",
+                        "ResoAK"
+                    ]
+                },
+                {
+                    "id": "4",
+                    "info": {
+                        "start": "Dienstag, 12 Uhr"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Dienstag",
+                        "ResoAK"
+                    ]
+                },
+                {
+                    "id": "5",
+                    "info": {
+                        "start": "Dienstag, 13 Uhr"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Dienstag",
+                        "ResoAK"
+                    ]
+                },
+                {
+                    "id": "6",
+                    "info": {
+                        "start": "Dienstag, 14 Uhr"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Dienstag",
+                        "ResoAK"
+                    ]
+                },
+                {
+                    "id": "7",
+                    "info": {
+                        "start": "Dienstag, 15 Uhr"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Dienstag",
+                        "ResoAK"
+                    ]
+                },
+                {
+                    "id": "8",
+                    "info": {
+                        "start": "Dienstag, 16 Uhr"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Dienstag",
+                        "ResoAK"
+                    ]
+                },
+                {
+                    "id": "9",
+                    "info": {
+                        "start": "Dienstag, 17 Uhr"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Dienstag",
+                        "ResoAK"
+                    ]
+                }
+            ],
+            [
+                {
+                    "id": "10",
+                    "info": {
+                        "start": "Mittwoch, 8 Uhr"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Mittwoch"
+                    ]
+                },
+                {
+                    "id": "11",
+                    "info": {
+                        "start": "Mittwoch, 9 Uhr"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Mittwoch"
+                    ]
+                },
+                {
+                    "id": "12",
+                    "info": {
+                        "start": "Mittwoch, 10 Uhr"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Mittwoch"
+                    ]
+                },
+                {
+                    "id": "13",
+                    "info": {
+                        "start": "Mittwoch, 11 Uhr"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Mittwoch"
+                    ]
+                },
+                {
+                    "id": "14",
+                    "info": {
+                        "start": "Mittwoch, 12 Uhr"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Mittwoch"
+                    ]
+                },
+                {
+                    "id": "15",
+                    "info": {
+                        "start": "Mittwoch, 13 Uhr"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Mittwoch"
+                    ]
+                },
+                {
+                    "id": "16",
+                    "info": {
+                        "start": "Mittwoch, 14 Uhr"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Mittwoch"
+                    ]
+                },
+                {
+                    "id": "17",
+                    "info": {
+                        "start": "Mittwoch, 15 Uhr"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Mittwoch"
+                    ]
+                }
+            ],
+            [
+                {
+                    "id": "18",
+                    "info": {
+                        "start": "Donnerstag, 8 Uhr"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Donnerstag"
+                    ]
+                },
+                {
+                    "id": "19",
+                    "info": {
+                        "start": "Donnerstag, 9 Uhr"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Donnerstag"
+                    ]
+                },
+                {
+                    "id": "20",
+                    "info": {
+                        "start": "Donnerstag, 10 Uhr"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Donnerstag"
+                    ]
+                },
+                {
+                    "id": "21",
+                    "info": {
+                        "start": "Donnerstag, 11 Uhr"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Donnerstag"
+                    ]
+                },
+                {
+                    "id": "22",
+                    "info": {
+                        "start": "Donnerstag, 12 Uhr"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Donnerstag"
+                    ]
+                },
+                {
+                    "id": "23",
+                    "info": {
+                        "start": "Donnerstag, 13 Uhr"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Donnerstag"
+                    ]
+                },
+                {
+                    "id": "24",
+                    "info": {
+                        "start": "Donnerstag, 14 Uhr"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Donnerstag"
+                    ]
+                },
+                {
+                    "id": "25",
+                    "info": {
+                        "start": "Donnerstag, 15 Uhr"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Donnerstag"
+                    ]
+                }
+            ],
+            [
+                {
+                    "id": "26",
+                    "info": {
+                        "start": "Freitag, 8 Uhr"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Freitag"
+                    ]
+                },
+                {
+                    "id": "27",
+                    "info": {
+                        "start": "Freitag, 9 Uhr"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Freitag"
+                    ]
+                },
+                {
+                    "id": "28",
+                    "info": {
+                        "start": "Freitag, 10 Uhr"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Freitag"
+                    ]
+                },
+                {
+                    "id": "29",
+                    "info": {
+                        "start": "Freitag, 11 Uhr"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Freitag"
+                    ]
+                },
+                {
+                    "id": "30",
+                    "info": {
+                        "start": "Freitag, 12 Uhr"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Freitag"
+                    ]
+                },
+                {
+                    "id": "31",
+                    "info": {
+                        "start": "Freitag, 13 Uhr"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Freitag"
+                    ]
+                },
+                {
+                    "id": "32",
+                    "info": {
+                        "start": "Freitag, 14 Uhr"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Freitag"
+                    ]
+                },
+                {
+                    "id": "33",
+                    "info": {
+                        "start": "Freitag, 15 Uhr"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Freitag"
+                    ]
+                },
+                {
+                    "id": "34",
+                    "info": {
+                        "start": "Freitag, 16 Uhr"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Freitag"
+                    ]
+                },
+                {
+                    "id": "35",
+                    "info": {
+                        "start": "Freitag, 17 Uhr"
+                    },
+                    "fulfilled_time_constraints": [
+                        "Freitag"
+                    ]
+                }
+            ]
+        ]
+    },
+    "info": "DummySet"
+}
