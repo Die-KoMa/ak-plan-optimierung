@@ -9,7 +9,7 @@ import numpy as np
 import pulp
 import pytest
 
-from src.akplan.pulp_solve import solve_scheduling
+from src.akplan.solve import solve_scheduling
 from src.akplan.util import (
     AKData,
     ParticipantData,
