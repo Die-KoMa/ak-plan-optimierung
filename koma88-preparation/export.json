@@ -66,6 +66,9 @@
         {
             "id": "46-267",
             "capacity": 45,
+            "info": {
+                "name": "Geb\u00e4ude 46 Raum 267"
+            },
             "time_constraints": [
                 "not_friday"
             ],
@@ -108,6 +111,9 @@
         },
         {
             "id": "11-220",
+            "info": {
+                "name": "Geb\u00e4ude 11 Raum 220"
+            },
             "cap": 20,
             "time_constraints": [
                 "not_thursday",
