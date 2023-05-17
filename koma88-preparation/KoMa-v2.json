@@ -1,0 +1,399 @@
+{
+  "rooms": [
+    {
+      "id": "48_208",
+      "info": {
+        "name": "Gebäude 48 Raum 208"
+      },
+      "capacity": 98,
+      "fulfilled_room_constraints": [
+        "beamer"
+      ],
+      "time_constraints": [
+      ]
+    },
+    {
+      "id": "48_210",
+      "info": {
+        "name": "Gebäude 48 Raum 210"
+      },
+      "capacity": 98,
+      "fulfilled_room_constraints": [
+        "verein_room",
+        "beamer"
+      ],
+      "time_constraints": [
+      ]
+    },
+    {
+      "id": "48_438",
+      "info": {
+        "name": "Gebäude 48 Raum 438"
+      },
+      "capacity": 25,
+      "fulfilled_room_constraints": [
+        "ak_room",
+        "beamer",
+        "keine_treppen"
+      ],
+      "time_constraints": []
+    },
+    {
+      "id": "48_538",
+      "info": {
+        "name": "Gebäude 48 Raum 538"
+      },
+      "capacity": 30,
+      "fulfilled_room_constraints": [
+        "beamer",
+        "keine_treppen"
+      ],
+      "time_constraints": [],
+    },
+    {
+      "id": "48-582",
+      "info": {
+        "name": "Gebäude 48 Raum 582"
+      },
+      "capacity": 35,
+      "fulfilled_room_constraints": [
+        "ak_room",
+        "beamer",
+        "keine_treppen"
+      ],
+      "time_constraints": [
+        "not_fr1415"
+      ]
+    },
+    {
+      "id": "46-267",
+      "capacity": 45,
+      "time_constraints": [
+        "not_friday"
+      ],
+      "fullfilled_room_constraints": [
+        "ak_room",
+        "keine_treppen"
+      ]
+    },
+    {
+      "id": "11_201",
+      "info": {
+        "name": "Gebäude 11 Raum 201"
+      },
+      "cap": 20,
+      "fullfilled_room_constraints": ["beamer", "ak_room", "keine_treppen"],
+      "time_constraints": ["not_thursday", "not_saturday"]
+    },
+    {
+      "id": "11_243",
+      "info": {
+        "name": "Gebäude 11 Raum 243"
+      },
+      "cap": 60,
+      "fullfilled_room_constraints": ["beamer", "ak_room", "keine_treppen"],
+      "time_constraints": ["not_thursday", "not_saturday"]
+      
+    },
+    { 
+      "id": "11-220",
+      "cap": 20,
+      "time_constraints" : ["not_thursday", "not_saturday"],
+      "fullfilled_room_constraints": ["ak_room", "keine_treppen"]
+      }
+  ],
+  "timeslots": {
+    "info": {
+      "duration": "1 hour blocks"
+    },
+    "blocks": [
+      [
+        {
+          "id": "DoM0",
+          "info": {
+            "start": "Donnerstag 8:00"
+          },
+          "fulfilled_time_constraints": [
+            "not_friday",
+            "not_saturday",
+            "reso_time",
+            "not_fr1415"
+          ]
+        },
+        {
+          "id": "DoM1",
+          "info": {
+            "start": "Donnerstag 9:00"
+          },
+          "fulfilled_time_constraints": [
+            "not_friday",
+            "not_saturday",
+            "reso_time",
+            "not_fr1415"
+          ]
+        },
+        {
+          "id": "DoM2",
+          "info": {
+            "start": "Donnerstag 10:00"
+          },
+          "fulfilled_time_constraints": [
+            "not_friday",
+            "not_saturday",
+            "reso_time",
+            "not_fr1415"
+          ]
+        },
+        {
+          "id": "DoM3",
+          "info": {
+            "start": "Donnerstag 11:00"
+          },
+          "fulfilled_time_constraints": [
+            "not_friday",
+            "not_saturday",
+            "reso_time",
+            "not_fr1415"
+          ]
+        }
+      ],
+      [
+        {
+          "id": "DoA0",
+          "info": {
+            "start": "Donnerstag 14:00"
+          },
+          "fulfilled_time_constraints": [
+            "not_friday",
+            "not_saturday",
+            "reso_time",
+            "not_fr1415"
+          ]
+        },
+        {
+          "id": "DoA1",
+          "info": {
+            "start": "Donnerstag 15:00"
+          },
+          "fulfilled_time_constraints": [
+            "not_friday",
+            "not_saturday",
+            "reso_time",
+            "not_fr1415"
+          ]
+        },
+        {
+          "id": "DoA2",
+          "info": {
+            "start": "Donnerstag 16:00"
+          },
+          "fulfilled_time_constraints": [
+            "not_friday",
+            "not_saturday",
+            "reso_time",
+            "not_fr1415"
+          ]
+        },
+        {
+          "id": "DoA3",
+          "info": {
+            "start": "Donnerstag 17:00"
+          },
+          "fulfilled_time_constraints": [
+            "not_friday",
+            "not_saturday",
+            "reso_time",
+            "not_fr1415"
+          ]
+        }
+      ],
+      [
+        {
+          "id": "FrA0",
+          "info": {
+            "start": "Freitag 14:00"
+          },
+          "fulfilled_time_constraints": [
+            "not_thursday",
+            "not_saturday",
+            "reso_time"
+          ]
+        },
+        {
+          "id": "FrA1",
+          "info": {
+            "start": "Freitag 15:00"
+          },
+          "fulfilled_time_constraints": [
+            "not_thursday",
+            "not_saturday",
+            "reso_time",
+            "not_fr1415"
+          ]
+        },
+        {
+          "id": "FrA2",
+          "info": {
+            "start": "Freitag 16:00"
+          },
+          "fulfilled_time_constraints": [
+            "not_thursday",
+            "not_saturday",
+            "not_fr1415"
+          ]
+        },
+        {
+          "id": "FrA2",
+          "info": {
+            "start": "Freitag 17:00"
+          },
+          "fulfilled_time_constraints": [
+            "not_thursday",
+            "not_saturday",
+            "not_fr1415"
+          ]
+        },
+        {
+          "id": "FrA3",
+          "info": {
+            "start": "Freitag 18:00"
+          },
+          "fulfilled_time_constraints": [
+            "not_thursday",
+            "not_saturday",
+            "not_fr1415"
+          ]
+        }
+      ],
+      [
+        {
+          "id": "SaM0",
+          "info": {
+            "start": "Samstag 8:00"
+          },
+          "fulfilled_time_constraints": [
+            "not_thursday",
+            "not_friday",
+            "not_fr1415"
+          ]
+        },
+        {
+          "id": "SaM1",
+          "info": {
+            "start": "Samstag 9:00"
+          },
+          "fulfilled_time_constraints": [
+            "not_thursday",
+            "not_friday",
+            "not_fr1415"
+          ]
+        },
+        {
+          "id": "SaM2",
+          "info": {
+            "start": "Samstag 10:00"
+          },
+          "fulfilled_time_constraints": [
+            "not_thursday",
+            "not_friday",
+            "not_fr1415"
+          ]
+        },
+        {
+          "id": "SaM3",
+          "info": {
+            "start": "Samstag 11:00"
+          },
+          "fulfilled_time_constraints": [
+            "not_thursday",
+            "not_friday",
+            "not_fr1415"
+          ]
+        }
+      ],
+      [
+        {
+          "id": "SaA0",
+          "info": {
+            "start": "Samstag 14:00"
+          },
+          "fulfilled_time_constraints": [
+            "not_thursday",
+            "not_friday",
+            "not_fr1415",
+            "verein_time"
+          ]
+        },
+        {
+          "id": "SaA1",
+          "info": {
+            "start": "Samstag 15:00"
+          },
+          "fulfilled_time_constraints": [
+            "not_thursday",
+            "not_friday",
+            "not_fr1415",
+            "verein_time"
+          ]
+        },
+        {
+          "id": "SaA2",
+          "info": {
+            "start": "Samstag 16:00"
+          },
+          "fulfilled_time_constraints": [
+            "not_thursday",
+            "not_friday",
+            "not_fr1415"
+          ]
+        },
+        {
+          "id": "SaA3",
+          "info": {
+            "start": "Samstag 17:00"
+          },
+          "fulfilled_time_constraints": [
+            "not_thursday",
+            "not_friday",
+            "not_fr1415"
+          ]
+        },
+        {
+          "id": "SaA4",
+          "info": {
+            "start": "Samstag 18:00"
+          },
+          "fulfilled_time_constraints": [
+            "not_thursday",
+            "not_friday",
+            "not_fr1415"
+          ]
+        }
+      ]
+    ]
+  },
+  "aks": [
+    {
+      "id": "verein",
+      "duration": 2,
+      "properties": {},
+      "room_constraints": [
+        "verein_room"
+      ],
+      "time_constraints": [
+        "verein_time"
+      ],
+      "info": {
+        "name": "Vereinssitzung KoMa e.V.",
+        "head": "Ushi?",
+        "description": "",
+        "reso": false
+      }
+    }
+  ],
+  "participants": [],
+  "info": {
+    "name": "This is the input for the KoMa88 in Kaiserslautern",
+    "author": "Lorenzo Conti and Felix Blanke"
+  }
+}
