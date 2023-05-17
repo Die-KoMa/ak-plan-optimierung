@@ -7,6 +7,7 @@
       },
       "capacity": 98,
       "fulfilled_room_constraints": [
+        "beamer"
       ],
       "time_constraints": [
         "not_thursday"
@@ -19,6 +20,8 @@
       },
       "capacity": 98,
       "fulfilled_room_constraints": [
+        "verein_room",
+        "beamer"
       ],
       "time_constraints": [
         "not_thursday"
@@ -31,7 +34,9 @@
       },
       "capacity": 25,
       "fulfilled_room_constraints": [
-        "ak_room"
+        "ak_room",
+        "beamer",
+        "keine_treppen"
       ],
       "time_constraints": [
       ]
@@ -43,7 +48,9 @@
       },
       "capacity": 30,
       "fulfilled_room_constraints": [
-        "ak_room"
+        "ak_room",
+        "beamer",
+        "keine_treppen"
       ],
       "time_constraints": [
       ]
@@ -55,7 +62,9 @@
       },
       "capacity": 35,
       "fulfilled_room_constraints": [
-        "ak_room"
+        "ak_room",
+        "beamer",
+        "keine_treppen"
       ],
       "time_constraints": [
         "not_fr14"
@@ -251,7 +260,8 @@
           },
           "fulfilled_time_constraints": [
             "not_thursday",
-            "not_fr14"  
+            "not_fr14",
+            "verein_time"
           ]
         },
         {
@@ -261,7 +271,8 @@
           },
           "fulfilled_time_constraints": [
             "not_thursday",
-            "not_fr14"  
+            "not_fr14",
+            "verein_time"
           ]
         },
         {
@@ -298,6 +309,23 @@
     ]
   },
   "aks": [
+    {
+      "id": "verein",
+      "duration": 2,
+      "properties": {},
+      "room_constraints": [
+          "verein_room"
+      ],
+      "time_constraints": [
+          "verein_time"
+      ],
+      "info": {
+          "name": "Vereinssitzung KoMa e.V.",
+          "head": "Ushi?",
+          "description": "",
+          "reso": false
+      }
+    }
   ],
   "participants": [
   ],
