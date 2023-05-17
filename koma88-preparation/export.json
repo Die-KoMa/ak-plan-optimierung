@@ -412,6 +412,641 @@
                 "description": "",
                 "reso": false
             }
+        },
+        {
+            "id": "ak5",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK Studienwerbung",
+                "head": "Uschi (Jena)",
+                "description": "Was wird an euren Hochschulen gemacht, um Mathe-(Lehramts-)Studis zu gewinnen? Welche Veranstaltungen gibt es bei euch? Wobei seid ihr involviert? Was funktioniert eurer Meinung nach, was nicht? ",
+                "reso": false
+            }
+        },
+        {
+            "id": "ak34",
+            "duration": 1,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK Adresslistenaktualisierung",
+                "head": "Lili (Bonn)",
+                "description": "Wir hatten vor, auch Fachschaften zur KoMa einzuladen, die Mathe-verwandte F\u00e4cher wie Data Science vertreten, aber keine klassische Mathe-Fachschaft sind. Die Aktualisierung der Adresslisten dazu k\u00f6nnte man fortf\u00fchren. ",
+                "reso": false
+            }
+        },
+        {
+            "id": "ak40",
+            "duration": 1,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK AK AK AK-Plan Programm",
+                "head": "Lorenzo (Bonn) ",
+                "description": "Seit der letzten KoMa gab es zwei WAch-KoMata zu einem Programm zur Optimierung von AK-Pl\u00e4nen. Aktueller Stand hier: https://github.com/die-koma/ak-plan-optimierung/tree/lorenzo_lp_formulationWenn alles geklappt hat, lief die Optimierung des AK-Plans bereits \u00fcber das Programm. Wir wollen dar\u00fcber und die n\u00e4chsten Schritte des Projekts sprechen (und diese ggf. auf der KoMa bereits angehen). ",
+                "reso": false
+            }
+        },
+        {
+            "id": "ak41",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [
+                "reso_time"
+            ],
+            "info": {
+                "name": "AK Arbeitszeiterfassung",
+                "head": "Felix (Bonn)",
+                "description": "Bei allen Besch\u00e4ftigten muss verpflichtend die Arbeitszeit erfasst werden. Das ist in der Uni nicht fl\u00e4chendeckend und ggf. unzureichend umgesetzt.Gleichzeitig f\u00fchrt die Erfassung der Arbeitszeiten oft zu Konflikten mit bestehenden Praxen und clasht mit Problemen im Wissenschaftssystem, wie z.B. Promotionsstudis auf Nicht-Vollzeitstellen. ",
+                "reso": true
+            }
+        },
+        {
+            "id": "ak19",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [
+                "reso_time"
+            ],
+            "info": {
+                "name": "AK Automatische Korrekturen",
+                "head": "Pia (Bochum)",
+                "description": "Wir w\u00fcrden uns gerne dar\u00fcber austauschen, wie automatische Korrekturen (z.B. der \u00dcbungsaufgaben ganzer Veranstaltungen) vern\u00fcnftig umgesetzt werden k\u00f6nnen (und wie nicht), inwiefern das Stellen 'spart', bzw. Arbeit kurz- und langfristig reduziert, und welchen Einfluss das auf Studierende hat. ",
+                "reso": true
+            }
+        },
+        {
+            "id": "ak0",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK Awarenessarbeit",
+                "head": "Simon (Wien)",
+                "description": "Awarenessworkshops bzw. Bildung sehr teuer, daher Austausch sinnvoll. ",
+                "reso": false
+            }
+        },
+        {
+            "id": "ak1",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK Berufungshandbuch",
+                "head": "mmarx",
+                "description": "Die KIF hat Interesse an einer Ueberarbeitung des Berufungshandbuchs. Da das auch fuer uns interessant ist, ist die Idee, hier einen Hybrid-AK zum Austausch ueber Berufungsverfahren und ggf. zur Ueberarbeitung des Texts anzubieten",
+                "reso": false
+            }
+        },
+        {
+            "id": "ak42",
+            "duration": 1,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK Datenschutz bei externer Software",
+                "head": "B\u00fcsra (FAU Erlangen) ",
+                "description": "Bei unserer Uni gibt es einige Probleme mit Software von dritten Anbietern, die unsere Uni nutzt. Durch automatisierte Systeme, die f\u00fcr die Verwaltung sicher n\u00fctzlich sind, werden Kontaktdaten etc. von Studis ohne deren Wissen f\u00fcr alle 40-50k Leute der Uni sichtbar.",
+                "reso": false
+            }
+        },
+        {
+            "id": "ak2",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK Geschlechtergleichstellung",
+                "head": "Marena (Bonn)",
+                "description": " Austausch dar\u00fcber, welche Ma\u00dfnahmen an den verschiedenen Unis stattfinden, um an der Geschlechtergleichstellung zu arbeiten. Was macht der Fachbereich, was macht die Fachschaft? ",
+                "reso": false
+            }
+        },
+        {
+            "id": "ak38",
+            "duration": 1,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK Hygiene bei Veranstaltungen",
+                "head": "B\u00fcsra (FAU Erlangen) ",
+                "description": "Wie gehen andere Fachschaften mit Hygienekonzepten bei Festen/Veranstaltungen um? Wie werden Regelungen enforced? Wie streng wird sich an sowas wie die K\u00fchlkette beim Einkauf/Transport gehalten? ",
+                "reso": false
+            }
+        },
+        {
+            "id": "ak43",
+            "duration": 1,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK IT-Infrastruktur",
+                "head": "mmarx",
+                "description": "Austausch ueber und gegebenfalls produktive Arbeit an IT-Infrastruktur (primaer der KoMa selbst, aber wir koennen auch gerne ueber FSR-Infrastruktur reden). ",
+                "reso": false
+            }
+        },
+        {
+            "id": "ak35",
+            "duration": 1,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK Kartenspielwerbung",
+                "head": "Yoni (Jena), Lili (Bonn)",
+                "description": "Der KoMa e.V. hat endlich neue Kartenspiele. Allerdings sind die Bestellung \u00fcber die Jahre immer weniger geworden und sp\u00e4testens Corona bzw. die lange Zeit ohne Kartenspiele hat das nur noch schlimmer gemacht. Daher sollten wir uns \u00fcberlegen, wie wir die neuen Kartenspiele gut bewerben k\u00f6nnten. ",
+                "reso": false
+            }
+        },
+        {
+            "id": "ak12",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [
+                "reso_time"
+            ],
+            "info": {
+                "name": "AK Klausurtermine",
+                "head": "B\u00fcsra (FAU Erlangen) ",
+                "description": "Auf der KoMa 84 in Augsburg gab es eine Reso zum Thema rechtzeitige Ank\u00fcndigung von Pr\u00fcfungsterminen. Da die Zeit sehr fortgeschritten war und kein Ende in Sicht war in der Anpassung der Reso, wurde das Ganze auf eine zuk\u00fcnftige KoMa geschoben. Ist wohl ein wenig aus den Augen gelaufen, daher jetzt ein wenig sp\u00e4ter als geplant der neue AK dazu. ",
+                "reso": true
+            }
+        },
+        {
+            "id": "ak20",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK Lehramt",
+                "head": "Asli (Bonn)",
+                "description": "Austausch \u00fcber die Struktur der Lehramtsstudieng\u00e4nge an verschiedenen Hochschulen, Aufzeigen von Problemen, Austausch \u00fcber L\u00f6sungskonzepte ",
+                "reso": false
+            }
+        },
+        {
+            "id": "ak13",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [
+                "reso_time"
+            ],
+            "info": {
+                "name": "AK Lehrkraftmangel",
+                "head": "Yoni (Jena)",
+                "description": "Reso der ZaPF (Physik BuFaTa), der wir uns anschlie\u00dfen k\u00f6nnen (ggf. haben auch ein zwei Lehramtsmenschen noch was aus Mathe-Sicht zu erg\u00e4nzen) ",
+                "reso": true
+            }
+        },
+        {
+            "id": "ak21",
+            "duration": 1,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK Mentoring",
+                "head": "Nika (Darmstadt)",
+                "description": "Wir h\u00e4tten gerne Input dazu, wie Mentoring bei euch an der Uni funktioniert. ",
+                "reso": false
+            }
+        },
+        {
+            "id": "ak11",
+            "duration": 1,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK Nachhaltigkeitsmodule",
+                "head": "Deike (W\u00fcrzburg)",
+                "description": "Die Uni W\u00fcrzburg will vllt/evtl bis xx in jedem Studiengang ein Nachhaltigkeitsmodul haben, in der Mathe fehlt die Kreativit\u00e4t dazu ",
+                "reso": false
+            }
+        },
+        {
+            "id": "ak22",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [
+                "reso_time"
+            ],
+            "info": {
+                "name": "AK Nachteilsausgleiche",
+                "head": "Asli (Bonn)",
+                "description": "Auf der letzten KoMa wurde im AK Inklusion das Thema Nachteilsausgleich im Rahmen ADHS angesprochen und wir haben gesagt, dass wir das Thema auf die n\u00e4chste KoMa verschieben wollen, weil das einen eigenen AK verdient hat. Es soll diskutiert werden, welche Arten von Nachteilsausgleichen notwendig w\u00e4ren und wie man diese erreichen kann. Das soll dann evtl in einer Reso formuliert werden. ",
+                "reso": true
+            }
+        },
+        {
+            "id": "ak17",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [
+                "reso_time"
+            ],
+            "info": {
+                "name": "AK Online-Wahl",
+                "head": "Dennis (Darmstadt)",
+                "description": "Wir finden Onlinewahlen bl\u00f6d. ",
+                "reso": true
+            }
+        },
+        {
+            "id": "ak23",
+            "duration": 1,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK Social Media",
+                "head": "Roman (Paderborn)",
+                "description": "Ungenutzte Facebook-Seite & Telegram; potentiell weitere Plattformen?",
+                "reso": false
+            }
+        },
+        {
+            "id": "ak18",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK Spiel und Spa\u00df",
+                "head": "Janna, Annika (Graz)",
+                "description": "Austausch und Durchf\u00fchrung von kurzen Spielen und Warm Ups, die auch in Veranstaltung als kurze Lockerung eingesetzt werden k\u00f6nnen ",
+                "reso": false
+            }
+        },
+        {
+            "id": "ak3",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [
+                "reso_time"
+            ],
+            "info": {
+                "name": "AK studentische Armut",
+                "head": "Moritz",
+                "description": "Studentische Armut ist mit Krieg, Inflation und schlechte Arbeitsbedingungen einer immer gr\u00f6\u00dferes Thema. Dazu sollte sich auch die KoMa positionieren. ",
+                "reso": true
+            }
+        },
+        {
+            "id": "ak4",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [
+                "reso_time"
+            ],
+            "info": {
+                "name": "AK TVStud",
+                "head": "Felix (Bonn)",
+                "description": "Es soll \u00fcber einen Tarifvertrag f\u00fcr studentische Besch\u00e4ftigte gesprochen werden. ",
+                "reso": true
+            }
+        },
+        {
+            "id": "ak25",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [
+                "reso_time"
+            ],
+            "info": {
+                "name": "AK WissZeitVG",
+                "head": "Felix (Bonn)",
+                "description": "Austausch und ggf. Positionierung zur Novellierung des Wissenschaftszeitvertragsgesetzes, welches die Sonderbefristungsrechte in der Wissenschaft regelt. ",
+                "reso": true
+            }
+        },
+        {
+            "id": "ak26",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK \u00dcbungsleitungen",
+                "head": "Louis (Bonn)",
+                "description": "Wir m\u00f6chten uns \u00fcber die Arbeitsbedingungen der studentischen Besch\u00e4ftigen an anderen Hochschule in Deutschland erkundigen. Sowie \u00fcber die Probleme vieler Hochschulen sprechen, dass immer mehr \u00dcL Stellen gestrichen werden (was kann man da tun? ).",
+                "reso": false
+            }
+        },
+        {
+            "id": "ak37",
+            "duration": 1,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK Koma-B\u00fcro",
+                "head": "Lili (Bonn)",
+                "description": "Da das KoMa-B\u00fcro wurde letzte KoMa von Bonn \u00fcbernommen. Wir w\u00fcrden uns gern \u00fcber die Aufgaben und Erwartungen an das KoMa-B\u00fcro austauschen. ",
+                "reso": false
+            }
+        },
+        {
+            "id": "ak24",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK Veranstaltungen",
+                "head": "Nika (Darmstadt)",
+                "description": "Wie funktionieren gr\u00f6\u00dfere Veranstaltungen bei euch bzgl Sicherheitsdienst, Veranstaltungsleitung,...? Vor allem gerichtet an Hochschule in Hessen im Zuge des neuen Versammlungsgesetzes. ",
+                "reso": false
+            }
+        },
+        {
+            "id": "ak27",
+            "duration": 1,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK Zulassung zu Studieng\u00e4ngen",
+                "head": "Helen (Jena)",
+                "description": "Es ist irgendwie nicht ganz so trivial, wie mal m\u00f6glichst sinnvoll festmachen kann ob Menschen qualifiziert sind z.B. einen Mathe Master zu studieren, wie l\u00e4uft das bei euch? Was kann man da tun? ",
+                "reso": false
+            }
+        },
+        {
+            "id": "ak28",
+            "duration": 1,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK Spendenveranstaltungen",
+                "head": "Helen (Jena)",
+                "description": "F\u00fcr gr\u00f6\u00dfere Veranstaltungen haben wir zuletzt versucht Spenden von Professoren einzuwerben, das ist bei uns nicht sonderlich erfolgreich. Was macht ihr da? ",
+                "reso": false
+            }
+        },
+        {
+            "id": "ak39",
+            "duration": 1,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK Gendergerechte Toiletten",
+                "head": "Hannes (Essen)",
+                "description": NaN,
+                "reso": false
+            }
+        },
+        {
+            "id": "ak29",
+            "duration": 1,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [
+                "reso_time"
+            ],
+            "info": {
+                "name": "AK Angabe von Symptomen bei krankheitsbedingten Pr\u00fcfungsabmeldungen",
+                "head": "Yoni (Jena)",
+                "description": "Metafa-Reso dazu",
+                "reso": true
+            }
+        },
+        {
+            "id": "ak44",
+            "duration": 1,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK Datenschutz bei Fachschaftsarbeit",
+                "head": "Hannes (Essen)",
+                "description": "An unserer Uni wei\u00df niemand so recht Bescheid, wie man DSGVO-konform Fachscjaftsarbeit umsetzt, insbesondere beim Thema Fotos",
+                "reso": false
+            }
+        },
+        {
+            "id": "ak30",
+            "duration": 1,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK Vereine von Fachschaften und Nachwuchs in Vereinen",
+                "head": "Helen (Jena)",
+                "description": "Vereine und Vereinsarbeit ist wichtig, da sollte man mal dr\u00fcber sprechen und wie man da auch neue Leute reinbekommt",
+                "reso": false
+            }
+        },
+        {
+            "id": "ak6",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [
+                "reso_time"
+            ],
+            "info": {
+                "name": "AK Mental Health",
+                "head": "Simon (Bonn)",
+                "description": "Austausch \u00fcber die aktuelle Situation bzgl. Mental Health in der Studierendenschaft. Evtl. Reso zur Sichtbarkeit und Umgang damit",
+                "reso": true
+            }
+        },
+        {
+            "id": "ak7",
+            "duration": 1,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [
+                "reso_time"
+            ],
+            "info": {
+                "name": "AK bundesweites Semesterticket",
+                "head": "Matze (Freiburg)",
+                "description": "Positionierung zur Forderung nach einem bundesweiten Semesterticket vor dem Hintergrund der Einf\u00fchrung des Deutschlandtickets. Gibt auch eine ZaPF-Reso dazu und fzs hatte heute Sitzung dazu.",
+                "reso": true
+            }
+        },
+        {
+            "id": "ak15",
+            "duration": 1,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK Orga",
+                "head": "Yoni (Jena)",
+                "description": "Standard-AK um Feedback aus vergangnen und der aktuellen KoMa zu bekommen und dort ggf strukturelle Probleme zu identifizieren. Diese k\u00f6nnen dann ggf optimiert werden.",
+                "reso": false
+            }
+        },
+        {
+            "id": "ak45",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK KoMa-Homepage-Inhalt",
+                "head": "mmarx",
+                "description": "Inhaltliche \u00dcberarbeitung der KoMa-Homepage: https://die-koma.org",
+                "reso": false
+            }
+        },
+        {
+            "id": "ak14",
+            "duration": 2,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK Meta",
+                "head": "Yoni (Jena)",
+                "description": "Standard-AK um Feedback aus der aktuellen KoMa zu bekommen und dort ggf strukturelle Probleme zu identifizieren. Diese k\u00f6nnen dann ggf optimiert werden.",
+                "reso": false
+            }
+        },
+        {
+            "id": "ak31",
+            "duration": 1,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK Ethikmodule",
+                "head": "Dennis (Darmstadt)",
+                "description": " W\u00e4hrend unserer Reak kam die Frage aus in welchen Modulen wir unseren Studierenden einen ethischen Umgang mit ihrem erlernten Wissen beibringen. Die Antwort ist \u201eEinf\u00fchrung in die Stochastik\u201c. Wie ist es an anderen Universit\u00e4ten",
+                "reso": false
+            }
+        },
+        {
+            "id": "ak16",
+            "duration": 1,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK Umgang mit Fachschaftsbeef",
+                "head": "Darline (Heidelberg)",
+                "description": "Fachschaftsarbeit l\u00e4uft mal harmonisch mal nicht. In diesem AK soll es darum gehen sich auszutauschen, ob es Konflikte in der Vergangenheit gab (oder aktuell gibt), Wie kann man Situationen deeskalieren, Wie hat die Konfliktresolution geklappt.",
+                "reso": false
+            }
+        },
+        {
+            "id": "ak8",
+            "duration": 1,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK Pr\u00fcfungsversuche",
+                "head": "Caro (Bielefeld)",
+                "description": "In Bielefeld gibt es unbegrenzte Pr\u00fcfungsversuche :) Vergleich zu 3-Versuchen",
+                "reso": false
+            }
+        },
+        {
+            "id": "ak36",
+            "duration": 1,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK Kurier",
+                "head": "Uschi (Jena), Yoni (Jena)",
+                "description": "Der KoMa-Kurier ist essentieller Bestand f\u00fcr die BMBF-F\u00f6rderung (aka eine Menge Geld). Dieser muss\u00a0von irgendwelchen Menschen gemacht werden. Wie das funktioniert, wird im AK gekl\u00e4rt. Im Idealfall wird dieses Jahr auch einer fertig :)",
+                "reso": false
+            }
+        },
+        {
+            "id": "ak9",
+            "duration": 1,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK KI-Anwendungen im Studium",
+                "head": "Simon (Wien)",
+                "description": "Wie gehen Lehrende mit KI im Studium um, wie verwenden Studierende das?",
+                "reso": false
+            }
+        },
+        {
+            "id": "ak46",
+            "duration": 1,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK Evaluation",
+                "head": "Yoni (Jena)",
+                "description": "Wie l\u00e4uft das bei euch ab? Wie geht ihr mit den Ergebnissen um?",
+                "reso": false
+            }
+        },
+        {
+            "id": "ak10",
+            "duration": 1,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AKkreditierung",
+                "head": "Moritz",
+                "description": "Fachschaften k\u00f6nnen sich Input holen, wie genau eine Akkreditierung abl\u00e4uft und Fragen dazu stellen",
+                "reso": false
+            }
+        },
+        {
+            "id": "ak32",
+            "duration": 1,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK Plenumsleitung",
+                "head": "Marena (Bonn)",
+                "description": "Marena m\u00f6chte gerne Leute einarbeiten in zuk\u00fcnftige Plenumsleitung und dabei ein How-To schreiben",
+                "reso": false
+            }
+        },
+        {
+            "id": "ak33",
+            "duration": 1,
+            "properties": {},
+            "room_constraints": [],
+            "time_constraints": [],
+            "info": {
+                "name": "AK Budget-Fahrten",
+                "head": "Lukas (Berlin)",
+                "description": "Fachschaftsfahrten werden immer teurer; wie kann man das etwas g\u00fcnstiger umsetzen (zB H\u00f6rsaal\u00fcbernachtungen etc)",
+                "reso": false
+            }
         }
     ],
     "participants": [
