@@ -1,107 +1,130 @@
 {
   "rooms": [
     {
-      "id": "48_208",
-      "info": {
-        "name": "Gebäude 48 Raum 208"
-      },
-      "capacity": 98,
-      "fulfilled_room_constraints": [
-        "beamer"
-      ],
-      "time_constraints": [
-      ]
+        "id": "48_208",
+        "info": {
+            "name": "Geb\u00e4ude 48 Raum 208"
+        },
+        "capacity": 98,
+        "fulfilled_room_constraints": [
+            "beamer"
+        ],
+        "time_constraints": []
     },
     {
-      "id": "48_210",
-      "info": {
-        "name": "Gebäude 48 Raum 210"
-      },
-      "capacity": 98,
-      "fulfilled_room_constraints": [
-        "verein_room",
-        "beamer"
-      ],
-      "time_constraints": [
-      ]
+        "id": "48_210",
+        "info": {
+            "name": "Geb\u00e4ude 48 Raum 210"
+        },
+        "capacity": 98,
+        "fulfilled_room_constraints": [
+            "verein_room",
+            "beamer"
+        ],
+        "time_constraints": []
     },
     {
-      "id": "48_438",
-      "info": {
-        "name": "Gebäude 48 Raum 438"
-      },
-      "capacity": 25,
-      "fulfilled_room_constraints": [
-        "ak_room",
-        "beamer",
-        "keine_treppen"
-      ],
-      "time_constraints": []
+        "id": "48_438",
+        "info": {
+            "name": "Geb\u00e4ude 48 Raum 438"
+        },
+        "capacity": 25,
+        "fulfilled_room_constraints": [
+            "ak_room",
+            "beamer",
+            "keine_treppen"
+        ],
+        "time_constraints": []
     },
     {
-      "id": "48_538",
-      "info": {
-        "name": "Gebäude 48 Raum 538"
-      },
-      "capacity": 30,
-      "fulfilled_room_constraints": [
-        "beamer",
-        "keine_treppen"
-      ],
-      "time_constraints": []
+        "id": "48_538",
+        "info": {
+            "name": "Geb\u00e4ude 48 Raum 538"
+        },
+        "capacity": 30,
+        "fulfilled_room_constraints": [
+            "beamer",
+            "keine_treppen"
+        ],
+        "time_constraints": []
     },
     {
-      "id": "48-582",
-      "info": {
-        "name": "Gebäude 48 Raum 582"
-      },
-      "capacity": 35,
-      "fulfilled_room_constraints": [
-        "ak_room",
-        "beamer",
-        "keine_treppen"
-      ],
-      "time_constraints": [
-        "not_fr1415"
-      ]
+        "id": "48-582",
+        "info": {
+            "name": "Geb\u00e4ude 48 Raum 582"
+        },
+        "capacity": 35,
+        "fulfilled_room_constraints": [
+            "ak_room",
+            "beamer",
+            "keine_treppen"
+        ],
+        "time_constraints": [
+            "not_fr1415"
+        ]
     },
     {
-      "id": "46-267",
-      "capacity": 45,
-      "time_constraints": [
-        "not_friday"
-      ],
-      "fullfilled_room_constraints": [
-        "ak_room",
-        "keine_treppen"
-      ]
+        "id": "46-267",
+        "capacity": 45,
+        "info": {
+            "name": "Geb\u00e4ude 46 Raum 267"
+        },
+        "time_constraints": [
+            "not_friday"
+        ],
+        "fulfilled_room_constraints": [
+            "ak_room",
+            "keine_treppen"
+        ]
     },
     {
-      "id": "11_201",
-      "info": {
-        "name": "Gebäude 11 Raum 201"
-      },
-      "cap": 20,
-      "fullfilled_room_constraints": ["beamer", "ak_room", "keine_treppen"],
-      "time_constraints": ["not_thursday", "not_saturday"]
+        "id": "11_201",
+        "info": {
+            "name": "Geb\u00e4ude 11 Raum 201"
+        },
+        "capacity": 20,
+        "fulfilled_room_constraints": [
+            "beamer",
+            "ak_room",
+            "keine_treppen"
+        ],
+        "time_constraints": [
+            "not_thursday",
+            "not_saturday"
+        ]
     },
     {
-      "id": "11_243",
-      "info": {
-        "name": "Gebäude 11 Raum 243"
-      },
-      "cap": 60,
-      "fullfilled_room_constraints": ["beamer", "ak_room", "keine_treppen"],
-      "time_constraints": ["not_thursday", "not_saturday"]
-      
+        "id": "11_243",
+        "info": {
+            "name": "Geb\u00e4ude 11 Raum 243"
+        },
+        "capacity": 60,
+        "fulfilled_room_constraints": [
+            "beamer",
+            "ak_room",
+            "keine_treppen"
+        ],
+        "time_constraints": [
+            "not_thursday",
+            "not_saturday"
+        ]
     },
-    { 
-      "id": "11-220",
-      "cap": 20,
-      "time_constraints" : ["not_thursday", "not_saturday"],
-      "fullfilled_room_constraints": ["ak_room", "keine_treppen"]
-      }
-  ],
+    {
+        "id": "11-220",
+        "info": {
+            "name": "Geb\u00e4ude 11 Raum 220"
+        },
+        "capacity": 20,
+        "time_constraints": [
+            "not_thursday",
+            "not_saturday"
+        ],
+        "fulfilled_room_constraints": [
+            "ak_room",
+            "keine_treppen"
+        ]
+    }
+],
   "timeslots": {
     "info": {
       "duration": "1 hour blocks"
