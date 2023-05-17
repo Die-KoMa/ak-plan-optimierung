@@ -1,0 +1,308 @@
+{
+  "rooms": [
+    {
+      "id": "208",
+      "info": {
+        "name": "Gebäude 48 Raum 208"
+      },
+      "capacity": 98,
+      "fulfilled_room_constraints": [
+      ],
+      "time_constraints": [
+        "not_thursday"
+      ]
+    },
+    {
+      "id": "210",
+      "info": {
+        "name": "Gebäude 48 Raum 210"
+      },
+      "capacity": 98,
+      "fulfilled_room_constraints": [
+      ],
+      "time_constraints": [
+        "not_thursday"
+      ]
+    },
+    {
+      "id": "438",
+      "info": {
+        "name": "Gebäude 48 Raum 438"
+      },
+      "capacity": 25,
+      "fulfilled_room_constraints": [
+        "ak_room"
+      ],
+      "time_constraints": [
+      ]
+    },
+    {
+      "id": "538",
+      "info": {
+        "name": "Gebäude 48 Raum 538"
+      },
+      "capacity": 30,
+      "fulfilled_room_constraints": [
+        "ak_room"
+      ],
+      "time_constraints": [
+      ]
+    },
+    {
+      "id": "582",
+      "info": {
+        "name": "Gebäude 48 Raum 582"
+      },
+      "capacity": 35,
+      "fulfilled_room_constraints": [
+        "ak_room"
+      ],
+      "time_constraints": [
+        "not_fr14"
+      ]
+    }  
+  ],
+  "timeslots": {
+    "info": {
+      "duration": "1 hour blocks"
+    },
+    "blocks": [
+      [
+        {
+          "id": "DoM0",
+          "info": {
+            "start": "Donnerstag 8:00"
+          },
+          "fulfilled_time_constraints": [
+            "reso_time",
+            "not_fr14"
+          ]
+        },{
+          "id": "DoM1",
+          "info": {
+            "start": "Donnerstag 9:00"
+          },
+          "fulfilled_time_constraints": [
+            "reso_time",            
+            "not_fr14"
+          ]
+        },
+        {
+          "id": "DoM2",
+          "info": {
+            "start": "Donnerstag 10:00"
+          },
+          "fulfilled_time_constraints": [
+            "reso_time",            
+            "not_fr14"
+          ]
+        },
+        {
+          "id": "DoM3",
+          "info": {
+            "start": "Donnerstag 11:00"
+          },
+          "fulfilled_time_constraints": [
+            "reso_time",            
+            "not_fr14"
+          ]
+        }
+      ],
+      [
+        {
+          "id": "DoA0",
+          "info": {
+            "start": "Donnerstag 14:00"
+          },
+          "fulfilled_time_constraints": [
+            "reso_time",            
+            "not_fr14"
+          ]
+        },{
+          "id": "DoA1",
+          "info": {
+            "start": "Donnerstag 15:00"
+          },
+          "fulfilled_time_constraints": [
+            "reso_time",            
+            "not_fr14"
+          ]
+        },
+        {
+          "id": "DoA2",
+          "info": {
+            "start": "Donnerstag 16:00"
+          },
+          "fulfilled_time_constraints": [
+            "reso_time",            
+            "not_fr14"
+          ]
+        },
+        {
+          "id": "DoA3",
+          "info": {
+            "start": "Donnerstag 17:00"
+          },
+          "fulfilled_time_constraints": [
+            "reso_time",            
+            "not_fr14"
+          ]
+        }
+      ],
+      [
+        {
+          "id": "FrA0",
+          "info": {
+            "start": "Freitag 14:00"
+          },
+          "fulfilled_time_constraints": [
+            "not_thursday",
+            "reso_time"
+          ]
+        },
+        {
+          "id": "FrA1",
+          "info": {
+            "start": "Freitag 15:00"
+          },
+          "fulfilled_time_constraints": [
+            "not_thursday",
+            "reso_time",            
+            "not_fr14"
+          ]
+        },
+        {
+          "id": "FrA2",
+          "info": {
+            "start": "Freitag 16:00"
+          },
+          "fulfilled_time_constraints": [
+            "not_thursday",
+            "not_fr14"  
+          ]
+        },
+        {
+          "id": "FrA2",
+          "info": {
+            "start": "Freitag 17:00"
+          },
+          "fulfilled_time_constraints": [
+            "not_thursday",
+            "not_fr14"  
+          ]
+        },
+        {
+          "id": "FrA3",
+          "info": {
+            "start": "Freitag 18:00"
+          },
+          "fulfilled_time_constraints": [
+            "not_thursday",
+            "not_fr14"  
+          ]
+        }      
+      ],
+      [
+        {
+          "id": "SaM0",
+          "info": {
+            "start": "Samstag 8:00"
+          },
+          "fulfilled_time_constraints": [
+            "not_thursday",
+            "not_fr14"  
+          ]
+        },{
+          "id": "SaM1",
+          "info": {
+            "start": "Samstag 9:00"
+          },
+          "fulfilled_time_constraints": [
+            "not_thursday",
+            "not_fr14"  
+          ]
+        },
+        {
+          "id": "SaM2",
+          "info": {
+            "start": "Samstag 10:00"
+          },
+          "fulfilled_time_constraints": [
+            "not_thursday",
+            "not_fr14"  
+          ]
+        },
+        {
+          "id": "SaM3",
+          "info": {
+            "start": "Samstag 11:00"
+          },
+          "fulfilled_time_constraints": [
+            "not_thursday",
+            "not_fr14"  
+          ]
+        }
+      ],
+      [
+        {
+          "id": "SaA0",
+          "info": {
+            "start": "Samstag 14:00"
+          },
+          "fulfilled_time_constraints": [
+            "not_thursday",
+            "not_fr14"  
+          ]
+        },
+        {
+          "id": "SaA1",
+          "info": {
+            "start": "Samstag 15:00"
+          },
+          "fulfilled_time_constraints": [
+            "not_thursday",
+            "not_fr14"  
+          ]
+        },
+        {
+          "id": "SaA2",
+          "info": {
+            "start": "Samstag 16:00"
+          },
+          "fulfilled_time_constraints": [
+            "not_thursday",
+            "not_fr14"  
+          ]
+        },
+        {
+          "id": "SaA3",
+          "info": {
+            "start": "Samstag 17:00"
+          },
+          "fulfilled_time_constraints": [
+            "not_thursday",
+            "not_fr14"  
+          ]
+        },
+        {
+          "id": "SaA4",
+          "info": {
+            "start": "Samstag 18:00"
+          },
+          "fulfilled_time_constraints": [
+            "not_thursday",
+            "not_fr14"  
+          ]
+        }      
+      ]
+    ]
+  },
+  "aks": [
+  ],
+  "participants": [
+  ],
+  "info": {
+    "name": "This is the input for the KoMa88 in Kaiserslautern",
+    "author": "Lorenzo Conti and Felix Blanke"
+  }
+}
