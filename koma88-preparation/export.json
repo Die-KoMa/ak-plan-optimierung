@@ -82,7 +82,7 @@
             "info": {
                 "name": "Geb\u00e4ude 11 Raum 201"
             },
-            "cap": 20,
+            "capacity": 20,
             "fulfilled_room_constraints": [
                 "beamer",
                 "ak_room",
@@ -98,7 +98,7 @@
             "info": {
                 "name": "Geb\u00e4ude 11 Raum 243"
             },
-            "cap": 60,
+            "capacity": 60,
             "fulfilled_room_constraints": [
                 "beamer",
                 "ak_room",
@@ -114,7 +114,7 @@
             "info": {
                 "name": "Geb\u00e4ude 11 Raum 220"
             },
-            "cap": 20,
+            "capacity": 20,
             "time_constraints": [
                 "not_thursday",
                 "not_saturday"
