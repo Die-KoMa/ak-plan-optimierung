@@ -1160,8 +1160,8 @@
                 },
                 {
                     "ak_id": "ak16",
-                    "required": false,
-                    "preference_score": 2
+                    "required": true,
+                    "preference_score": -1
                 },
                 {
                     "ak_id": "ak8",
@@ -1180,13 +1180,13 @@
             "preferences": [
                 {
                     "ak_id": "ak0",
-                    "required": false,
-                    "preference_score": 2
+                    "required": true,
+                    "preference_score": -1
                 },
                 {
                     "ak_id": "ak9",
-                    "required": false,
-                    "preference_score": 2
+                    "required": true,
+                    "preference_score": -1
                 }
             ]
         },
@@ -1305,8 +1305,8 @@
                 },
                 {
                     "ak_id": "ak30",
-                    "required": false,
-                    "preference_score": 2
+                    "required": true,
+                    "preference_score": -1
                 },
                 {
                     "ak_id": "ak6",
@@ -1440,8 +1440,8 @@
                 },
                 {
                     "ak_id": "ak24",
-                    "required": false,
-                    "preference_score": 2
+                    "required": true,
+                    "preference_score": -1
                 },
                 {
                     "ak_id": "ak5",
@@ -1665,8 +1665,8 @@
                 },
                 {
                     "ak_id": "ak8",
-                    "required": false,
-                    "preference_score": 2
+                    "required": true,
+                    "preference_score": -1
                 },
                 {
                     "ak_id": "ak36",
@@ -2025,8 +2025,8 @@
                 },
                 {
                     "ak_id": "ak3",
-                    "required": false,
-                    "preference_score": 2
+                    "required": true,
+                    "preference_score": -1
                 },
                 {
                     "ak_id": "ak4",
@@ -2080,8 +2080,8 @@
                 },
                 {
                     "ak_id": "ak10",
-                    "required": false,
-                    "preference_score": 2
+                    "required": true,
+                    "preference_score": -1
                 },
                 {
                     "ak_id": "ak11",
@@ -2155,8 +2155,8 @@
                 },
                 {
                     "ak_id": "ak23",
-                    "required": false,
-                    "preference_score": 2
+                    "required": true,
+                    "preference_score": -1
                 },
                 {
                     "ak_id": "ak7",
@@ -2230,8 +2230,8 @@
                 },
                 {
                     "ak_id": "ak26",
-                    "required": false,
-                    "preference_score": 2
+                    "required": true,
+                    "preference_score": -1
                 },
                 {
                     "ak_id": "ak28",
@@ -2285,8 +2285,8 @@
                 },
                 {
                     "ak_id": "ak19",
-                    "required": false,
-                    "preference_score": 1
+                    "required": true,
+                    "preference_score": -1
                 },
                 {
                     "ak_id": "ak1",
@@ -2305,8 +2305,8 @@
                 },
                 {
                     "ak_id": "ak35",
-                    "required": false,
-                    "preference_score": 2
+                    "required": true,
+                    "preference_score": -1
                 },
                 {
                     "ak_id": "ak12",
@@ -2315,8 +2315,8 @@
                 },
                 {
                     "ak_id": "ak13",
-                    "required": false,
-                    "preference_score": 2
+                    "required": true,
+                    "preference_score": -1
                 },
                 {
                     "ak_id": "ak22",
@@ -2370,13 +2370,13 @@
                 },
                 {
                     "ak_id": "ak14",
-                    "required": false,
-                    "preference_score": 2
+                    "required": true,
+                    "preference_score": -1
                 },
                 {
                     "ak_id": "ak15",
-                    "required": false,
-                    "preference_score": 2
+                    "required": true,
+                    "preference_score": -1
                 },
                 {
                     "ak_id": "ak45",
@@ -2385,8 +2385,8 @@
                 },
                 {
                     "ak_id": "ak36",
-                    "required": false,
-                    "preference_score": 2
+                    "required": true,
+                    "preference_score": -1
                 },
                 {
                     "ak_id": "ak9",
@@ -2395,8 +2395,8 @@
                 },
                 {
                     "ak_id": "ak46",
-                    "required": false,
-                    "preference_score": 1
+                    "required": true,
+                    "preference_score": -1
                 },
                 {
                     "ak_id": "ak37",
@@ -2450,8 +2450,8 @@
                 },
                 {
                     "ak_id": "ak6",
-                    "required": false,
-                    "preference_score": 2
+                    "required": true,
+                    "preference_score": -1
                 },
                 {
                     "ak_id": "ak14",
@@ -2485,8 +2485,8 @@
             "preferences": [
                 {
                     "ak_id": "verein",
-                    "required": false,
-                    "preference_score": 2
+                    "required": true,
+                    "preference_score": -1
                 },
                 {
                     "ak_id": "ak0",
@@ -2545,8 +2545,8 @@
                 },
                 {
                     "ak_id": "ak5",
-                    "required": false,
-                    "preference_score": 2
+                    "required": true,
+                    "preference_score": -1
                 },
                 {
                     "ak_id": "ak27",
@@ -2595,8 +2595,8 @@
                 },
                 {
                     "ak_id": "ak36",
-                    "required": false,
-                    "preference_score": 2
+                    "required": true,
+                    "preference_score": -1
                 },
                 {
                     "ak_id": "ak9",
@@ -2842,6 +2842,16 @@
                     "ak_id": "ak11",
                     "required": false,
                     "preference_score": 2
+                },
+                {
+                    "ak_id": "ak17",
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
+                    "ak_id": "ak31",
+                    "required": true,
+                    "preference_score": -1
                 }
             ]
         },
@@ -2905,13 +2915,13 @@
                 },
                 {
                     "ak_id": "ak39",
-                    "required": false,
-                    "preference_score": 2
+                    "required": true,
+                    "preference_score": -1
                 },
                 {
                     "ak_id": "ak44",
-                    "required": false,
-                    "preference_score": 2
+                    "required": true,
+                    "preference_score": -1
                 },
                 {
                     "ak_id": "ak7",
@@ -3615,13 +3625,13 @@
                 },
                 {
                     "ak_id": "ak1",
-                    "required": false,
-                    "preference_score": 2
+                    "required": true,
+                    "preference_score": -1
                 },
                 {
                     "ak_id": "ak43",
-                    "required": false,
-                    "preference_score": 2
+                    "required": true,
+                    "preference_score": -1
                 },
                 {
                     "ak_id": "ak17",
@@ -3645,8 +3655,8 @@
                 },
                 {
                     "ak_id": "ak45",
-                    "required": false,
-                    "preference_score": 2
+                    "required": true,
+                    "preference_score": -1
                 },
                 {
                     "ak_id": "ak9",
@@ -3685,8 +3695,8 @@
                 },
                 {
                     "ak_id": "ak18",
-                    "required": false,
-                    "preference_score": 2
+                    "required": true,
+                    "preference_score": -1
                 },
                 {
                     "ak_id": "ak4",
@@ -4375,8 +4385,8 @@
             "preferences": [
                 {
                     "ak_id": "ak40",
-                    "required": false,
-                    "preference_score": 2
+                    "required": true,
+                    "preference_score": -1
                 },
                 {
                     "ak_id": "ak41",
@@ -4550,8 +4560,8 @@
                 },
                 {
                     "ak_id": "ak37",
-                    "required": false,
-                    "preference_score": 2
+                    "required": true,
+                    "preference_score": -1
                 }
             ]
         },
@@ -4675,8 +4685,8 @@
                 },
                 {
                     "ak_id": "ak11",
-                    "required": false,
-                    "preference_score": 2
+                    "required": true,
+                    "preference_score": -1
                 }
             ]
         },
@@ -4735,8 +4745,8 @@
                 },
                 {
                     "ak_id": "ak18",
-                    "required": false,
-                    "preference_score": 2
+                    "required": true,
+                    "preference_score": -1
                 },
                 {
                     "ak_id": "ak5",
@@ -5340,8 +5350,8 @@
                 },
                 {
                     "ak_id": "ak33",
-                    "required": false,
-                    "preference_score": 2
+                    "required": true,
+                    "preference_score": -1
                 }
             ]
         },
@@ -5375,8 +5385,8 @@
                 },
                 {
                     "ak_id": "ak7",
-                    "required": false,
-                    "preference_score": 2
+                    "required": true,
+                    "preference_score": -1
                 },
                 {
                     "ak_id": "ak46",
@@ -5440,13 +5450,13 @@
                 },
                 {
                     "ak_id": "ak4",
-                    "required": false,
-                    "preference_score": 2
+                    "required": true,
+                    "preference_score": -1
                 },
                 {
                     "ak_id": "ak25",
-                    "required": false,
-                    "preference_score": 2
+                    "required": true,
+                    "preference_score": -1
                 },
                 {
                     "ak_id": "ak27",
@@ -5499,9 +5509,14 @@
                     "preference_score": 1
                 },
                 {
+                    "ak_id": "ak32",
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
                     "ak_id": "ak2",
-                    "required": false,
-                    "preference_score": 2
+                    "required": true,
+                    "preference_score": -1
                 },
                 {
                     "ak_id": "ak20",
@@ -5910,13 +5925,13 @@
                 },
                 {
                     "ak_id": "ak20",
-                    "required": false,
-                    "preference_score": 2
+                    "required": true,
+                    "preference_score": -1
                 },
                 {
                     "ak_id": "ak22",
-                    "required": false,
-                    "preference_score": 2
+                    "required": true,
+                    "preference_score": -1
                 },
                 {
                     "ak_id": "ak18",
@@ -6005,8 +6020,8 @@
                 },
                 {
                     "ak_id": "ak19",
-                    "required": false,
-                    "preference_score": 2
+                    "required": true,
+                    "preference_score": -1
                 },
                 {
                     "ak_id": "ak0",
@@ -6585,8 +6600,8 @@
                 },
                 {
                     "ak_id": "ak42",
-                    "required": false,
-                    "preference_score": 2
+                    "required": true,
+                    "preference_score": -1
                 },
                 {
                     "ak_id": "ak2",
@@ -6595,13 +6610,13 @@
                 },
                 {
                     "ak_id": "ak38",
-                    "required": false,
-                    "preference_score": 2
+                    "required": true,
+                    "preference_score": -1
                 },
                 {
                     "ak_id": "ak12",
-                    "required": false,
-                    "preference_score": 2
+                    "required": true,
+                    "preference_score": -1
                 },
                 {
                     "ak_id": "ak22",
