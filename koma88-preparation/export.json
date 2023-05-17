@@ -69,7 +69,7 @@
             "time_constraints": [
                 "not_friday"
             ],
-            "fullfilled_room_constraints": [
+            "fulfilled_room_constraints": [
                 "ak_room",
                 "keine_treppen"
             ]
@@ -80,7 +80,7 @@
                 "name": "Geb\u00e4ude 11 Raum 201"
             },
             "cap": 20,
-            "fullfilled_room_constraints": [
+            "fulfilled_room_constraints": [
                 "beamer",
                 "ak_room",
                 "keine_treppen"
@@ -96,7 +96,7 @@
                 "name": "Geb\u00e4ude 11 Raum 243"
             },
             "cap": 60,
-            "fullfilled_room_constraints": [
+            "fulfilled_room_constraints": [
                 "beamer",
                 "ak_room",
                 "keine_treppen"
@@ -113,7 +113,7 @@
                 "not_thursday",
                 "not_saturday"
             ],
-            "fullfilled_room_constraints": [
+            "fulfilled_room_constraints": [
                 "ak_room",
                 "keine_treppen"
             ]
