@@ -397,23 +397,6 @@
     },
     "aks": [
         {
-            "id": "verein",
-            "duration": 2,
-            "properties": {},
-            "room_constraints": [
-                "verein_room"
-            ],
-            "time_constraints": [
-                "verein_time"
-            ],
-            "info": {
-                "name": "Vereinssitzung KoMa e.V.",
-                "head": "Ushi?",
-                "description": "",
-                "reso": false
-            }
-        },
-        {
             "id": "ak5",
             "duration": 2,
             "properties": {},
@@ -771,7 +754,7 @@
         },
         {
             "id": "ak24",
-            "duration": 2,
+            "duration": 1,
             "properties": {},
             "room_constraints": [],
             "time_constraints": [],
@@ -1014,7 +997,7 @@
             "duration": 1,
             "properties": {},
             "room_constraints": [],
-            "time_constraints": [],
+            "time_constraints": ["not_thursday", "not_friday"],
             "info": {
                 "name": "AKkreditierung",
                 "head": "Moritz",
@@ -1175,7 +1158,7 @@
             "info": {
                 "name": "Simon (Wien)"
             },
-            "time_constraints": [],
+            "time_constraints": ["not_friday", "not_saturday"],
             "room_constraints": [],
             "preferences": [
                 {
@@ -1358,11 +1341,6 @@
             "time_constraints": [],
             "room_constraints": [],
             "preferences": [
-                {
-                    "ak_id": "verein",
-                    "required": false,
-                    "preference_score": 1
-                },
                 {
                     "ak_id": "ak34",
                     "required": false,
@@ -1984,11 +1962,6 @@
             "room_constraints": [],
             "preferences": [
                 {
-                    "ak_id": "verein",
-                    "required": false,
-                    "preference_score": 1
-                },
-                {
                     "ak_id": "ak19",
                     "required": false,
                     "preference_score": 1
@@ -2098,11 +2071,6 @@
             "time_constraints": [],
             "room_constraints": [],
             "preferences": [
-                {
-                    "ak_id": "verein",
-                    "required": false,
-                    "preference_score": 1
-                },
                 {
                     "ak_id": "ak41",
                     "required": false,
@@ -2273,11 +2241,6 @@
             "time_constraints": [],
             "room_constraints": [],
             "preferences": [
-                {
-                    "ak_id": "verein",
-                    "required": false,
-                    "preference_score": 2
-                },
                 {
                     "ak_id": "ak41",
                     "required": false,
@@ -2483,11 +2446,6 @@
             "time_constraints": [],
             "room_constraints": [],
             "preferences": [
-                {
-                    "ak_id": "verein",
-                    "required": true,
-                    "preference_score": -1
-                },
                 {
                     "ak_id": "ak0",
                     "required": false,
@@ -2969,11 +2927,6 @@
             "room_constraints": [],
             "preferences": [
                 {
-                    "ak_id": "verein",
-                    "required": false,
-                    "preference_score": 1
-                },
-                {
                     "ak_id": "ak34",
                     "required": false,
                     "preference_score": 1
@@ -3045,7 +2998,7 @@
             "info": {
                 "name": "Nico"
             },
-            "time_constraints": [],
+            "time_constraints": ["not_saturday", "not_friday"],
             "room_constraints": [],
             "preferences": [
                 {
@@ -3233,11 +3186,6 @@
             "time_constraints": [],
             "room_constraints": [],
             "preferences": [
-                {
-                    "ak_id": "verein",
-                    "required": false,
-                    "preference_score": 2
-                },
                 {
                     "ak_id": "ak41",
                     "required": false,
@@ -3613,11 +3561,6 @@
             "time_constraints": [],
             "room_constraints": [],
             "preferences": [
-                {
-                    "ak_id": "verein",
-                    "required": false,
-                    "preference_score": 1
-                },
                 {
                     "ak_id": "ak40",
                     "required": false,
@@ -4464,11 +4407,6 @@
             "room_constraints": [],
             "preferences": [
                 {
-                    "ak_id": "verein",
-                    "required": false,
-                    "preference_score": 2
-                },
-                {
                     "ak_id": "ak34",
                     "required": false,
                     "preference_score": 2
@@ -4573,11 +4511,6 @@
             "time_constraints": [],
             "room_constraints": [],
             "preferences": [
-                {
-                    "ak_id": "verein",
-                    "required": false,
-                    "preference_score": 1
-                },
                 {
                     "ak_id": "ak41",
                     "required": false,
@@ -4695,7 +4628,7 @@
             "info": {
                 "name": "Annika (Graz)"
             },
-            "time_constraints": [],
+            "time_constraints": ["not_saturday"],
             "room_constraints": [],
             "preferences": [
                 {
@@ -5144,11 +5077,6 @@
             "room_constraints": [],
             "preferences": [
                 {
-                    "ak_id": "verein",
-                    "required": false,
-                    "preference_score": 1
-                },
-                {
                     "ak_id": "ak41",
                     "required": false,
                     "preference_score": 1
@@ -5404,11 +5332,6 @@
             "room_constraints": [],
             "preferences": [
                 {
-                    "ak_id": "verein",
-                    "required": false,
-                    "preference_score": 2
-                },
-                {
                     "ak_id": "ak34",
                     "required": false,
                     "preference_score": 1
@@ -5498,11 +5421,6 @@
             "time_constraints": [],
             "room_constraints": [],
             "preferences": [
-                {
-                    "ak_id": "verein",
-                    "required": false,
-                    "preference_score": 1
-                },
                 {
                     "ak_id": "ak0",
                     "required": false,
@@ -6009,11 +5927,6 @@
             "room_constraints": [],
             "preferences": [
                 {
-                    "ak_id": "verein",
-                    "required": false,
-                    "preference_score": 1
-                },
-                {
                     "ak_id": "ak34",
                     "required": false,
                     "preference_score": 1
@@ -6063,11 +5976,6 @@
             "time_constraints": [],
             "room_constraints": [],
             "preferences": [
-                {
-                    "ak_id": "verein",
-                    "required": false,
-                    "preference_score": 1
-                },
                 {
                     "ak_id": "ak41",
                     "required": false,
@@ -6378,11 +6286,6 @@
             "time_constraints": [],
             "room_constraints": [],
             "preferences": [
-                {
-                    "ak_id": "verein",
-                    "required": false,
-                    "preference_score": 1
-                },
                 {
                     "ak_id": "ak40",
                     "required": false,
