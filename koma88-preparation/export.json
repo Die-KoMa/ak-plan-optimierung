@@ -21,7 +21,10 @@
         "verein_room",
         "beamer"
       ],
-      "time_constraints": []
+      "time_constraints": [
+        "not_fr1415",
+        "not_fr16"
+      ]
     },
     {
       "id": "48_438",
@@ -37,19 +40,7 @@
       "time_constraints": []
     },
     {
-      "id": "48_538",
-      "info": {
-        "name": "Geb\u00e4ude 48 Raum 538"
-      },
-      "capacity": 30,
-      "fulfilled_room_constraints": [
-        "beamer",
-        "keine_treppen"
-      ],
-      "time_constraints": []
-    },
-    {
-      "id": "48-582",
+      "id": "48_582",
       "info": {
         "name": "Geb\u00e4ude 48 Raum 582"
       },
@@ -64,7 +55,7 @@
       ]
     },
     {
-      "id": "46-267",
+      "id": "46_267",
       "capacity": 45,
       "info": {
         "name": "Geb\u00e4ude 46 Raum 267"
@@ -132,56 +123,6 @@
     "blocks": [
       [
         {
-          "id": "DoM0",
-          "info": {
-            "start": "Donnerstag 8:00"
-          },
-          "fulfilled_time_constraints": [
-            "not_friday",
-            "not_saturday",
-            "reso_time",
-            "not_fr1415"
-          ]
-        },
-        {
-          "id": "DoM1",
-          "info": {
-            "start": "Donnerstag 9:00"
-          },
-          "fulfilled_time_constraints": [
-            "not_friday",
-            "not_saturday",
-            "reso_time",
-            "not_fr1415"
-          ]
-        },
-        {
-          "id": "DoM2",
-          "info": {
-            "start": "Donnerstag 10:00"
-          },
-          "fulfilled_time_constraints": [
-            "not_friday",
-            "not_saturday",
-            "reso_time",
-            "not_fr1415"
-          ]
-        },
-        {
-          "id": "DoM3",
-          "info": {
-            "start": "Donnerstag 11:00"
-          },
-          "fulfilled_time_constraints": [
-            "not_friday",
-            "not_saturday",
-            "reso_time",
-            "not_fr1415"
-          ]
-        }
-      ],
-      [
-        {
           "id": "DoA0",
           "info": {
             "start": "Donnerstag 14:00"
@@ -190,6 +131,7 @@
             "not_friday",
             "not_saturday",
             "reso_time",
+            "not_fr16",
             "not_fr1415"
           ]
         },
@@ -202,6 +144,7 @@
             "not_friday",
             "not_saturday",
             "reso_time",
+            "not_fr16",
             "not_fr1415"
           ]
         },
@@ -214,6 +157,7 @@
             "not_friday",
             "not_saturday",
             "reso_time",
+            "not_fr16",
             "not_fr1415"
           ]
         },
@@ -225,6 +169,7 @@
           "fulfilled_time_constraints": [
             "not_friday",
             "not_saturday",
+            "not_fr16",
             "reso_time",
             "not_fr1415"
           ]
@@ -239,6 +184,7 @@
           "fulfilled_time_constraints": [
             "not_thursday",
             "not_saturday",
+            "not_fr16",
             "reso_time"
           ]
         },
@@ -251,6 +197,7 @@
             "not_thursday",
             "not_saturday",
             "reso_time",
+            "not_fr16",
             "not_fr1415"
           ]
         },
@@ -273,6 +220,7 @@
           "fulfilled_time_constraints": [
             "not_thursday",
             "not_saturday",
+            "not_fr16",
             "not_fr1415"
           ]
         },
@@ -284,6 +232,7 @@
           "fulfilled_time_constraints": [
             "not_thursday",
             "not_saturday",
+            "not_fr16",
             "not_fr1415"
           ]
         }
@@ -297,6 +246,7 @@
           "fulfilled_time_constraints": [
             "not_thursday",
             "not_friday",
+            "not_fr16",
             "not_fr1415"
           ]
         },
@@ -308,6 +258,7 @@
           "fulfilled_time_constraints": [
             "not_thursday",
             "not_friday",
+            "not_fr16",
             "not_fr1415"
           ]
         },
@@ -319,6 +270,7 @@
           "fulfilled_time_constraints": [
             "not_thursday",
             "not_friday",
+            "not_fr16",
             "not_fr1415"
           ]
         },
@@ -330,6 +282,7 @@
           "fulfilled_time_constraints": [
             "not_thursday",
             "not_friday",
+            "not_fr16",
             "not_fr1415"
           ]
         }
@@ -361,34 +314,6 @@
         "head": "Lili (Bonn)",
         "description": "Wir hatten vor, auch Fachschaften zur KoMa einzuladen, die Mathe-verwandte F\u00e4cher wie Data Science vertreten, aber keine klassische Mathe-Fachschaft sind. Die Aktualisierung der Adresslisten dazu k\u00f6nnte man fortf\u00fchren. ",
         "reso": false
-      }
-    },
-    {
-      "id": "ak40",
-      "duration": 1,
-      "properties": {},
-      "room_constraints": [],
-      "time_constraints": [],
-      "info": {
-        "name": "AK AK AK AK-Plan Programm",
-        "head": "Lorenzo (Bonn) ",
-        "description": "Seit der letzten KoMa gab es zwei WAch-KoMata zu einem Programm zur Optimierung von AK-Pl\u00e4nen. Aktueller Stand hier: https://github.com/die-koma/ak-plan-optimierung/tree/lorenzo_lp_formulationWenn alles geklappt hat, lief die Optimierung des AK-Plans bereits \u00fcber das Programm. Wir wollen dar\u00fcber und die n\u00e4chsten Schritte des Projekts sprechen (und diese ggf. auf der KoMa bereits angehen). ",
-        "reso": false
-      }
-    },
-    {
-      "id": "ak41",
-      "duration": 2,
-      "properties": {},
-      "room_constraints": [],
-      "time_constraints": [
-        "reso_time"
-      ],
-      "info": {
-        "name": "AK Arbeitszeiterfassung",
-        "head": "Felix (Bonn)",
-        "description": "Bei allen Besch\u00e4ftigten muss verpflichtend die Arbeitszeit erfasst werden. Das ist in der Uni nicht fl\u00e4chendeckend und ggf. unzureichend umgesetzt.Gleichzeitig f\u00fchrt die Erfassung der Arbeitszeiten oft zu Konflikten mit bestehenden Praxen und clasht mit Problemen im Wissenschaftssystem, wie z.B. Promotionsstudis auf Nicht-Vollzeitstellen. ",
-        "reso": true
       }
     },
     {
@@ -526,21 +451,6 @@
       }
     },
     {
-      "id": "ak13",
-      "duration": 2,
-      "properties": {},
-      "room_constraints": [],
-      "time_constraints": [
-        "reso_time"
-      ],
-      "info": {
-        "name": "AK Lehrkraftmangel",
-        "head": "Yoni (Jena)",
-        "description": "Reso der ZaPF (Physik BuFaTa), der wir uns anschlie\u00dfen k\u00f6nnen (ggf. haben auch ein zwei Lehramtsmenschen noch was aus Mathe-Sicht zu erg\u00e4nzen) ",
-        "reso": true
-      }
-    },
-    {
       "id": "ak21",
       "duration": 1,
       "properties": {},
@@ -550,19 +460,6 @@
         "name": "AK Mentoring",
         "head": "Nika (Darmstadt)",
         "description": "Wir h\u00e4tten gerne Input dazu, wie Mentoring bei euch an der Uni funktioniert. ",
-        "reso": false
-      }
-    },
-    {
-      "id": "ak11",
-      "duration": 1,
-      "properties": {},
-      "room_constraints": [],
-      "time_constraints": [],
-      "info": {
-        "name": "AK Nachhaltigkeitsmodule",
-        "head": "Deike (W\u00fcrzburg)",
-        "description": "Die Uni W\u00fcrzburg will vllt/evtl bis xx in jedem Studiengang ein Nachhaltigkeitsmodul haben, in der Mathe fehlt die Kreativit\u00e4t dazu ",
         "reso": false
       }
     },
@@ -634,21 +531,6 @@
         "name": "AK studentische Armut",
         "head": "Moritz",
         "description": "Studentische Armut ist mit Krieg, Inflation und schlechte Arbeitsbedingungen einer immer gr\u00f6\u00dferes Thema. Dazu sollte sich auch die KoMa positionieren. ",
-        "reso": true
-      }
-    },
-    {
-      "id": "ak4",
-      "duration": 2,
-      "properties": {},
-      "room_constraints": [],
-      "time_constraints": [
-        "reso_time"
-      ],
-      "info": {
-        "name": "AK TVStud",
-        "head": "Felix (Bonn)",
-        "description": "Es soll \u00fcber einen Tarifvertrag f\u00fcr studentische Besch\u00e4ftigte gesprochen werden. ",
         "reso": true
       }
     },
@@ -733,34 +615,6 @@
       }
     },
     {
-      "id": "ak39",
-      "duration": 1,
-      "properties": {},
-      "room_constraints": [],
-      "time_constraints": [],
-      "info": {
-        "name": "AK Gendergerechte Toiletten",
-        "head": "Hannes (Essen)",
-        "description": NaN,
-        "reso": false
-      }
-    },
-    {
-      "id": "ak29",
-      "duration": 1,
-      "properties": {},
-      "room_constraints": [],
-      "time_constraints": [
-        "reso_time"
-      ],
-      "info": {
-        "name": "AK Angabe von Symptomen bei krankheitsbedingten Pr\u00fcfungsabmeldungen",
-        "head": "Yoni (Jena)",
-        "description": "Metafa-Reso dazu",
-        "reso": true
-      }
-    },
-    {
       "id": "ak44",
       "duration": 1,
       "properties": {},
@@ -802,21 +656,6 @@
       }
     },
     {
-      "id": "ak7",
-      "duration": 1,
-      "properties": {},
-      "room_constraints": [],
-      "time_constraints": [
-        "reso_time"
-      ],
-      "info": {
-        "name": "AK bundesweites Semesterticket",
-        "head": "Matze (Freiburg)",
-        "description": "Positionierung zur Forderung nach einem bundesweiten Semesterticket vor dem Hintergrund der Einf\u00fchrung des Deutschlandtickets. Gibt auch eine ZaPF-Reso dazu und fzs hatte heute Sitzung dazu.",
-        "reso": true
-      }
-    },
-    {
       "id": "ak15",
       "duration": 1,
       "properties": {},
@@ -826,19 +665,6 @@
         "name": "AK Orga",
         "head": "Yoni (Jena)",
         "description": "Standard-AK um Feedback aus vergangnen und der aktuellen KoMa zu bekommen und dort ggf strukturelle Probleme zu identifizieren. Diese k\u00f6nnen dann ggf optimiert werden.",
-        "reso": false
-      }
-    },
-    {
-      "id": "ak45",
-      "duration": 2,
-      "properties": {},
-      "room_constraints": [],
-      "time_constraints": [],
-      "info": {
-        "name": "AK KoMa-Homepage-Inhalt",
-        "head": "mmarx",
-        "description": "Inhaltliche \u00dcberarbeitung der KoMa-Homepage: https://die-koma.org",
         "reso": false
       }
     },
@@ -904,19 +730,6 @@
         "name": "AK Kurier",
         "head": "Uschi (Jena), Yoni (Jena)",
         "description": "Der KoMa-Kurier ist essentieller Bestand f\u00fcr die BMBF-F\u00f6rderung (aka eine Menge Geld). Dieser muss\u00a0von irgendwelchen Menschen gemacht werden. Wie das funktioniert, wird im AK gekl\u00e4rt. Im Idealfall wird dieses Jahr auch einer fertig :)",
-        "reso": false
-      }
-    },
-    {
-      "id": "ak9",
-      "duration": 1,
-      "properties": {},
-      "room_constraints": [],
-      "time_constraints": [],
-      "info": {
-        "name": "AK KI-Anwendungen im Studium",
-        "head": "Simon (Wien)",
-        "description": "Wie gehen Lehrende mit KI im Studium um, wie verwenden Studierende das?",
         "reso": false
       }
     },
