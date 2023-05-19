@@ -1,0 +1,141 @@
+{
+  "rooms": [
+    {
+      "id": "48_208",
+      "info": {
+        "name": "Geb\u00e4ude 48 Raum 208"
+      },
+      "capacity": 98,
+      "fulfilled_room_constraints": [],
+      "time_constraints": []
+    },
+    {
+      "id": "48_210",
+      "info": {
+        "name": "Geb\u00e4ude 48 Raum 210"
+      },
+      "capacity": 98,
+      "fulfilled_room_constraints": [
+        "verein_room"
+      ],
+      "time_constraints": []
+    },
+    {
+      "id": "48_438",
+      "info": {
+        "name": "Geb\u00e4ude 48 Raum 438"
+      },
+      "capacity": 25,
+      "fulfilled_room_constraints": [],
+      "time_constraints": []
+    },
+    {
+      "id": "48_582",
+      "info": {
+        "name": "Geb\u00e4ude 48 Raum 582"
+      },
+      "capacity": 35,
+      "fulfilled_room_constraints": [],
+      "time_constraints": []
+    },
+    {
+      "id": "46_267",
+      "capacity": 45,
+      "info": {
+        "name": "Geb\u00e4ude 46 Raum 267"
+      },
+      "time_constraints": [],
+      "fulfilled_room_constraints": []
+    },
+    {
+      "id": "46_238",
+      "capacity": 35,
+      "info": {
+        "name": "Geb\u00e4ude 46 Raum 238"
+      },
+      "time_constraints": [],
+      "fulfilled_room_constraints": []
+    }
+  ],
+  "timeslots": {
+    "info": {
+      "duration": "1 hour blocks"
+    },
+    "blocks": [
+      [
+        {
+          "id": "SaM0",
+          "info": {
+            "start": "Samstag 8:00"
+          },
+          "fulfilled_time_constraints": []
+        },
+        {
+          "id": "SaM1",
+          "info": {
+            "start": "Samstag 9:00"
+          },
+          "fulfilled_time_constraints": []
+        },
+        {
+          "id": "SaM2",
+          "info": {
+            "start": "Samstag 10:00"
+          },
+          "fulfilled_time_constraints": []
+        },
+        {
+          "id": "SaM3",
+          "info": {
+            "start": "Samstag 11:00"
+          },
+          "fulfilled_time_constraints": []
+        }
+      ],
+      [
+        {
+          "id": "SaA0",
+          "info": {
+            "start": "Samstag 14:00"
+          },
+          "fulfilled_time_constraints": [
+            "verein_time"
+          ]
+        },
+        {
+          "id": "SaA1",
+          "info": {
+            "start": "Samstag 15:00"
+          },
+          "fulfilled_time_constraints": [
+            "verein_time"
+          ]
+        }
+      ]
+    ]
+  },
+  "aks": [
+    {
+      "id": "verein",
+      "duration": 2,
+      "properties": {},
+      "room_constraints": [
+        "verein_room"
+      ],
+      "time_constraints": [
+        "verein_time"
+      ],
+      "info": {
+        "name": "Vereinssitzung KoMa e.V.",
+        "head": "Uschi",
+        "description": "",
+        "reso": false
+      }
+    }
+  ],
+  "participants": [],
+  "info": {
+    "name": "This is the input for the last day of the KoMa88 in Kaiserslautern",
+    "author": "Lorenzo Conti and Felix Blanke"
+  }
+}
