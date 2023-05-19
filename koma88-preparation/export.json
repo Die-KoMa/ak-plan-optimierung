@@ -156,7 +156,7 @@
       "info": {
         "name": "AK Reso Evaluation",
         "head": "Immo (Bochum)",
-        "description": NaN,
+        "description": "",
         "reso": false
       }
     },
@@ -320,8 +320,8 @@
         },
         {
           "ak_id": "ak3",
-          "required": false,
-          "preference_score": 2
+          "required": true,
+          "preference_score": -1
         },
         {
           "ak_id": "ak1",
@@ -390,8 +390,8 @@
         },
         {
           "ak_id": "ak10",
-          "required": false,
-          "preference_score": 2
+          "required": true,
+          "preference_score": -1
         },
         {
           "ak_id": "ak0",
@@ -400,8 +400,8 @@
         },
         {
           "ak_id": "ak5",
-          "required": false,
-          "preference_score": 2
+          "required": true,
+          "preference_score": -1
         }
       ]
     },
@@ -780,8 +780,8 @@
       "preferences": [
         {
           "ak_id": "ak4",
-          "required": false,
-          "preference_score": 2
+          "required": true,
+          "preference_score": -1
         },
         {
           "ak_id": "ak9",
@@ -880,8 +880,8 @@
         },
         {
           "ak_id": "ak12",
-          "required": false,
-          "preference_score": 2
+          "required": true,
+          "preference_score": -1
         },
         {
           "ak_id": "ak13",
@@ -910,8 +910,8 @@
         },
         {
           "ak_id": "ak8",
-          "required": false,
-          "preference_score": 2
+          "required": true,
+          "preference_score": -1
         }
       ]
     },
@@ -1170,8 +1170,8 @@
         },
         {
           "ak_id": "ak11",
-          "required": false,
-          "preference_score": 2
+          "required": true,
+          "preference_score": -1
         },
         {
           "ak_id": "ak1",
@@ -1180,8 +1180,8 @@
         },
         {
           "ak_id": "ak7",
-          "required": false,
-          "preference_score": 2
+          "required": true,
+          "preference_score": -1
         },
         {
           "ak_id": "ak8",
@@ -1450,8 +1450,8 @@
         },
         {
           "ak_id": "ak8",
-          "required": false,
-          "preference_score": 2
+          "required": true,
+          "preference_score": -1
         }
       ]
     },
@@ -1560,8 +1560,8 @@
         },
         {
           "ak_id": "ak6",
-          "required": false,
-          "preference_score": 2
+          "required": true,
+          "preference_score": -1
         }
       ]
     },
@@ -1925,8 +1925,8 @@
       "preferences": [
         {
           "ak_id": "ak9",
-          "required": false,
-          "preference_score": 2
+          "required": true,
+          "preference_score": -1
         },
         {
           "ak_id": "ak10",
