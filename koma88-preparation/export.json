@@ -243,9 +243,7 @@
       "duration": 1,
       "properties": {},
       "room_constraints": [],
-      "time_constraints": [
-        "reso_time"
-      ],
+      "time_constraints": [],
       "info": {
         "name": "AK Lehrkraftmangel Reso",
         "head": "Yoni (Jena), Matze (Freiburg)",
@@ -258,9 +256,7 @@
       "duration": 1,
       "properties": {},
       "room_constraints": [],
-      "time_constraints": [
-        "reso_time"
-      ],
+      "time_constraints": [],
       "info": {
         "name": "AK studentische Armut Reso",
         "head": "Moritz (Dresden)",
@@ -273,9 +269,7 @@
       "duration": 1,
       "properties": {},
       "room_constraints": [],
-      "time_constraints": [
-        "reso_time"
-      ],
+      "time_constraints": [],
       "info": {
         "name": "AK bundesweites Semesterticket Reso",
         "head": "Helen (Jena), Felix (Bonn)",
