@@ -546,7 +546,7 @@ def main() -> None:
     )
     parser.add_argument("path", type=str)
     parser.add_argument("--seed", type=int, default=42, help="Seed for the solver")
-    parser.add_argument("--allow-unscheduled-aks", type=bool, default=False, help="Allow unscheduled AKs in solution")
+    parser.add_argument("--allow-unscheduled-aks", action="store_true", help="Allow unscheduled AKs in solution")
     args = parser.parse_args()
 
     solver_kwargs = {}
