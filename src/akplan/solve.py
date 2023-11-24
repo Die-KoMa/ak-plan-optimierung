@@ -408,6 +408,12 @@ def export_scheduling_result(
 
     (room_var, time_var, person_var) = dec_vars
 
+    def _error_or_exception(msg: str):
+        if allow_unscheduled_aks:
+            print(msg)
+        else:
+            raise ValueError(msg)
+
     def _get_val(var: LpVariable) -> int:
         ret_val = (
             round(var.solverVar.X)
@@ -429,11 +435,7 @@ def export_scheduling_result(
                 else:
                     raise ValueError(f"AK {ak_id} is assigned multiple rooms")
         if room_for_ak is None:
-            if allow_unscheduled_aks:
-                print(f"no room assigned to ak {ak_id}")
-                continue
-            else:
-                raise ValueError(f"no room assigned to ak {ak_id}")
+            _error_or_exception(f"no room assigned to ak {ak_id}")
         for timeslot_id in timeslot_ids:
             if _get_val(time_var[ak_id][timeslot_id]) == 1:
                 tmp_res_dir[ak_id][room_for_ak]["timeslot_ids"].add(timeslot_id)
@@ -441,15 +443,12 @@ def export_scheduling_result(
             not tmp_res_dir[ak_id][room_for_ak]["timeslot_ids"]
             and not allow_unscheduled_aks
         ):
-            raise ValueError(f"AK {ak_id} has no assigned timeslots")
+            _error_or_exception(f"AK {ak_id} has no assigned timeslots")
         for person_id in person_ids:
             if _get_val(person_var[ak_id][person_id]) == 1:
                 tmp_res_dir[ak_id][room_for_ak]["participant_ids"].add(person_id)
         if not tmp_res_dir[ak_id][room_for_ak]["participant_ids"]:
-            if allow_unscheduled_aks:
-                print(f"AK {ak_id} has no assigned participants")
-            else:
-                raise ValueError(f"AK {ak_id} has no assigned participants")
+            _error_or_exception(f"AK {ak_id} has no assigned participants")
 
     output_dict: dict[str, Any] = {}
     output_dict["scheduled_aks"] = [
