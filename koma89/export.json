@@ -56,228 +56,228 @@
       [
         {
           "id": "FrA0",
-          "info": {
-            "start": "14:00"
-          },
           "fulfilled_time_constraints": [
             "reso",
             "fr",
             "notsa",
             "notso"
-          ]
+          ],
+          "info": {
+            "start": "Fr 14:00"
+          }
         },
         {
           "id": "FrA1",
-          "info": {
-            "start": "15:00"
-          },
           "fulfilled_time_constraints": [
             "reso",
             "fr",
             "notsa",
             "notso"
-          ]
+          ],
+          "info": {
+            "start": "Fr 15:00"
+          }
         },
         {
           "id": "FrA2",
-          "info": {
-            "start": "16:00"
-          },
           "fulfilled_time_constraints": [
             "reso",
             "fr",
             "notsa",
             "notso"
-          ]
+          ],
+          "info": {
+            "start": "Fr 16:00"
+          }
         },
         {
           "id": "FrA3",
-          "info": {
-            "start": "17:00"
-          },
           "fulfilled_time_constraints": [
             "reso",
             "fr",
             "notsa",
             "notso"
-          ]
+          ],
+          "info": {
+            "start": "Fr 17:00"
+          }
         },
         {
           "id": "FrA4",
-          "info": {
-            "start": "18:00"
-          },
           "fulfilled_time_constraints": [
             "reso",
             "fr",
             "notsa",
             "notso"
-          ]
+          ],
+          "info": {
+            "start": "Fr 18:00"
+          }
         }
       ],
       [
         {
           "id": "SaA0",
-          "info": {
-            "start": "14:00"
-          },
           "fulfilled_time_constraints": [
             "reso",
             "sa",
             "notfr",
             "notso"
-          ]
+          ],
+          "info": {
+            "start": "Sa 14:00"
+          }
         },
         {
           "id": "SaA1",
-          "info": {
-            "start": "15:00"
-          },
           "fulfilled_time_constraints": [
             "reso",
             "sa",
             "notfr",
             "notso"
-          ]
+          ],
+          "info": {
+            "start": "Sa 15:00"
+          }
         },
         {
           "id": "SaA2",
-          "info": {
-            "start": "16:00"
-          },
           "fulfilled_time_constraints": [
             "reso",
             "sa",
             "notfr",
             "notso"
-          ]
+          ],
+          "info": {
+            "start": "Sa 16:00"
+          }
         },
         {
           "id": "SaA3",
-          "info": {
-            "start": "17:00"
-          },
           "fulfilled_time_constraints": [
             "reso",
             "sa",
             "notfr",
             "notso"
-          ]
+          ],
+          "info": {
+            "start": "Sa 17:00"
+          }
         },
         {
           "id": "SaA4",
-          "info": {
-            "start": "18:00"
-          },
           "fulfilled_time_constraints": [
             "reso",
             "sa",
             "notfr",
             "notso"
-          ]
+          ],
+          "info": {
+            "start": "Sa 18:00"
+          }
         }
       ],
       [
         {
           "id": "SoM0",
-          "info": {
-            "start": "8:30"
-          },
           "fulfilled_time_constraints": [
             "so",
             "notfr",
             "notsa"
-          ]
+          ],
+          "info": {
+            "start": "So 8:30"
+          }
         },
         {
           "id": "SoM1",
-          "info": {
-            "start": "9:30"
-          },
           "fulfilled_time_constraints": [
             "so",
             "notfr",
             "notsa"
-          ]
+          ],
+          "info": {
+            "start": "So 9:30"
+          }
         },
         {
           "id": "SoM2",
-          "info": {
-            "start": "10:30"
-          },
           "fulfilled_time_constraints": [
             "so",
             "notfr",
             "notsa"
-          ]
+          ],
+          "info": {
+            "start": "So 10:30"
+          }
         },
         {
           "id": "SoM3",
-          "info": {
-            "start": "11:30"
-          },
           "fulfilled_time_constraints": [
             "so",
             "notfr",
             "notsa"
-          ]
+          ],
+          "info": {
+            "start": "So 11:30"
+          }
         }
       ],
       [
         {
           "id": "SoA0",
-          "info": {
-            "start": "14:00"
-          },
           "fulfilled_time_constraints": [
             "so",
             "notfr",
             "notsa"
-          ]
+          ],
+          "info": {
+            "start": "So 14:00"
+          }
         },
         {
           "id": "SoA1",
-          "info": {
-            "start": "15:00"
-          },
           "fulfilled_time_constraints": [
             "so",
             "notfr",
             "notsa"
-          ]
+          ],
+          "info": {
+            "start": "So 15:00"
+          }
         },
         {
           "id": "SoA2",
-          "info": {
-            "start": "16:00"
-          },
           "fulfilled_time_constraints": [
             "so",
             "notfr",
             "notsa"
-          ]
+          ],
+          "info": {
+            "start": "So 16:00"
+          }
         },
         {
           "id": "SoA3",
-          "info": {
-            "start": "17:00"
-          },
           "fulfilled_time_constraints": [
             "so",
             "notfr",
             "notsa"
-          ]
+          ],
+          "info": {
+            "start": "So 17:00"
+          }
         },
         {
           "id": "SoA4",
-          "info": {
-            "start": "18:00"
-          },
           "fulfilled_time_constraints": [
             "so",
             "notfr",
             "notsa"
-          ]
+          ],
+          "info": {
+            "start": "So 18:00"
+          }
         }
       ]
     ]
