@@ -4,27 +4,21 @@
       "id": "11",
       "info": {},
       "capacity": 21,
-      "fulfilled_room_constraints": [
-        "beamer"
-      ],
+      "fulfilled_room_constraints": ["beamer"],
       "time_constraints": []
     },
     {
       "id": "12",
       "info": {},
       "capacity": 32,
-      "fulfilled_room_constraints": [
-        "beamer"
-      ],
+      "fulfilled_room_constraints": ["beamer"],
       "time_constraints": []
     },
     {
       "id": "104",
       "info": {},
       "capacity": 40,
-      "fulfilled_room_constraints": [
-        "beamer"
-      ],
+      "fulfilled_room_constraints": ["beamer"],
       "time_constraints": []
     },
     {
@@ -32,18 +26,13 @@
       "info": {},
       "capacity": 20,
       "fulfilled_room_constraints": [],
-      "time_constraints": [
-        "notso"
-      ]
+      "time_constraints": ["notso"]
     },
     {
       "id": "209",
       "info": {},
       "capacity": 37,
-      "fulfilled_room_constraints": [
-        "beamer",
-        "notso"
-      ],
+      "fulfilled_room_constraints": ["beamer", "notso"],
       "time_constraints": []
     }
   ],
@@ -55,60 +44,35 @@
       [
         {
           "id": "FrA0",
-          "fulfilled_time_constraints": [
-            "reso_time",
-            "fr",
-            "notsa",
-            "notso"
-          ],
+          "fulfilled_time_constraints": ["reso_time", "fr", "notsa", "notso"],
           "info": {
             "start": "Fr 14:00"
           }
         },
         {
           "id": "FrA1",
-          "fulfilled_time_constraints": [
-            "reso_time",
-            "fr",
-            "notsa",
-            "notso"
-          ],
+          "fulfilled_time_constraints": ["reso_time", "fr", "notsa", "notso"],
           "info": {
             "start": "Fr 15:00"
           }
         },
         {
           "id": "FrA2",
-          "fulfilled_time_constraints": [
-            "reso_time",
-            "fr",
-            "notsa",
-            "notso"
-          ],
+          "fulfilled_time_constraints": ["reso_time", "fr", "notsa", "notso"],
           "info": {
             "start": "Fr 16:00"
           }
         },
         {
           "id": "FrA3",
-          "fulfilled_time_constraints": [
-            "reso_time",
-            "fr",
-            "notsa",
-            "notso"
-          ],
+          "fulfilled_time_constraints": ["reso_time", "fr", "notsa", "notso"],
           "info": {
             "start": "Fr 17:00"
           }
         },
         {
           "id": "FrA4",
-          "fulfilled_time_constraints": [
-            "reso_time",
-            "fr",
-            "notsa",
-            "notso"
-          ],
+          "fulfilled_time_constraints": ["reso_time", "fr", "notsa", "notso"],
           "info": {
             "start": "Fr 18:00"
           }
@@ -117,60 +81,35 @@
       [
         {
           "id": "SaA0",
-          "fulfilled_time_constraints": [
-            "reso_time",
-            "sa",
-            "notfr",
-            "notso"
-          ],
+          "fulfilled_time_constraints": ["reso_time", "sa", "notfr", "notso"],
           "info": {
             "start": "Sa 14:00"
           }
         },
         {
           "id": "SaA1",
-          "fulfilled_time_constraints": [
-            "reso_time",
-            "sa",
-            "notfr",
-            "notso"
-          ],
+          "fulfilled_time_constraints": ["reso_time", "sa", "notfr", "notso"],
           "info": {
             "start": "Sa 15:00"
           }
         },
         {
           "id": "SaA2",
-          "fulfilled_time_constraints": [
-            "reso_time",
-            "sa",
-            "notfr",
-            "notso"
-          ],
+          "fulfilled_time_constraints": ["reso_time", "sa", "notfr", "notso"],
           "info": {
             "start": "Sa 16:00"
           }
         },
         {
           "id": "SaA3",
-          "fulfilled_time_constraints": [
-            "reso_time",
-            "sa",
-            "notfr",
-            "notso"
-          ],
+          "fulfilled_time_constraints": ["reso_time", "sa", "notfr", "notso"],
           "info": {
             "start": "Sa 17:00"
           }
         },
         {
           "id": "SaA4",
-          "fulfilled_time_constraints": [
-            "reso_time",
-            "sa",
-            "notfr",
-            "notso"
-          ],
+          "fulfilled_time_constraints": ["reso_time", "sa", "notfr", "notso"],
           "info": {
             "start": "Sa 18:00"
           }
@@ -179,44 +118,28 @@
       [
         {
           "id": "SoM0",
-          "fulfilled_time_constraints": [
-            "so",
-            "notfr",
-            "notsa"
-          ],
+          "fulfilled_time_constraints": ["so", "notfr", "notsa"],
           "info": {
             "start": "So 8:30"
           }
         },
         {
           "id": "SoM1",
-          "fulfilled_time_constraints": [
-            "so",
-            "notfr",
-            "notsa"
-          ],
+          "fulfilled_time_constraints": ["so", "notfr", "notsa"],
           "info": {
             "start": "So 9:30"
           }
         },
         {
           "id": "SoM2",
-          "fulfilled_time_constraints": [
-            "so",
-            "notfr",
-            "notsa"
-          ],
+          "fulfilled_time_constraints": ["so", "notfr", "notsa"],
           "info": {
             "start": "So 10:30"
           }
         },
         {
           "id": "SoM3",
-          "fulfilled_time_constraints": [
-            "so",
-            "notfr",
-            "notsa"
-          ],
+          "fulfilled_time_constraints": ["so", "notfr", "notsa"],
           "info": {
             "start": "So 11:30"
           }
@@ -225,55 +148,35 @@
       [
         {
           "id": "SoA0",
-          "fulfilled_time_constraints": [
-            "so",
-            "notfr",
-            "notsa"
-          ],
+          "fulfilled_time_constraints": ["so", "notfr", "notsa"],
           "info": {
             "start": "So 14:00"
           }
         },
         {
           "id": "SoA1",
-          "fulfilled_time_constraints": [
-            "so",
-            "notfr",
-            "notsa"
-          ],
+          "fulfilled_time_constraints": ["so", "notfr", "notsa"],
           "info": {
             "start": "So 15:00"
           }
         },
         {
           "id": "SoA2",
-          "fulfilled_time_constraints": [
-            "so",
-            "notfr",
-            "notsa"
-          ],
+          "fulfilled_time_constraints": ["so", "notfr", "notsa"],
           "info": {
             "start": "So 16:00"
           }
         },
         {
           "id": "SoA3",
-          "fulfilled_time_constraints": [
-            "so",
-            "notfr",
-            "notsa"
-          ],
+          "fulfilled_time_constraints": ["so", "notfr", "notsa"],
           "info": {
             "start": "So 17:00"
           }
         },
         {
           "id": "SoA4",
-          "fulfilled_time_constraints": [
-            "so",
-            "notfr",
-            "notsa"
-          ],
+          "fulfilled_time_constraints": ["so", "notfr", "notsa"],
           "info": {
             "start": "So 18:00"
           }
@@ -339,9 +242,7 @@
       "duration": 1,
       "properties": {},
       "room_constraints": [],
-      "time_constraints": [
-        "reso_time"
-      ],
+      "time_constraints": ["reso_time"],
       "info": {
         "name": "AK Fast-Track-Promotion",
         "head": "Gustav (D\u00fcsseldorf)",
@@ -366,9 +267,7 @@
       "id": "ak9",
       "duration": 2,
       "properties": {},
-      "room_constraints": [
-        "beamer"
-      ],
+      "room_constraints": ["beamer"],
       "time_constraints": [],
       "info": {
         "name": "AK IT-Infrastruktur",
@@ -382,9 +281,7 @@
       "duration": 2,
       "properties": {},
       "room_constraints": [],
-      "time_constraints": [
-        "reso_time"
-      ],
+      "time_constraints": ["reso_time"],
       "info": {
         "name": "AK Inklusion",
         "head": "Lisa (Dresden)",
@@ -436,9 +333,7 @@
       "duration": 1,
       "properties": {},
       "room_constraints": [],
-      "time_constraints": [
-        "notfr"
-      ],
+      "time_constraints": ["notfr"],
       "info": {
         "name": "AK Multi-Faktor-Authentifizierung",
         "head": "Gustav (D\u00fcsseldorf)",
@@ -451,9 +346,7 @@
       "duration": 1,
       "properties": {},
       "room_constraints": [],
-      "time_constraints": [
-        "reso_time"
-      ],
+      "time_constraints": ["reso_time"],
       "info": {
         "name": "AK Nachteilsausgleiche",
         "head": "Lisa (Dresden)",
@@ -479,9 +372,7 @@
       "duration": 1,
       "properties": {},
       "room_constraints": [],
-      "time_constraints": [
-        "reso_time"
-      ],
+      "time_constraints": ["reso_time"],
       "info": {
         "name": "AK Pr\u00fcfungs-Verh\u00e4ltnis-Beendigung-von-Studierenden-Seite",
         "head": "Matze (Freiburg)",
@@ -493,9 +384,7 @@
       "id": "ak19",
       "duration": 2,
       "properties": {},
-      "room_constraints": [
-        "beamer"
-      ],
+      "room_constraints": ["beamer"],
       "time_constraints": [],
       "info": {
         "name": "AK ReSopedia",
@@ -573,12 +462,8 @@
       "id": "ak37",
       "duration": 2,
       "properties": {},
-      "room_constraints": [
-        "beamer"
-      ],
-      "time_constraints": [
-        "reso_time"
-      ],
+      "room_constraints": ["beamer"],
+      "time_constraints": ["reso_time"],
       "info": {
         "name": "AK Systemakkreditierung",
         "head": "Moritz (Dresden)",
@@ -616,9 +501,7 @@
       "id": "ak26",
       "duration": 1,
       "properties": {},
-      "room_constraints": [
-        "beamer"
-      ],
+      "room_constraints": ["beamer"],
       "time_constraints": [],
       "info": {
         "name": "AK Leitfaden Minimalstandards Berufungskommissionen",
@@ -658,9 +541,7 @@
       "duration": 2,
       "properties": {},
       "room_constraints": [],
-      "time_constraints": [
-        "so"
-      ],
+      "time_constraints": ["so"],
       "info": {
         "name": "AK Meta",
         "head": "Lili (Bonn)",
@@ -699,9 +580,7 @@
       "duration": 1,
       "properties": {},
       "room_constraints": [],
-      "time_constraints": [
-        "notso"
-      ],
+      "time_constraints": ["notso"],
       "info": {
         "name": "AK Mehr Schlaf auf der KoMa",
         "head": "Tim (Bremen)",
@@ -718,19 +597,6 @@
       "info": {
         "name": "AK Versicherungen und Veranstaltungsmanagement",
         "head": "Grit (Kiel)",
-        "description": "",
-        "reso": false
-      }
-    },
-    {
-      "id": "ak38",
-      "duration": 2,
-      "properties": {},
-      "room_constraints": [],
-      "time_constraints": [],
-      "info": {
-        "name": "AK Reso polieren",
-        "head": "",
         "description": "",
         "reso": false
       }
@@ -4920,9 +4786,7 @@
       "info": {
         "name": "Katharina (G\u00f6ttingen)"
       },
-      "time_constraints": [
-        "fr"
-      ],
+      "time_constraints": ["fr"],
       "room_constraints": [],
       "preferences": [
         {
@@ -5377,9 +5241,7 @@
       "info": {
         "name": "Maxi (Erlangen)"
       },
-      "time_constraints": [
-        "notso"
-      ],
+      "time_constraints": ["notso"],
       "room_constraints": [],
       "preferences": [
         {
@@ -5394,9 +5256,7 @@
       "info": {
         "name": "Yoni (Jena)"
       },
-      "time_constraints": [
-        "fr"
-      ],
+      "time_constraints": ["fr"],
       "room_constraints": [],
       "preferences": [
         {
@@ -5431,9 +5291,7 @@
       "info": {
         "name": "Felix (Bonn)"
       },
-      "time_constraints": [
-        "notfr"
-      ],
+      "time_constraints": ["notfr"],
       "room_constraints": [],
       "preferences": [
         {
@@ -5478,9 +5336,7 @@
       "info": {
         "name": "Grit (Kiel)"
       },
-      "time_constraints": [
-        "fr"
-      ],
+      "time_constraints": ["fr"],
       "room_constraints": [],
       "preferences": [
         {
