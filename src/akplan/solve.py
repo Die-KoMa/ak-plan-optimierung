@@ -430,6 +430,7 @@ def export_scheduling_result(
                     raise ValueError(f"AK {ak_id} is assigned multiple rooms")
         if room_for_ak is None:
             if allow_unscheduled_aks:
+                print(f"no room assigned to ak {ak_id}")
                 continue
             else:
                 raise ValueError(f"no room assigned to ak {ak_id}")
@@ -444,11 +445,11 @@ def export_scheduling_result(
         for person_id in person_ids:
             if _get_val(person_var[ak_id][person_id]) == 1:
                 tmp_res_dir[ak_id][room_for_ak]["participant_ids"].add(person_id)
-        if (
-            not tmp_res_dir[ak_id][room_for_ak]["participant_ids"]
-            and not allow_unscheduled_aks
-        ):
-            raise ValueError(f"AK {ak_id} has no assigned participants")
+        if not tmp_res_dir[ak_id][room_for_ak]["participant_ids"]:
+            if allow_unscheduled_aks:
+                print(f"AK {ak_id} has no assigned participants")
+            else:
+                raise ValueError(f"AK {ak_id} has no assigned participants")
 
     output_dict: dict[str, Any] = {}
     output_dict["scheduled_aks"] = [
