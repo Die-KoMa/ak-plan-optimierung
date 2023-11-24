@@ -422,45 +422,41 @@ def export_scheduling_result(
         )
         return cast(int, ret_val)
 
-    tmp_res_dir: dict[str, dict[str, dict[str, set[str]]]] = defaultdict(
-        lambda: defaultdict(lambda: defaultdict(set))
-    )
-    tmp_res_dir = defaultdict(lambda: defaultdict(lambda: defaultdict(set)))
+    schedule = list()
+
     for ak_id in ak_ids:
-        room_for_ak = None
+        result = {
+            "ak_id": ak_id,
+            "room_id": None,
+            "timeslot_ids": list(),
+            "participant_ids": list(),
+        }
+
         for room_id in room_ids:
             if _get_val(room_var[ak_id][room_id]) == 1:
-                if room_for_ak is None:
-                    room_for_ak = room_id
+                if result["room_id"] is None:
+                    result["room_id"] = room_id
                 else:
                     raise ValueError(f"AK {ak_id} is assigned multiple rooms")
-        if room_for_ak is None:
+        if result["room_id"] is None:
             _error_or_exception(f"no room assigned to ak {ak_id}")
+
         for timeslot_id in timeslot_ids:
             if _get_val(time_var[ak_id][timeslot_id]) == 1:
-                tmp_res_dir[ak_id][room_for_ak]["timeslot_ids"].add(timeslot_id)
-        if (
-            not tmp_res_dir[ak_id][room_for_ak]["timeslot_ids"]
-            and not allow_unscheduled_aks
-        ):
+                result["timeslot_ids"].append(timeslot_id)
+        if not result["timeslot_ids"]:
             _error_or_exception(f"AK {ak_id} has no assigned timeslots")
+
         for person_id in person_ids:
             if _get_val(person_var[ak_id][person_id]) == 1:
-                tmp_res_dir[ak_id][room_for_ak]["participant_ids"].add(person_id)
-        if not tmp_res_dir[ak_id][room_for_ak]["participant_ids"]:
+                result["participant_ids"].append(person_id)
+        if not result["participant_ids"]:
             _error_or_exception(f"AK {ak_id} has no assigned participants")
 
+        schedule.append(result)
+
     output_dict: dict[str, Any] = {}
-    output_dict["scheduled_aks"] = [
-        {
-            "ak_id": ak_id,
-            "room_id": room_id,
-            "timeslot_ids": list(subsubdict["timeslot_ids"]),
-            "participant_ids": list(subsubdict["participant_ids"]),
-        }
-        for ak_id, subdict in tmp_res_dir.items()
-        for room_id, subsubdict in subdict.items()
-    ]
+    output_dict["scheduled_aks"] = schedule
     output_dict["input"] = input_data.to_dict()
 
     return output_dict
