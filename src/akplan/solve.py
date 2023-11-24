@@ -472,6 +472,7 @@ def solve_scheduling(
     solver_name: str | None = None,
     output_lp_file: str | None = "koma-plan.lp",
     output_json_file: str | None = "output.json",
+    allow_unscheduled_aks: bool = False,
     **solver_kwargs: dict[str, Any],
 ) -> dict[str, Any] | None:
     """Solve the scheduling problem.
@@ -517,7 +518,7 @@ def solve_scheduling(
     if lp_problem.status == LpStatusInfeasible:
         return None
 
-    return export_scheduling_result(input_data, lp_problem, dec_vars)
+    return export_scheduling_result(input_data, lp_problem, dec_vars, allow_unscheduled_aks)
 
 
 def main() -> None:
@@ -544,6 +545,7 @@ def main() -> None:
     )
     parser.add_argument("path", type=str)
     parser.add_argument("--seed", type=int, default=42, help="Seed for the solver")
+    parser.add_argument("--allow-unscheduled-aks", type=bool, default=False, help="Allow unscheduled AKs in solution")
     args = parser.parse_args()
 
     solver_kwargs = {}
@@ -568,7 +570,11 @@ def main() -> None:
         input_dict = json.load(f)
 
     output_dict = solve_scheduling(
-        SchedulingInput.from_dict(input_dict), args.mu, args.solver, **solver_kwargs
+        SchedulingInput.from_dict(input_dict),
+        args.mu,
+        args.solver,
+        allow_unscheduled_aks=args.allow_unscheduled_aks,
+        **solver_kwargs
     )
 
     if output_dict is not None:
