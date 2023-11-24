@@ -596,7 +596,7 @@
       "time_constraints": [],
       "info": {
         "name": "AK Versicherungen und Veranstaltungsmanagement",
-        "head": "Grit (Kiel)",
+        "head": "Helen (jena)",
         "description": "",
         "reso": false
       }
@@ -3051,8 +3051,8 @@
         },
         {
           "ak_id": "ak35",
-          "required": false,
-          "preference_score": 1
+          "required": true,
+          "preference_score": -1
         }
       ]
     },
@@ -5338,13 +5338,7 @@
       },
       "time_constraints": ["fr"],
       "room_constraints": [],
-      "preferences": [
-        {
-          "ak_id": "ak35",
-          "required": true,
-          "preference_score": -1
-        }
-      ]
+      "preferences": []
     }
   ],
   "info": {
