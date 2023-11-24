@@ -32,7 +32,9 @@
       "info": {},
       "capacity": 20,
       "fulfilled_room_constraints": [],
-      "time_constraints": []
+      "time_constraints": [
+        "notso"
+      ]
     },
     {
       "id": "209",
@@ -41,7 +43,9 @@
       "fulfilled_room_constraints": [
         "beamer"
       ],
-      "time_constraints": []
+      "time_constraints": [
+        "notso"
+      ]
     }
   ],
   "timeslots": {
@@ -51,50 +55,10 @@
     "blocks": [
       [
         {
-          "id": "FrM0",
-          "info": {},
-          "fulfilled_time_constraints": [
-            "reso",
-            "fr",
-            "notsa",
-            "notso"
-          ]
-        },
-        {
-          "id": "FrM1",
-          "info": {},
-          "fulfilled_time_constraints": [
-            "reso",
-            "fr",
-            "notsa",
-            "notso"
-          ]
-        },
-        {
-          "id": "FrM2",
-          "info": {},
-          "fulfilled_time_constraints": [
-            "reso",
-            "fr",
-            "notsa",
-            "notso"
-          ]
-        },
-        {
-          "id": "FrM3",
-          "info": {},
-          "fulfilled_time_constraints": [
-            "reso",
-            "fr",
-            "notsa",
-            "notso"
-          ]
-        }
-      ],
-      [
-        {
           "id": "FrA0",
-          "info": {},
+          "info": {
+            "start": "14:00"
+          },
           "fulfilled_time_constraints": [
             "reso",
             "fr",
@@ -104,7 +68,9 @@
         },
         {
           "id": "FrA1",
-          "info": {},
+          "info": {
+            "start": "15:00"
+          },
           "fulfilled_time_constraints": [
             "reso",
             "fr",
@@ -114,7 +80,9 @@
         },
         {
           "id": "FrA2",
-          "info": {},
+          "info": {
+            "start": "16:00"
+          },
           "fulfilled_time_constraints": [
             "reso",
             "fr",
@@ -124,7 +92,9 @@
         },
         {
           "id": "FrA3",
-          "info": {},
+          "info": {
+            "start": "17:00"
+          },
           "fulfilled_time_constraints": [
             "reso",
             "fr",
@@ -134,7 +104,9 @@
         },
         {
           "id": "FrA4",
-          "info": {},
+          "info": {
+            "start": "18:00"
+          },
           "fulfilled_time_constraints": [
             "reso",
             "fr",
@@ -146,7 +118,9 @@
       [
         {
           "id": "SaA0",
-          "info": {},
+          "info": {
+            "start": "14:00"
+          },
           "fulfilled_time_constraints": [
             "reso",
             "sa",
@@ -156,7 +130,9 @@
         },
         {
           "id": "SaA1",
-          "info": {},
+          "info": {
+            "start": "15:00"
+          },
           "fulfilled_time_constraints": [
             "reso",
             "sa",
@@ -166,7 +142,9 @@
         },
         {
           "id": "SaA2",
-          "info": {},
+          "info": {
+            "start": "16:00"
+          },
           "fulfilled_time_constraints": [
             "reso",
             "sa",
@@ -176,7 +154,9 @@
         },
         {
           "id": "SaA3",
-          "info": {},
+          "info": {
+            "start": "17:00"
+          },
           "fulfilled_time_constraints": [
             "reso",
             "sa",
@@ -186,7 +166,9 @@
         },
         {
           "id": "SaA4",
-          "info": {},
+          "info": {
+            "start": "18:00"
+          },
           "fulfilled_time_constraints": [
             "reso",
             "sa",
@@ -198,7 +180,9 @@
       [
         {
           "id": "SoM0",
-          "info": {},
+          "info": {
+            "start": "8:30"
+          },
           "fulfilled_time_constraints": [
             "so",
             "notfr",
@@ -207,7 +191,9 @@
         },
         {
           "id": "SoM1",
-          "info": {},
+          "info": {
+            "start": "9:30"
+          },
           "fulfilled_time_constraints": [
             "so",
             "notfr",
@@ -216,7 +202,9 @@
         },
         {
           "id": "SoM2",
-          "info": {},
+          "info": {
+            "start": "10:30"
+          },
           "fulfilled_time_constraints": [
             "so",
             "notfr",
@@ -225,7 +213,9 @@
         },
         {
           "id": "SoM3",
-          "info": {},
+          "info": {
+            "start": "11:30"
+          },
           "fulfilled_time_constraints": [
             "so",
             "notfr",
@@ -236,7 +226,9 @@
       [
         {
           "id": "SoA0",
-          "info": {},
+          "info": {
+            "start": "14:00"
+          },
           "fulfilled_time_constraints": [
             "so",
             "notfr",
@@ -245,7 +237,9 @@
         },
         {
           "id": "SoA1",
-          "info": {},
+          "info": {
+            "start": "15:00"
+          },
           "fulfilled_time_constraints": [
             "so",
             "notfr",
@@ -254,7 +248,9 @@
         },
         {
           "id": "SoA2",
-          "info": {},
+          "info": {
+            "start": "16:00"
+          },
           "fulfilled_time_constraints": [
             "so",
             "notfr",
@@ -263,7 +259,9 @@
         },
         {
           "id": "SoA3",
-          "info": {},
+          "info": {
+            "start": "17:00"
+          },
           "fulfilled_time_constraints": [
             "so",
             "notfr",
@@ -272,7 +270,9 @@
         },
         {
           "id": "SoA4",
-          "info": {},
+          "info": {
+            "start": "18:00"
+          },
           "fulfilled_time_constraints": [
             "so",
             "notfr",
@@ -284,19 +284,6 @@
   },
   "aks": [
     {
-      "id": "ak1",
-      "duration": 2,
-      "properties": {},
-      "room_constraints": [],
-      "time_constraints": [],
-      "info": {
-        "name": "AK AK AK AK AK-Plan Program",
-        "head": "Lorenzo (Bonn), Simon (Bremen)",
-        "description": "",
-        "reso": false
-      }
-    },
-    {
       "id": "ak2",
       "duration": 1,
       "properties": {},
@@ -305,19 +292,6 @@
       "info": {
         "name": "AK Akkreditierung",
         "head": "Katrin (Berlin)",
-        "description": "",
-        "reso": false
-      }
-    },
-    {
-      "id": "ak3",
-      "duration": 1,
-      "properties": {},
-      "room_constraints": [],
-      "time_constraints": [],
-      "info": {
-        "name": "AK Anwerbung neuer Mitglieder",
-        "head": "Sebastian (Linz)",
         "description": "",
         "reso": false
       }
@@ -643,47 +617,6 @@
       }
     },
     {
-      "id": "ak26",
-      "duration": 1,
-      "properties": {},
-      "room_constraints": [
-        "beamer"
-      ],
-      "time_constraints": [],
-      "info": {
-        "name": "AK Leitfaden Minimalstandards Berufungskommissionen",
-        "head": "Yoni (Jena), Max (Dresden)",
-        "description": "",
-        "reso": false
-      }
-    },
-    {
-      "id": "ak27",
-      "duration": 1,
-      "properties": {},
-      "room_constraints": [],
-      "time_constraints": [],
-      "info": {
-        "name": "AK digitale Lehre",
-        "head": "Yoni (Jena)",
-        "description": "",
-        "reso": false
-      }
-    },
-    {
-      "id": "ak28",
-      "duration": 2,
-      "properties": {},
-      "room_constraints": [],
-      "time_constraints": [],
-      "info": {
-        "name": "AK Pr\u00fcfungsan- un abmeldungen",
-        "head": "B\u00fcsra (Erlangen)",
-        "description": "",
-        "reso": false
-      }
-    },
-    {
       "id": "ak29",
       "duration": 1,
       "properties": {},
@@ -779,19 +712,6 @@
       }
     },
     {
-      "id": "ak38",
-      "duration": 2,
-      "properties": {},
-      "room_constraints": [],
-      "time_constraints": [],
-      "info": {
-        "name": "AK Reso polieren",
-        "head": "",
-        "description": "",
-        "reso": false
-      }
-    },
-    {
       "id": "ak36",
       "duration": 2,
       "properties": {},
@@ -814,11 +734,6 @@
       "time_constraints": [],
       "room_constraints": [],
       "preferences": [
-        {
-          "ak_id": "ak1",
-          "required": true,
-          "preference_score": -1
-        },
         {
           "ak_id": "ak9",
           "required": false,
@@ -851,16 +766,6 @@
         },
         {
           "ak_id": "ak22",
-          "required": false,
-          "preference_score": 1
-        },
-        {
-          "ak_id": "ak26",
-          "required": false,
-          "preference_score": 1
-        },
-        {
-          "ak_id": "ak28",
           "required": false,
           "preference_score": 1
         },
@@ -951,21 +856,6 @@
         },
         {
           "ak_id": "ak25",
-          "required": false,
-          "preference_score": 2
-        },
-        {
-          "ak_id": "ak26",
-          "required": false,
-          "preference_score": 1
-        },
-        {
-          "ak_id": "ak27",
-          "required": false,
-          "preference_score": 1
-        },
-        {
-          "ak_id": "ak28",
           "required": false,
           "preference_score": 2
         },
@@ -1108,11 +998,6 @@
           "ak_id": "ak23",
           "required": false,
           "preference_score": 2
-        },
-        {
-          "ak_id": "ak26",
-          "required": false,
-          "preference_score": 1
         }
       ]
     },
@@ -1205,16 +1090,6 @@
           "preference_score": 1
         },
         {
-          "ak_id": "ak1",
-          "required": false,
-          "preference_score": 1
-        },
-        {
-          "ak_id": "ak3",
-          "required": false,
-          "preference_score": 1
-        },
-        {
           "ak_id": "ak4",
           "required": false,
           "preference_score": 1
@@ -1260,11 +1135,6 @@
           "preference_score": 1
         },
         {
-          "ak_id": "ak27",
-          "required": false,
-          "preference_score": 1
-        },
-        {
           "ak_id": "ak29",
           "required": false,
           "preference_score": 1
@@ -1281,11 +1151,6 @@
       "preferences": [
         {
           "ak_id": "ak0",
-          "required": false,
-          "preference_score": 1
-        },
-        {
-          "ak_id": "ak3",
           "required": false,
           "preference_score": 1
         },
@@ -1340,11 +1205,6 @@
           "preference_score": 1
         },
         {
-          "ak_id": "ak28",
-          "required": false,
-          "preference_score": 1
-        },
-        {
           "ak_id": "ak33",
           "required": false,
           "preference_score": 2
@@ -1371,11 +1231,6 @@
       "preferences": [
         {
           "ak_id": "ak2",
-          "required": false,
-          "preference_score": 1
-        },
-        {
-          "ak_id": "ak3",
           "required": false,
           "preference_score": 1
         },
@@ -1421,11 +1276,6 @@
         },
         {
           "ak_id": "ak25",
-          "required": false,
-          "preference_score": 1
-        },
-        {
-          "ak_id": "ak28",
           "required": false,
           "preference_score": 1
         },
@@ -1515,11 +1365,6 @@
           "preference_score": 2
         },
         {
-          "ak_id": "ak3",
-          "required": false,
-          "preference_score": 2
-        },
-        {
           "ak_id": "ak5",
           "required": false,
           "preference_score": 1
@@ -1565,11 +1410,6 @@
           "preference_score": 2
         },
         {
-          "ak_id": "ak3",
-          "required": false,
-          "preference_score": 2
-        },
-        {
           "ak_id": "ak4",
           "required": false,
           "preference_score": 2
@@ -1601,11 +1441,6 @@
       "preferences": [
         {
           "ak_id": "ak0",
-          "required": false,
-          "preference_score": 1
-        },
-        {
-          "ak_id": "ak3",
           "required": false,
           "preference_score": 1
         },
@@ -1651,21 +1486,6 @@
         },
         {
           "ak_id": "ak25",
-          "required": false,
-          "preference_score": 1
-        },
-        {
-          "ak_id": "ak26",
-          "required": false,
-          "preference_score": 2
-        },
-        {
-          "ak_id": "ak27",
-          "required": false,
-          "preference_score": 1
-        },
-        {
-          "ak_id": "ak28",
           "required": false,
           "preference_score": 1
         },
@@ -1755,11 +1575,6 @@
       "room_constraints": [],
       "preferences": [
         {
-          "ak_id": "ak3",
-          "required": false,
-          "preference_score": 1
-        },
-        {
           "ak_id": "ak4",
           "required": false,
           "preference_score": 2
@@ -1830,16 +1645,6 @@
           "preference_score": 1
         },
         {
-          "ak_id": "ak27",
-          "required": false,
-          "preference_score": 1
-        },
-        {
-          "ak_id": "ak28",
-          "required": false,
-          "preference_score": 1
-        },
-        {
           "ak_id": "ak30",
           "required": false,
           "preference_score": 1
@@ -1866,11 +1671,6 @@
       "preferences": [
         {
           "ak_id": "ak0",
-          "required": false,
-          "preference_score": 1
-        },
-        {
-          "ak_id": "ak1",
           "required": false,
           "preference_score": 1
         },
@@ -1940,11 +1740,6 @@
       "room_constraints": [],
       "preferences": [
         {
-          "ak_id": "ak3",
-          "required": false,
-          "preference_score": 2
-        },
-        {
           "ak_id": "ak4",
           "required": false,
           "preference_score": 2
@@ -1981,11 +1776,6 @@
       "preferences": [
         {
           "ak_id": "ak2",
-          "required": false,
-          "preference_score": 1
-        },
-        {
-          "ak_id": "ak3",
           "required": false,
           "preference_score": 1
         },
@@ -2036,11 +1826,6 @@
         },
         {
           "ak_id": "ak25",
-          "required": false,
-          "preference_score": 1
-        },
-        {
-          "ak_id": "ak27",
           "required": false,
           "preference_score": 1
         },
@@ -2150,11 +1935,6 @@
           "preference_score": 2
         },
         {
-          "ak_id": "ak3",
-          "required": false,
-          "preference_score": 1
-        },
-        {
           "ak_id": "ak6",
           "required": false,
           "preference_score": 2
@@ -2255,11 +2035,6 @@
       "room_constraints": [],
       "preferences": [
         {
-          "ak_id": "ak1",
-          "required": false,
-          "preference_score": 2
-        },
-        {
           "ak_id": "ak7",
           "required": false,
           "preference_score": 1
@@ -2325,11 +2100,6 @@
       "room_constraints": [],
       "preferences": [
         {
-          "ak_id": "ak1",
-          "required": false,
-          "preference_score": 2
-        },
-        {
           "ak_id": "ak4",
           "required": false,
           "preference_score": 1
@@ -2370,11 +2140,6 @@
           "preference_score": -1
         },
         {
-          "ak_id": "ak26",
-          "required": true,
-          "preference_score": -1
-        },
-        {
           "ak_id": "ak31",
           "required": false,
           "preference_score": 1
@@ -2406,11 +2171,6 @@
       "preferences": [
         {
           "ak_id": "ak0",
-          "required": false,
-          "preference_score": 1
-        },
-        {
-          "ak_id": "ak3",
           "required": false,
           "preference_score": 1
         },
@@ -2490,11 +2250,6 @@
           "preference_score": 1
         },
         {
-          "ak_id": "ak3",
-          "required": false,
-          "preference_score": 1
-        },
-        {
           "ak_id": "ak4",
           "required": false,
           "preference_score": 1
@@ -2551,11 +2306,6 @@
       "preferences": [
         {
           "ak_id": "ak0",
-          "required": false,
-          "preference_score": 1
-        },
-        {
-          "ak_id": "ak3",
           "required": false,
           "preference_score": 1
         },
@@ -2624,11 +2374,6 @@
       "time_constraints": [],
       "room_constraints": [],
       "preferences": [
-        {
-          "ak_id": "ak3",
-          "required": false,
-          "preference_score": 1
-        },
         {
           "ak_id": "ak6",
           "required": false,
@@ -2700,16 +2445,6 @@
           "preference_score": 2
         },
         {
-          "ak_id": "ak27",
-          "required": false,
-          "preference_score": 2
-        },
-        {
-          "ak_id": "ak28",
-          "required": false,
-          "preference_score": 1
-        },
-        {
           "ak_id": "ak29",
           "required": false,
           "preference_score": 1
@@ -2724,11 +2459,6 @@
       "time_constraints": [],
       "room_constraints": [],
       "preferences": [
-        {
-          "ak_id": "ak3",
-          "required": false,
-          "preference_score": 1
-        },
         {
           "ak_id": "ak9",
           "required": false,
@@ -2761,11 +2491,6 @@
       "preferences": [
         {
           "ak_id": "ak0",
-          "required": false,
-          "preference_score": 1
-        },
-        {
-          "ak_id": "ak3",
           "required": false,
           "preference_score": 1
         },
@@ -2839,11 +2564,6 @@
       "time_constraints": [],
       "room_constraints": [],
       "preferences": [
-        {
-          "ak_id": "ak1",
-          "required": false,
-          "preference_score": 2
-        },
         {
           "ak_id": "ak4",
           "required": false,
@@ -2995,11 +2715,6 @@
           "preference_score": 1
         },
         {
-          "ak_id": "ak26",
-          "required": false,
-          "preference_score": 1
-        },
-        {
           "ak_id": "ak35",
           "required": false,
           "preference_score": 1
@@ -3015,11 +2730,6 @@
       "room_constraints": [],
       "preferences": [
         {
-          "ak_id": "ak1",
-          "required": false,
-          "preference_score": 2
-        },
-        {
           "ak_id": "ak9",
           "required": false,
           "preference_score": 1
@@ -3033,11 +2743,6 @@
           "ak_id": "ak24",
           "required": false,
           "preference_score": 2
-        },
-        {
-          "ak_id": "ak27",
-          "required": false,
-          "preference_score": 1
         },
         {
           "ak_id": "ak29",
@@ -3088,16 +2793,6 @@
           "ak_id": "ak0",
           "required": false,
           "preference_score": 1
-        },
-        {
-          "ak_id": "ak1",
-          "required": false,
-          "preference_score": 1
-        },
-        {
-          "ak_id": "ak3",
-          "required": true,
-          "preference_score": -1
         },
         {
           "ak_id": "ak5",
@@ -3195,11 +2890,6 @@
           "preference_score": 2
         },
         {
-          "ak_id": "ak28",
-          "required": false,
-          "preference_score": 1
-        },
-        {
           "ak_id": "ak31",
           "required": false,
           "preference_score": 1
@@ -3228,11 +2918,6 @@
           "ak_id": "ak0",
           "required": false,
           "preference_score": 1
-        },
-        {
-          "ak_id": "ak3",
-          "required": false,
-          "preference_score": 2
         },
         {
           "ak_id": "ak4",
@@ -3290,11 +2975,6 @@
           "preference_score": 1
         },
         {
-          "ak_id": "ak27",
-          "required": false,
-          "preference_score": 1
-        },
-        {
           "ak_id": "ak30",
           "required": false,
           "preference_score": 1
@@ -3316,11 +2996,6 @@
       "preferences": [
         {
           "ak_id": "ak2",
-          "required": false,
-          "preference_score": 1
-        },
-        {
-          "ak_id": "ak3",
           "required": false,
           "preference_score": 1
         },
@@ -3376,11 +3051,6 @@
         },
         {
           "ak_id": "ak2",
-          "required": false,
-          "preference_score": 1
-        },
-        {
-          "ak_id": "ak3",
           "required": false,
           "preference_score": 1
         },
@@ -3475,11 +3145,6 @@
           "preference_score": 2
         },
         {
-          "ak_id": "ak26",
-          "required": false,
-          "preference_score": 1
-        },
-        {
           "ak_id": "ak29",
           "required": false,
           "preference_score": 1
@@ -3518,16 +3183,6 @@
           "ak_id": "ak0",
           "required": false,
           "preference_score": 1
-        },
-        {
-          "ak_id": "ak1",
-          "required": false,
-          "preference_score": 1
-        },
-        {
-          "ak_id": "ak3",
-          "required": false,
-          "preference_score": 2
         },
         {
           "ak_id": "ak9",
@@ -3574,11 +3229,6 @@
       "time_constraints": [],
       "room_constraints": [],
       "preferences": [
-        {
-          "ak_id": "ak3",
-          "required": false,
-          "preference_score": 2
-        },
         {
           "ak_id": "ak5",
           "required": false,
@@ -3633,21 +3283,6 @@
           "ak_id": "ak25",
           "required": false,
           "preference_score": 1
-        },
-        {
-          "ak_id": "ak26",
-          "required": false,
-          "preference_score": 1
-        },
-        {
-          "ak_id": "ak27",
-          "required": false,
-          "preference_score": 1
-        },
-        {
-          "ak_id": "ak28",
-          "required": false,
-          "preference_score": 2
         },
         {
           "ak_id": "ak32",
@@ -3735,11 +3370,6 @@
           "preference_score": 1
         },
         {
-          "ak_id": "ak27",
-          "required": false,
-          "preference_score": 2
-        },
-        {
           "ak_id": "ak33",
           "required": false,
           "preference_score": 2
@@ -3759,11 +3389,6 @@
       "time_constraints": [],
       "room_constraints": [],
       "preferences": [
-        {
-          "ak_id": "ak3",
-          "required": false,
-          "preference_score": 2
-        },
         {
           "ak_id": "ak4",
           "required": false,
@@ -3840,11 +3465,6 @@
       "room_constraints": [],
       "preferences": [
         {
-          "ak_id": "ak3",
-          "required": false,
-          "preference_score": 1
-        },
-        {
           "ak_id": "ak4",
           "required": false,
           "preference_score": 1
@@ -3885,11 +3505,6 @@
           "preference_score": 1
         },
         {
-          "ak_id": "ak27",
-          "required": false,
-          "preference_score": 1
-        },
-        {
           "ak_id": "ak31",
           "required": false,
           "preference_score": 2
@@ -3909,11 +3524,6 @@
       "time_constraints": [],
       "room_constraints": [],
       "preferences": [
-        {
-          "ak_id": "ak1",
-          "required": false,
-          "preference_score": 1
-        },
         {
           "ak_id": "ak5",
           "required": false,
@@ -3975,11 +3585,6 @@
           "preference_score": 2
         },
         {
-          "ak_id": "ak3",
-          "required": false,
-          "preference_score": 1
-        },
-        {
           "ak_id": "ak4",
           "required": false,
           "preference_score": 1
@@ -4021,11 +3626,6 @@
         },
         {
           "ak_id": "ak24",
-          "required": false,
-          "preference_score": 1
-        },
-        {
-          "ak_id": "ak27",
           "required": false,
           "preference_score": 1
         },
@@ -4090,16 +3690,6 @@
           "preference_score": 2
         },
         {
-          "ak_id": "ak26",
-          "required": false,
-          "preference_score": 2
-        },
-        {
-          "ak_id": "ak27",
-          "required": false,
-          "preference_score": 2
-        },
-        {
           "ak_id": "ak33",
           "required": false,
           "preference_score": 1
@@ -4125,19 +3715,9 @@
       "room_constraints": [],
       "preferences": [
         {
-          "ak_id": "ak1",
-          "required": false,
-          "preference_score": 2
-        },
-        {
           "ak_id": "ak2",
           "required": false,
           "preference_score": 1
-        },
-        {
-          "ak_id": "ak3",
-          "required": false,
-          "preference_score": 2
         },
         {
           "ak_id": "ak4",
@@ -4206,16 +3786,6 @@
         },
         {
           "ak_id": "ak25",
-          "required": false,
-          "preference_score": 1
-        },
-        {
-          "ak_id": "ak27",
-          "required": false,
-          "preference_score": 1
-        },
-        {
-          "ak_id": "ak28",
           "required": false,
           "preference_score": 1
         },
@@ -4325,11 +3895,6 @@
       "room_constraints": [],
       "preferences": [
         {
-          "ak_id": "ak1",
-          "required": true,
-          "preference_score": -1
-        },
-        {
           "ak_id": "ak2",
           "required": false,
           "preference_score": 1
@@ -4370,11 +3935,6 @@
           "preference_score": 2
         },
         {
-          "ak_id": "ak28",
-          "required": false,
-          "preference_score": 2
-        },
-        {
           "ak_id": "ak29",
           "required": false,
           "preference_score": 1
@@ -4398,11 +3958,6 @@
           "ak_id": "ak0",
           "required": false,
           "preference_score": 1
-        },
-        {
-          "ak_id": "ak3",
-          "required": false,
-          "preference_score": 2
         },
         {
           "ak_id": "ak4",
@@ -4471,21 +4026,6 @@
         },
         {
           "ak_id": "ak25",
-          "required": false,
-          "preference_score": 1
-        },
-        {
-          "ak_id": "ak26",
-          "required": false,
-          "preference_score": 2
-        },
-        {
-          "ak_id": "ak27",
-          "required": false,
-          "preference_score": 1
-        },
-        {
-          "ak_id": "ak28",
           "required": false,
           "preference_score": 1
         },
@@ -4655,11 +4195,6 @@
           "preference_score": 1
         },
         {
-          "ak_id": "ak3",
-          "required": false,
-          "preference_score": 2
-        },
-        {
           "ak_id": "ak4",
           "required": false,
           "preference_score": 1
@@ -4730,11 +4265,6 @@
           "preference_score": 2
         },
         {
-          "ak_id": "ak27",
-          "required": false,
-          "preference_score": 1
-        },
-        {
           "ak_id": "ak29",
           "required": true,
           "preference_score": -1
@@ -4756,11 +4286,6 @@
       "preferences": [
         {
           "ak_id": "ak2",
-          "required": false,
-          "preference_score": 2
-        },
-        {
-          "ak_id": "ak3",
           "required": false,
           "preference_score": 2
         },
@@ -4791,11 +4316,6 @@
         },
         {
           "ak_id": "ak22",
-          "required": false,
-          "preference_score": 1
-        },
-        {
-          "ak_id": "ak27",
           "required": false,
           "preference_score": 1
         },
@@ -4895,21 +4415,6 @@
           "preference_score": 1
         },
         {
-          "ak_id": "ak26",
-          "required": false,
-          "preference_score": 1
-        },
-        {
-          "ak_id": "ak27",
-          "required": false,
-          "preference_score": 1
-        },
-        {
-          "ak_id": "ak28",
-          "required": false,
-          "preference_score": 1
-        },
-        {
           "ak_id": "ak30",
           "required": false,
           "preference_score": 2
@@ -4950,11 +4455,6 @@
           "preference_score": 2
         },
         {
-          "ak_id": "ak3",
-          "required": false,
-          "preference_score": 1
-        },
-        {
           "ak_id": "ak5",
           "required": false,
           "preference_score": 1
@@ -4988,11 +4488,6 @@
           "ak_id": "ak0",
           "required": false,
           "preference_score": 1
-        },
-        {
-          "ak_id": "ak3",
-          "required": false,
-          "preference_score": 2
         },
         {
           "ak_id": "ak4",
@@ -5065,11 +4560,6 @@
           "preference_score": 2
         },
         {
-          "ak_id": "ak3",
-          "required": false,
-          "preference_score": 1
-        },
-        {
           "ak_id": "ak4",
           "required": false,
           "preference_score": 1
@@ -5140,16 +4630,6 @@
           "preference_score": 1
         },
         {
-          "ak_id": "ak27",
-          "required": false,
-          "preference_score": 1
-        },
-        {
-          "ak_id": "ak28",
-          "required": true,
-          "preference_score": -1
-        },
-        {
           "ak_id": "ak34",
           "required": false,
           "preference_score": 1
@@ -5176,11 +4656,6 @@
       "preferences": [
         {
           "ak_id": "ak2",
-          "required": false,
-          "preference_score": 1
-        },
-        {
-          "ak_id": "ak3",
           "required": false,
           "preference_score": 1
         },
@@ -5220,11 +4695,6 @@
           "preference_score": 1
         },
         {
-          "ak_id": "ak28",
-          "required": false,
-          "preference_score": 1
-        },
-        {
           "ak_id": "ak30",
           "required": false,
           "preference_score": 1
@@ -5244,11 +4714,6 @@
       "time_constraints": [],
       "room_constraints": [],
       "preferences": [
-        {
-          "ak_id": "ak1",
-          "required": false,
-          "preference_score": 2
-        },
         {
           "ak_id": "ak4",
           "required": false,
@@ -5300,16 +4765,6 @@
           "preference_score": 1
         },
         {
-          "ak_id": "ak26",
-          "required": false,
-          "preference_score": 1
-        },
-        {
-          "ak_id": "ak27",
-          "required": false,
-          "preference_score": 1
-        },
-        {
           "ak_id": "ak29",
           "required": false,
           "preference_score": 1
@@ -5341,11 +4796,6 @@
         },
         {
           "ak_id": "ak2",
-          "required": false,
-          "preference_score": 1
-        },
-        {
-          "ak_id": "ak3",
           "required": false,
           "preference_score": 1
         },
@@ -5401,11 +4851,6 @@
         },
         {
           "ak_id": "ak21",
-          "required": false,
-          "preference_score": 1
-        },
-        {
-          "ak_id": "ak28",
           "required": false,
           "preference_score": 1
         },
@@ -5502,16 +4947,6 @@
           "preference_score": 1
         },
         {
-          "ak_id": "ak26",
-          "required": false,
-          "preference_score": 1
-        },
-        {
-          "ak_id": "ak27",
-          "required": false,
-          "preference_score": 1
-        },
-        {
           "ak_id": "ak35",
           "required": false,
           "preference_score": 1
@@ -5585,21 +5020,6 @@
           "ak_id": "ak24",
           "required": false,
           "preference_score": 1
-        },
-        {
-          "ak_id": "ak26",
-          "required": false,
-          "preference_score": 1
-        },
-        {
-          "ak_id": "ak27",
-          "required": false,
-          "preference_score": 1
-        },
-        {
-          "ak_id": "ak28",
-          "required": false,
-          "preference_score": 2
         }
       ]
     },
@@ -5611,11 +5031,6 @@
       "time_constraints": [],
       "room_constraints": [],
       "preferences": [
-        {
-          "ak_id": "ak3",
-          "required": false,
-          "preference_score": 2
-        },
         {
           "ak_id": "ak5",
           "required": false,
@@ -5635,11 +5050,6 @@
           "ak_id": "ak21",
           "required": false,
           "preference_score": 2
-        },
-        {
-          "ak_id": "ak27",
-          "required": false,
-          "preference_score": 1
         },
         {
           "ak_id": "ak34",
@@ -5676,11 +5086,6 @@
       "time_constraints": [],
       "room_constraints": [],
       "preferences": [
-        {
-          "ak_id": "ak3",
-          "required": false,
-          "preference_score": 1
-        },
         {
           "ak_id": "ak4",
           "required": false,
@@ -5737,11 +5142,6 @@
           "preference_score": 1
         },
         {
-          "ak_id": "ak28",
-          "required": false,
-          "preference_score": 1
-        },
-        {
           "ak_id": "ak35",
           "required": false,
           "preference_score": 2
@@ -5760,11 +5160,6 @@
           "ak_id": "ak0",
           "required": false,
           "preference_score": 1
-        },
-        {
-          "ak_id": "ak3",
-          "required": false,
-          "preference_score": 2
         },
         {
           "ak_id": "ak5",
@@ -5795,11 +5190,6 @@
           "ak_id": "ak22",
           "required": false,
           "preference_score": 2
-        },
-        {
-          "ak_id": "ak27",
-          "required": false,
-          "preference_score": 2
         }
       ]
     },
@@ -5811,11 +5201,6 @@
       "time_constraints": [],
       "room_constraints": [],
       "preferences": [
-        {
-          "ak_id": "ak3",
-          "required": false,
-          "preference_score": 1
-        },
         {
           "ak_id": "ak4",
           "required": false,
@@ -5917,11 +5302,6 @@
           "preference_score": 1
         },
         {
-          "ak_id": "ak28",
-          "required": false,
-          "preference_score": 1
-        },
-        {
           "ak_id": "ak29",
           "required": false,
           "preference_score": 1
@@ -6012,16 +5392,6 @@
         },
         {
           "ak_id": "ak25",
-          "required": true,
-          "preference_score": -1
-        },
-        {
-          "ak_id": "ak26",
-          "required": true,
-          "preference_score": -1
-        },
-        {
-          "ak_id": "ak27",
           "required": true,
           "preference_score": -1
         }
