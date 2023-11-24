@@ -41,11 +41,10 @@
       "info": {},
       "capacity": 37,
       "fulfilled_room_constraints": [
-        "beamer"
-      ],
-      "time_constraints": [
+        "beamer",
         "notso"
-      ]
+      ],
+      "time_constraints": []
     }
   ],
   "timeslots": {
@@ -57,7 +56,7 @@
         {
           "id": "FrA0",
           "fulfilled_time_constraints": [
-            "reso",
+            "reso_time",
             "fr",
             "notsa",
             "notso"
@@ -69,7 +68,7 @@
         {
           "id": "FrA1",
           "fulfilled_time_constraints": [
-            "reso",
+            "reso_time",
             "fr",
             "notsa",
             "notso"
@@ -81,7 +80,7 @@
         {
           "id": "FrA2",
           "fulfilled_time_constraints": [
-            "reso",
+            "reso_time",
             "fr",
             "notsa",
             "notso"
@@ -93,7 +92,7 @@
         {
           "id": "FrA3",
           "fulfilled_time_constraints": [
-            "reso",
+            "reso_time",
             "fr",
             "notsa",
             "notso"
@@ -105,7 +104,7 @@
         {
           "id": "FrA4",
           "fulfilled_time_constraints": [
-            "reso",
+            "reso_time",
             "fr",
             "notsa",
             "notso"
@@ -119,7 +118,7 @@
         {
           "id": "SaA0",
           "fulfilled_time_constraints": [
-            "reso",
+            "reso_time",
             "sa",
             "notfr",
             "notso"
@@ -131,7 +130,7 @@
         {
           "id": "SaA1",
           "fulfilled_time_constraints": [
-            "reso",
+            "reso_time",
             "sa",
             "notfr",
             "notso"
@@ -143,7 +142,7 @@
         {
           "id": "SaA2",
           "fulfilled_time_constraints": [
-            "reso",
+            "reso_time",
             "sa",
             "notfr",
             "notso"
@@ -155,7 +154,7 @@
         {
           "id": "SaA3",
           "fulfilled_time_constraints": [
-            "reso",
+            "reso_time",
             "sa",
             "notfr",
             "notso"
@@ -167,7 +166,7 @@
         {
           "id": "SaA4",
           "fulfilled_time_constraints": [
-            "reso",
+            "reso_time",
             "sa",
             "notfr",
             "notso"
@@ -340,12 +339,14 @@
       "duration": 1,
       "properties": {},
       "room_constraints": [],
-      "time_constraints": [],
+      "time_constraints": [
+        "reso_time"
+      ],
       "info": {
         "name": "AK Fast-Track-Promotion",
         "head": "Gustav (D\u00fcsseldorf)",
         "description": "",
-        "reso": false
+        "reso": true
       }
     },
     {
@@ -381,12 +382,14 @@
       "duration": 2,
       "properties": {},
       "room_constraints": [],
-      "time_constraints": [],
+      "time_constraints": [
+        "reso_time"
+      ],
       "info": {
         "name": "AK Inklusion",
         "head": "Lisa (Dresden)",
         "description": "",
-        "reso": false
+        "reso": true
       }
     },
     {
@@ -448,12 +451,14 @@
       "duration": 1,
       "properties": {},
       "room_constraints": [],
-      "time_constraints": [],
+      "time_constraints": [
+        "reso_time"
+      ],
       "info": {
         "name": "AK Nachteilsausgleiche",
         "head": "Lisa (Dresden)",
         "description": "",
-        "reso": false
+        "reso": true
       }
     },
     {
@@ -474,12 +479,14 @@
       "duration": 1,
       "properties": {},
       "room_constraints": [],
-      "time_constraints": [],
+      "time_constraints": [
+        "reso_time"
+      ],
       "info": {
         "name": "AK Pr\u00fcfungs-Verh\u00e4ltnis-Beendigung-von-Studierenden-Seite",
         "head": "Matze (Freiburg)",
         "description": "",
-        "reso": false
+        "reso": true
       }
     },
     {
@@ -569,12 +576,14 @@
       "room_constraints": [
         "beamer"
       ],
-      "time_constraints": [],
+      "time_constraints": [
+        "reso_time"
+      ],
       "info": {
         "name": "AK Systemakkreditierung",
         "head": "Moritz (Dresden)",
         "description": "",
-        "reso": false
+        "reso": true
       }
     },
     {
@@ -604,14 +613,16 @@
       }
     },
     {
-      "id": "ak25",
-      "duration": 2,
+      "id": "ak26",
+      "duration": 1,
       "properties": {},
-      "room_constraints": [],
+      "room_constraints": [
+        "beamer"
+      ],
       "time_constraints": [],
       "info": {
-        "name": "AK Hochschulstrategien 2030+",
-        "head": "Yoni (Jena)",
+        "name": "AK Leitfaden Minimalstandards Berufungskommissionen",
+        "head": "Yoni (Jena), Max (Dresden)",
         "description": "",
         "reso": false
       }
@@ -648,7 +659,7 @@
       "properties": {},
       "room_constraints": [],
       "time_constraints": [
-        "notfr"
+        "so"
       ],
       "info": {
         "name": "AK Meta",
@@ -689,7 +700,7 @@
       "properties": {},
       "room_constraints": [],
       "time_constraints": [
-        "fr"
+        "notso"
       ],
       "info": {
         "name": "AK Mehr Schlaf auf der KoMa",
@@ -707,6 +718,19 @@
       "info": {
         "name": "AK Versicherungen und Veranstaltungsmanagement",
         "head": "Grit (Kiel)",
+        "description": "",
+        "reso": false
+      }
+    },
+    {
+      "id": "ak38",
+      "duration": 2,
+      "properties": {},
+      "room_constraints": [],
+      "time_constraints": [],
+      "info": {
+        "name": "AK Reso polieren",
+        "head": "",
         "description": "",
         "reso": false
       }
@@ -766,6 +790,11 @@
         },
         {
           "ak_id": "ak22",
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": "ak26",
           "required": false,
           "preference_score": 1
         },
@@ -855,9 +884,9 @@
           "preference_score": 2
         },
         {
-          "ak_id": "ak25",
+          "ak_id": "ak26",
           "required": false,
-          "preference_score": 2
+          "preference_score": 1
         },
         {
           "ak_id": "ak29",
@@ -998,6 +1027,11 @@
           "ak_id": "ak23",
           "required": false,
           "preference_score": 2
+        },
+        {
+          "ak_id": "ak26",
+          "required": false,
+          "preference_score": 1
         }
       ]
     },
@@ -1275,11 +1309,6 @@
           "preference_score": 1
         },
         {
-          "ak_id": "ak25",
-          "required": false,
-          "preference_score": 1
-        },
-        {
           "ak_id": "ak31",
           "required": false,
           "preference_score": 2
@@ -1485,9 +1514,9 @@
           "preference_score": 2
         },
         {
-          "ak_id": "ak25",
+          "ak_id": "ak26",
           "required": false,
-          "preference_score": 1
+          "preference_score": 2
         },
         {
           "ak_id": "ak31",
@@ -1636,11 +1665,6 @@
         },
         {
           "ak_id": "ak23",
-          "required": false,
-          "preference_score": 1
-        },
-        {
-          "ak_id": "ak25",
           "required": false,
           "preference_score": 1
         },
@@ -1821,11 +1845,6 @@
         },
         {
           "ak_id": "ak22",
-          "required": false,
-          "preference_score": 1
-        },
-        {
-          "ak_id": "ak25",
           "required": false,
           "preference_score": 1
         },
@@ -2140,6 +2159,11 @@
           "preference_score": -1
         },
         {
+          "ak_id": "ak26",
+          "required": true,
+          "preference_score": -1
+        },
+        {
           "ak_id": "ak31",
           "required": false,
           "preference_score": 1
@@ -2440,11 +2464,6 @@
           "preference_score": 1
         },
         {
-          "ak_id": "ak25",
-          "required": false,
-          "preference_score": 2
-        },
-        {
           "ak_id": "ak29",
           "required": false,
           "preference_score": 1
@@ -2715,6 +2734,11 @@
           "preference_score": 1
         },
         {
+          "ak_id": "ak26",
+          "required": false,
+          "preference_score": 1
+        },
+        {
           "ak_id": "ak35",
           "required": false,
           "preference_score": 1
@@ -2883,11 +2907,6 @@
           "ak_id": "ak22",
           "required": false,
           "preference_score": 1
-        },
-        {
-          "ak_id": "ak25",
-          "required": false,
-          "preference_score": 2
         },
         {
           "ak_id": "ak31",
@@ -3140,9 +3159,9 @@
           "preference_score": 1
         },
         {
-          "ak_id": "ak25",
+          "ak_id": "ak26",
           "required": false,
-          "preference_score": 2
+          "preference_score": 1
         },
         {
           "ak_id": "ak29",
@@ -3280,7 +3299,7 @@
           "preference_score": -1
         },
         {
-          "ak_id": "ak25",
+          "ak_id": "ak26",
           "required": false,
           "preference_score": 1
         },
@@ -3440,11 +3459,6 @@
           "preference_score": 1
         },
         {
-          "ak_id": "ak25",
-          "required": false,
-          "preference_score": 1
-        },
-        {
           "ak_id": "ak35",
           "required": false,
           "preference_score": 2
@@ -3500,11 +3514,6 @@
           "preference_score": 1
         },
         {
-          "ak_id": "ak25",
-          "required": false,
-          "preference_score": 1
-        },
-        {
           "ak_id": "ak31",
           "required": false,
           "preference_score": 2
@@ -3548,11 +3557,6 @@
           "ak_id": "ak22",
           "required": false,
           "preference_score": 1
-        },
-        {
-          "ak_id": "ak25",
-          "required": false,
-          "preference_score": 2
         },
         {
           "ak_id": "ak30",
@@ -3685,7 +3689,7 @@
           "preference_score": 1
         },
         {
-          "ak_id": "ak25",
+          "ak_id": "ak26",
           "required": false,
           "preference_score": 2
         },
@@ -3781,11 +3785,6 @@
         },
         {
           "ak_id": "ak24",
-          "required": false,
-          "preference_score": 1
-        },
-        {
-          "ak_id": "ak25",
           "required": false,
           "preference_score": 1
         },
@@ -4025,9 +4024,9 @@
           "preference_score": 1
         },
         {
-          "ak_id": "ak25",
+          "ak_id": "ak26",
           "required": false,
-          "preference_score": 1
+          "preference_score": 2
         },
         {
           "ak_id": "ak29",
@@ -4415,6 +4414,11 @@
           "preference_score": 1
         },
         {
+          "ak_id": "ak26",
+          "required": false,
+          "preference_score": 1
+        },
+        {
           "ak_id": "ak30",
           "required": false,
           "preference_score": 2
@@ -4765,6 +4769,11 @@
           "preference_score": 1
         },
         {
+          "ak_id": "ak26",
+          "required": false,
+          "preference_score": 1
+        },
+        {
           "ak_id": "ak29",
           "required": false,
           "preference_score": 1
@@ -4947,6 +4956,11 @@
           "preference_score": 1
         },
         {
+          "ak_id": "ak26",
+          "required": false,
+          "preference_score": 1
+        },
+        {
           "ak_id": "ak35",
           "required": false,
           "preference_score": 1
@@ -5018,6 +5032,11 @@
         },
         {
           "ak_id": "ak24",
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": "ak26",
           "required": false,
           "preference_score": 1
         }
@@ -5133,11 +5152,6 @@
         },
         {
           "ak_id": "ak22",
-          "required": false,
-          "preference_score": 1
-        },
-        {
-          "ak_id": "ak25",
           "required": false,
           "preference_score": 1
         },
@@ -5391,7 +5405,7 @@
           "preference_score": -1
         },
         {
-          "ak_id": "ak25",
+          "ak_id": "ak26",
           "required": true,
           "preference_score": -1
         }
@@ -5417,7 +5431,9 @@
       "info": {
         "name": "Felix (Bonn)"
       },
-      "time_constraints": [],
+      "time_constraints": [
+        "notfr"
+      ],
       "room_constraints": [],
       "preferences": [
         {
