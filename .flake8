@@ -1,0 +1,9 @@
+#########################
+# Flake8 Configuration  #
+# (.flake8)             #
+#########################
+[flake8]
+max-line-length = 88
+application-import-names =
+    akplan
+    tests

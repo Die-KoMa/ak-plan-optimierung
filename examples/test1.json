@@ -541,5 +541,8 @@
             "time_constraints": []
         }
     ],
-    "info": {}
+    "info": {
+        "name": "First example from the legacy code base",
+        "author": "Tim Racs"
+    }
 }
