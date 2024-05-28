@@ -518,6 +518,14 @@ def solve_scheduling(
 
     print("Status:", LpStatus[lp_problem.status])
     if lp_problem.status == LpStatusInfeasible:
+        if solver_name == "GUROBI":
+            # compute  irreducible inconsistent subsystem for debugging
+            # c.f. https://www.gurobi.com/documentation/current/refman/py_model_computeiis.html
+            lp_problem.solverModel.computeIIS()
+            iis_path = Path(output_lp_file)
+            iis_path = iis_path.parent / f"{iis_path.stem}-iis.ilp"
+            lp_problem.solverModel.write(str(iis_path))
+
         return None
 
     return export_scheduling_result(
