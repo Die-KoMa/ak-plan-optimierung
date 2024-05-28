@@ -1,4 +1,5 @@
 """Unit tests to check feasibility of the constructed schedules."""
+
 import json
 import multiprocessing
 from collections import defaultdict
@@ -57,9 +58,11 @@ def scheduling_input(request) -> SchedulingInput:
 
 fast_scheduled_ak_params = [(2, "HiGHS_CMD"), (2, "GUROBI")]
 scheduled_aks_params = [
-    pytest.param(param_pair)
-    if param_pair in fast_scheduled_ak_params
-    else pytest.param(param_pair, marks=pytest.mark.slow)
+    (
+        pytest.param(param_pair)
+        if param_pair in fast_scheduled_ak_params
+        else pytest.param(param_pair, marks=pytest.mark.slow)
+    )
     for param_pair in product([2, 1, 5], pulp.listSolvers(onlyAvailable=True) + [None])
 ]
 

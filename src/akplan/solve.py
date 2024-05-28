@@ -1,4 +1,5 @@
 """Solving the MILPs for conference scheduling."""
+
 import argparse
 import json
 from collections import defaultdict

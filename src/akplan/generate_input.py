@@ -1,4 +1,5 @@
 """Generate test inputs."""
+
 import argparse
 import json
 from collections import defaultdict

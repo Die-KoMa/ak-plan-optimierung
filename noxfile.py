@@ -1,4 +1,5 @@
 """This module implements our CI function calls."""
+
 import nox
 
 nox.options.reuse_existing_virtualenvs = True

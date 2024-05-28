@@ -1,4 +1,5 @@
 """Utility classes and functions."""
+
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
