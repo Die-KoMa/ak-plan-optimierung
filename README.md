@@ -13,6 +13,23 @@ The general workflow is:
 
 ### Setup
 
-To install this project, clone this repo and run `pip install git+https://github.com/Die-KoMa/ak-plan-optimierung.git`.
+To install this project, simply run `pip install git+https://github.com/Die-KoMa/ak-plan-optimierung.git`.
+To run the solver, simply call `python -m akplan.solve PATH_TO_JSON_INPUT`.
+For a list of available cli options, run `python -m akplan.solve --help`.
 
-To run `pulp_solve.py` you need to install [PuLP](https://coin-or.github.io/pulp/) and possibly the actual solver you want to run.
+### Development setup
+
+For a development setup, clone this repository and run `pip install -e .` in the repository directory.
+Further, install the tool [`nox`](https://nox.thea.codes/en/stable/).
+
+To see all available `nox` sessions, run `nox --list`:
+```
+* test -> Run pytest on all test cases.
+* fast-test -> Run pytest on fast test cases.
+* lint -> Check code conventions.
+* typing -> Check type hints.
+* format -> Fix common convention problems automatically.
+* coverage -> Check test coverage and generate a html report.
+* coverage-clean -> Remove the code coverage website.
+```
+A session can then be called via `nox -s <session_name>`.
