@@ -7,3 +7,5 @@ max-line-length = 88
 application-import-names =
     akplan
     tests
+extend-select = B950
+extend-ignore = E203,E501,E701
