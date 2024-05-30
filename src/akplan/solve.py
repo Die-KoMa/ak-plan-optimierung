@@ -478,22 +478,22 @@ def solve_scheduling(
 ) -> dict[str, Any] | None:
     """Solve the scheduling problem.
 
-    Solves the MILP scheduling problem described by the input data using an MILP
+    Solves the ILP scheduling problem described by the input data using an ILP
     formulation.
 
     For a specification of the input format, see
     https://github.com/Die-KoMa/ak-plan-optimierung/wiki/Input-&-output-format
 
-    For a specification of the MILP used, see
-    https://github.com/Die-KoMa/ak-plan-optimierung/wiki/LP-formulation
+    For a specification of the ILP used, see
+    https://github.com/Die-KoMa/ak-plan-optimierung/wiki/New-LP-formulation
 
-    The MILP models each person to have three kinds of prefences for an AK:
+    The ILP models each person to have three kinds of prefences for an AK:
     0 (no preference), 1 (weak preference) and `mu` (strong preference).
-    The choice of `mu` is an hyperparameter of the MILP that weights the
+    The choice of `mu` is an hyperparameter of the ILP that weights the
     balance between weak and strong preferences.
 
     Args:
-        input_data (SchedulingInput): The input data used to construct the MILP.
+        input_data (SchedulingInput): The input data used to construct the ILP.
         mu (float): The weight associated with a strong preference for an AK.
         solver_name (str, optional): The solver to use. If None, uses pulp's
             default solver. Defaults to None.
@@ -537,10 +537,29 @@ def solve_scheduling(
 def main() -> None:
     """Run solve_scheduling from CLI."""
     parser = argparse.ArgumentParser()
-    parser.add_argument("--mu", type=float, default=2)
-    parser.add_argument("--solver", type=str, default=None)
-    parser.add_argument("--solver-path", type=str)
-    parser.add_argument("--warm-start", action="store_true", default=False)
+    parser.add_argument(
+        "--mu",
+        type=float,
+        default=2,
+        help="The weight associated with a strong preference for an AK.",
+    )
+    parser.add_argument(
+        "--solver",
+        type=str,
+        default=None,
+        help="The solver to use. If None, uses pulp's default solver. Defaults to None.",
+    )
+    parser.add_argument(
+        "--solver-path",
+        type=str,
+        help="If set, this value is passed as the `path` argument to the solver.",
+    )
+    parser.add_argument(
+        "--warm-start",
+        action="store_true",
+        default=False,
+        help="If set, passes the `warmStart` flag to the solver.",
+    )
     parser.add_argument(
         "--timelimit",
         type=float,
@@ -556,10 +575,16 @@ def main() -> None:
     parser.add_argument(
         "--threads", type=int, default=None, help="Number of threads to use"
     )
-    parser.add_argument("path", type=str)
+    parser.add_argument(
+        "path", type=str, help="Path of the JSON input file to the solver."
+    )
     parser.add_argument("--seed", type=int, default=42, help="Seed for the solver")
     parser.add_argument(
-        "--disallow-unscheduled-aks", action="store_true", default=False
+        "--disallow-unscheduled-aks",
+        action="store_true",
+        default=False,
+        help="If set, we do not allow aks to not be scheduled. "
+        "Otherwise, the solver is allowed to not schedule AKs.",
     )
     args = parser.parse_args()
 
