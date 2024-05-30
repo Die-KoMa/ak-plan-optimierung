@@ -17,7 +17,9 @@ class AKData:
 
     Args:
         id (str): The unique id of the AK.
-        duration (int): The number of consecutive slots needed for the AK.
+        duration (int): The duration of this AK. We add a constraint that this AK gets a
+            set of consequitve time-slots and the sum of their duration is at least the
+            duration of the AK.
         properties (dict): A dict containing additional properties of the AK.
         room_constraints (list of str): A list of all room constraints required
             for the AK.
@@ -119,11 +121,13 @@ class TimeSlotData:
             fulfilled by the timeslot.
         info (dict): A dictionary containing additional information about the timeslot,
             e.g. a human readable start time and date. Not used for the optimization.
+        duration (int): The length of this timeslot.
     """
 
     id: str
     fulfilled_time_constraints: list[str]
     info: dict[str, Any]
+    duration: int
 
 
 @dataclass(frozen=True)

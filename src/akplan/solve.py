@@ -123,6 +123,11 @@ def create_lp(
     # Get values needed from the input_dict
     room_capacities = {room.id: room.capacity for room in input_data.rooms}
     ak_durations = {ak.id: ak.duration for ak in input_data.aks}
+    timeslot_durations = {
+        timeslot.id: timeslot.duration
+        for block in input_data.timeslot_blocks
+        for timeslot in block
+    }
 
     # dict of real participants only (without dummy participants)
     # with numerical preferences
@@ -246,7 +251,10 @@ def create_lp(
     for ak_id in ak_ids:
         # AKDurations
         prob += lpSum(
-            [time_var[ak_id][timeslot_id] for timeslot_id in timeslot_ids]
+            [
+                time_var[ak_id][timeslot_id] * timeslot_durations[timeslot_id]
+                for timeslot_id in timeslot_ids
+            ]
         ) >= ak_durations[ak_id], _construct_constraint_name("AKDuration", ak_id)
         # AKSingleBlock
         prob += lpSum(
