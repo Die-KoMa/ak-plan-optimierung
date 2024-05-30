@@ -519,7 +519,7 @@ def solve_scheduling(
 
     print("Status:", LpStatus[lp_problem.status])
     if lp_problem.status == LpStatusInfeasible:
-        if solver_name == "GUROBI":
+        if solver_name == "GUROBI" and output_lp_file is not None:
             # compute  irreducible inconsistent subsystem for debugging, cf..
             # https://www.gurobi.com/documentation/current/refman/py_model_computeiis.html
             lp_problem.solverModel.computeIIS()
