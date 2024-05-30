@@ -7,7 +7,7 @@ nox.options.reuse_existing_virtualenvs = True
 
 @nox.session(name="test")
 def run_test(session):
-    """Run pytest."""
+    """Run pytest on all test cases."""
     session.install(".")
     session.install("pytest")
     session.install("pytest-timeout")
@@ -16,7 +16,7 @@ def run_test(session):
 
 @nox.session(name="fast-test")
 def run_test_fast(session):
-    """Run pytest."""
+    """Run pytest on fast test cases."""
     session.install(".")
     session.install("pytest")
     session.install("pytest-timeout")
