@@ -13,8 +13,14 @@ The general workflow is:
 
 ### Setup
 
-To install this project, simply run `pip install git+https://github.com/Die-KoMa/ak-plan-optimierung.git`.
-To run the solver, simply call `python -m akplan.solve PATH_TO_JSON_INPUT`.
+To install this project, simply run
+```sh
+$ pip install git+https://github.com/Die-KoMa/ak-plan-optimierung.git
+```
+To run the solver, simply call
+```sh
+$ python -m akplan.solve PATH_TO_JSON_INPUT
+```
 For a list of available cli options, run `python -m akplan.solve --help`.
 
 ### Development setup
