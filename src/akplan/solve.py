@@ -52,6 +52,20 @@ def process_pref_score(preference_score: int, required: bool, mu: float) -> floa
 
 
 def process_room_cap(room_capacity: int, num_participants: int) -> int:
+    """ Process the input room capacity for the MILP constraints.
+
+    Args:
+        room_capacity (int): The input room capacity: infinite (-1) or actual capacity >=0
+        num_participants (int): The total number of participants (needed to model infinity)
+
+    Retruns:
+        int: The processed room capacity: Rooms with infinite capacity or capacity larger than
+        num_participants are set to num_participants. Rooms with a smaller non-negative capacity
+        hold their capacity.
+
+    Raises:
+        ValueError: if 'room_capacity' < -1
+    """
     if room_capacity == -1:
         return num_participants
     if room_capacity >= num_participants:
