@@ -2,8 +2,6 @@
 
 import nox
 
-nox.options.reuse_existing_virtualenvs = True
-
 
 @nox.session(name="test")
 def run_test(session):
