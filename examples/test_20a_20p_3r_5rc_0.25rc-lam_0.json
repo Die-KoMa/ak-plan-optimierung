@@ -1777,9 +1777,7 @@
         }
     ],
     "timeslots": {
-        "info": {
-            "duration": "1 Stunde"
-        },
+        "info": {},
         "blocks": [
             [
                 {
@@ -1790,7 +1788,8 @@
                     "fulfilled_time_constraints": [
                         "Dienstag",
                         "ResoAK"
-                    ]
+                    ],
+                    "duration": 1
                 },
                 {
                     "id": "1",
@@ -1800,7 +1799,8 @@
                     "fulfilled_time_constraints": [
                         "Dienstag",
                         "ResoAK"
-                    ]
+                    ],
+                    "duration": 1
                 },
                 {
                     "id": "2",
@@ -1810,7 +1810,8 @@
                     "fulfilled_time_constraints": [
                         "Dienstag",
                         "ResoAK"
-                    ]
+                    ],
+                    "duration": 1
                 },
                 {
                     "id": "3",
@@ -1820,7 +1821,8 @@
                     "fulfilled_time_constraints": [
                         "Dienstag",
                         "ResoAK"
-                    ]
+                    ],
+                    "duration": 1
                 },
                 {
                     "id": "4",
@@ -1830,7 +1832,8 @@
                     "fulfilled_time_constraints": [
                         "Dienstag",
                         "ResoAK"
-                    ]
+                    ],
+                    "duration": 1
                 },
                 {
                     "id": "5",
@@ -1840,7 +1843,8 @@
                     "fulfilled_time_constraints": [
                         "Dienstag",
                         "ResoAK"
-                    ]
+                    ],
+                    "duration": 1
                 },
                 {
                     "id": "6",
@@ -1850,7 +1854,8 @@
                     "fulfilled_time_constraints": [
                         "Dienstag",
                         "ResoAK"
-                    ]
+                    ],
+                    "duration": 1
                 },
                 {
                     "id": "7",
@@ -1860,7 +1865,8 @@
                     "fulfilled_time_constraints": [
                         "Dienstag",
                         "ResoAK"
-                    ]
+                    ],
+                    "duration": 1
                 },
                 {
                     "id": "8",
@@ -1870,7 +1876,8 @@
                     "fulfilled_time_constraints": [
                         "Dienstag",
                         "ResoAK"
-                    ]
+                    ],
+                    "duration": 1
                 },
                 {
                     "id": "9",
@@ -1880,7 +1887,8 @@
                     "fulfilled_time_constraints": [
                         "Dienstag",
                         "ResoAK"
-                    ]
+                    ],
+                    "duration": 1
                 }
             ],
             [
@@ -1891,7 +1899,8 @@
                     },
                     "fulfilled_time_constraints": [
                         "Mittwoch"
-                    ]
+                    ],
+                    "duration": 1
                 },
                 {
                     "id": "11",
@@ -1900,7 +1909,8 @@
                     },
                     "fulfilled_time_constraints": [
                         "Mittwoch"
-                    ]
+                    ],
+                    "duration": 1
                 },
                 {
                     "id": "12",
@@ -1909,7 +1919,8 @@
                     },
                     "fulfilled_time_constraints": [
                         "Mittwoch"
-                    ]
+                    ],
+                    "duration": 1
                 },
                 {
                     "id": "13",
@@ -1918,7 +1929,8 @@
                     },
                     "fulfilled_time_constraints": [
                         "Mittwoch"
-                    ]
+                    ],
+                    "duration": 1
                 },
                 {
                     "id": "14",
@@ -1927,7 +1939,8 @@
                     },
                     "fulfilled_time_constraints": [
                         "Mittwoch"
-                    ]
+                    ],
+                    "duration": 1
                 },
                 {
                     "id": "15",
@@ -1936,7 +1949,8 @@
                     },
                     "fulfilled_time_constraints": [
                         "Mittwoch"
-                    ]
+                    ],
+                    "duration": 1
                 },
                 {
                     "id": "16",
@@ -1945,7 +1959,8 @@
                     },
                     "fulfilled_time_constraints": [
                         "Mittwoch"
-                    ]
+                    ],
+                    "duration": 1
                 },
                 {
                     "id": "17",
@@ -1954,7 +1969,8 @@
                     },
                     "fulfilled_time_constraints": [
                         "Mittwoch"
-                    ]
+                    ],
+                    "duration": 1
                 }
             ],
             [
@@ -1965,7 +1981,8 @@
                     },
                     "fulfilled_time_constraints": [
                         "Donnerstag"
-                    ]
+                    ],
+                    "duration": 1
                 },
                 {
                     "id": "19",
@@ -1974,7 +1991,8 @@
                     },
                     "fulfilled_time_constraints": [
                         "Donnerstag"
-                    ]
+                    ],
+                    "duration": 1
                 },
                 {
                     "id": "20",
@@ -1983,7 +2001,8 @@
                     },
                     "fulfilled_time_constraints": [
                         "Donnerstag"
-                    ]
+                    ],
+                    "duration": 1
                 },
                 {
                     "id": "21",
@@ -1992,7 +2011,8 @@
                     },
                     "fulfilled_time_constraints": [
                         "Donnerstag"
-                    ]
+                    ],
+                    "duration": 1
                 },
                 {
                     "id": "22",
@@ -2001,7 +2021,8 @@
                     },
                     "fulfilled_time_constraints": [
                         "Donnerstag"
-                    ]
+                    ],
+                    "duration": 1
                 },
                 {
                     "id": "23",
@@ -2010,7 +2031,8 @@
                     },
                     "fulfilled_time_constraints": [
                         "Donnerstag"
-                    ]
+                    ],
+                    "duration": 1
                 },
                 {
                     "id": "24",
@@ -2019,7 +2041,8 @@
                     },
                     "fulfilled_time_constraints": [
                         "Donnerstag"
-                    ]
+                    ],
+                    "duration": 1
                 },
                 {
                     "id": "25",
@@ -2028,7 +2051,8 @@
                     },
                     "fulfilled_time_constraints": [
                         "Donnerstag"
-                    ]
+                    ],
+                    "duration": 1
                 }
             ],
             [
@@ -2039,7 +2063,8 @@
                     },
                     "fulfilled_time_constraints": [
                         "Freitag"
-                    ]
+                    ],
+                    "duration": 1
                 },
                 {
                     "id": "27",
@@ -2048,7 +2073,8 @@
                     },
                     "fulfilled_time_constraints": [
                         "Freitag"
-                    ]
+                    ],
+                    "duration": 1
                 },
                 {
                     "id": "28",
@@ -2057,7 +2083,8 @@
                     },
                     "fulfilled_time_constraints": [
                         "Freitag"
-                    ]
+                    ],
+                    "duration": 1
                 },
                 {
                     "id": "29",
@@ -2066,7 +2093,8 @@
                     },
                     "fulfilled_time_constraints": [
                         "Freitag"
-                    ]
+                    ],
+                    "duration": 1
                 },
                 {
                     "id": "30",
@@ -2075,7 +2103,8 @@
                     },
                     "fulfilled_time_constraints": [
                         "Freitag"
-                    ]
+                    ],
+                    "duration": 1
                 },
                 {
                     "id": "31",
@@ -2084,7 +2113,8 @@
                     },
                     "fulfilled_time_constraints": [
                         "Freitag"
-                    ]
+                    ],
+                    "duration": 1
                 },
                 {
                     "id": "32",
@@ -2093,7 +2123,8 @@
                     },
                     "fulfilled_time_constraints": [
                         "Freitag"
-                    ]
+                    ],
+                    "duration": 1
                 },
                 {
                     "id": "33",
@@ -2102,7 +2133,8 @@
                     },
                     "fulfilled_time_constraints": [
                         "Freitag"
-                    ]
+                    ],
+                    "duration": 1
                 },
                 {
                     "id": "34",
@@ -2111,7 +2143,8 @@
                     },
                     "fulfilled_time_constraints": [
                         "Freitag"
-                    ]
+                    ],
+                    "duration": 1
                 },
                 {
                     "id": "35",
@@ -2120,10 +2153,14 @@
                     },
                     "fulfilled_time_constraints": [
                         "Freitag"
-                    ]
+                    ],
+                    "duration": 1
                 }
             ]
         ]
     },
-    "info": "DummySet"
+    "info": {
+        "purpose": "DummySet",
+        "duration_unit": "1 Stunde"
+    }
 }

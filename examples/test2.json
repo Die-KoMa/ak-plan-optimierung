@@ -1,7 +1,8 @@
 {
     "info": {
         "name": "Second example from the legacy code base",
-        "author": "Tim Racs"
+        "author": "Tim Racs",
+        "duration_unit": "1h"
     },
     "rooms": [
 		{
@@ -52,7 +53,6 @@
 	],
 	"timeslots": {
         "info": {
-            "duration": "1 hour blocks"
         },
         "blocks": [
             [
@@ -61,6 +61,7 @@
                     "info": {
                         "start": "Freitag 8:00"
                     },
+                    "duration": 1,
                     "fulfilled_time_constraints": [
                         "Reso",
                         "Banach",
@@ -80,6 +81,7 @@
                     "info": {
                         "start": "Freitag 9:00"
                     },
+                    "duration": 1,
                     "fulfilled_time_constraints": [
                         "Reso",
                         "Banach",
@@ -99,6 +101,7 @@
                     "info": {
                         "start": "Freitag 10:00"
                     },
+                    "duration": 1,
                     "fulfilled_time_constraints": [
                         "Reso",
                         "Banach",
@@ -117,6 +120,7 @@
                     "info": {
                         "start": "Freitag 11:00"
                     },
+                    "duration": 1,
                     "fulfilled_time_constraints": [
                         "Reso",
                         "Banach",
@@ -135,6 +139,7 @@
                     "info": {
                         "start": "Freitag 12:00"
                     },
+                    "duration": 1,
                     "fulfilled_time_constraints": [
                         "Reso",
                         "Banach",
@@ -153,6 +158,7 @@
                     "info": {
                         "start": "Freitag 13:00"
                     },
+                    "duration": 1,
                     "fulfilled_time_constraints": [
                         "Reso",
                         "Banach",
@@ -171,6 +177,7 @@
                     "info": {
                         "start": "Freitag 14:00"
                     },
+                    "duration": 1,
                     "fulfilled_time_constraints": [
                         "Reso",
                         "Banach",
@@ -189,6 +196,7 @@
                     "info": {
                         "start": "Freitag 15:00"
                     },
+                    "duration": 1,
                     "fulfilled_time_constraints": [
                         "Reso",
                         "Banach",
@@ -207,6 +215,7 @@
                     "info": {
                         "start": "Freitag 16:00"
                     },
+                    "duration": 1,
                     "fulfilled_time_constraints": [
                         "Reso",
                         "Banach",
@@ -225,6 +234,7 @@
                     "info": {
                         "start": "Freitag 17:00"
                     },
+                    "duration": 1,
                     "fulfilled_time_constraints": [
                         "Reso",
                         "Banach",
@@ -243,6 +253,7 @@
                     "info": {
                         "start": "Freitag 18:00"
                     },
+                    "duration": 1,
                     "fulfilled_time_constraints": [
                         "Reso",
                         "Banach",
@@ -264,6 +275,7 @@
                     "info": {
                         "start": "Freitag 19:00"
                     },
+                    "duration": 1,
                     "fulfilled_time_constraints": [
                         "Reso",
                         "Banach",
@@ -286,6 +298,7 @@
                     "info": {
                         "start": "Samstag 08:00"
                     },
+                    "duration": 1,
                     "fulfilled_time_constraints": [
                         "Banach",
                         "Hausdorff",
@@ -307,6 +320,7 @@
                     "info": {
                         "start": "Samstag 09:00"
                     },
+                    "duration": 1,
                     "fulfilled_time_constraints": [
                         "Banach",
                         "Hausdorff",
@@ -328,6 +342,7 @@
                     "info": {
                         "start": "Samstag 10:00"
                     },
+                    "duration": 1,
                     "fulfilled_time_constraints": [
                         "Banach",
                         "Hausdorff",
@@ -348,6 +363,7 @@
                     "info": {
                         "start": "Samstag 11:00"
                     },
+                    "duration": 1,
                     "fulfilled_time_constraints": [
                         "Banach",
                         "Hausdorff",
@@ -368,6 +384,7 @@
                     "info": {
                         "start": "Samstag 12:00"
                     },
+                    "duration": 1,
                     "fulfilled_time_constraints": [
                         "Banach",
                         "Hausdorff",
@@ -390,6 +407,7 @@
                     "info": {
                         "start": "Samstag 13:00"
                     },
+                    "duration": 1,
                     "fulfilled_time_constraints": [
                         "Banach",
                         "Hausdorff",
@@ -412,6 +430,7 @@
                     "info": {
                         "start": "Samstag 14:00"
                     },
+                    "duration": 1,
                     "fulfilled_time_constraints": [
                         "Banach",
                         "Hausdorff",
@@ -432,6 +451,7 @@
                     "info": {
                         "start": "Samstag 15:00"
                     },
+                    "duration": 1,
                     "fulfilled_time_constraints": [
                         "Banach",
                         "Hausdorff",

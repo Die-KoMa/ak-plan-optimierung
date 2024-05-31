@@ -60,6 +60,7 @@ def generate(
                 {
                     "id": str(global_timeslot_cnt + slot_idx),
                     "info": {"start": f"{block_label}, {8 + slot_idx} Uhr"},
+                    "duration": 1,
                     "fulfilled_time_constraints": list(fulfilled_time_constraints),
                 }
                 for slot_idx in range(block_size)
@@ -68,7 +69,6 @@ def generate(
         global_timeslot_cnt += block_size
 
     time_slot_dictionary = {
-        "info": {"duration": "1 Stunde"},
         "blocks": list_of_time_blocks,
     }
 
@@ -185,7 +185,7 @@ def generate(
         "rooms": rooms,
         "participants": participants,
         "timeslots": time_slot_dictionary,
-        "info": "DummySet",
+        "info": {"purpose": "DummySet", "duration_unit": "1h"}
     }
 
 

@@ -34,7 +34,6 @@
 	],
 	"timeslots": {
         "info": {
-            "duration": "2 hour blocks"
         },
         "blocks": [
             [
@@ -43,6 +42,7 @@
                     "info": {
                         "start": "Donnerstag 8:00"
                     },
+                    "duration": 1,
                     "fulfilled_time_constraints": [
                         "Reso",
                         "room0.003",
@@ -57,6 +57,7 @@
                     "info": {
                         "start": "Donnerstag 10:00"
                     },
+                    "duration": 1,
                     "fulfilled_time_constraints": [
                         "Reso",
                         "room0.003",
@@ -72,6 +73,7 @@
                     "info": {
                         "start": "Freitag 14:00"
                     },
+                    "duration": 1,
                     "fulfilled_time_constraints": [
                         "Reso",
                         "room0.003",
@@ -85,6 +87,7 @@
                     "info": {
                         "start": "Freitag 16:00"
                     },
+                    "duration": 1,
                     "fulfilled_time_constraints": [
                         "Reso",
                         "room0.003",
@@ -100,6 +103,7 @@
                     "info": {
                         "start": "Samstag 08:00"
                     },
+                    "duration": 1,
                     "fulfilled_time_constraints": [
                         "room0.003",
                         "room0.008",
@@ -113,6 +117,7 @@
                     "info": {
                         "start": "Samstag 10:00"
                     },
+                    "duration": 1,
                     "fulfilled_time_constraints": [
                         "room0.003",
                         "room0.008",
@@ -543,6 +548,7 @@
     ],
     "info": {
         "name": "First example from the legacy code base",
-        "author": "Tim Racs"
+        "author": "Tim Racs",
+        "duration_unit": "1h"
     }
 }
