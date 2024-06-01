@@ -10,7 +10,7 @@ import numpy as np
 import pulp
 import pytest
 
-from src.akplan.solve import solve_scheduling
+from src.akplan.solve import process_solved_lp, solve_scheduling
 from src.akplan.util import (
     AKData,
     ParticipantData,
@@ -75,22 +75,32 @@ scheduled_aks_params = [
     ],
     params=scheduled_aks_params,
 )
-def scheduled_aks(request, scheduling_input) -> dict[str, dict]:
-    """Construct a schedule by solving an MILP."""
+def solvedLP(request, scheduling_input) -> pulp.LpProblem:
+    """Solve an ILP."""
     mu, solver_name = request.param
     solver_kwargs = {}
     if solver_name not in ["GLPK_CMD"]:
         solver_kwargs["threads"] = max(1, multiprocessing.cpu_count() - 1)
 
-    aks = solve_scheduling(
+    return (
+        solve_scheduling(
+            scheduling_input,
+            mu=mu,
+            solver_name=solver_name,
+            output_lp_file=None,
+            timeLimit=60,
+            **solver_kwargs,
+        ),
         scheduling_input,
-        mu=mu,
-        solver_name=solver_name,
-        output_lp_file=None,
-        output_json_file=None,
-        timeLimit=60,
-        **solver_kwargs,
     )
+
+
+@pytest.fixture(scope="module")
+def scheduled_aks(solvedLP) -> dict[str, dict]:
+    """Construct a schedule from solved ILP."""
+    solved_lp_problem, scheduling_input = solvedLP
+
+    aks = process_solved_lp(solved_lp_problem, input_data=scheduling_input)
 
     if aks is None:
         pytest.fail("No LP solution found")
