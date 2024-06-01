@@ -596,6 +596,11 @@ def main() -> None:
         "the prefix 'out-' is added to the input file name and it is stored in the "
         "current working directory.",
     )
+    parser.add_argument(
+        "--override-output",
+        action="store_true",
+        help="If set, overrides the output file if it exists.",
+    )
     args = parser.parse_args()
 
     solver_kwargs = {}
@@ -622,7 +627,7 @@ def main() -> None:
     if args.output is None:
         args.output = Path.cwd() / f"out-{json_file.name}"
 
-    if args.output.exists():
+    if args.output.exists() and not args.override_output:
         raise ValueError(
             f"Output file {args.output} already exists. We do not simply override it."
         )
