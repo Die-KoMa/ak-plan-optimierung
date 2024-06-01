@@ -20,7 +20,7 @@ def _setup_test_session(session):
 
 @nox.session(name="test", venv_backend="mamba")
 def run_test(session):
-    """Run pytest on all test cases."""
+    """Run pytest on all test cases besides the extensive suite."""
     session = _setup_test_session(session)
     session.run("pytest", "-m", "not extensive", *session.posargs)
 
@@ -32,8 +32,8 @@ def run_test_fast(session):
     session.run("pytest", "-m", "not slow and not extensive", *session.posargs)
 
 @nox.session(name="extensive-test", venv_backend="mamba")
-def run_test_fast(session):
-    """Run pytest on fast test cases."""
+def run_test_extensive(session):
+    """Run pytest on all test cases."""
     session = _setup_test_session(session)
     session.run("pytest", *session.posargs)
 
