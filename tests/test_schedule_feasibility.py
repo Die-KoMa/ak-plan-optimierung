@@ -72,7 +72,7 @@ scheduled_aks_params = [
             else pytest.param(param_pair, marks=[pytest.mark.slow, pytest.mark.extensive])
         )
     )
-    for param_pair in product(mus, solvers)
+    for param_pair in product(mus, available_solvers)
 ]
 
 
