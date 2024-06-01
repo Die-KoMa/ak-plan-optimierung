@@ -13,6 +13,8 @@ from pulp import (
     LpProblem,
     LpStatus,
     LpStatusInfeasible,
+    LpSolutionInfeasible,
+    LpSolutionNoSolutionFound,
     LpVariable,
     getSolver,
     lpSum,
@@ -524,7 +526,10 @@ def process_solved_lp(
         A dictionary containing the scheduled aks as well as the scheduling
         input.
     """
-    if solved_lp_problem.status == LpStatusInfeasible:
+    if solved_lp_problem.sol_status in [
+        LpSolutionInfeasible,
+        LpSolutionNoSolutionFound
+    ]:
         return None
     output_dict = export_scheduling_result(
         solved_lp_problem, allow_unscheduled_aks=allow_unscheduled_aks
