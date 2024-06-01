@@ -431,29 +431,20 @@ def export_scheduling_result(
         else:
             raise ValueError(f"AK {ak_id} is assigned multiple rooms")
 
-    for ak_id, set_timeslot_ids in var_value_dict["Time"].items():
-        matched_timeslots = sorted(
-            [timeslot_idx for timeslot_idx, val in set_timeslot_ids.items() if val > 0]
-        )
+    def _assign_matched_ids(var_key: str, scheduled_ak_key: str, name: str):
+        for ak_id, set_ids in var_value_dict[var_key].items():
+            matched_ids = [idx for idx, val in set_ids.items() if val > 0]
+            if matched_ids:
+                scheduled_ak_dict[ak_id][scheduled_ak_key] = matched_ids
+            elif not allow_unscheduled_aks:
+                raise ValueError(f"AK {ak_id} has no assigned {name}")
 
-        if matched_timeslots:
-            scheduled_ak_dict[ak_id]["timeslot_ids"] = matched_timeslots
-        elif not allow_unscheduled_aks:
-            raise ValueError(f"AK {ak_id} has no assigned timeslots")
-
-    for ak_id, set_participant_ids in var_value_dict["Part"].items():
-        matched_participants = sorted(
-            [
-                participant_idx
-                for participant_idx, val in set_participant_ids.items()
-                if val > 0
-            ]
-        )
-
-        if matched_participants:
-            scheduled_ak_dict[ak_id]["participant_ids"] = matched_participants
-        elif not allow_unscheduled_aks:
-            raise ValueError(f"AK {ak_id} has no assigned participants")
+    _assign_matched_ids(
+        var_key="Time", scheduled_ak_key="timeslot_ids", name="timeslots"
+    )
+    _assign_matched_ids(
+        var_key="Part", scheduled_ak_key="participant_ids", name="participants"
+    )
 
     return {"scheduled_aks": list(scheduled_ak_dict.values())}
 
