@@ -454,10 +454,8 @@ def solve_scheduling(
     mu: float,
     solver_name: str | None = None,
     output_lp_file: str | None = "koma-plan.lp",
-    output_json_file: str | None = "output.json",
-    allow_unscheduled_aks: bool = False,
     **solver_kwargs: dict[str, Any],
-) -> dict[str, Any] | None:
+) -> LpProblem:
     """Solve the scheduling problem.
 
     Solves the ILP scheduling problem described by the input data using an ILP
@@ -481,17 +479,15 @@ def solve_scheduling(
             default solver. Defaults to None.
         output_lp_file (str, optional): If not None, the created LP is written
             as an `.lp` file to this location. Defaults to `koma-plan.lp`.
-        output_json_file (str, optional): If not None, the result dict is written
-            as an `.json` file to this location. Defaults to `output.json`.
         allow_unscheduled_aks (bool): Whether not scheduling an AK is allowed or not.
             Defaults to False.
         **solver_kwargs: kwargs are passed to the solver.
 
     Returns:
-        A dictionary containing the scheduled aks as well as the scheduling
-        input.
+        The LpProblem instance after the solver ran. This instance encodes the
+        LP formulation as well as the variable assignment.
     """
-    lp_problem, dec_vars = create_lp(input_data, mu, output_lp_file)
+    lp_problem, _dec_vars = create_lp(input_data, mu, output_lp_file)
 
     if not solver_name:
         # The problem is solved using PuLP's default solver
@@ -500,19 +496,43 @@ def solve_scheduling(
     lp_problem.solve(solver)
 
     print("Status:", LpStatus[lp_problem.status])
-    if lp_problem.status == LpStatusInfeasible:
-        if solver_name == "GUROBI" and output_lp_file is not None:
-            # compute  irreducible inconsistent subsystem for debugging, cf..
+    if lp_problem.status == LpStatusInfeasible and output_lp_file is not None:
+        if lp_problem.solver and lp_problem.solver.name == "GUROBI":
+            # compute irreducible inconsistent subsystem for debugging, cf.
             # https://www.gurobi.com/documentation/current/refman/py_model_computeiis.html
             lp_problem.solverModel.computeIIS()
             iis_path = Path(output_lp_file)
             iis_path = iis_path.parent / f"{iis_path.stem}-iis.ilp"
             lp_problem.solverModel.write(str(iis_path))
 
-        return None
+    return lp_problem
 
-    output_dict = export_scheduling_result(lp_problem)
-    output_dict["input"] = input_data.to_dict()
+
+def process_solved_lp(
+    solved_lp_problem: LpProblem,
+    input_data: SchedulingInput | None = None,
+    allow_unscheduled_aks: bool = False,
+) -> dict[str, Any] | None:
+    """Process the solved LP model and create a schedule output.
+
+    Args:
+        solved_lp_problem (LpProblem): The pulp LP problem object after the optimizer ran.
+        input_data (SchedulingInput, optional): The input data used to construct the ILP.
+            If set, the input data is added to the output schedule dict. Defaults to None.
+        allow_unscheduled_aks (bool): Whether not scheduling an AK is allowed or not.
+            Defaults to False.
+
+    Returns:
+        A dictionary containing the scheduled aks as well as the scheduling
+        input.
+    """
+    if solved_lp_problem.status == LpStatusInfeasible:
+        return None
+    output_dict = export_scheduling_result(
+        solved_lp_problem, allow_unscheduled_aks=allow_unscheduled_aks
+    )
+    if input_data is not None:
+        output_dict["input"] = input_data.to_dict()
     return output_dict
 
 
@@ -591,12 +611,20 @@ def main() -> None:
     with json_file.open("r") as f:
         input_dict = json.load(f)
 
-    output_dict = solve_scheduling(
-        SchedulingInput.from_dict(input_dict),
+    scheduling_input = SchedulingInput.from_dict(input_dict)
+
+    solved_lp_problem = solve_scheduling(
+        scheduling_input,
         args.mu,
         args.solver,
         allow_unscheduled_aks=not args.disallow_unscheduled_aks,
         **solver_kwargs,
+    )
+
+    output_dict = process_solved_lp(
+        solved_lp_problem,
+        input_data=scheduling_input,
+        allow_unscheduled_aks=not args.disallow_unscheduled_aks,
     )
 
     if output_dict is not None:
