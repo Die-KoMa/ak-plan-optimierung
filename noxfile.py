@@ -3,18 +3,24 @@
 import nox
 
 
-@nox.session(name="test")
+@nox.session(name="test", venv_backend="mamba")
 def run_test(session):
     """Run pytest on all test cases."""
+    session.conda_install("pip", channel="conda-forge")
+    session.conda_install("highs", channel="conda-forge")
+    session.conda_install("gurobi", channel="gurobi")
     session.install(".")
     session.install("pytest")
     session.install("pytest-timeout")
     session.run("pytest", *session.posargs)
 
 
-@nox.session(name="fast-test")
+@nox.session(name="fast-test", venv_backend="mamba")
 def run_test_fast(session):
     """Run pytest on fast test cases."""
+    session.conda_install("pip", channel="conda-forge")
+    session.conda_install("highs", channel="conda-forge")
+    session.conda_install("gurobi", channel="gurobi")
     session.install(".")
     session.install("pytest")
     session.install("pytest-timeout")
