@@ -376,13 +376,7 @@ def create_lp(
 
 
 def export_scheduling_result(
-    input_data: SchedulingInput,
     solved_lp_problem: LpProblem,
-    dec_vars: tuple[
-        dict[str, dict[str, LpVariable]],
-        dict[str, dict[str, LpVariable]],
-        dict[str, dict[str, LpVariable]],
-    ],
     allow_unscheduled_aks: bool = False,
 ) -> dict[str, Any]:
     """Create a dictionary from the solved MILP.
@@ -391,10 +385,7 @@ def export_scheduling_result(
     https://github.com/Die-KoMa/ak-plan-optimierung/wiki/Input-&-output-format
 
     Args:
-        input_data (SchedulingInput): The input data for the scheduling problem.
         solved_lp_problem (LpProblem): The solved MILP instance.
-        dec_vars (tuple): A 3-tuple (room_var, time_var, person_var) of dicts of
-            decision variables of the MILP.
         allow_unscheduled_aks (bool): Whether not scheduling an AK is allowed or not.
             Defaults to False.
 
@@ -405,66 +396,66 @@ def export_scheduling_result(
         ValueError: might be raised if the solution of the MILP is infeasible or
             if an AK is not scheduled and allow_unscheduled_aks is False.
     """
-    ak_ids, person_ids, room_ids, timeslot_ids = get_ids(input_data)
-
-    (room_var, time_var, person_var) = dec_vars
+    var_value_dict = {
+        "Room": defaultdict(dict),
+        "Time": defaultdict(dict),
+        "Block": defaultdict(dict),
+        "Part": defaultdict(dict),
+    }
 
     def _get_val(var: LpVariable) -> int:
         ret_val = (
-            round(var.solverVar.X)
-            if solved_lp_problem.solver.name == "GUROBI"
+            var.solverVar.X
+            if solved_lp_problem.solver and solved_lp_problem.solver.name == "GUROBI"
             else value(var)
         )
-        return cast(int, ret_val)
+        return round(ret_val)
 
-    tmp_res_dir: dict[str, dict[str, dict[str, set[str]]]] = defaultdict(
-        lambda: defaultdict(lambda: defaultdict(set))
-    )
-    tmp_res_dir = defaultdict(lambda: defaultdict(lambda: defaultdict(set)))
-    for ak_id in ak_ids:
-        room_for_ak = None
-        for room_id in room_ids:
-            if _get_val(room_var[ak_id][room_id]) == 1:
-                if room_for_ak is None:
-                    room_for_ak = room_id
-                else:
-                    raise ValueError(f"AK {ak_id} is assigned multiple rooms")
-        if room_for_ak is None:
+    for var in solved_lp_problem.variables():
+        var_cat, idx0, idx1 = var.name.split("_")
+        var_value_dict[var_cat][idx0][idx1] = _get_val(var)
+
+    scheduled_ak_dict = defaultdict(dict)
+
+    for ak_id, set_room_ids in var_value_dict["Room"].items():
+        sum_matched_rooms = sum(set_room_ids.values())
+        if sum_matched_rooms == 1:
+            room_for_ak = max(set_room_ids, key=set_room_ids.get)
+            scheduled_ak_dict[ak_id]["ak_id"] = ak_id
+            scheduled_ak_dict[ak_id]["room_id"] = room_for_ak
+        elif sum_matched_rooms == 0:
             if allow_unscheduled_aks:
                 continue
             else:
                 raise ValueError(f"no room assigned to ak {ak_id}")
-        for timeslot_id in timeslot_ids:
-            if _get_val(time_var[ak_id][timeslot_id]) == 1:
-                tmp_res_dir[ak_id][room_for_ak]["timeslot_ids"].add(timeslot_id)
-        if (
-            not tmp_res_dir[ak_id][room_for_ak]["timeslot_ids"]
-            and not allow_unscheduled_aks
-        ):
+        else:
+            raise ValueError(f"AK {ak_id} is assigned multiple rooms")
+
+    for ak_id, set_timeslot_ids in var_value_dict["Time"].items():
+        matched_timeslots = sorted(
+            [timeslot_idx for timeslot_idx, val in set_timeslot_ids.items() if val > 0]
+        )
+
+        if matched_timeslots:
+            scheduled_ak_dict[ak_id]["timeslot_ids"] = matched_timeslots
+        elif not allow_unscheduled_aks:
             raise ValueError(f"AK {ak_id} has no assigned timeslots")
-        for person_id in person_ids:
-            if _get_val(person_var[ak_id][person_id]) == 1:
-                tmp_res_dir[ak_id][room_for_ak]["participant_ids"].add(person_id)
-        if (
-            not tmp_res_dir[ak_id][room_for_ak]["participant_ids"]
-            and not allow_unscheduled_aks
-        ):
+
+    for ak_id, set_participant_ids in var_value_dict["Part"].items():
+        matched_participants = sorted(
+            [
+                participant_idx
+                for participant_idx, val in set_participant_ids.items()
+                if val > 0
+            ]
+        )
+
+        if matched_participants:
+            scheduled_ak_dict[ak_id]["participant_ids"] = matched_participants
+        elif not allow_unscheduled_aks:
             raise ValueError(f"AK {ak_id} has no assigned participants")
 
-    output_dict: dict[str, Any] = {}
-    output_dict["scheduled_aks"] = [
-        {
-            "ak_id": ak_id,
-            "room_id": room_id,
-            "timeslot_ids": list(subsubdict["timeslot_ids"]),
-            "participant_ids": list(subsubdict["participant_ids"]),
-        }
-        for ak_id, subdict in tmp_res_dir.items()
-        for room_id, subsubdict in subdict.items()
-    ]
-    output_dict["input"] = input_data.to_dict()
-
-    return output_dict
+    return {"scheduled_aks": list(scheduled_ak_dict.values())}
 
 
 def solve_scheduling(
@@ -529,9 +520,9 @@ def solve_scheduling(
 
         return None
 
-    return export_scheduling_result(
-        input_data, lp_problem, dec_vars, allow_unscheduled_aks=allow_unscheduled_aks
-    )
+    output_dict = export_scheduling_result(lp_problem)
+    output_dict["input"] = input_data.to_dict()
+    return output_dict
 
 
 def main() -> None:
