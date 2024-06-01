@@ -396,7 +396,7 @@ def export_scheduling_result(
         ValueError: might be raised if the solution of the MILP is infeasible or
             if an AK is not scheduled and allow_unscheduled_aks is False.
     """
-    var_value_dict = {
+    var_value_dict: dict[str, dict[str, dict[str, int]]] = {
         "Room": defaultdict(dict),
         "Time": defaultdict(dict),
         "Block": defaultdict(dict),
@@ -409,18 +409,18 @@ def export_scheduling_result(
             if solved_lp_problem.solver and solved_lp_problem.solver.name == "GUROBI"
             else value(var)
         )
-        return round(ret_val)
+        return cast(int, round(ret_val))
 
     for var in solved_lp_problem.variables():
         var_cat, idx0, idx1 = var.name.split("_")
         var_value_dict[var_cat][idx0][idx1] = _get_val(var)
 
-    scheduled_ak_dict = defaultdict(dict)
+    scheduled_ak_dict: dict[str, dict[str, list[str] | str]] = defaultdict(dict)
 
     for ak_id, set_room_ids in var_value_dict["Room"].items():
         sum_matched_rooms = sum(set_room_ids.values())
         if sum_matched_rooms == 1:
-            room_for_ak = max(set_room_ids, key=set_room_ids.get)
+            room_for_ak = max(set_room_ids.keys(), key=set_room_ids.__getitem__)
             scheduled_ak_dict[ak_id]["ak_id"] = ak_id
             scheduled_ak_dict[ak_id]["room_id"] = room_for_ak
         elif sum_matched_rooms == 0:
@@ -431,7 +431,7 @@ def export_scheduling_result(
         else:
             raise ValueError(f"AK {ak_id} is assigned multiple rooms")
 
-    def _assign_matched_ids(var_key: str, scheduled_ak_key: str, name: str):
+    def _assign_matched_ids(var_key: str, scheduled_ak_key: str, name: str) -> None:
         for ak_id, set_ids in var_value_dict[var_key].items():
             matched_ids = [idx for idx, val in set_ids.items() if val > 0]
             if matched_ids:
@@ -479,8 +479,6 @@ def solve_scheduling(
             default solver. Defaults to None.
         output_lp_file (str, optional): If not None, the created LP is written
             as an `.lp` file to this location. Defaults to `koma-plan.lp`.
-        allow_unscheduled_aks (bool): Whether not scheduling an AK is allowed or not.
-            Defaults to False.
         **solver_kwargs: kwargs are passed to the solver.
 
     Returns:

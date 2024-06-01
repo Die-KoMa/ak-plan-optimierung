@@ -75,7 +75,7 @@ scheduled_aks_params = [
     ],
     params=scheduled_aks_params,
 )
-def solvedLP(request, scheduling_input) -> pulp.LpProblem:
+def solved_lp_fixture(request, scheduling_input) -> pulp.LpProblem:
     """Solve an ILP."""
     mu, solver_name = request.param
     solver_kwargs = {}
@@ -96,9 +96,9 @@ def solvedLP(request, scheduling_input) -> pulp.LpProblem:
 
 
 @pytest.fixture(scope="module")
-def scheduled_aks(solvedLP) -> dict[str, dict]:
+def scheduled_aks(solved_lp_fixture) -> dict[str, dict]:
     """Construct a schedule from solved ILP."""
-    solved_lp_problem, scheduling_input = solvedLP
+    solved_lp_problem, scheduling_input = solved_lp_fixture
 
     aks = process_solved_lp(solved_lp_problem, input_data=scheduling_input)
 
