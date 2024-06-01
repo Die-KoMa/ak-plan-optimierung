@@ -588,6 +588,14 @@ def main() -> None:
         help="If set, we do not allow aks to not be scheduled. "
         "Otherwise, the solver is allowed to not schedule AKs.",
     )
+    parser.add_argument(
+        "--output",
+        type=Path,
+        default=None,
+        help="Json File to output the calculated schedule to. If not specified, "
+        "the prefix 'out-' is added to the input file name and it is stored in the "
+        "current working directory.",
+    )
     args = parser.parse_args()
 
     solver_kwargs = {}
@@ -611,13 +619,23 @@ def main() -> None:
     with json_file.open("r") as f:
         input_dict = json.load(f)
 
+    if args.output is None:
+        args.output = Path.cwd() / f"out-{json_file.name}"
+
+    if args.output.exists():
+        raise ValueError(
+            f"Output file {args.output} already exists. We do not simply override it."
+        )
+
+    # create directory tree
+    args.output.parent.mkdir(exist_ok=True, parents=True)
+
     scheduling_input = SchedulingInput.from_dict(input_dict)
 
     solved_lp_problem = solve_scheduling(
         scheduling_input,
         args.mu,
         args.solver,
-        allow_unscheduled_aks=not args.disallow_unscheduled_aks,
         **solver_kwargs,
     )
 
@@ -628,10 +646,9 @@ def main() -> None:
     )
 
     if output_dict is not None:
-        out_file = json_file.parent / f"out-{json_file.name}"
-        with out_file.open("w") as f:
-            json.dump(output_dict, f)
-        print(f"Stored result at {out_file}")
+        with args.output.open("w") as ff:
+            json.dump(output_dict, ff)
+        print(f"Stored result at {args.output}")
 
 
 if __name__ == "__main__":
