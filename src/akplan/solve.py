@@ -11,6 +11,7 @@ from pulp import (
     LpBinary,
     LpMaximize,
     LpProblem,
+    LpSolution,
     LpSolutionInfeasible,
     LpSolutionNoSolutionFound,
     LpStatus,
@@ -501,6 +502,7 @@ def solve_scheduling(
     lp_problem.solve(solver)
 
     print("Status:", LpStatus[lp_problem.status])
+    print("Solution Status:", LpSolution[lp_problem.sol_status])
     if lp_problem.status == LpStatusInfeasible and output_lp_file is not None:
         if lp_problem.solver and lp_problem.solver.name == "GUROBI":
             # compute irreducible inconsistent subsystem for debugging, cf.
