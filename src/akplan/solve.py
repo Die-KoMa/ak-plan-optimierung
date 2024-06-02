@@ -11,10 +11,10 @@ from pulp import (
     LpBinary,
     LpMaximize,
     LpProblem,
-    LpStatus,
-    LpStatusInfeasible,
     LpSolutionInfeasible,
     LpSolutionNoSolutionFound,
+    LpStatus,
+    LpStatusInfeasible,
     LpVariable,
     getSolver,
     lpSum,
@@ -407,7 +407,8 @@ def export_scheduling_result(
 
     def _get_val(var: LpVariable) -> int:
         ret_val = (
-            # We know there is distinction works as intended for gurobi, PuLP and HiGHS. There might be other solvers (supported by pulp) that need special handling.
+            # We know there is distinction works as intended for gurobi, PuLP and HiGHS.
+            # There might be other solvers (supported by pulp) that need special handling.
             var.solverVar.X
             if solved_lp_problem.solver and solved_lp_problem.solver.name == "GUROBI"
             else value(var)
@@ -420,7 +421,9 @@ def export_scheduling_result(
 
     scheduled_ak_dict: dict[str, dict[str, list[str] | str]] = defaultdict(dict)
 
-    # Handle rooms differntly because we want special handling if AKs are scheduled into more than one room. 
+    # Handle rooms differntly because we want special handling if
+    # AKs are scheduled into more than one room.
+    # Also the field `ak_id` is set initially.
     for ak_id, set_room_ids in var_value_dict["Room"].items():
         sum_matched_rooms = sum(set_room_ids.values())
         if sum_matched_rooms == 1:
@@ -530,7 +533,7 @@ def process_solved_lp(
     """
     if solved_lp_problem.sol_status in [
         LpSolutionInfeasible,
-        LpSolutionNoSolutionFound
+        LpSolutionNoSolutionFound,
     ]:
         return None
     output_dict = export_scheduling_result(
