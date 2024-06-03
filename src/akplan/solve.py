@@ -319,15 +319,16 @@ def create_lp(
 
     # Roomsizes
     for room_id, ak_id in product(room_ids, ak_ids):
-        prob += lpSum(
-            [person_var[ak_id][person_id] for person_id in person_ids]
-        ) + ak_num_interested[ak_id] * room_var[ak_id][room_id] <= ak_num_interested[
-            ak_id
-        ] + room_capacities[
-            room_id
-        ], _construct_constraint_name(
-            "Roomsize", room_id, ak_id
-        )
+        if ak_num_interested[ak_id] > room_capacities[room_id]:
+            prob += lpSum(
+                [person_var[ak_id][person_id] for person_id in person_ids]
+            ) + ak_num_interested[ak_id] * room_var[ak_id][room_id] <= ak_num_interested[
+                ak_id
+            ] + room_capacities[
+                room_id
+            ], _construct_constraint_name(
+                "Roomsize", room_id, ak_id
+            )
     for ak_id in ak_ids:
         prob += lpSum(
             [room_var[ak_id][room_id] for room_id in room_ids]
