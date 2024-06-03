@@ -112,7 +112,6 @@ def create_lp(
     """
     # Get ids from input_dict
     ak_ids, person_ids, room_ids, timeslot_ids = get_ids(input_data)
-    num_people = len(person_ids)
 
     timeslot_idx_dict = {
         timeslot.id: timeslot_idx
@@ -147,6 +146,15 @@ def create_lp(
             for pref in person.preferences
             if pref.ak_id == ak_id and pref.required
         }
+        for ak_id in ak_ids
+    }
+    ak_num_interested = {
+        ak_id: len(required_persons[ak_id])
+        + sum(
+            1
+            for person, prefs in weighted_preference_dict.items()
+            if ak_id in prefs.keys() and prefs[ak_id] != 0
+        )
         for ak_id in ak_ids
     }
 
@@ -286,10 +294,12 @@ def create_lp(
     for room_id, ak_id in product(room_ids, ak_ids):
         prob += lpSum(
             [person_var[ak_id][person_id] for person_id in person_ids]
-        ) + num_people * room_var[ak_id][room_id] <= num_people + room_capacities[
+        ) + ak_num_interested[ak_id] * room_var[ak_id][room_id] <= ak_num_interested[
+            ak_id
+        ] + room_capacities[
             room_id
         ], _construct_constraint_name(
-            "Roomsizes", room_id, ak_id
+            "Roomsize", room_id, ak_id
         )
     for ak_id in ak_ids:
         prob += lpSum(
@@ -298,6 +308,12 @@ def create_lp(
         prob += lpSum(
             [room_var[ak_id][room_id] for room_id in room_ids]
         ) >= 1, _construct_constraint_name("AtLeastOneRoomPerAK", ak_id, room_id)
+        # We need this constraint so the Roomsize is correct
+        prob += lpSum(
+            [person_var[ak_id][person_id] for person_id in person_ids]
+        ) <= ak_num_interested[ak_id], _construct_constraint_name(
+            "NotMorePeopleThanInterested", ak_id
+        )
 
     # PersonNotInterestedInAK
     # For all A, Z, R, P: If P_{P, A} = 0: Y_{A,Z,R,P} = 0 (non-dummy P)
