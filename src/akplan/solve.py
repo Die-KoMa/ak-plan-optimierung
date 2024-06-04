@@ -51,6 +51,33 @@ def process_pref_score(preference_score: int, required: bool, mu: float) -> floa
         raise ValueError(preference_score)
 
 
+def process_room_cap(room_capacity: int, num_participants: int) -> int:
+    """ Process the input room capacity for the MILP constraints.
+
+    Args:
+        room_capacity (int): The input room capacity: infinite (-1) or actual capacity >=0
+        num_participants (int): The total number of participants (needed to model infinity)
+
+    Retruns:
+        int: The processed room capacity: Rooms with infinite capacity or capacity larger than
+        num_participants are set to num_participants. Rooms with a smaller non-negative capacity
+        hold their capacity.
+
+    Raises:
+        ValueError: if 'room_capacity' < -1
+    """
+    if room_capacity == -1:
+        return num_participants
+    if room_capacity >= num_participants:
+        return num_participants
+    if room_capacity < 0:
+        raise ValueError(
+            f"Invalid room capacity {room_capacity}. "
+            "Room capacity must be non-negative or -1."
+        )
+    return room_capacity
+
+
 def _construct_constraint_name(name: str, *args: str) -> str:
     return name + "_" + "_".join(args)
 
@@ -123,7 +150,10 @@ def create_lp(
         for block_idx, block in enumerate(input_data.timeslot_blocks)
     }
     # Get values needed from the input_dict
-    room_capacities = {room.id: room.capacity for room in input_data.rooms}
+    room_capacities = {
+        room.id: process_room_cap(room.capacity, len(person_ids))
+        for room in input_data.rooms
+    }
     ak_durations = {ak.id: ak.duration for ak in input_data.aks}
 
     # dict of real participants only (without dummy participants)
@@ -292,15 +322,16 @@ def create_lp(
 
     # Roomsizes
     for room_id, ak_id in product(room_ids, ak_ids):
-        prob += lpSum(
-            [person_var[ak_id][person_id] for person_id in person_ids]
-        ) + ak_num_interested[ak_id] * room_var[ak_id][room_id] <= ak_num_interested[
-            ak_id
-        ] + room_capacities[
-            room_id
-        ], _construct_constraint_name(
-            "Roomsize", room_id, ak_id
-        )
+        if ak_num_interested[ak_id] > room_capacities[room_id]:
+            prob += lpSum(
+                [person_var[ak_id][person_id] for person_id in person_ids]
+            ) + ak_num_interested[ak_id] * room_var[ak_id][room_id] <= ak_num_interested[
+                ak_id
+            ] + room_capacities[
+                room_id
+            ], _construct_constraint_name(
+                "Roomsize", room_id, ak_id
+            )
     for ak_id in ak_ids:
         prob += lpSum(
             [room_var[ak_id][room_id] for room_id in room_ids]
