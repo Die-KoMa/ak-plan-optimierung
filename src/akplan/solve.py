@@ -71,7 +71,10 @@ def process_room_cap(room_capacity: int, num_participants: int) -> int:
     if room_capacity >= num_participants:
         return num_participants
     if room_capacity < 0:
-        raise ValueError(room_capacity)
+        raise ValueError(
+            f"Invalid room capacity {room_capacity}. "
+            "Room capacity must be non-negative or -1."
+        )
     return room_capacity
 
 
