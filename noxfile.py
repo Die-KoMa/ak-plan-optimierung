@@ -3,22 +3,39 @@
 import nox
 
 
-@nox.session(name="test")
-def run_test(session):
-    """Run pytest on all test cases."""
+def _setup_test_session(session):
+    # install pip via conda to handle pip deps
+    session.conda_install("pip", channel="conda-forge")
+    # install core solvers
+    session.conda_install("highs", channel="conda-forge")
+    session.conda_install("gurobi", channel="gurobi")
+    # install project
+    session.conda_install("numpy", channel="conda-forge")
+    session.conda_install("dacite", channel="conda-forge")
     session.install(".")
     session.install("pytest")
     session.install("pytest-timeout")
-    session.run("pytest", *session.posargs)
+    return session
 
 
-@nox.session(name="fast-test")
+@nox.session(name="test", venv_backend="mamba")
+def run_test(session):
+    """Run pytest on all test cases besides the extensive suite."""
+    session = _setup_test_session(session)
+    session.run("pytest", "-m", "not extensive", *session.posargs)
+
+
+@nox.session(name="fast-test", venv_backend="mamba")
 def run_test_fast(session):
     """Run pytest on fast test cases."""
-    session.install(".")
-    session.install("pytest")
-    session.install("pytest-timeout")
-    session.run("pytest", "-m", "not slow", *session.posargs)
+    session = _setup_test_session(session)
+    session.run("pytest", "-m", "not slow and not extensive", *session.posargs)
+
+@nox.session(name="extensive-test", venv_backend="mamba")
+def run_test_extensive(session):
+    """Run pytest on all test cases."""
+    session = _setup_test_session(session)
+    session.run("pytest", *session.posargs)
 
 
 @nox.session(name="lint")

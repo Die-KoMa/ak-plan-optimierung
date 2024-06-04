@@ -56,14 +56,23 @@ def scheduling_input(request) -> SchedulingInput:
     return SchedulingInput.from_dict(input_dict)
 
 
-fast_scheduled_ak_params = [(2, "HiGHS_CMD"), (2, "GUROBI")]
+mus = [2, 1, 5]
+available_solvers = pulp.listSolvers(onlyAvailable=True) + [None]
+core_solver_set = {"HiGHS_CMD", "GUROBI"}
+
+fast_scheduled_ak_params = list(product(mus[:1], core_solver_set))
+
 scheduled_aks_params = [
     (
         pytest.param(param_pair)
         if param_pair in fast_scheduled_ak_params
-        else pytest.param(param_pair, marks=pytest.mark.slow)
+        else (
+            pytest.param(param_pair, marks=pytest.mark.slow)
+            if param_pair[1] in core_solver_set
+            else pytest.param(param_pair, marks=[pytest.mark.slow, pytest.mark.extensive])
+        )
     )
-    for param_pair in product([2, 1, 5], pulp.listSolvers(onlyAvailable=True) + [None])
+    for param_pair in product(mus, available_solvers)
 ]
 
 
