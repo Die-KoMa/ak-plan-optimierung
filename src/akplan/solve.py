@@ -301,7 +301,7 @@ def create_lp(
             ], _construct_constraint_name(
                 "AKSingleBlock", ak_id, str(block_id)
             )
-            # AKConsecutive
+            # AKConstiguous
             for timeslot_id_a, timeslot_id_b in combinations(block, 2):
                 if (
                     abs(
@@ -313,7 +313,7 @@ def create_lp(
                     prob += lpSum(
                         [time_var[ak_id][timeslot_id_a], time_var[ak_id][timeslot_id_b]]
                     ) <= 1, _construct_constraint_name(
-                        "AKConsecutive",
+                        "AKContiguous",
                         ak_id,
                         str(block_id),
                         timeslot_id_a,
