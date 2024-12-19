@@ -232,6 +232,11 @@ def create_lp(
     person_var: dict[str, dict[str, LpVariable]] = LpVariable.dicts(
         "Part", (ak_ids, person_ids), cat=LpBinary
     )
+    person_time_var: dict[str, dict[str, LpVariable]] = LpVariable.dicts(
+        "Working",
+        (person_ids, timeslot_ids),
+        cat=LpBinary,
+    )
 
     # Set objective function
     # \sum_{P,A} \frac{P_{P,A}}{\sum_{P_{P,A}}\neq 0} T_{P,A}
@@ -325,7 +330,9 @@ def create_lp(
         if ak_num_interested[ak_id] > room_capacities[room_id]:
             prob += lpSum(
                 [person_var[ak_id][person_id] for person_id in person_ids]
-            ) + ak_num_interested[ak_id] * room_var[ak_id][room_id] <= ak_num_interested[
+            ) + ak_num_interested[ak_id] * room_var[ak_id][
+                room_id
+            ] <= ak_num_interested[
                 ak_id
             ] + room_capacities[
                 room_id
@@ -368,7 +375,9 @@ def create_lp(
                 for ak_id in ak_ids:
                     prob += lpSum(
                         [time_var[ak_id][timeslot_id], person_var[ak_id][person_id]]
-                    ) <= 1, _construct_constraint_name(
+                    ) <= person_time_var[person_id][
+                        timeslot_id
+                    ], _construct_constraint_name(
                         "TimeImpossibleForPerson",
                         person_id,
                         timeslot_id,
@@ -387,6 +396,21 @@ def create_lp(
                     ) <= 1, _construct_constraint_name(
                         "RoomImpossibleForPerson", person_id, room_id, ak_id
                     )
+
+        # PersonNeedsBreak
+        # Any real person needs a break after some number of time slots
+        # So in each block at most X consecutive timeslots can be active for any person
+        X = 3
+        for _block_id, block in block_idx_dict.items():
+            for i in range(len(block) - X + 1):
+                prob += lpSum(
+                    [
+                        person_time_var[person_id][timeslot_id]
+                        for timeslot_id in block[i : i + X + 1]
+                    ]
+                ) <= X, _construct_constraint_name(
+                    "BreakForPerson", person_id, block[i]
+                )
 
     for ak_id in ak_ids:
         # TimeImpossibleForAK
@@ -422,7 +446,7 @@ def create_lp(
     if output_file is not None:
         prob.writeLP(output_file)
 
-    return prob, (room_var, time_var, person_var)
+    return prob, (room_var, time_var, person_var, person_time_var)
 
 
 def export_scheduling_result(
