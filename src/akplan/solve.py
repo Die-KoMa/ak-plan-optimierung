@@ -52,13 +52,13 @@ def process_pref_score(preference_score: int, required: bool, mu: float) -> floa
 
 
 def process_room_cap(room_capacity: int, num_participants: int) -> int:
-    """ Process the input room capacity for the MILP constraints.
+    """Process the input room capacity for the MILP constraints.
 
     Args:
         room_capacity (int): The input room capacity: infinite (-1) or actual capacity >=0
         num_participants (int): The total number of participants (needed to model infinity)
 
-    Retruns:
+    Returns:
         int: The processed room capacity: Rooms with infinite capacity or capacity larger than
         num_participants are set to num_participants. Rooms with a smaller non-negative capacity
         hold their capacity.
@@ -385,7 +385,7 @@ def create_lp(
                     prob += lpSum(
                         [room_var[ak_id][room_id], person_var[ak_id][person_id]]
                     ) <= 1, _construct_constraint_name(
-                        "RoomImpossibleFor Person", person_id, room_id, ak_id
+                        "RoomImpossibleForPerson", person_id, room_id, ak_id
                     )
 
     for ak_id in ak_ids:
