@@ -319,7 +319,7 @@ def create_lp(
             ], _construct_constraint_name(
                 "AKSingleBlock", ak_id, str(block_id)
             )
-            # AKConstiguous
+            # AKContiguous
             for timeslot_id_a, timeslot_id_b in combinations(block, 2):
                 if (
                     abs(
