@@ -126,7 +126,7 @@ class TimeSlotData:
     info: dict[str, Any]
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=False)
 class ConfigData:
     """Dataclass containing the config for buildung the ILP and solving it
 
@@ -185,7 +185,7 @@ class SchedulingInput:
             [from_dict(data_class=TimeSlotData, data=timeslot) for timeslot in block]
             for block in input_dict["timeslots"]["blocks"]
         ]
-        config = from_dict(data_class=ConfigData, data=input_dict["config"])
+        config = from_dict(data_class=ConfigData, data=input_dict["config"]) if "config" in input_dict else ConfigData()
 
         return cls(
             aks=aks,
