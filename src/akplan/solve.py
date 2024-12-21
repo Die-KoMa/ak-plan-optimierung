@@ -98,6 +98,9 @@ def get_ids(
     timeslot_ids = _retrieve_ids(chain.from_iterable(input_data.timeslot_blocks))
     return ak_ids, participant_ids, room_ids, timeslot_ids
 
+def get_ak_name(input_data: SchedulingInput, ak_id: str) -> str:
+    ak_names = [ak.info["name"] for ak in input_data.aks if ak.id == ak_id and "name" in ak.info.keys()]
+    return ", ".join(ak_names)
 
 def create_lp(
     input_data: SchedulingInput,
@@ -178,6 +181,9 @@ def create_lp(
         }
         for ak_id in ak_ids
     }
+    for ak_id, persons in required_persons.items():
+         if len(persons) is 0:
+            print(f"Warning: AK {get_ak_name(input_data, ak_id)} with id {ak_id} has no required persons. Who owns this?") 
     ak_num_interested = {
         ak_id: len(required_persons[ak_id])
         + sum(
@@ -475,6 +481,7 @@ def export_scheduling_result(
         "Time": defaultdict(dict),
         "Block": defaultdict(dict),
         "Part": defaultdict(dict),
+        "Working": defaultdict(dict)
     }
 
     def _get_val(var: LpVariable) -> int:
