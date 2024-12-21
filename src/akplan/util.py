@@ -127,6 +127,21 @@ class TimeSlotData:
 
 
 @dataclass(frozen=True)
+class ConfigData:
+    """Dataclass containing the config for buildung the ILP and solving it
+
+    Args:
+        mu(float): The weight associated with a strong preference for an AK.
+        max_num_timeslots_before_break(int): The maximum number of timeslots any participant is planned to go to before a break.
+        allow_unscheduled_aks(bool):
+    """
+
+    mu: float = 2
+    max_num_timeslots_before_break: int = 0
+    allow_unscheduled_aks: bool = True
+
+
+@dataclass(frozen=True)
 class SchedulingInput:
     """Dataclass containing the input data of the scheduling problem.
 
@@ -152,6 +167,7 @@ class SchedulingInput:
     rooms: list[RoomData]
     timeslot_info: dict[str, str]
     timeslot_blocks: list[list[TimeSlotData]]
+    config: ConfigData
     info: dict[str, str]
 
     @classmethod
@@ -169,6 +185,7 @@ class SchedulingInput:
             [from_dict(data_class=TimeSlotData, data=timeslot) for timeslot in block]
             for block in input_dict["timeslots"]["blocks"]
         ]
+        config = from_dict(data_class=ConfigData, data=input_dict["config"])
 
         return cls(
             aks=aks,
@@ -176,6 +193,7 @@ class SchedulingInput:
             rooms=rooms,
             timeslot_blocks=timeslot_blocks,
             timeslot_info=input_dict["timeslots"]["info"],
+            config=config,
             info=input_dict["info"],
         )
 

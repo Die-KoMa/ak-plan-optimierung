@@ -110,11 +110,11 @@ def get_ak_name(input_data: SchedulingInput, ak_id: str) -> str:
 
 def create_lp(
     input_data: SchedulingInput,
-    mu: float,
     output_file: str | None = "koma-plan.lp",
 ) -> tuple[
     LpProblem,
     tuple[
+        dict[str, dict[str, LpVariable]],
         dict[str, dict[str, LpVariable]],
         dict[str, dict[str, LpVariable]],
         dict[str, dict[str, LpVariable]],
@@ -137,7 +137,6 @@ def create_lp(
 
     Args:
         input_data (SchedulingInput): The input data used to construct the MILP.
-        mu (float): The weight associated with a strong preference for an AK.
         output_file (str, optional): If not None, the created LP is written
             as an `.lp` file to this location. Defaults to `koma-plan.lp`.
 
@@ -172,7 +171,7 @@ def create_lp(
             pref.ak_id: process_pref_score(
                 pref.preference_score,
                 pref.required,
-                mu=mu,
+                mu=input_data.config.mu,
             )
             for pref in person.preferences
         }
@@ -413,16 +412,19 @@ def create_lp(
 
         # PersonNeedsBreak
         # Any real person needs a break after some number of time slots
-        # So in each block at most X consecutive timeslots can be active for any person
-        X = 3
+        # So in each block at most  consecutive timeslots can be active for any person
         for _block_id, block in block_idx_dict.items():
-            for i in range(len(block) - X + 1):
+            for i in range(
+                len(block) - input_data.config.max_num_timeslots_before_break + 1
+            ):
                 prob += lpSum(
                     [
                         person_time_var[person_id][timeslot_id]
-                        for timeslot_id in block[i : i + X + 1]
+                        for timeslot_id in block[
+                            i : i + input_data.config.max_num_timeslots_before_break + 1
+                        ]
                     ]
-                ) <= X, _construct_constraint_name(
+                ) <= input_data.config.max_num_timeslots_before_break, _construct_constraint_name(
                     "BreakForPerson", person_id, block[i]
                 )
 
@@ -489,7 +491,7 @@ def export_scheduling_result(
         "Time": defaultdict(dict),
         "Block": defaultdict(dict),
         "Part": defaultdict(dict),
-        "Working": defaultdict(dict)
+        "Working": defaultdict(dict),
     }
 
     def _get_val(var: LpVariable) -> int:
@@ -545,7 +547,6 @@ def export_scheduling_result(
 
 def solve_scheduling(
     input_data: SchedulingInput,
-    mu: float,
     solver_name: str | None = None,
     output_lp_file: str | None = "koma-plan.lp",
     **solver_kwargs: dict[str, Any],
@@ -579,7 +580,7 @@ def solve_scheduling(
         The LpProblem instance after the solver ran. This instance encodes the
         LP formulation as well as the variable assignment.
     """
-    lp_problem, _dec_vars = create_lp(input_data, mu, output_lp_file)
+    lp_problem, _dec_vars = create_lp(input_data, output_lp_file)
 
     if not solver_name:
         # The problem is solved using PuLP's default solver
@@ -604,7 +605,6 @@ def solve_scheduling(
 def process_solved_lp(
     solved_lp_problem: LpProblem,
     input_data: SchedulingInput | None = None,
-    allow_unscheduled_aks: bool = False,
 ) -> dict[str, Any] | None:
     """Process the solved LP model and create a schedule output.
 
@@ -625,7 +625,7 @@ def process_solved_lp(
     ]:
         return None
     output_dict = export_scheduling_result(
-        solved_lp_problem, allow_unscheduled_aks=allow_unscheduled_aks
+        solved_lp_problem, allow_unscheduled_aks=input_data.config.allow_unscheduled_aks
     )
     if input_data is not None:
         output_dict["input"] = input_data.to_dict()
@@ -635,12 +635,6 @@ def process_solved_lp(
 def main() -> None:
     """Run solve_scheduling from CLI."""
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--mu",
-        type=float,
-        default=2,
-        help="The weight associated with a strong preference for an AK.",
-    )
     parser.add_argument(
         "--solver",
         type=str,
@@ -677,13 +671,6 @@ def main() -> None:
         "path", type=str, help="Path of the JSON input file to the solver."
     )
     parser.add_argument("--seed", type=int, default=42, help="Seed for the solver")
-    parser.add_argument(
-        "--disallow-unscheduled-aks",
-        action="store_true",
-        default=False,
-        help="If set, we do not allow aks to not be scheduled. "
-        "Otherwise, the solver is allowed to not schedule AKs.",
-    )
     parser.add_argument(
         "--output",
         type=Path,
@@ -735,7 +722,6 @@ def main() -> None:
 
     solved_lp_problem = solve_scheduling(
         scheduling_input,
-        args.mu,
         args.solver,
         **solver_kwargs,
     )
@@ -743,7 +729,6 @@ def main() -> None:
     output_dict = process_solved_lp(
         solved_lp_problem,
         input_data=scheduling_input,
-        allow_unscheduled_aks=not args.disallow_unscheduled_aks,
     )
 
     if output_dict is not None:
