@@ -413,20 +413,21 @@ def create_lp(
         # PersonNeedsBreak
         # Any real person needs a break after some number of time slots
         # So in each block at most  consecutive timeslots can be active for any person
-        for _block_id, block in block_idx_dict.items():
-            for i in range(
-                len(block) - input_data.config.max_num_timeslots_before_break + 1
-            ):
-                prob += lpSum(
-                    [
-                        person_time_var[person_id][timeslot_id]
-                        for timeslot_id in block[
-                            i : i + input_data.config.max_num_timeslots_before_break + 1
+        if input_data.config.max_num_timeslots_before_break > 0:
+            for _block_id, block in block_idx_dict.items():
+                for i in range(
+                    len(block) - input_data.config.max_num_timeslots_before_break - 1
+                ):
+                    prob += lpSum(
+                        [
+                            person_time_var[person_id][timeslot_id]
+                            for timeslot_id in block[
+                                i : i + input_data.config.max_num_timeslots_before_break + 1
+                            ]
                         ]
-                    ]
-                ) <= input_data.config.max_num_timeslots_before_break, _construct_constraint_name(
-                    "BreakForPerson", person_id, block[i]
-                )
+                    ) <= input_data.config.max_num_timeslots_before_break, _construct_constraint_name(
+                        "BreakForPerson", person_id, block[i]
+                    )
 
     for ak_id in ak_ids:
         # TimeImpossibleForAK
