@@ -22,7 +22,14 @@ from pulp import (
     value,
 )
 
-from .util import AKData, ParticipantData, RoomData, SchedulingInput, TimeSlotData
+from .util import (
+    AKData,
+    ParticipantData,
+    RoomData,
+    ScheduleAtom,
+    SchedulingInput,
+    TimeSlotData,
+)
 
 
 def process_pref_score(preference_score: int, required: bool, mu: float) -> float:
@@ -179,7 +186,7 @@ def create_lp(
         for ak_id in ak_ids
     }
     for ak_id, persons in required_persons.items():
-        if len(persons) is 0:
+        if len(persons) == 0:
             print(
                 f"Warning: AK {get_ak_name(input_data, ak_id)} with id {ak_id} has no required persons. Who owns this?"
             )
@@ -462,7 +469,7 @@ def export_scheduling_result(
     input_data: SchedulingInput,
     solution: dict[str, dict[str, dict[str, int]]],
     allow_unscheduled_aks: bool = False,
-) -> dict[str, Any]:
+) -> dict[str, ScheduleAtom]:
     """Create a dictionary from the solved MILP.
 
     For a specification of the output format, see
@@ -497,53 +504,29 @@ def export_scheduling_result(
             else:
                 return matched_ids[0]
 
-    scheduled_ak_dict: dict[str, dict[str, list[str] | str]] = defaultdict(dict)
+    scheduled_ak_dict: dict[str, ScheduleAtom] = {
+        ak_id: ScheduleAtom(
+            ak_id=ak_id,
+            room_id=_get_id(
+                ak_id=ak_id,
+                var_key="Room",
+                allow_multiple=False,
+                allow_none=allow_unscheduled_aks,
+            ),
+            timeslot_ids=_get_id(
+                ak_id=ak_id,
+                var_key="Time",
+                allow_multiple=True,
+                allow_none=allow_unscheduled_aks,
+            ),
+            participant_ids=_get_id(
+                ak_id=ak_id, var_key="Part", allow_multiple=True, allow_none=True
+            ),
+        )
+        for ak_id in ak_ids
+    }
 
-    def _assign_matched_ids(
-        scheduled_ak_key: str,
-        getter: Callable[
-            [
-                str,
-                str,
-                bool,
-                bool,
-            ],
-            str | list[str],
-        ],
-        var_key: str,
-        allow_multiple: bool,
-        allow_none: bool,
-    ) -> None:
-        for ak_id in ak_ids:
-            scheduled_ak_dict[ak_id][scheduled_ak_key] = getter(
-                ak_id, var_key, allow_multiple, allow_none
-            )
-
-    for ak_id in ak_ids:
-        scheduled_ak_dict[ak_id]["ak_id"] = ak_id
-    _assign_matched_ids(
-        scheduled_ak_key="timeslot_ids",
-        getter=_get_id,
-        var_key="Time",
-        allow_multiple=True,
-        allow_none=allow_unscheduled_aks,
-    )
-    _assign_matched_ids(
-        scheduled_ak_key="participant_ids",
-        getter=_get_id,
-        var_key="Part",
-        allow_multiple=True,
-        allow_none=True,
-    )
-    _assign_matched_ids(
-        scheduled_ak_key="room_id",
-        getter=_get_id,
-        var_key="Room",
-        allow_multiple=False,
-        allow_none=allow_unscheduled_aks,
-    )
-
-    return {"scheduled_aks": list(scheduled_ak_dict.values())}
+    return scheduled_ak_dict
 
 
 def solve_scheduling(
@@ -615,7 +598,7 @@ def process_solved_lp(
     solved_lp_problem: LpProblem,
     solution: dict[str, dict[str, dict[str, LpVariable]]],
     input_data: SchedulingInput,
-) -> dict[str, Any] | None:
+) -> dict[str, ScheduleAtom] | None:
     """Process the solved LP model and create a schedule output.
 
     Args:
@@ -635,12 +618,11 @@ def process_solved_lp(
         LpSolutionNoSolutionFound,
     ]:
         return None
-    output_dict = export_scheduling_result(
-        input_data, solution, allow_unscheduled_aks=input_data.config.allow_unscheduled_aks
+    return export_scheduling_result(
+        input_data,
+        solution,
+        allow_unscheduled_aks=input_data.config.allow_unscheduled_aks,
     )
-    if input_data is not None:
-        output_dict["input"] = input_data.to_dict()
-    return output_dict
 
 
 def main() -> None:
@@ -737,15 +719,17 @@ def main() -> None:
         **solver_kwargs,
     )
 
-    output_dict = process_solved_lp(
+    schedule = process_solved_lp(
         solved_lp_problem,
         solution,
         input_data=scheduling_input,
     )
 
-    if output_dict is not None:
+    # here we replace the old scheduled aks in the input because these are also part of the produced schedule
+    if schedule is not None:
+        scheduling_input.scheduled_aks = schedule.values()
         with args.output.open("w") as ff:
-            json.dump(output_dict, ff)
+            json.dump(scheduling_input.to_dict(), ff)
         print(f"Stored result at {args.output}")
 
 

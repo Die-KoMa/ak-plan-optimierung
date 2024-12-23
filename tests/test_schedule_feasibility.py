@@ -15,6 +15,7 @@ from src.akplan.util import (
     AKData,
     ParticipantData,
     RoomData,
+    ScheduleAtom,
     SchedulingInput,
     TimeSlotData,
 )
@@ -96,7 +97,7 @@ def solved_lp_fixture(
         solver_kwargs["threads"] = max(1, multiprocessing.cpu_count() - 1)
     scheduling_input.config.mu = mu
 
-   solved_lp_problem, solution = solve_scheduling(
+    solved_lp_problem, solution = solve_scheduling(
         scheduling_input,
         solver_name=solver_name,
         output_lp_file=None,
@@ -107,7 +108,7 @@ def solved_lp_fixture(
 
 
 @pytest.fixture(scope="module")
-def scheduled_aks(solved_lp_fixture) -> dict[str, dict]:
+def scheduled_aks(solved_lp_fixture) -> dict[str, ScheduleAtom]:
     """Construct a schedule from solved ILP."""
     solved_lp_problem, solution, scheduling_input = solved_lp_fixture
 
@@ -116,7 +117,7 @@ def scheduled_aks(solved_lp_fixture) -> dict[str, dict]:
     if aks is None:
         pytest.skip("No LP solution found")
 
-    return {ak["ak_id"]: ak for ak in aks["scheduled_aks"]}
+    return aks
 
 
 @pytest.fixture(scope="module")
@@ -159,9 +160,9 @@ def test_rooms_not_overbooked(scheduled_aks) -> None:
     """Test that no room is used more than once at a time."""
     assert _test_uniqueness(
         [
-            (ak["room_id"], timeslot_id)
+            (ak.room_id, timeslot_id)
             for ak in scheduled_aks.values()
-            for timeslot_id in ak["timeslot_ids"]
+            for timeslot_id in ak.timeslot_ids
         ]
     )[-1]
 
@@ -172,8 +173,8 @@ def test_participant_no_overlapping_timeslot(scheduled_aks) -> None:
         [
             (participant_id, timeslot_id)
             for ak in scheduled_aks.values()
-            for timeslot_id in ak["timeslot_ids"]
-            for participant_id in ak["participant_ids"]
+            for timeslot_id in ak.timeslot_ids
+            for participant_id in ak.participant_ids
         ]
     )[-1]
 
@@ -181,17 +182,17 @@ def test_participant_no_overlapping_timeslot(scheduled_aks) -> None:
 def test_ak_lengths(scheduled_aks, ak_dict: dict[str, AKData]) -> None:
     """Test that the scheduled AK length matched the specified one."""
     for ak_id, ak in scheduled_aks.items():
-        timeslots = set(ak["timeslot_ids"])
-        assert len(ak["timeslot_ids"]) == len(timeslots)
+        timeslots = set(ak.timeslot_ids)
+        assert len(ak.timeslot_ids) == len(timeslots)
         assert len(timeslots) == ak_dict[ak_id].duration
 
 
 def test_room_capacities(scheduled_aks, room_dict: dict[str, RoomData]) -> None:
     """Test that the room capacity is not exceeded."""
     for ak in scheduled_aks.values():
-        participants = set(ak["participant_ids"])
-        assert len(ak["participant_ids"]) == len(participants)
-        assert len(participants) <= room_dict[ak["room_id"]].capacity
+        participants = set(ak.participant_ids)
+        assert len(ak.participant_ids) == len(participants)
+        assert len(participants) <= room_dict[ak.room_id].capacity
 
 
 def test_timeslots_consecutive(
@@ -203,7 +204,7 @@ def test_timeslots_consecutive(
             (block_idx, timeslot_idx)
             for block_idx, block in enumerate(timeslot_blocks)
             for timeslot_idx, timeslot in enumerate(block)
-            if timeslot.id in ak["timeslot_ids"]
+            if timeslot.id in ak.timeslot_ids
         ]
         timeslots.sort()
 
@@ -224,13 +225,13 @@ def test_room_constraints(
     """Test that the room constraints are fulfilled."""
     for ak_id, ak in scheduled_aks.items():
         fulfilled_room_constraints = set(
-            room_dict[ak["room_id"]].fulfilled_room_constraints
+            room_dict[ak.room_id].fulfilled_room_constraints
         )
         room_constraints_ak = set(ak_dict[ak_id].room_constraints)
         room_constraints_participants = set.union(
             *(
                 set(participant_dict[participant_id].room_constraints)
-                for participant_id in ak["participant_ids"]
+                for participant_id in ak.participant_ids
             )
         )
         assert not room_constraints_ak.difference(fulfilled_room_constraints)
@@ -246,20 +247,20 @@ def test_time_constraints(
 ) -> None:
     """Test that the time constraints are fulfilled."""
     for ak_id, ak in scheduled_aks.items():
-        time_constraints_room = set(room_dict[ak["room_id"]].time_constraints)
+        time_constraints_room = set(room_dict[ak.room_id].time_constraints)
         time_constraints_ak = set(ak_dict[ak_id].time_constraints)
 
         fullfilled_time_constraints = set(
-            timeslot_dict[ak["timeslot_ids"][0]].fulfilled_time_constraints
+            timeslot_dict[ak.timeslot_ids[0]].fulfilled_time_constraints
         )
-        for timeslot_id in ak["timeslot_ids"][1:]:
+        for timeslot_id in ak.timeslot_ids[1:]:
             fullfilled_time_constraints = fullfilled_time_constraints.intersection(
                 set(timeslot_dict[timeslot_id].fulfilled_time_constraints)
             )
         time_constraints_participants = set.union(
             *(
                 set(participant_dict[participant_id].time_constraints)
-                for participant_id in ak["participant_ids"]
+                for participant_id in ak.participant_ids
             )
         )
         assert not time_constraints_room.difference(fullfilled_time_constraints)
@@ -271,9 +272,7 @@ def test_required(scheduled_aks, participant_dict: dict[str, ParticipantData]) -
     """Test that the required preferences are fulfilled."""
     for participant_id, participant in participant_dict.items():
         for pref in participant.preferences:
-            pref_fulfilled = (
-                participant_id in scheduled_aks[pref.ak_id]["participant_ids"]
-            )
+            pref_fulfilled = participant_id in scheduled_aks[pref.ak_id].participant_ids
             # required => pref_fulfilled
             # equivalent to (not required) or pref_fulfilled
             assert not pref.required or pref_fulfilled
@@ -288,9 +287,7 @@ def _print_missing_stats(
     num_strong_prefs = defaultdict(int)
     for participant_id, participant in participant_dict.items():
         for pref in participant.preferences:
-            pref_fulfilled = (
-                participant_id in scheduled_aks[pref.ak_id]["participant_ids"]
-            )
+            pref_fulfilled = participant_id in scheduled_aks[pref.ak_id].participant_ids
             if pref.preference_score == 1:
                 num_weak_misses[participant_id] += not pref_fulfilled
                 num_weak_prefs[participant_id] += 1
@@ -373,9 +370,9 @@ def _print_ak_stats(
     out_lst = []
     for ak_id, ak in scheduled_aks.items():
         out_lst.append(
-            f"{ak_id}\t room {ak['room_id']}"
-            f" timeslots{sorted(ak['timeslot_ids'])}"
-            f" - {len(ak['participant_ids'])} paricipants"
+            f"{ak_id}\t room {ak.room_id}"
+            f" timeslots{sorted(ak.timeslot_ids)}"
+            f" - {len(ak.participant_ids)} paricipants"
         )
     print("\n".join(sorted(out_lst)))
 
@@ -389,7 +386,7 @@ def _print_participant_schedules(
     print("\n=== PARTICIPANT SCHEDULES ===\n")
     participant_schedules = defaultdict(list)
     for ak_id, ak in scheduled_aks.items():
-        for participant_id in ak["participant_ids"]:
+        for participant_id in ak.participant_ids:
             participant_schedules[participant_id].append(ak_id)
 
     for name, schedule in sorted(participant_schedules.items()):

@@ -127,6 +127,23 @@ class TimeSlotData:
 
 
 @dataclass(frozen=False)
+class ScheduleAtom:
+    """Dataclass containing one scheduled ak.
+
+    Args:
+        ak_id (str): The id of the AK scheduled.
+        room_id (str): The id of the room, where the AK is scheduled.
+        timeslot_ids (list of str): The list of timeslots when the AK is scheduled.
+        participant_ids (list of str): The list of participants that are meant to go to this AK.
+    """
+
+    ak_id: str
+    room_id: str
+    timeslot_ids: list[str]
+    participant_ids: list[str]
+
+
+@dataclass(frozen=False)
 class ConfigData:
     """Dataclass containing the config for buildung the ILP and solving it
 
@@ -167,6 +184,7 @@ class SchedulingInput:
     rooms: list[RoomData]
     timeslot_info: dict[str, str]
     timeslot_blocks: list[list[TimeSlotData]]
+    scheduled_aks: list[ScheduleAtom]
     config: ConfigData
     info: dict[str, str]
 
@@ -185,7 +203,19 @@ class SchedulingInput:
             [from_dict(data_class=TimeSlotData, data=timeslot) for timeslot in block]
             for block in input_dict["timeslots"]["blocks"]
         ]
-        config = from_dict(data_class=ConfigData, data=input_dict["config"]) if "config" in input_dict else ConfigData()
+        scheduled_aks = (
+            [
+                from_dict(data_class=ScheduleAtom, data=scheduled_ak)
+                for scheduled_ak in input_dict["scheduled_aks"]
+            ]
+            if "scheduled_aks" in input_dict
+            else []
+        )
+        config = (
+            from_dict(data_class=ConfigData, data=input_dict["config"])
+            if "config" in input_dict
+            else ConfigData()
+        )
 
         return cls(
             aks=aks,
@@ -193,6 +223,7 @@ class SchedulingInput:
             rooms=rooms,
             timeslot_blocks=timeslot_blocks,
             timeslot_info=input_dict["timeslots"]["info"],
+            scheduled_aks=scheduled_aks,
             config=config,
             info=input_dict["info"],
         )
