@@ -94,10 +94,10 @@ def solved_lp_fixture(
     solver_kwargs = {}
     if solver_name not in ["GLPK_CMD"]:
         solver_kwargs["threads"] = max(1, multiprocessing.cpu_count() - 1)
+    scheduling_input.config.mu = mu
 
-    solved_lp_problem, solution = solve_scheduling(
+   solved_lp_problem, solution = solve_scheduling(
         scheduling_input,
-        mu=mu,
         solver_name=solver_name,
         output_lp_file=None,
         timeLimit=60,
