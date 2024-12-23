@@ -4,6 +4,10 @@ __pycache__/
 *bbl
 *.blg
 koroma
+koma88
+koma89
+koma90
+koma91
 bin
 venv
 notebooks
@@ -484,3 +488,5 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
+.direnv
+.mamba

@@ -5,7 +5,7 @@ import json
 from collections import defaultdict
 from itertools import chain, combinations, product
 from pathlib import Path
-from typing import Any, Iterable, cast
+from typing import Any, Callable, Iterable, cast
 
 from pulp import (
     LpBinary,
@@ -111,15 +111,7 @@ def get_ak_name(input_data: SchedulingInput, ak_id: str) -> str:
 def create_lp(
     input_data: SchedulingInput,
     output_file: str | None = "koma-plan.lp",
-) -> tuple[
-    LpProblem,
-    tuple[
-        dict[str, dict[str, LpVariable]],
-        dict[str, dict[str, LpVariable]],
-        dict[str, dict[str, LpVariable]],
-        dict[str, dict[str, LpVariable]],
-    ],
-]:
+) -> tuple[LpProblem, dict[str, dict[str, dict[str, LpVariable]]]]:
     """Create the MILP problem as pulp object.
 
     Creates the problem with all constraints, preferences and the objective function.
@@ -463,11 +455,12 @@ def create_lp(
     if output_file is not None:
         prob.writeLP(output_file)
 
-    return prob, (room_var, time_var, person_var, person_time_var)
+    return prob, {"Room": room_var, "Time": time_var, "Part": person_var}
 
 
 def export_scheduling_result(
-    solved_lp_problem: LpProblem,
+    input_data: SchedulingInput,
+    solution: dict[str, dict[str, dict[str, int]]],
     allow_unscheduled_aks: bool = False,
 ) -> dict[str, Any]:
     """Create a dictionary from the solved MILP.
@@ -476,7 +469,8 @@ def export_scheduling_result(
     https://github.com/Die-KoMa/ak-plan-optimierung/wiki/Input-&-output-format
 
     Args:
-        solved_lp_problem (LpProblem): The solved MILP instance.
+        input_data(SchedulingInput): The Scheduling instance.
+        solution: Nested dicts with the values of the decision variables relevant to generate the output.
         allow_unscheduled_aks (bool): Whether not scheduling an AK is allowed or not.
             Defaults to False.
 
@@ -487,60 +481,66 @@ def export_scheduling_result(
         ValueError: might be raised if the solution of the MILP is infeasible or
             if an AK is not scheduled and allow_unscheduled_aks is False.
     """
-    var_value_dict: dict[str, dict[str, dict[str, int]]] = {
-        "Room": defaultdict(dict),
-        "Time": defaultdict(dict),
-        "Block": defaultdict(dict),
-        "Part": defaultdict(dict),
-        "Working": defaultdict(dict),
-    }
+    ak_ids, person_ids, room_ids, timeslot_ids = get_ids(input_data)
 
-    def _get_val(var: LpVariable) -> int:
-        ret_val = (
-            # We know there is distinction works as intended for gurobi, PuLP and HiGHS.
-            # There might be other solvers (supported by pulp) that need special handling.
-            var.solverVar.X
-            if solved_lp_problem.solver and solved_lp_problem.solver.name == "GUROBI"
-            else value(var)
-        )
-        return cast(int, round(ret_val))
-
-    for var in solved_lp_problem.variables():
-        var_cat, idx0, idx1 = var.name.split("_")
-        var_value_dict[var_cat][idx0][idx1] = _get_val(var)
+    def _get_id(
+        ak_id: str, var_key: str, allow_multiple: bool, allow_none: bool
+    ) -> str | list[str]:
+        matched_ids = [id for id, val in solution[var_key][ak_id].items() if val > 0]
+        if not allow_multiple and len(matched_ids) > 1:
+            raise ValueError(f"AK {ak_id} is assigned multiple {var_key}")
+        elif len(matched_ids) == 0 and not allow_none:
+            raise ValueError(f"no room assigned to ak {ak_id}")
+        else:
+            if allow_multiple or allow_none:
+                return matched_ids
+            else:
+                return matched_ids[0]
 
     scheduled_ak_dict: dict[str, dict[str, list[str] | str]] = defaultdict(dict)
 
-    # Handle rooms differntly because we want special handling if
-    # AKs are scheduled into more than one room.
-    # Also the field `ak_id` is set initially.
-    for ak_id, set_room_ids in var_value_dict["Room"].items():
-        sum_matched_rooms = sum(set_room_ids.values())
-        if sum_matched_rooms == 1:
-            room_for_ak = max(set_room_ids.keys(), key=set_room_ids.__getitem__)
-            scheduled_ak_dict[ak_id]["ak_id"] = ak_id
-            scheduled_ak_dict[ak_id]["room_id"] = room_for_ak
-        elif sum_matched_rooms == 0:
-            if allow_unscheduled_aks:
-                continue
-            else:
-                raise ValueError(f"no room assigned to ak {ak_id}")
-        else:
-            raise ValueError(f"AK {ak_id} is assigned multiple rooms")
+    def _assign_matched_ids(
+        scheduled_ak_key: str,
+        getter: Callable[
+            [
+                str,
+                str,
+                bool,
+                bool,
+            ],
+            str | list[str],
+        ],
+        var_key: str,
+        allow_multiple: bool,
+        allow_none: bool,
+    ) -> None:
+        for ak_id in ak_ids:
+            scheduled_ak_dict[ak_id][scheduled_ak_key] = getter(
+                ak_id, var_key, allow_multiple, allow_none
+            )
 
-    def _assign_matched_ids(var_key: str, scheduled_ak_key: str, name: str) -> None:
-        for ak_id, set_ids in var_value_dict[var_key].items():
-            matched_ids = [idx for idx, val in set_ids.items() if val > 0]
-            if matched_ids:
-                scheduled_ak_dict[ak_id][scheduled_ak_key] = matched_ids
-            elif not allow_unscheduled_aks:
-                raise ValueError(f"AK {ak_id} has no assigned {name}")
-
+    for ak_id in ak_ids:
+        scheduled_ak_dict[ak_id]["ak_id"] = ak_id
     _assign_matched_ids(
-        var_key="Time", scheduled_ak_key="timeslot_ids", name="timeslots"
+        scheduled_ak_key="timeslot_ids",
+        getter=_get_id,
+        var_key="Time",
+        allow_multiple=True,
+        allow_none=allow_unscheduled_aks,
     )
     _assign_matched_ids(
-        var_key="Part", scheduled_ak_key="participant_ids", name="participants"
+        scheduled_ak_key="participant_ids",
+        getter=_get_id,
+        var_key="Part",
+        allow_multiple=True,
+        allow_none=True,
+    )
+    _assign_matched_ids(
+        scheduled_ak_key="room_id",
+        getter=_get_id,
+        var_key="Room",
+        allow_multiple=False,
+        allow_none=allow_unscheduled_aks,
     )
 
     return {"scheduled_aks": list(scheduled_ak_dict.values())}
@@ -551,7 +551,7 @@ def solve_scheduling(
     solver_name: str | None = None,
     output_lp_file: str | None = "koma-plan.lp",
     **solver_kwargs: dict[str, Any],
-) -> LpProblem:
+) -> tuple[LpProblem, dict[str, dict[str, dict[str, int]]]]:
     """Solve the scheduling problem.
 
     Solves the ILP scheduling problem described by the input data using an ILP
@@ -578,10 +578,10 @@ def solve_scheduling(
         **solver_kwargs: kwargs are passed to the solver.
 
     Returns:
-        The LpProblem instance after the solver ran. This instance encodes the
-        LP formulation as well as the variable assignment.
+        A tuple (`lp_problem`, `solution`) where `lp_problem` is the
+        constructed and solved MILP instance and `solution` contains the nested dicts with the solution.
     """
-    lp_problem, _dec_vars = create_lp(input_data, output_lp_file)
+    lp_problem, dec_vars = create_lp(input_data, output_lp_file)
 
     if not solver_name:
         # The problem is solved using PuLP's default solver
@@ -600,17 +600,27 @@ def solve_scheduling(
             iis_path = iis_path.parent / f"{iis_path.stem}-iis.ilp"
             lp_problem.solverModel.write(str(iis_path))
 
-    return lp_problem
+    solution = {
+        var_key: {
+            ak_id: {id: var.value() for id, var in vars.items()}
+            for ak_id, vars in vars_dict.items()
+        }
+        for var_key, vars_dict in dec_vars.items()
+    }
+
+    return (lp_problem, solution)
 
 
 def process_solved_lp(
     solved_lp_problem: LpProblem,
-    input_data: SchedulingInput | None = None,
+    solution: dict[str, dict[str, dict[str, LpVariable]]],
+    input_data: SchedulingInput,
 ) -> dict[str, Any] | None:
     """Process the solved LP model and create a schedule output.
 
     Args:
         solved_lp_problem (LpProblem): The pulp LP problem object after the optimizer ran.
+        solution : The solution to the problem.
         input_data (SchedulingInput, optional): The input data used to construct the ILP.
             If set, the input data is added to the output schedule dict. Defaults to None.
         allow_unscheduled_aks (bool): Whether not scheduling an AK is allowed or not.
@@ -626,7 +636,7 @@ def process_solved_lp(
     ]:
         return None
     output_dict = export_scheduling_result(
-        solved_lp_problem, allow_unscheduled_aks=input_data.config.allow_unscheduled_aks
+        input_data, solution, allow_unscheduled_aks=input_data.config.allow_unscheduled_aks
     )
     if input_data is not None:
         output_dict["input"] = input_data.to_dict()
@@ -721,7 +731,7 @@ def main() -> None:
 
     scheduling_input = SchedulingInput.from_dict(input_dict)
 
-    solved_lp_problem = solve_scheduling(
+    solved_lp_problem, solution = solve_scheduling(
         scheduling_input,
         args.solver,
         **solver_kwargs,
@@ -729,6 +739,7 @@ def main() -> None:
 
     output_dict = process_solved_lp(
         solved_lp_problem,
+        solution,
         input_data=scheduling_input,
     )
 

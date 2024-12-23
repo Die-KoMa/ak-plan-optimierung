@@ -86,7 +86,9 @@ scheduled_aks_params = [
     ],
     params=scheduled_aks_params,
 )
-def solved_lp_fixture(request, scheduling_input) -> pulp.LpProblem:
+def solved_lp_fixture(
+    request, scheduling_input
+) -> tuple[pulp.LpProblem, dict[str, dict[str, dict[str, int]]], SchedulingInput]:
     """Solve an ILP."""
     mu, solver_name = request.param
     solver_kwargs = {}
@@ -94,24 +96,22 @@ def solved_lp_fixture(request, scheduling_input) -> pulp.LpProblem:
         solver_kwargs["threads"] = max(1, multiprocessing.cpu_count() - 1)
     scheduling_input.config.mu = mu
 
-    return (
-        solve_scheduling(
-            scheduling_input,
-            solver_name=solver_name,
-            output_lp_file=None,
-            timeLimit=60,
-            **solver_kwargs,
-        ),
+   solved_lp_problem, solution = solve_scheduling(
         scheduling_input,
+        solver_name=solver_name,
+        output_lp_file=None,
+        timeLimit=60,
+        **solver_kwargs,
     )
+    return (solved_lp_problem, solution, scheduling_input)
 
 
 @pytest.fixture(scope="module")
 def scheduled_aks(solved_lp_fixture) -> dict[str, dict]:
     """Construct a schedule from solved ILP."""
-    solved_lp_problem, scheduling_input = solved_lp_fixture
+    solved_lp_problem, solution, scheduling_input = solved_lp_fixture
 
-    aks = process_solved_lp(solved_lp_problem, input_data=scheduling_input)
+    aks = process_solved_lp(solved_lp_problem, solution, input_data=scheduling_input)
 
     if aks is None:
         pytest.skip("No LP solution found")
