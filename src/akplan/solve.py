@@ -462,8 +462,9 @@ def create_lp(
 
     # Fix Values for already scheduled aks
     for scheduled_ak in input_data.scheduled_aks:
-        room_var[scheduled_ak.ak_id][scheduled_ak.room_id].setInitialValue(1)
-        room_var[scheduled_ak.ak_id][scheduled_ak.room_id].fixValue()
+        if not scheduled_ak.room_id is None:
+            room_var[scheduled_ak.ak_id][scheduled_ak.room_id].setInitialValue(1)
+            room_var[scheduled_ak.ak_id][scheduled_ak.room_id].fixValue()
         for person_id in scheduled_ak.participant_ids:
             person_var[scheduled_ak.ak_id][person_id].setInitialValue(1)
             person_var[scheduled_ak.ak_id][person_id].fixValue()
@@ -512,10 +513,10 @@ def export_scheduling_result(
         elif len(matched_ids) == 0 and not allow_none:
             raise ValueError(f"no room assigned to ak {ak_id}")
         else:
-            if allow_multiple or allow_none:
+            if allow_multiple:
                 return matched_ids
             else:
-                return matched_ids[0]
+                return matched_ids[0] if len(matched_ids) > 0 else None
 
     scheduled_ak_dict: dict[str, ScheduleAtom] = {
         ak_id: ScheduleAtom(

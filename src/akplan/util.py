@@ -132,13 +132,13 @@ class ScheduleAtom:
 
     Args:
         ak_id (str): The id of the AK scheduled.
-        room_id (str): The id of the room, where the AK is scheduled.
+        room_id (str | None): The id of the room, where the AK is scheduled or none if the room is not fixed yet.
         timeslot_ids (list of str): The list of timeslots when the AK is scheduled.
         participant_ids (list of str): The list of participants that are meant to go to this AK.
     """
 
     ak_id: str
-    room_id: str
+    room_id: str | None
     timeslot_ids: list[str]
     participant_ids: list[str]
 
