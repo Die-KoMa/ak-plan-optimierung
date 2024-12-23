@@ -381,20 +381,22 @@ def create_lp(
         # TimeImpossibleForPerson
         # Real person P cannot attend AKs with timeslot Z
         for timeslot_id in timeslot_ids:
+            for ak_id in ak_ids:
+                prob += lpSum(
+                    [time_var[ak_id][timeslot_id], person_var[ak_id][person_id]]
+                ) <= person_time_var[person_id][
+                    timeslot_id
+                ]+1, _construct_constraint_name(
+                    "TimePersonVar",
+                    person_id,
+                    timeslot_id,
+                    ak_id,
+                )
             if participant_time_constraint_dict[person_id].difference(
                 fulfilled_time_constraints[timeslot_id]
             ):
-                for ak_id in ak_ids:
-                    prob += lpSum(
-                        [time_var[ak_id][timeslot_id], person_var[ak_id][person_id]]
-                    ) <= person_time_var[person_id][
-                        timeslot_id
-                    ], _construct_constraint_name(
-                        "TimeImpossibleForPerson",
-                        person_id,
-                        timeslot_id,
-                        ak_id,
-                    )
+                person_time_var[person_id][timeslot_id].setInitialValue(0)
+                person_time_var[person_id][timeslot_id].fixValue()
 
         # RoomImpossibleForPerson
         # Real person P cannot attend AKs with room R
