@@ -52,13 +52,13 @@ def process_pref_score(preference_score: int, required: bool, mu: float) -> floa
 
 
 def process_room_cap(room_capacity: int, num_participants: int) -> int:
-    """ Process the input room capacity for the MILP constraints.
+    """Process the input room capacity for the MILP constraints.
 
     Args:
         room_capacity (int): The input room capacity: infinite (-1) or actual capacity >=0
         num_participants (int): The total number of participants (needed to model infinity)
 
-    Retruns:
+    Returns:
         int: The processed room capacity: Rooms with infinite capacity or capacity larger than
         num_participants are set to num_participants. Rooms with a smaller non-negative capacity
         hold their capacity.
@@ -99,9 +99,17 @@ def get_ids(
     return ak_ids, participant_ids, room_ids, timeslot_ids
 
 
+def get_ak_name(input_data: SchedulingInput, ak_id: str) -> str:
+    ak_names = [
+        ak.info["name"]
+        for ak in input_data.aks
+        if ak.id == ak_id and "name" in ak.info.keys()
+    ]
+    return ", ".join(ak_names)
+
+
 def create_lp(
     input_data: SchedulingInput,
-    mu: float,
     output_file: str | None = "koma-plan.lp",
 ) -> tuple[LpProblem, dict[str, dict[str, dict[str, LpVariable]]]]:
     """Create the MILP problem as pulp object.
@@ -121,7 +129,6 @@ def create_lp(
 
     Args:
         input_data (SchedulingInput): The input data used to construct the MILP.
-        mu (float): The weight associated with a strong preference for an AK.
         output_file (str, optional): If not None, the created LP is written
             as an `.lp` file to this location. Defaults to `koma-plan.lp`.
 
@@ -156,7 +163,7 @@ def create_lp(
             pref.ak_id: process_pref_score(
                 pref.preference_score,
                 pref.required,
-                mu=mu,
+                mu=input_data.config.mu,
             )
             for pref in person.preferences
         }
@@ -171,6 +178,11 @@ def create_lp(
         }
         for ak_id in ak_ids
     }
+    for ak_id, persons in required_persons.items():
+        if len(persons) is 0:
+            print(
+                f"Warning: AK {get_ak_name(input_data, ak_id)} with id {ak_id} has no required persons. Who owns this?"
+            )
     ak_num_interested = {
         ak_id: len(required_persons[ak_id])
         + sum(
@@ -224,6 +236,11 @@ def create_lp(
     )
     person_var: dict[str, dict[str, LpVariable]] = LpVariable.dicts(
         "Part", (ak_ids, person_ids), cat=LpBinary
+    )
+    person_time_var: dict[str, dict[str, LpVariable]] = LpVariable.dicts(
+        "Working",
+        (person_ids, timeslot_ids),
+        cat=LpBinary,
     )
 
     # Set objective function
@@ -294,7 +311,7 @@ def create_lp(
             ], _construct_constraint_name(
                 "AKSingleBlock", ak_id, str(block_id)
             )
-            # AKConsecutive
+            # AKContiguous
             for timeslot_id_a, timeslot_id_b in combinations(block, 2):
                 if (
                     abs(
@@ -306,7 +323,7 @@ def create_lp(
                     prob += lpSum(
                         [time_var[ak_id][timeslot_id_a], time_var[ak_id][timeslot_id_b]]
                     ) <= 1, _construct_constraint_name(
-                        "AKConsecutive",
+                        "AKContiguous",
                         ak_id,
                         str(block_id),
                         timeslot_id_a,
@@ -363,7 +380,9 @@ def create_lp(
                 for ak_id in ak_ids:
                     prob += lpSum(
                         [time_var[ak_id][timeslot_id], person_var[ak_id][person_id]]
-                    ) <= 1, _construct_constraint_name(
+                    ) <= person_time_var[person_id][
+                        timeslot_id
+                    ], _construct_constraint_name(
                         "TimeImpossibleForPerson",
                         person_id,
                         timeslot_id,
@@ -380,7 +399,26 @@ def create_lp(
                     prob += lpSum(
                         [room_var[ak_id][room_id], person_var[ak_id][person_id]]
                     ) <= 1, _construct_constraint_name(
-                        "RoomImpossibleFor Person", person_id, room_id, ak_id
+                        "RoomImpossibleForPerson", person_id, room_id, ak_id
+                    )
+
+        # PersonNeedsBreak
+        # Any real person needs a break after some number of time slots
+        # So in each block at most  consecutive timeslots can be active for any person
+        if input_data.config.max_num_timeslots_before_break > 0:
+            for _block_id, block in block_idx_dict.items():
+                for i in range(
+                    len(block) - input_data.config.max_num_timeslots_before_break - 1
+                ):
+                    prob += lpSum(
+                        [
+                            person_time_var[person_id][timeslot_id]
+                            for timeslot_id in block[
+                                i : i + input_data.config.max_num_timeslots_before_break + 1
+                            ]
+                        ]
+                    ) <= input_data.config.max_num_timeslots_before_break, _construct_constraint_name(
+                        "BreakForPerson", person_id, block[i]
                     )
 
     for ak_id in ak_ids:
@@ -448,7 +486,6 @@ def export_scheduling_result(
     def _get_id(
         ak_id: str, var_key: str, allow_multiple: bool, allow_none: bool
     ) -> str | list[str]:
-        print(solution[var_key][ak_id])
         matched_ids = [id for id, val in solution[var_key][ak_id].items() if val > 0]
         if not allow_multiple and len(matched_ids) > 1:
             raise ValueError(f"AK {ak_id} is assigned multiple {var_key}")
@@ -511,7 +548,6 @@ def export_scheduling_result(
 
 def solve_scheduling(
     input_data: SchedulingInput,
-    mu: float,
     solver_name: str | None = None,
     output_lp_file: str | None = "koma-plan.lp",
     **solver_kwargs: dict[str, Any],
@@ -545,7 +581,7 @@ def solve_scheduling(
         A tuple (`lp_problem`, `solution`) where `lp_problem` is the
         constructed and solved MILP instance and `solution` contains the nested dicts with the solution.
     """
-    lp_problem, dec_vars = create_lp(input_data, mu, output_lp_file)
+    lp_problem, dec_vars = create_lp(input_data, output_lp_file)
 
     if not solver_name:
         # The problem is solved using PuLP's default solver
@@ -579,7 +615,6 @@ def process_solved_lp(
     solved_lp_problem: LpProblem,
     solution: dict[str, dict[str, dict[str, LpVariable]]],
     input_data: SchedulingInput,
-    allow_unscheduled_aks: bool = False,
 ) -> dict[str, Any] | None:
     """Process the solved LP model and create a schedule output.
 
@@ -601,7 +636,7 @@ def process_solved_lp(
     ]:
         return None
     output_dict = export_scheduling_result(
-        input_data, solution, allow_unscheduled_aks=allow_unscheduled_aks
+        input_data, solution, allow_unscheduled_aks=input_data.config.allow_unscheduled_aks
     )
     if input_data is not None:
         output_dict["input"] = input_data.to_dict()
@@ -611,12 +646,6 @@ def process_solved_lp(
 def main() -> None:
     """Run solve_scheduling from CLI."""
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--mu",
-        type=float,
-        default=2,
-        help="The weight associated with a strong preference for an AK.",
-    )
     parser.add_argument(
         "--solver",
         type=str,
@@ -653,13 +682,6 @@ def main() -> None:
         "path", type=str, help="Path of the JSON input file to the solver."
     )
     parser.add_argument("--seed", type=int, default=42, help="Seed for the solver")
-    parser.add_argument(
-        "--disallow-unscheduled-aks",
-        action="store_true",
-        default=False,
-        help="If set, we do not allow aks to not be scheduled. "
-        "Otherwise, the solver is allowed to not schedule AKs.",
-    )
     parser.add_argument(
         "--output",
         type=Path,
@@ -711,7 +733,6 @@ def main() -> None:
 
     solved_lp_problem, solution = solve_scheduling(
         scheduling_input,
-        args.mu,
         args.solver,
         **solver_kwargs,
     )
@@ -720,7 +741,6 @@ def main() -> None:
         solved_lp_problem,
         solution,
         input_data=scheduling_input,
-        allow_unscheduled_aks=not args.disallow_unscheduled_aks,
     )
 
     if output_dict is not None:

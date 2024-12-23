@@ -1,0 +1,79 @@
+\ Model MLPKoMa_copy
+\ LP format - for model browsing. Use MPS format to capture full model detail.
+Maximize
+ 
+Subject To
+ AKDuration_1316: Time_1316_0 + Time_1316_1 + Time_1316_10 + Time_1316_11
+   + Time_1316_12 + Time_1316_13 + Time_1316_14 + Time_1316_15
+   + Time_1316_16 + Time_1316_17 + Time_1316_2 + Time_1316_3 + Time_1316_4
+   + Time_1316_5 + Time_1316_6 + Time_1316_7 + Time_1316_8 + Time_1316_9
+   >= 2
+ AKSingleBlock_1316: Block_1316_0 + Block_1316_1 + Block_1316_10
+   + Block_1316_11 + Block_1316_12 + Block_1316_13 + Block_1316_14
+   + Block_1316_15 + Block_1316_16 + Block_1316_17 + Block_1316_2
+   + Block_1316_3 + Block_1316_4 + Block_1316_5 + Block_1316_6
+   + Block_1316_7 + Block_1316_8 + Block_1316_9 <= 1
+ AKSingleBlock_1316_0: - 2 Block_1316_0 + Time_1316_0 <= 0
+ AKSingleBlock_1316_1: - 2 Block_1316_1 + Time_1316_1 <= 0
+ AKSingleBlock_1316_2: - 2 Block_1316_2 + Time_1316_2 <= 0
+ AKSingleBlock_1316_3: - 2 Block_1316_3 + Time_1316_3 <= 0
+ AKSingleBlock_1316_4: - 2 Block_1316_4 + Time_1316_4 <= 0
+ AKSingleBlock_1316_5: - 2 Block_1316_5 + Time_1316_5 <= 0
+ AKSingleBlock_1316_6: - 2 Block_1316_6 + Time_1316_6 <= 0
+ AKSingleBlock_1316_7: - 2 Block_1316_7 + Time_1316_7 <= 0
+ AKSingleBlock_1316_8: - 2 Block_1316_8 + Time_1316_8 <= 0
+ AKSingleBlock_1316_9: - 2 Block_1316_9 + Time_1316_9 <= 0
+ AKSingleBlock_1316_10: - 2 Block_1316_10 + Time_1316_10 <= 0
+ AKSingleBlock_1316_11: - 2 Block_1316_11 + Time_1316_11 <= 0
+ AKSingleBlock_1316_12: - 2 Block_1316_12 + Time_1316_12 <= 0
+ AKSingleBlock_1316_13: - 2 Block_1316_13 + Time_1316_13 <= 0
+ AKSingleBlock_1316_14: - 2 Block_1316_14 + Time_1316_14 <= 0
+ AKSingleBlock_1316_15: - 2 Block_1316_15 + Time_1316_15 <= 0
+ AKSingleBlock_1316_16: - 2 Block_1316_16 + Time_1316_16 <= 0
+ AKSingleBlock_1316_17: - 2 Block_1316_17 + Time_1316_17 <= 0
+Bounds
+ Block_1316_0 free
+ Block_1316_1 free
+ Block_1316_10 free
+ Block_1316_11 free
+ Block_1316_12 free
+ Block_1316_13 free
+ Block_1316_14 free
+ Block_1316_15 free
+ Block_1316_16 free
+ Block_1316_17 free
+ Block_1316_2 free
+ Block_1316_3 free
+ Block_1316_4 free
+ Block_1316_5 free
+ Block_1316_6 free
+ Block_1316_7 free
+ Block_1316_8 free
+ Block_1316_9 free
+ -infinity <= Time_1316_0 <= 1
+ -infinity <= Time_1316_1 <= 1
+ -infinity <= Time_1316_10 <= 1
+ -infinity <= Time_1316_11 <= 1
+ -infinity <= Time_1316_12 <= 1
+ -infinity <= Time_1316_13 <= 1
+ -infinity <= Time_1316_14 <= 1
+ -infinity <= Time_1316_15 <= 1
+ -infinity <= Time_1316_16 <= 1
+ -infinity <= Time_1316_17 <= 1
+ -infinity <= Time_1316_2 <= 1
+ -infinity <= Time_1316_3 <= 1
+ -infinity <= Time_1316_4 <= 1
+ -infinity <= Time_1316_5 <= 1
+ -infinity <= Time_1316_6 <= 1
+ -infinity <= Time_1316_7 <= 1
+ -infinity <= Time_1316_8 <= 1
+ -infinity <= Time_1316_9 <= 1
+Generals
+ Block_1316_0 Block_1316_1 Block_1316_10 Block_1316_11 Block_1316_12
+ Block_1316_13 Block_1316_14 Block_1316_15 Block_1316_16 Block_1316_17
+ Block_1316_2 Block_1316_3 Block_1316_4 Block_1316_5 Block_1316_6
+ Block_1316_7 Block_1316_8 Block_1316_9 Time_1316_0 Time_1316_1
+ Time_1316_10 Time_1316_11 Time_1316_12 Time_1316_13 Time_1316_14
+ Time_1316_15 Time_1316_16 Time_1316_17 Time_1316_2 Time_1316_3 Time_1316_4
+ Time_1316_5 Time_1316_6 Time_1316_7 Time_1316_8 Time_1316_9
+End
