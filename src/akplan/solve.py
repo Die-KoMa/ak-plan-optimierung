@@ -464,7 +464,8 @@ def create_lp(
     for scheduled_ak in input_data.scheduled_aks:
         if not scheduled_ak.room_id is None:
             room_var[scheduled_ak.ak_id][scheduled_ak.room_id].setInitialValue(1)
-            room_var[scheduled_ak.ak_id][scheduled_ak.room_id].fixValue()
+            if not input_data.config.allow_changing_rooms:
+                room_var[scheduled_ak.ak_id][scheduled_ak.room_id].fixValue()
         for person_id in scheduled_ak.participant_ids:
             person_var[scheduled_ak.ak_id][person_id].setInitialValue(1)
             person_var[scheduled_ak.ak_id][person_id].fixValue()
