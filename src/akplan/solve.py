@@ -421,7 +421,9 @@ def create_lp(
                         [
                             person_time_var[person_id][timeslot_id]
                             for timeslot_id in block[
-                                i : i + input_data.config.max_num_timeslots_before_break + 1
+                                i : i
+                                + input_data.config.max_num_timeslots_before_break
+                                + 1
                             ]
                         ]
                     ) <= input_data.config.max_num_timeslots_before_break, _construct_constraint_name(
@@ -457,6 +459,17 @@ def create_lp(
                 ) <= 1, _construct_constraint_name(
                     "TimeImpossibleForRoom", room_id, timeslot_id, ak_id
                 )
+
+    # Fix Values for already scheduled aks
+    for scheduled_ak in input_data.scheduled_aks:
+        room_var[scheduled_ak.ak_id][scheduled_ak.room_id].setInitialValue(1)
+        room_var[scheduled_ak.ak_id][scheduled_ak.room_id].fixValue()
+        for person_id in scheduled_ak.participant_ids:
+            person_var[scheduled_ak.ak_id][person_id].setInitialValue(1)
+            person_var[scheduled_ak.ak_id][person_id].fixValue()
+        for timeslot_id in scheduled_ak.timeslot_ids:
+            time_var[scheduled_ak.ak_id][timeslot_id].setInitialValue(1)
+            time_var[scheduled_ak.ak_id][timeslot_id].fixValue()
 
     # The problem data is written to an .lp file
     if output_file is not None:
