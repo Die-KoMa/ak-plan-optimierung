@@ -128,8 +128,8 @@ class lparray(
                 .view(lparray)
             )
 
-        if len(index_sets) == 1:
-            name += "("
+        # if len(index_sets) == 1:
+        #     name += "("
 
         def recursive_worker(
             r_name: str,
@@ -138,19 +138,19 @@ class lparray(
         ) -> None:
 
             if len(r_index_sets) == 1:
-                close_paren = r_name and (")" if "(" in r_name else "")
+                # close_paren = r_name and (")" if "(" in r_name else "")
                 for ix in count_out(r_index_sets[0]):
                     plane[ix] = LpVariable(
-                        f"{r_name}{ix}{close_paren}",
+                        f"{r_name}_{ix}",
                         cat=cat,
                         upBound=upBound,
                         lowBound=lowBound,
                     )
             else:
-                open_paren = r_name and ("(" if "(" not in r_name else "")
+                # open_paren = r_name and ("(" if "(" not in r_name else "")
                 for ix in count_out(r_index_sets[0]):
                     recursive_worker(
-                        f"{r_name}{open_paren}{ix},",
+                        f"{r_name}_{ix}",
                         plane[ix],
                         r_index_sets[1:],
                     )
@@ -246,8 +246,8 @@ class lparray(
             prob += cons
             return
 
-        if name and self.ndim == 1:
-            name += "("
+        # if name and self.ndim == 1:
+        #     name += "("
 
         def recursive_worker(
             r_prob: LpProblem, plane: np.ndarray, r_name: str
@@ -263,9 +263,9 @@ class lparray(
                     const.name = r_name and f"{r_name}{cx}{close_paren}"
                     r_prob += const
             else:
-                open_paren = r_name and ("(" if "(" not in r_name else "")
+                # open_paren = r_name and ("(" if "(" not in r_name else "")
                 for px, subplane in enumerate(plane):
-                    subname = r_name and f"{r_name}{open_paren}{px},"
+                    subname = r_name and f"{r_name}_{px},"
                     recursive_worker(r_prob, subplane, subname)
 
         recursive_worker(prob, self, name)
