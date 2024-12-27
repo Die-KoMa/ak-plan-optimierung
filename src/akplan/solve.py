@@ -602,7 +602,7 @@ def solve_scheduling(
 
     solution = {
         var_key: {
-            ak_id: {id: var.value() for id, var in vars.items()}
+            ak_id: {id: round(var.value()) for id, var in vars.items()}
             for ak_id, vars in vars_dict.items()
         }
         for var_key, vars_dict in dec_vars.items()
