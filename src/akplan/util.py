@@ -132,7 +132,8 @@ class ScheduleAtom:
 
     Args:
         ak_id (str): The id of the AK scheduled.
-        room_id (str | None): The id of the room, where the AK is scheduled or none if the room is not fixed yet.
+        room_id (str | None): The id of the room, where the AK is scheduled or None
+            if the room is not fixed yet.
         timeslot_ids (list of str): The list of timeslots when the AK is scheduled.
         participant_ids (list of str): The list of participants that are meant to go to this AK.
     """
@@ -145,12 +146,15 @@ class ScheduleAtom:
 
 @dataclass(frozen=False)
 class ConfigData:
-    """Dataclass containing the config for buildung the ILP and solving it
+    """Dataclass containing the config for buildung the ILP and solving it.
 
     Args:
-        mu(float): The weight associated with a strong preference for an AK.
-        max_num_timeslots_before_break(int): The maximum number of timeslots any participant is planned to go to before a break.
-        allow_unscheduled_aks(bool):
+        mu (float): The weight associated with a strong preference for an AK.
+        max_num_timeslots_before_break (int): The maximum number of timeslots any participant
+            is planned to go to before a break.
+        allow_unscheduled_aks(bool): Whether not scheduling an AK is allowed or not.
+        allow_changing_rooms (bool): Whether changing the room for an fixed AK
+            is allowed or not.
     """
 
     mu: float = 2
