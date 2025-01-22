@@ -613,9 +613,14 @@ def solve_scheduling(
             iis_path = iis_path.parent / f"{iis_path.stem}-iis.ilp"
             lp_problem.solverModel.write(str(iis_path))
 
+    def value_processing(value) -> int | None:
+        if value is None:
+            return None
+        return round(value)
+
     solution = {
         var_key: {
-            ak_id: {id: round(var.value()) for id, var in vars.items()}
+            ak_id: {id: value_processing(var.value()) for id, var in vars.items()}
             for ak_id, vars in vars_dict.items()
         }
         for var_key, vars_dict in dec_vars.items()
