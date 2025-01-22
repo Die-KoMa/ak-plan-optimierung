@@ -471,7 +471,7 @@ def create_lp(
     # AK conflicts
     conflict_pairs: set[tuple[str, str]] = set()
     for ak in input_data.aks:
-        other_ak_ids: list[str] = ak.properties.get("conflict", [])
+        other_ak_ids: list[str] = ak.properties.get("conflicts", [])
         conflict_pairs.update(
             [
                 (ak.id, other_ak_id) if ak.id < other_ak_id else (other_ak_id, ak.id)
