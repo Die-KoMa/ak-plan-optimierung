@@ -468,6 +468,50 @@ def create_lp(
                     "TimeImpossibleForRoom", room_id, timeslot_id, ak_id
                 )
 
+    # AK conflicts
+    conflict_pairs: set[tuple[str, str]] = set()
+    for ak in input_data.aks:
+        other_ak_ids: list[str] = ak.properties.get("conflict", [])
+        conflict_pairs.update(
+            [
+                (ak.id, other_ak_id) if ak.id < other_ak_id else (other_ak_id, ak.id)
+                for other_ak_id in other_ak_ids
+            ]
+        )
+
+    for timeslot_id, (ak_a, ak_b) in product(timeslot_ids, conflict_pairs):
+        prob += (
+            lpSum([time_var[ak_a][timeslot_id], time_var[ak_b][timeslot_id]]) <= 1,
+            _construct_constraint_name("AKConflict", ak_a, ak_b, timeslot_id),
+        )
+
+    # AK dependencies
+    sorted_timeslot_ids = sorted(timeslot_ids)
+    for ak in input_data.aks:
+        other_ak_ids = ak.properties.get("dependencies", [])
+        if not other_ak_ids:
+            continue
+        total_dependency_duration = sum(
+            [ak_durations[other_ak_id] for other_ak_id in other_ak_ids]
+        )
+        for idx, timeslot_id in enumerate(sorted_timeslot_ids):
+            constraint_sum = lpSum(
+                [
+                    time_var[ak_dependency][prev_timeslot_id]
+                    for ak_dependency, prev_timeslot_id in product(
+                        other_ak_ids, sorted_timeslot_ids[:idx]
+                    )
+                ]
+            )
+            constraint = (
+                constraint_sum
+                >= total_dependency_duration * time_var[ak.id][timeslot_id]
+            )
+
+            prob += constraint, _construct_constraint_name(
+                "AKDependencies", ak.id, timeslot_id
+            )
+
     # Fix Values for already scheduled aks
     for scheduled_ak in input_data.scheduled_aks:
         if scheduled_ak.room_id is not None:
