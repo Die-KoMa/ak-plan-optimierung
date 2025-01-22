@@ -2,6 +2,7 @@
 
 import argparse
 import json
+from dataclasses import asdict
 from itertools import chain, combinations, product
 from pathlib import Path
 from typing import Any, Iterable, Literal, overload
@@ -755,9 +756,12 @@ def main() -> None:
     # here we replace the old scheduled aks in the input
     # because these are also part of the produced schedule
     if schedule is not None:
-        scheduling_input.scheduled_aks = list(schedule.values())
+        out_dict = {
+            "scheduled_aks": list(map(asdict, schedule.values())),
+            "input": scheduling_input.to_dict(),
+        }
         with args.output.open("w") as ff:
-            json.dump(scheduling_input.to_dict(), ff)
+            json.dump(out_dict, ff)
         print(f"Stored result at {args.output}")
 
 
