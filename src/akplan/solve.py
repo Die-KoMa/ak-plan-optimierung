@@ -491,25 +491,30 @@ def create_lp(
         other_ak_ids = ak.properties.get("dependencies", [])
         if not other_ak_ids:
             continue
-        total_dependency_duration = sum(
-            [ak_durations[other_ak_id] for other_ak_id in other_ak_ids]
-        )
         for idx, timeslot_id in enumerate(sorted_timeslot_ids):
             constraint_sum = lpSum(
                 [
-                    time_var[ak_dependency][prev_timeslot_id]
-                    for ak_dependency, prev_timeslot_id in product(
-                        other_ak_ids, sorted_timeslot_ids[:idx]
+                    time_var[ak_dependency][succ_timeslot_id]
+                    for ak_dependency, succ_timeslot_id in product(
+                        other_ak_ids, sorted_timeslot_ids[idx:]
                     )
                 ]
             )
-            constraint = (
-                constraint_sum
-                >= total_dependency_duration * time_var[ak.id][timeslot_id]
-            )
+            constraint = constraint_sum <= time_var[ak.id][timeslot_id]
 
             prob += constraint, _construct_constraint_name(
-                "AKDependencies", ak.id, timeslot_id
+                "AKDependenciesDoneBeforeAK", ak.id, timeslot_id
+            )
+
+        for ak_dependency in other_ak_ids:
+            # TODO: This part can be omitted if ak_dependency is required to be scheduled
+            constraint = lpSum(
+                [time_var[ak.id][timeslot_id] for timeslot_id in timeslot_ids]
+            ) <= lpSum(
+                [time_var[ak_dependency][timeslot_id] for timeslot_id in timeslot_ids]
+            )
+            prob += constraint, _construct_constraint_name(
+                "AKDependencyIsScheduled", ak.id, ak_dependency
             )
 
     # Fix Values for already scheduled aks
