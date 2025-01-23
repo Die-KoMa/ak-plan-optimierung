@@ -304,20 +304,19 @@ def create_lp(
 
     for ak_id in ak_ids:
         # AKDurations
-        prob += lpSum(
-            [time_var[ak_id][timeslot_id] for timeslot_id in timeslot_ids]
-        ) >= ak_durations[ak_id], _construct_constraint_name("AKDuration", ak_id)
+        constraint = lpSum(time_var[ak_id].values()) >= ak_durations[ak_id]
+        prob += constraint, _construct_constraint_name("AKDuration", ak_id)
+
         # AKSingleBlock
-        prob += lpSum(
-            [block_var[ak_id][block_id] for block_id in block_idx_dict]
-        ) <= 1, _construct_constraint_name("AKSingleBlock", ak_id)
+        constraint = lpSum(block_var[ak_id].values()) <= 1
+        prob += constraint, _construct_constraint_name("AKSingleBlock", ak_id)
         for block_id, block in block_idx_dict.items():
-            prob += lpSum(
+            constraint_sum = lpSum(
                 [time_var[ak_id][timeslot_id] for timeslot_id in block]
-            ) <= ak_durations[ak_id] * block_var[ak_id][
-                block_id
-            ], _construct_constraint_name(
-                "AKSingleBlock", ak_id, str(block_id)
+            )
+            prob += (
+                constraint_sum <= ak_durations[ak_id] * block_var[ak_id][block_id],
+                _construct_constraint_name("AKSingleBlock", ak_id, str(block_id)),
             )
             # AKContiguous
             for timeslot_id_a, timeslot_id_b in combinations(block, 2):
@@ -341,28 +340,22 @@ def create_lp(
     # Roomsizes
     for room_id, ak_id in product(room_ids, ak_ids):
         if ak_num_interested[ak_id] > room_capacities[room_id]:
-            prob += lpSum(
-                [person_var[ak_id][person_id] for person_id in person_ids]
-            ) + ak_num_interested[ak_id] * room_var[ak_id][
-                room_id
-            ] <= ak_num_interested[
-                ak_id
-            ] + room_capacities[
-                room_id
-            ], _construct_constraint_name(
-                "Roomsize", room_id, ak_id
+            constraint_sum = lpSum(person_var[ak_id].values())
+            constraint_sum += ak_num_interested[ak_id] * room_var[ak_id][room_id]
+            constraint = (
+                constraint_sum <= ak_num_interested[ak_id] + room_capacities[room_id]
             )
+            prob += constraint, _construct_constraint_name("Roomsize", room_id, ak_id)
     for ak_id in ak_ids:
-        prob += lpSum(
-            [room_var[ak_id][room_id] for room_id in room_ids]
-        ) <= 1, _construct_constraint_name("AtMostOneRoomPerAK", ak_id, room_id)
-        prob += lpSum(
-            [room_var[ak_id][room_id] for room_id in room_ids]
-        ) >= 1, _construct_constraint_name("AtLeastOneRoomPerAK", ak_id, room_id)
+        prob += lpSum(room_var[ak_id].values()) <= 1, _construct_constraint_name(
+            "AtMostOneRoomPerAK", ak_id, room_id
+        )
+        prob += lpSum(room_var[ak_id].values()) >= 1, _construct_constraint_name(
+            "AtLeastOneRoomPerAK", ak_id, room_id
+        )
         # We need this constraint so the Roomsize is correct
-        prob += lpSum(
-            [person_var[ak_id][person_id] for person_id in person_ids]
-        ) <= ak_num_interested[ak_id], _construct_constraint_name(
+        constraint_sum = lpSum(person_var[ak_id].values())
+        prob += constraint_sum <= ak_num_interested[ak_id], _construct_constraint_name(
             "NotMorePeopleThanInterested", ak_id
         )
 
@@ -383,15 +376,17 @@ def create_lp(
         # Real person P cannot attend AKs with timeslot Z
         for timeslot_id in timeslot_ids:
             for ak_id in ak_ids:
-                prob += lpSum(
+                constraint_sum = lpSum(
                     [time_var[ak_id][timeslot_id], person_var[ak_id][person_id]]
-                ) <= person_time_var[person_id][
-                    timeslot_id
-                ] + 1, _construct_constraint_name(
-                    "TimePersonVar",
-                    person_id,
-                    timeslot_id,
-                    ak_id,
+                )
+                prob += (
+                    constraint_sum <= person_time_var[person_id][timeslot_id] + 1,
+                    _construct_constraint_name(
+                        "TimePersonVar",
+                        person_id,
+                        timeslot_id,
+                        ak_id,
+                    ),
                 )
             if participant_time_constraint_dict[person_id].difference(
                 fulfilled_time_constraints[timeslot_id]
@@ -406,9 +401,10 @@ def create_lp(
                 fulfilled_room_constraints[room_id]
             ):
                 for ak_id in ak_ids:
-                    prob += lpSum(
+                    constraint_sum = lpSum(
                         [room_var[ak_id][room_id], person_var[ak_id][person_id]]
-                    ) <= 1, _construct_constraint_name(
+                    )
+                    prob += constraint_sum <= 1, _construct_constraint_name(
                         "RoomImpossibleForPerson", person_id, room_id, ak_id
                     )
 
@@ -508,11 +504,8 @@ def create_lp(
 
         for ak_dependency in other_ak_ids:
             # TODO: This part can be omitted if ak_dependency is required to be scheduled
-            constraint = lpSum(
-                [time_var[ak.id][timeslot_id] for timeslot_id in timeslot_ids]
-            ) <= lpSum(
-                [time_var[ak_dependency][timeslot_id] for timeslot_id in timeslot_ids]
-            )
+            constraint_sum = lpSum(time_var[ak.id].values())
+            constraint = constraint_sum <= lpSum(time_var[ak_dependency].values())
             prob += constraint, _construct_constraint_name(
                 "AKDependencyIsScheduled", ak.id, ak_dependency
             )
