@@ -503,7 +503,9 @@ def create_lp(
             )
 
         for ak_dependency in other_ak_ids:
-            # TODO: This part can be omitted if ak_dependency is required to be scheduled
+            # This part can be omitted if ak_dependency is required to be scheduled
+            if required_persons[ak_dependency]:
+                continue
             constraint_sum = lpSum(time_var[ak.id].values())
             constraint = constraint_sum <= lpSum(time_var[ak_dependency].values())
             prob += constraint, _construct_constraint_name(
