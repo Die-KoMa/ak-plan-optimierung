@@ -502,16 +502,6 @@ def create_lp(
                 "AKDependenciesDoneBeforeAK", ak.id, timeslot_id
             )
 
-        for ak_dependency in other_ak_ids:
-            # This part can be omitted if ak_dependency is required to be scheduled
-            if required_persons[ak_dependency]:
-                continue
-            constraint_sum = lpSum(time_var[ak.id].values())
-            constraint = constraint_sum <= lpSum(time_var[ak_dependency].values())
-            prob += constraint, _construct_constraint_name(
-                "AKDependencyIsScheduled", ak.id, ak_dependency
-            )
-
     # Fix Values for already scheduled aks
     for scheduled_ak in input_data.scheduled_aks:
         if scheduled_ak.room_id is not None:
@@ -571,7 +561,7 @@ def export_scheduling_result(
         if not allow_multiple and len(matched_ids) > 1:
             raise ValueError(f"AK {ak_id} is assigned multiple {var_key}")
         elif len(matched_ids) == 0 and not allow_none:
-            raise ValueError(f"no room assigned to ak {ak_id}")
+            raise ValueError(f"no {var_key} assigned to ak {ak_id}")
         else:
             if allow_multiple:
                 return matched_ids
