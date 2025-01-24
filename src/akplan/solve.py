@@ -146,14 +146,10 @@ def create_lp(
     """
     # Get ids from input_dict
     ak_ids, person_ids, room_ids, timeslot_ids = get_ids(input_data)
+    sorted_timeslot_ids = sorted(timeslot_ids)
 
-    timeslot_idx_dict = {
-        timeslot.id: timeslot_idx
-        for block in input_data.timeslot_blocks
-        for timeslot_idx, timeslot in enumerate(block)
-    }
     block_idx_dict = {
-        block_idx: [timeslot.id for timeslot in block]
+        block_idx: sorted([timeslot.id for timeslot in block])
         for block_idx, block in enumerate(input_data.timeslot_blocks)
     }
     # Get values needed from the input_dict
@@ -319,14 +315,8 @@ def create_lp(
                 _construct_constraint_name("AKSingleBlock", ak_id, str(block_id)),
             )
             # AKContiguous
-            for timeslot_id_a, timeslot_id_b in combinations(block, 2):
-                if (
-                    abs(
-                        timeslot_idx_dict[timeslot_id_a]
-                        - timeslot_idx_dict[timeslot_id_b]
-                    )
-                    >= ak_durations[ak_id]
-                ):
+            for timeslot_idx, timeslot_id_a in enumerate(block):
+                for timeslot_id_b in block[timeslot_idx + ak_durations[ak_id] :]:
                     prob += lpSum(
                         [time_var[ak_id][timeslot_id_a], time_var[ak_id][timeslot_id_b]]
                     ) <= 1, _construct_constraint_name(
@@ -482,7 +472,6 @@ def create_lp(
         )
 
     # AK dependencies
-    sorted_timeslot_ids = sorted(timeslot_ids)
     for ak in input_data.aks:
         other_ak_ids = ak.properties.get("dependencies", [])
         if not other_ak_ids:
