@@ -5,7 +5,7 @@ import json
 from dataclasses import asdict
 from itertools import chain, combinations, product
 from pathlib import Path
-from typing import Any, Iterable, Literal, overload
+from typing import Any, Iterable, Literal, cast, overload
 
 from pulp import (
     LpBinary,
@@ -564,7 +564,7 @@ def solve_scheduling(
     solver_name: str | None = None,
     output_lp_file: str | None = "koma-plan.lp",
     **solver_kwargs: dict[str, Any],
-) -> tuple[LpProblem, dict[str, dict[str, dict[str, int]]]]:
+) -> tuple[LpProblem, dict[str, dict[str, dict[str, int | None]]]]:
     """Solve the scheduling problem.
 
     Solves the ILP scheduling problem described by the input data using an ILP
@@ -613,9 +613,14 @@ def solve_scheduling(
             iis_path = iis_path.parent / f"{iis_path.stem}-iis.ilp"
             lp_problem.solverModel.write(str(iis_path))
 
+    def value_processing(value: float | None) -> int | None:
+        if value is None:
+            return None
+        return round(value)
+
     solution = {
         var_key: {
-            ak_id: {id: round(var.value()) for id, var in vars.items()}
+            ak_id: {id: value_processing(var.value()) for id, var in vars.items()}
             for ak_id, vars in vars_dict.items()
         }
         for var_key, vars_dict in dec_vars.items()
@@ -626,7 +631,7 @@ def solve_scheduling(
 
 def process_solved_lp(
     solved_lp_problem: LpProblem,
-    solution: dict[str, dict[str, dict[str, LpVariable]]],
+    solution: dict[str, dict[str, dict[str, int | None]]],
     input_data: SchedulingInput,
 ) -> dict[str, ScheduleAtom] | None:
     """Process the solved LP model and create a schedule output.
@@ -646,9 +651,18 @@ def process_solved_lp(
         LpSolutionNoSolutionFound,
     ]:
         return None
+
+    if any(None in d.values() for dd in solution.values() for d in dd.values()):
+        print(
+            "Warning: some variables are not assigned a value "
+            f"with solution status {solved_lp_problem.sol_status}."
+        )
+        return None
+    cast_solution = cast(dict[str, dict[str, dict[str, int]]], solution)
+
     return export_scheduling_result(
         input_data,
-        solution,
+        cast_solution,
         allow_unscheduled_aks=input_data.config.allow_unscheduled_aks,
     )
 
