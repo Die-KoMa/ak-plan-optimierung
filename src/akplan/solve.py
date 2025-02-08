@@ -146,8 +146,11 @@ def create_lp(
     """
     # Get ids from input_dict
     ak_ids, person_ids, room_ids, timeslot_ids = get_ids(input_data)
-    sorted_timeslot_ids = sorted(timeslot_ids)
-
+    try:
+        sorted_timeslot_ids = sorted(timeslot_ids,key=int)
+    except ValueError as e:
+        raise ValueError("Make sure the timeslot ids can be casted to int otherwise the order cannot be determined.") from e
+    
     block_idx_dict = {
         block_idx: sorted([timeslot.id for timeslot in block])
         for block_idx, block in enumerate(input_data.timeslot_blocks)

@@ -57,7 +57,7 @@
         "blocks": [
             [
                 {
-                    "id": "timeslot0",
+                    "id": "0",
                     "info": {
                         "start": "Freitag 8:00"
                     },
@@ -76,7 +76,7 @@
                     ]
                 },
                 {
-                    "id": "timeslot1",
+                    "id": "1",
                     "info": {
                         "start": "Freitag 9:00"
                     },
@@ -95,7 +95,7 @@
                     ]
                 },
                 {
-                    "id": "timeslot2",
+                    "id": "2",
                     "info": {
                         "start": "Freitag 10:00"
                     },
@@ -113,7 +113,7 @@
                     ]
                 },
                 {
-                    "id": "timeslot3",
+                    "id": "3",
                     "info": {
                         "start": "Freitag 11:00"
                     },
@@ -131,7 +131,7 @@
                     ]
                 },
                 {
-                    "id": "timeslot4",
+                    "id": "4",
                     "info": {
                         "start": "Freitag 12:00"
                     },
@@ -149,7 +149,7 @@
                     ]
                 },
                 {
-                    "id": "timeslot5",
+                    "id": "5",
                     "info": {
                         "start": "Freitag 13:00"
                     },
@@ -167,7 +167,7 @@
                     ]
                 },
                 {
-                    "id": "timeslot6",
+                    "id": "6",
                     "info": {
                         "start": "Freitag 14:00"
                     },
@@ -185,7 +185,7 @@
                     ]
                 },
                 {
-                    "id": "timeslot7",
+                    "id": "7",
                     "info": {
                         "start": "Freitag 15:00"
                     },
@@ -203,7 +203,7 @@
                     ]
                 },
                 {
-                    "id": "timeslot8",
+                    "id": "8",
                     "info": {
                         "start": "Freitag 16:00"
                     },
@@ -221,7 +221,7 @@
                     ]
                 },
                 {
-                    "id": "timeslot9",
+                    "id": "9",
                     "info": {
                         "start": "Freitag 17:00"
                     },
@@ -239,7 +239,7 @@
                     ]
                 },
                 {
-                    "id": "timeslot10",
+                    "id": "10",
                     "info": {
                         "start": "Freitag 18:00"
                     },
@@ -260,7 +260,7 @@
                     ]
                 },
                 {
-                    "id": "timeslot11",
+                    "id": "11",
                     "info": {
                         "start": "Freitag 19:00"
                     },
@@ -282,7 +282,7 @@
                 }
             ],[
                 {
-                    "id": "timeslot12",
+                    "id": "12",
                     "info": {
                         "start": "Samstag 08:00"
                     },
@@ -303,7 +303,7 @@
                     ]
                 },
                 {
-                    "id": "timeslot13",
+                    "id": "13",
                     "info": {
                         "start": "Samstag 09:00"
                     },
@@ -324,7 +324,7 @@
                     ]
                 },
                 {
-                    "id": "timeslot14",
+                    "id": "14",
                     "info": {
                         "start": "Samstag 10:00"
                     },
@@ -344,7 +344,7 @@
                     ]
                 },
                 {
-                    "id": "timeslot15",
+                    "id": "15",
                     "info": {
                         "start": "Samstag 11:00"
                     },
@@ -364,7 +364,7 @@
                     ]
                 },
                 {
-                    "id": "timeslot16",
+                    "id": "16",
                     "info": {
                         "start": "Samstag 12:00"
                     },
@@ -386,7 +386,7 @@
                     ]
                 },
                 {
-                    "id": "timeslot17",
+                    "id": "17",
                     "info": {
                         "start": "Samstag 13:00"
                     },
@@ -408,7 +408,7 @@
                     ]
                 },
                 {
-                    "id": "timeslot18",
+                    "id": "18",
                     "info": {
                         "start": "Samstag 14:00"
                     },
@@ -428,7 +428,7 @@
                     ]
                 },
                 {
-                    "id": "timeslot19",
+                    "id": "19",
                     "info": {
                         "start": "Samstag 15:00"
                     },

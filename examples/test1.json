@@ -39,7 +39,7 @@
         "blocks": [
             [
                 {
-                    "id": "timeslot0",
+                    "id": "0",
                     "info": {
                         "start": "Donnerstag 8:00"
                     },
@@ -53,7 +53,7 @@
                     ]
                 },
                 {
-                    "id": "timeslot1",
+                    "id": "1",
                     "info": {
                         "start": "Donnerstag 10:00"
                     },
@@ -68,7 +68,7 @@
             ],
             [
                 {
-                    "id": "timeslot2",
+                    "id": "2",
                     "info": {
                         "start": "Freitag 14:00"
                     },
@@ -81,7 +81,7 @@
                     ]
                 },
                 {
-                    "id": "timeslot3",
+                    "id": "3",
                     "info": {
                         "start": "Freitag 16:00"
                     },
@@ -96,7 +96,7 @@
             ],
             [
                 {
-                    "id": "timeslot4",
+                    "id": "4",
                     "info": {
                         "start": "Samstag 08:00"
                     },
@@ -109,7 +109,7 @@
                     ]
                 },
                 {
-                    "id": "timeslot5",
+                    "id": "5",
                     "info": {
                         "start": "Samstag 10:00"
                     },
