@@ -34,6 +34,10 @@ def _test_uniqueness(lst) -> tuple[np.ndarray, np.ndarray, bool]:
         "examples/test_20a_40p_4r_5rc_0.25rc-lam_0.json",
         "examples/test_20a_100p_4r_5rc_0.25rc-lam_0.json",
         "examples/test_10a_15p_4r_5rc_0.25rc-lam_0.json",
+        "examples/test_20a_20p_5r_5rc_0.25rc-lam_3confl_3dep_0.json",
+        "examples/test_20a_20p_5r_5rc_0.25rc-lam_5confl_5dep_0.json",
+        "examples/test_20a_20p_5r_5rc_0.25rc-lam_10confl_0.json",
+        "examples/test_20a_20p_5r_5rc_0.25rc-lam_10dep_0.json",
         "examples/test1.json",
         pytest.param(
             "examples/test_30a_20p_3r_5rc_0.25rc-lam_0.json", marks=pytest.mark.slow
