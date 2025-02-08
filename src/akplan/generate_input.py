@@ -2,6 +2,7 @@
 
 import argparse
 import json
+import random
 from collections import defaultdict
 from typing import Any
 
@@ -15,6 +16,8 @@ def generate(
     num_room_constraints: int,
     seed: int,
     room_poisson_mean: float,
+    num_of_conflicts: int,
+    num_of_dependecies: int
 ) -> dict[str, Any]:
     """Generate a test input to test scheduling.
 
@@ -112,7 +115,10 @@ def generate(
         {
             "id": str(ak_idx),
             "duration": int(duration),
-            "properties": {},
+            "properties": {
+                "conflicts": [],
+                "dependencies": []
+            },
             "room_constraints": list(room_constraints),
             "time_constraints": ["ResoAK"] if is_reso_ak else [],
             "info": {
@@ -139,6 +145,20 @@ def generate(
         person_idx: set(rng.choice(num_aks, replace=False, size=num_prefs))
         for person_idx, num_prefs in enumerate(num_preferences_arr)
     }
+
+    # Add AK conflicts and dependencies
+    for _ in range(num_of_conflicts):
+        ak_a = random.randrange(num_aks)
+        ak_b = random.randrange(num_aks)
+        if ak_a != ak_b:
+            aks[ak_a]["properties"]["conflicts"].append(aks[ak_b]["id"])
+
+    # Add AK conflicts and dependencies
+    for _ in range(num_of_dependecies):
+        ak_a = random.randrange(num_aks)
+        ak_b = random.randrange(num_aks)
+        if ak_a != ak_b:
+            aks[ak_a]["properties"]["dependencies"].append(aks[ak_b]["id"])
 
     # 1. Ignore one half of participants
     required_indices = rng.choice(
@@ -197,6 +217,8 @@ if __name__ == "__main__":
     parser.add_argument("--num_room_constraints", type=int, default=2)
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--room_poisson_mean", type=float, default=1)
+    parser.add_argument("--conflicts", type=int, default=0)
+    parser.add_argument("--dependencies", type=int, default=0)
     args = parser.parse_args()
 
     output_dict = generate(
@@ -206,18 +228,23 @@ if __name__ == "__main__":
         num_room_constraints=args.num_room_constraints,
         seed=args.seed,
         room_poisson_mean=args.room_poisson_mean,
+        num_of_conflicts=args.conflicts,
+        num_of_dependecies=args.dependencies
     )
 
-    filename = "_".join(
-        [
+    arg_list = [
             "examples/test",
             f"{args.aks}a",
             f"{args.persons}p",
             f"{args.rooms}r",
             f"{args.num_room_constraints}rc",
             f"{args.room_poisson_mean:.2f}rc-lam",
+            (f"{args.conflicts}confl" if args.conflicts > 0 else ""),
+            (f"{args.dependencies}dep" if args.dependencies > 0 else ""),
             f"{args.seed}.json",
         ]
+    filename = "_".join(
+        [ x for x in arg_list if x ]
     )
 
     with open(filename, "w") as output_file:
