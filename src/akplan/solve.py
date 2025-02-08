@@ -457,7 +457,7 @@ def create_lp(
     # AK conflicts
     conflict_pairs: set[tuple[str, str]] = set()
     for ak in input_data.aks:
-        other_ak_ids: list[str] = ak.properties.get("conflicts", [])
+        other_ak_ids: list[str] = ak.properties.get("conflicts", []) + ak.properties.get("dependencies", [])
         conflict_pairs.update(
             [
                 (ak.id, other_ak_id) if ak.id < other_ak_id else (other_ak_id, ak.id)
@@ -474,21 +474,17 @@ def create_lp(
     # AK dependencies
     for ak in input_data.aks:
         other_ak_ids = ak.properties.get("dependencies", [])
-        if not other_ak_ids:
-            continue
-        for idx, timeslot_id in enumerate(sorted_timeslot_ids):
+        for other_ak_id, (idx, timeslot_id) in product(other_ak_ids, enumerate(sorted_timeslot_ids)):
             constraint_sum = lpSum(
                 [
-                    time_var[ak_dependency][succ_timeslot_id]
-                    for ak_dependency, succ_timeslot_id in product(
-                        other_ak_ids, sorted_timeslot_ids[idx:]
-                    )
+                    time_var[ak.id][succ_timeslot_id]
+                    for succ_timeslot_id in sorted_timeslot_ids[idx:]
                 ]
             )
-            constraint = constraint_sum <= time_var[ak.id][timeslot_id]
+            constraint = time_var[other_ak_id][timeslot_id] <= constraint_sum
 
             prob += constraint, _construct_constraint_name(
-                "AKDependenciesDoneBeforeAK", ak.id, timeslot_id
+                "AKDependenciesDoneBeforeAK", ak.id, timeslot_id, other_ak_id
             )
 
     # Fix Values for already scheduled aks
