@@ -23,11 +23,14 @@ from pulp import (
 
 from .util import (
     AKData,
+    PartialSolvedVarDict,
     ParticipantData,
     RoomData,
     ScheduleAtom,
     SchedulingInput,
+    SolvedVarDict,
     TimeSlotData,
+    VarDict,
 )
 
 
@@ -118,7 +121,7 @@ def get_ak_name(input_data: SchedulingInput, ak_id: int) -> str:
 def create_lp(
     input_data: SchedulingInput,
     output_file: str | None = "koma-plan.lp",
-) -> tuple[LpProblem, dict[str, dict[int, dict[int, LpVariable]]]]:
+) -> tuple[LpProblem, dict[str, VarDict]]:
     """Create the MILP problem as pulp object.
 
     Creates the problem with all constraints, preferences and the objective function.
@@ -236,21 +239,17 @@ def create_lp(
     prob = LpProblem("MLPKoMa", sense=LpMaximize)
 
     # Create decision variables
-    room_var: dict[int, dict[int, LpVariable]] = LpVariable.dicts(
-        "Room", (ak_ids, room_ids), cat=LpBinary
-    )
-    time_var: dict[int, dict[int, LpVariable]] = LpVariable.dicts(
+    room_var: VarDict = LpVariable.dicts("Room", (ak_ids, room_ids), cat=LpBinary)
+    time_var: VarDict = LpVariable.dicts(
         "Time",
         (ak_ids, timeslot_ids),
         cat=LpBinary,
     )
-    block_var: dict[int, dict[int, LpVariable]] = LpVariable.dicts(
+    block_var: VarDict = LpVariable.dicts(
         "Block", (ak_ids, block_idx_dict.keys()), cat=LpBinary
     )
-    person_var: dict[int, dict[int, LpVariable]] = LpVariable.dicts(
-        "Part", (ak_ids, person_ids), cat=LpBinary
-    )
-    person_time_var: dict[int, dict[int, LpVariable]] = LpVariable.dicts(
+    person_var: VarDict = LpVariable.dicts("Part", (ak_ids, person_ids), cat=LpBinary)
+    person_time_var: VarDict = LpVariable.dicts(
         "Working",
         (person_ids, timeslot_ids),
         cat=LpBinary,
@@ -522,7 +521,7 @@ def create_lp(
 
 def export_scheduling_result(
     input_data: SchedulingInput,
-    solution: dict[str, dict[int, dict[int, int]]],
+    solution: dict[str, SolvedVarDict],
     allow_unscheduled_aks: bool = False,
 ) -> dict[int, ScheduleAtom]:
     """Create a dictionary from the solved MILP.
@@ -596,7 +595,7 @@ def solve_scheduling(
     solver_name: str | None = None,
     output_lp_file: str | None = "koma-plan.lp",
     **solver_kwargs: dict[str, Any],
-) -> tuple[LpProblem, dict[str, dict[int, dict[int, int | None]]]]:
+) -> tuple[LpProblem, dict[str, PartialSolvedVarDict]]:
     """Solve the scheduling problem.
 
     Solves the ILP scheduling problem described by the input data using an ILP
@@ -661,9 +660,22 @@ def solve_scheduling(
     return (lp_problem, solution)
 
 
+def _check_for_partial_solve(
+    solution: dict[str, PartialSolvedVarDict],
+    solved_lp_problem: LpProblem,
+) -> dict[str, SolvedVarDict] | None:
+    if any(None in d.values() for dd in solution.values() for d in dd.values()):
+        print(
+            "Warning: some variables are not assigned a value "
+            f"with solution status {solved_lp_problem.sol_status}."
+        )
+        return None
+    return cast(dict[str, SolvedVarDict], solution)
+
+
 def process_solved_lp(
     solved_lp_problem: LpProblem,
-    solution: dict[str, dict[int, dict[int, int | None]]],
+    solution: dict[str, PartialSolvedVarDict],
     input_data: SchedulingInput,
 ) -> dict[int, ScheduleAtom] | None:
     """Process the solved LP model and create a schedule output.
@@ -684,17 +696,13 @@ def process_solved_lp(
     ]:
         return None
 
-    if any(None in d.values() for dd in solution.values() for d in dd.values()):
-        print(
-            "Warning: some variables are not assigned a value "
-            f"with solution status {solved_lp_problem.sol_status}."
-        )
+    checked_solution = _check_for_partial_solve(solution, solved_lp_problem)
+    if checked_solution is None:
         return None
-    cast_solution = cast(dict[str, dict[int, dict[int, int]]], solution)
 
     return export_scheduling_result(
         input_data,
-        cast_solution,
+        checked_solution,
         allow_unscheduled_aks=input_data.config.allow_unscheduled_aks,
     )
 

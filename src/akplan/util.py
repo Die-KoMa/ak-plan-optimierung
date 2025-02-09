@@ -6,6 +6,11 @@ from dataclasses import asdict, dataclass
 from typing import Any
 
 from dacite import from_dict
+from pulp import LpVariable
+
+VarDict = dict[int, dict[int, LpVariable]]
+PartialSolvedVarDict = dict[int, dict[int, int | None]]
+SolvedVarDict = dict[int, dict[int, int]]
 
 
 @dataclass(frozen=True)
