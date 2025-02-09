@@ -147,10 +147,12 @@ def create_lp(
     # Get ids from input_dict
     ak_ids, person_ids, room_ids, timeslot_ids = get_ids(input_data)
     try:
-        sorted_timeslot_ids = sorted(timeslot_ids,key=int)
+        sorted_timeslot_ids = sorted(timeslot_ids, key=int)
     except ValueError as e:
-        raise ValueError("Make sure the timeslot ids can be casted to int otherwise the order cannot be determined.") from e
-    
+        raise ValueError(
+            "Make sure the timeslot ids can be casted to int otherwise the order cannot be determined."
+        ) from e
+
     block_idx_dict = {
         block_idx: sorted([timeslot.id for timeslot in block])
         for block_idx, block in enumerate(input_data.timeslot_blocks)
@@ -460,7 +462,9 @@ def create_lp(
     # AK conflicts
     conflict_pairs: set[tuple[str, str]] = set()
     for ak in input_data.aks:
-        other_ak_ids: list[str] = ak.properties.get("conflicts", []) + ak.properties.get("dependencies", [])
+        other_ak_ids: list[str] = ak.properties.get(
+            "conflicts", []
+        ) + ak.properties.get("dependencies", [])
         conflict_pairs.update(
             [
                 (ak.id, other_ak_id) if ak.id < other_ak_id else (other_ak_id, ak.id)
@@ -477,7 +481,9 @@ def create_lp(
     # AK dependencies
     for ak in input_data.aks:
         other_ak_ids = ak.properties.get("dependencies", [])
-        for other_ak_id, (idx, timeslot_id) in product(other_ak_ids, enumerate(sorted_timeslot_ids)):
+        for other_ak_id, (idx, timeslot_id) in product(
+            other_ak_ids, enumerate(sorted_timeslot_ids)
+        ):
             constraint_sum = lpSum(
                 [
                     time_var[ak.id][succ_timeslot_id]

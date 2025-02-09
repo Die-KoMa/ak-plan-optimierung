@@ -17,7 +17,7 @@ def generate(
     seed: int,
     room_poisson_mean: float,
     num_of_conflicts: int,
-    num_of_dependecies: int
+    num_of_dependecies: int,
 ) -> dict[str, Any]:
     """Generate a test input to test scheduling.
 
@@ -115,10 +115,7 @@ def generate(
         {
             "id": str(ak_idx),
             "duration": int(duration),
-            "properties": {
-                "conflicts": [],
-                "dependencies": []
-            },
+            "properties": {"conflicts": [], "dependencies": []},
             "room_constraints": list(room_constraints),
             "time_constraints": ["ResoAK"] if is_reso_ak else [],
             "info": {
@@ -229,23 +226,21 @@ if __name__ == "__main__":
         seed=args.seed,
         room_poisson_mean=args.room_poisson_mean,
         num_of_conflicts=args.conflicts,
-        num_of_dependecies=args.dependencies
+        num_of_dependecies=args.dependencies,
     )
 
     arg_list = [
-            "examples/test",
-            f"{args.aks}a",
-            f"{args.persons}p",
-            f"{args.rooms}r",
-            f"{args.num_room_constraints}rc",
-            f"{args.room_poisson_mean:.2f}rc-lam",
-            (f"{args.conflicts}confl" if args.conflicts > 0 else ""),
-            (f"{args.dependencies}dep" if args.dependencies > 0 else ""),
-            f"{args.seed}.json",
-        ]
-    filename = "_".join(
-        [ x for x in arg_list if x ]
-    )
+        "examples/test",
+        f"{args.aks}a",
+        f"{args.persons}p",
+        f"{args.rooms}r",
+        f"{args.num_room_constraints}rc",
+        f"{args.room_poisson_mean:.2f}rc-lam",
+        (f"{args.conflicts}confl" if args.conflicts > 0 else ""),
+        (f"{args.dependencies}dep" if args.dependencies > 0 else ""),
+        f"{args.seed}.json",
+    ]
+    filename = "_".join([x for x in arg_list if x])
 
     with open(filename, "w") as output_file:
         json.dump(output_dict, output_file, indent=4)
