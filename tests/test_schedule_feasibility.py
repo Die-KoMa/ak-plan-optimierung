@@ -283,7 +283,7 @@ def test_required(scheduled_aks, participant_dict: dict[str, ParticipantData]) -
 
 
 def test_conflicts(scheduled_aks, ak_dict) -> None:
-    """Test that conflicting AKs are not overlapping"""
+    """Test that conflicting AKs are not overlapping."""
     for ak_id, ak in ak_dict.items():
         for conflicting_ak in ak.properties.get("conflicts", []):
             ak_timeslots = scheduled_aks[ak_id].timeslot_ids
@@ -292,13 +292,11 @@ def test_conflicts(scheduled_aks, ak_dict) -> None:
 
 
 def test_dependencies(scheduled_aks, ak_dict: dict[str, AKData]) -> None:
-    """Test that conflicting AKs are not overlapping"""
+    """Test that AKs do not overlap their dependencies."""
     for ak_id, ak in ak_dict.items():
         for dependent_ak in ak.properties.get("dependencies", []):
             ak_timeslots = scheduled_aks[ak_id].timeslot_ids
             dependent_ak_timeslots = scheduled_aks[dependent_ak].timeslot_ids
-            print(ak_id, ak_timeslots)
-            print(dependent_ak, dependent_ak_timeslots)
             assert max(map(int, dependent_ak_timeslots)) < min(map(int, ak_timeslots))
 
 

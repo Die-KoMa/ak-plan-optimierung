@@ -17,7 +17,7 @@ def generate(
     seed: int,
     room_poisson_mean: float,
     num_of_conflicts: int,
-    num_of_dependecies: int,
+    num_of_dependencies: int,
 ) -> dict[str, Any]:
     """Generate a test input to test scheduling.
 
@@ -32,6 +32,10 @@ def generate(
         seed (int): The seed to make the generation reproducible.
         room_poisson_mean (float): The number of room constraints a AK requests is
             modelled with a Poisson distribution with this mean.
+        num_of_conflicts (int): Number of randomly sampled AK conflicts to
+            generate.
+        num_of_dependencies (int): Number of randomly sampled AK dependencies to
+            generate.
 
     Returns:
         dict: The generated test input as a dict. For a format
@@ -151,7 +155,7 @@ def generate(
             aks[ak_a]["properties"]["conflicts"].append(aks[ak_b]["id"])
 
     # Add AK conflicts and dependencies
-    for _ in range(num_of_dependecies):
+    for _ in range(num_of_dependencies):
         ak_a = random.randrange(num_aks)
         ak_b = random.randrange(num_aks)
         if ak_a != ak_b:
@@ -226,7 +230,7 @@ if __name__ == "__main__":
         seed=args.seed,
         room_poisson_mean=args.room_poisson_mean,
         num_of_conflicts=args.conflicts,
-        num_of_dependecies=args.dependencies,
+        num_of_dependencies=args.dependencies,
     )
 
     arg_list = [
