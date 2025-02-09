@@ -4,7 +4,7 @@ import argparse
 import json
 import random
 from collections import defaultdict
-from typing import Any
+from typing import Any, cast
 
 import numpy as np
 
@@ -152,14 +152,16 @@ def generate(
         ak_a = random.randrange(num_aks)
         ak_b = random.randrange(num_aks)
         if ak_a != ak_b:
-            aks[ak_a]["properties"]["conflicts"].append(aks[ak_b]["id"])
+            properties_dict = cast(dict[str, list[Any]], aks[ak_a]["properties"])
+            properties_dict["conflicts"].append(aks[ak_b]["id"])
 
     # Add AK conflicts and dependencies
     for _ in range(num_of_dependencies):
         ak_a = random.randrange(num_aks)
         ak_b = random.randrange(num_aks)
         if ak_a != ak_b:
-            aks[ak_a]["properties"]["dependencies"].append(aks[ak_b]["id"])
+            properties_dict = cast(dict[str, list[Any]], aks[ak_a]["properties"])
+            properties_dict["dependencies"].append(aks[ak_b]["id"])
 
     # 1. Ignore one half of participants
     required_indices = rng.choice(
