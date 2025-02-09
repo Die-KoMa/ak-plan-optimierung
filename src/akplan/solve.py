@@ -663,13 +663,13 @@ def solve_scheduling(
 def _check_for_partial_solve(
     solution: dict[str, PartialSolvedVarDict],
     solved_lp_problem: LpProblem,
-) -> dict[str, SolvedVarDict] | None:
+) -> dict[str, SolvedVarDict]:
     if any(None in d.values() for dd in solution.values() for d in dd.values()):
         print(
             "Warning: some variables are not assigned a value "
             f"with solution status {solved_lp_problem.sol_status}."
         )
-        return None
+        raise ValueError
     return cast(dict[str, SolvedVarDict], solution)
 
 
@@ -696,8 +696,9 @@ def process_solved_lp(
     ]:
         return None
 
-    checked_solution = _check_for_partial_solve(solution, solved_lp_problem)
-    if checked_solution is None:
+    try:
+        checked_solution = _check_for_partial_solve(solution, solved_lp_problem)
+    except ValueError:
         return None
 
     return export_scheduling_result(
