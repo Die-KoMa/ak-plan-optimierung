@@ -23,11 +23,14 @@ from pulp import (
 
 from .util import (
     AKData,
+    PartialSolvedVarDict,
     ParticipantData,
     RoomData,
     ScheduleAtom,
     SchedulingInput,
+    SolvedVarDict,
     TimeSlotData,
+    VarDict,
 )
 
 
@@ -84,18 +87,18 @@ def process_room_cap(room_capacity: int, num_participants: int) -> int:
     return room_capacity
 
 
-def _construct_constraint_name(name: str, *args: str) -> str:
-    return name + "_" + "_".join(args)
+def _construct_constraint_name(name: str, *args: Any) -> str:
+    return name + "_" + "_".join(map(str, args))
 
 
 def get_ids(
     input_data: SchedulingInput,
-) -> tuple[set[str], set[str], set[str], set[str]]:
+) -> tuple[set[int], set[int], set[int], set[int]]:
     """Create id sets from scheduling input."""
 
     def _retrieve_ids(
         input_iterable: Iterable[AKData | ParticipantData | RoomData | TimeSlotData],
-    ) -> set[str]:
+    ) -> set[int]:
         return {obj.id for obj in input_iterable}
 
     ak_ids = _retrieve_ids(input_data.aks)
@@ -105,7 +108,7 @@ def get_ids(
     return ak_ids, participant_ids, room_ids, timeslot_ids
 
 
-def get_ak_name(input_data: SchedulingInput, ak_id: str) -> str:
+def get_ak_name(input_data: SchedulingInput, ak_id: int) -> str:
     """Get name string for an AK."""
     ak_names = [
         ak.info["name"]
@@ -118,7 +121,7 @@ def get_ak_name(input_data: SchedulingInput, ak_id: str) -> str:
 def create_lp(
     input_data: SchedulingInput,
     output_file: str | None = "koma-plan.lp",
-) -> tuple[LpProblem, dict[str, dict[str, dict[str, LpVariable]]]]:
+) -> tuple[LpProblem, dict[str, VarDict]]:
     """Create the MILP problem as pulp object.
 
     Creates the problem with all constraints, preferences and the objective function.
@@ -146,14 +149,10 @@ def create_lp(
     """
     # Get ids from input_dict
     ak_ids, person_ids, room_ids, timeslot_ids = get_ids(input_data)
+    sorted_timeslot_ids = sorted(timeslot_ids)
 
-    timeslot_idx_dict = {
-        timeslot.id: timeslot_idx
-        for block in input_data.timeslot_blocks
-        for timeslot_idx, timeslot in enumerate(block)
-    }
     block_idx_dict = {
-        block_idx: [timeslot.id for timeslot in block]
+        block_idx: sorted([timeslot.id for timeslot in block])
         for block_idx, block in enumerate(input_data.timeslot_blocks)
     }
     # Get values needed from the input_dict
@@ -231,21 +230,17 @@ def create_lp(
     prob = LpProblem("MLPKoMa", sense=LpMaximize)
 
     # Create decision variables
-    room_var: dict[str, dict[str, LpVariable]] = LpVariable.dicts(
-        "Room", (ak_ids, room_ids), cat=LpBinary
-    )
-    time_var: dict[str, dict[str, LpVariable]] = LpVariable.dicts(
+    room_var: VarDict = LpVariable.dicts("Room", (ak_ids, room_ids), cat=LpBinary)
+    time_var: VarDict = LpVariable.dicts(
         "Time",
         (ak_ids, timeslot_ids),
         cat=LpBinary,
     )
-    block_var: dict[str, dict[int, LpVariable]] = LpVariable.dicts(
+    block_var: VarDict = LpVariable.dicts(
         "Block", (ak_ids, block_idx_dict.keys()), cat=LpBinary
     )
-    person_var: dict[str, dict[str, LpVariable]] = LpVariable.dicts(
-        "Part", (ak_ids, person_ids), cat=LpBinary
-    )
-    person_time_var: dict[str, dict[str, LpVariable]] = LpVariable.dicts(
+    person_var: VarDict = LpVariable.dicts("Part", (ak_ids, person_ids), cat=LpBinary)
+    person_time_var: VarDict = LpVariable.dicts(
         "Working",
         (person_ids, timeslot_ids),
         cat=LpBinary,
@@ -304,30 +299,23 @@ def create_lp(
 
     for ak_id in ak_ids:
         # AKDurations
-        prob += lpSum(
-            [time_var[ak_id][timeslot_id] for timeslot_id in timeslot_ids]
-        ) >= ak_durations[ak_id], _construct_constraint_name("AKDuration", ak_id)
+        constraint = lpSum(time_var[ak_id].values()) >= ak_durations[ak_id]
+        prob += constraint, _construct_constraint_name("AKDuration", ak_id)
+
         # AKSingleBlock
-        prob += lpSum(
-            [block_var[ak_id][block_id] for block_id in block_idx_dict]
-        ) <= 1, _construct_constraint_name("AKSingleBlock", ak_id)
+        constraint = lpSum(block_var[ak_id].values()) <= 1
+        prob += constraint, _construct_constraint_name("AKSingleBlock", ak_id)
         for block_id, block in block_idx_dict.items():
-            prob += lpSum(
+            constraint_sum = lpSum(
                 [time_var[ak_id][timeslot_id] for timeslot_id in block]
-            ) <= ak_durations[ak_id] * block_var[ak_id][
-                block_id
-            ], _construct_constraint_name(
-                "AKSingleBlock", ak_id, str(block_id)
+            )
+            prob += (
+                constraint_sum <= ak_durations[ak_id] * block_var[ak_id][block_id],
+                _construct_constraint_name("AKSingleBlock", ak_id, str(block_id)),
             )
             # AKContiguous
-            for timeslot_id_a, timeslot_id_b in combinations(block, 2):
-                if (
-                    abs(
-                        timeslot_idx_dict[timeslot_id_a]
-                        - timeslot_idx_dict[timeslot_id_b]
-                    )
-                    >= ak_durations[ak_id]
-                ):
+            for timeslot_idx, timeslot_id_a in enumerate(block):
+                for timeslot_id_b in block[timeslot_idx + ak_durations[ak_id] :]:
                     prob += lpSum(
                         [time_var[ak_id][timeslot_id_a], time_var[ak_id][timeslot_id_b]]
                     ) <= 1, _construct_constraint_name(
@@ -341,28 +329,22 @@ def create_lp(
     # Roomsizes
     for room_id, ak_id in product(room_ids, ak_ids):
         if ak_num_interested[ak_id] > room_capacities[room_id]:
-            prob += lpSum(
-                [person_var[ak_id][person_id] for person_id in person_ids]
-            ) + ak_num_interested[ak_id] * room_var[ak_id][
-                room_id
-            ] <= ak_num_interested[
-                ak_id
-            ] + room_capacities[
-                room_id
-            ], _construct_constraint_name(
-                "Roomsize", room_id, ak_id
+            constraint_sum = lpSum(person_var[ak_id].values())
+            constraint_sum += ak_num_interested[ak_id] * room_var[ak_id][room_id]
+            constraint = (
+                constraint_sum <= ak_num_interested[ak_id] + room_capacities[room_id]
             )
+            prob += constraint, _construct_constraint_name("Roomsize", room_id, ak_id)
     for ak_id in ak_ids:
-        prob += lpSum(
-            [room_var[ak_id][room_id] for room_id in room_ids]
-        ) <= 1, _construct_constraint_name("AtMostOneRoomPerAK", ak_id, room_id)
-        prob += lpSum(
-            [room_var[ak_id][room_id] for room_id in room_ids]
-        ) >= 1, _construct_constraint_name("AtLeastOneRoomPerAK", ak_id, room_id)
+        prob += lpSum(room_var[ak_id].values()) <= 1, _construct_constraint_name(
+            "AtMostOneRoomPerAK", ak_id, room_id
+        )
+        prob += lpSum(room_var[ak_id].values()) >= 1, _construct_constraint_name(
+            "AtLeastOneRoomPerAK", ak_id, room_id
+        )
         # We need this constraint so the Roomsize is correct
-        prob += lpSum(
-            [person_var[ak_id][person_id] for person_id in person_ids]
-        ) <= ak_num_interested[ak_id], _construct_constraint_name(
+        constraint_sum = lpSum(person_var[ak_id].values())
+        prob += constraint_sum <= ak_num_interested[ak_id], _construct_constraint_name(
             "NotMorePeopleThanInterested", ak_id
         )
 
@@ -383,15 +365,17 @@ def create_lp(
         # Real person P cannot attend AKs with timeslot Z
         for timeslot_id in timeslot_ids:
             for ak_id in ak_ids:
-                prob += lpSum(
+                constraint_sum = lpSum(
                     [time_var[ak_id][timeslot_id], person_var[ak_id][person_id]]
-                ) <= person_time_var[person_id][
-                    timeslot_id
-                ] + 1, _construct_constraint_name(
-                    "TimePersonVar",
-                    person_id,
-                    timeslot_id,
-                    ak_id,
+                )
+                prob += (
+                    constraint_sum <= person_time_var[person_id][timeslot_id] + 1,
+                    _construct_constraint_name(
+                        "TimePersonVar",
+                        person_id,
+                        timeslot_id,
+                        ak_id,
+                    ),
                 )
             if participant_time_constraint_dict[person_id].difference(
                 fulfilled_time_constraints[timeslot_id]
@@ -406,9 +390,10 @@ def create_lp(
                 fulfilled_room_constraints[room_id]
             ):
                 for ak_id in ak_ids:
-                    prob += lpSum(
+                    constraint_sum = lpSum(
                         [room_var[ak_id][room_id], person_var[ak_id][person_id]]
-                    ) <= 1, _construct_constraint_name(
+                    )
+                    prob += constraint_sum <= 1, _construct_constraint_name(
                         "RoomImpossibleForPerson", person_id, room_id, ak_id
                     )
 
@@ -468,6 +453,42 @@ def create_lp(
                     "TimeImpossibleForRoom", room_id, timeslot_id, ak_id
                 )
 
+    # AK conflicts
+    conflict_pairs: set[tuple[int, int]] = set()
+    for ak in input_data.aks:
+        other_ak_ids: list[int] = ak.properties.get("conflicts", [])
+        other_ak_ids += ak.properties.get("dependencies", [])
+        conflict_pairs.update(
+            [
+                (ak.id, other_ak_id) if ak.id < other_ak_id else (other_ak_id, ak.id)
+                for other_ak_id in other_ak_ids
+            ]
+        )
+
+    for timeslot_id, (ak_a, ak_b) in product(timeslot_ids, conflict_pairs):
+        prob += (
+            lpSum([time_var[ak_a][timeslot_id], time_var[ak_b][timeslot_id]]) <= 1,
+            _construct_constraint_name("AKConflict", ak_a, ak_b, timeslot_id),
+        )
+
+    # AK dependencies
+    for ak in input_data.aks:
+        other_ak_ids = ak.properties.get("dependencies", [])
+        for other_ak_id, (idx, timeslot_id) in product(
+            other_ak_ids, enumerate(sorted_timeslot_ids)
+        ):
+            constraint_sum = lpSum(
+                [
+                    time_var[ak.id][succ_timeslot_id]
+                    for succ_timeslot_id in sorted_timeslot_ids[idx:]
+                ]
+            )
+            constraint = time_var[other_ak_id][timeslot_id] <= constraint_sum
+
+            prob += constraint, _construct_constraint_name(
+                "AKDependenciesDoneBeforeAK", ak.id, timeslot_id, other_ak_id
+            )
+
     # Fix Values for already scheduled aks
     for scheduled_ak in input_data.scheduled_aks:
         if scheduled_ak.room_id is not None:
@@ -490,9 +511,9 @@ def create_lp(
 
 def export_scheduling_result(
     input_data: SchedulingInput,
-    solution: dict[str, dict[str, dict[str, int]]],
+    solution: dict[str, SolvedVarDict],
     allow_unscheduled_aks: bool = False,
-) -> dict[str, ScheduleAtom]:
+) -> dict[int, ScheduleAtom]:
     """Create a dictionary from the solved MILP.
 
     For a specification of the output format, see
@@ -512,29 +533,29 @@ def export_scheduling_result(
 
     @overload
     def _get_id(
-        ak_id: str, var_key: str, allow_multiple: Literal[True], allow_none: bool
-    ) -> list[str]: ...
+        ak_id: int, var_key: str, allow_multiple: Literal[True], allow_none: bool
+    ) -> list[int]: ...
 
     @overload
     def _get_id(
-        ak_id: str, var_key: str, allow_multiple: Literal[False], allow_none: bool
-    ) -> str | None: ...
+        ak_id: int, var_key: str, allow_multiple: Literal[False], allow_none: bool
+    ) -> int | None: ...
 
     def _get_id(
-        ak_id: str, var_key: str, allow_multiple: bool, allow_none: bool
-    ) -> str | list[str] | None:
+        ak_id: int, var_key: str, allow_multiple: bool, allow_none: bool
+    ) -> int | list[int] | None:
         matched_ids = [id for id, val in solution[var_key][ak_id].items() if val > 0]
         if not allow_multiple and len(matched_ids) > 1:
             raise ValueError(f"AK {ak_id} is assigned multiple {var_key}")
         elif len(matched_ids) == 0 and not allow_none:
-            raise ValueError(f"no room assigned to ak {ak_id}")
+            raise ValueError(f"no {var_key} assigned to ak {ak_id}")
         else:
             if allow_multiple:
                 return matched_ids
             else:
                 return matched_ids[0] if len(matched_ids) > 0 else None
 
-    scheduled_ak_dict: dict[str, ScheduleAtom] = {
+    scheduled_ak_dict: dict[int, ScheduleAtom] = {
         ak_id: ScheduleAtom(
             ak_id=ak_id,
             room_id=_get_id(
@@ -564,7 +585,7 @@ def solve_scheduling(
     solver_name: str | None = None,
     output_lp_file: str | None = "koma-plan.lp",
     **solver_kwargs: dict[str, Any],
-) -> tuple[LpProblem, dict[str, dict[str, dict[str, int | None]]]]:
+) -> tuple[LpProblem, dict[str, PartialSolvedVarDict]]:
     """Solve the scheduling problem.
 
     Solves the ILP scheduling problem described by the input data using an ILP
@@ -629,11 +650,24 @@ def solve_scheduling(
     return (lp_problem, solution)
 
 
+def _check_for_partial_solve(
+    solution: dict[str, PartialSolvedVarDict],
+    solved_lp_problem: LpProblem,
+) -> dict[str, SolvedVarDict]:
+    if any(None in d.values() for dd in solution.values() for d in dd.values()):
+        print(
+            "Warning: some variables are not assigned a value "
+            f"with solution status {solved_lp_problem.sol_status}."
+        )
+        raise ValueError
+    return cast(dict[str, SolvedVarDict], solution)
+
+
 def process_solved_lp(
     solved_lp_problem: LpProblem,
-    solution: dict[str, dict[str, dict[str, int | None]]],
+    solution: dict[str, PartialSolvedVarDict],
     input_data: SchedulingInput,
-) -> dict[str, ScheduleAtom] | None:
+) -> dict[int, ScheduleAtom] | None:
     """Process the solved LP model and create a schedule output.
 
     Args:
@@ -652,17 +686,14 @@ def process_solved_lp(
     ]:
         return None
 
-    if any(None in d.values() for dd in solution.values() for d in dd.values()):
-        print(
-            "Warning: some variables are not assigned a value "
-            f"with solution status {solved_lp_problem.sol_status}."
-        )
+    try:
+        checked_solution = _check_for_partial_solve(solution, solved_lp_problem)
+    except ValueError:
         return None
-    cast_solution = cast(dict[str, dict[str, dict[str, int]]], solution)
 
     return export_scheduling_result(
         input_data,
-        cast_solution,
+        checked_solution,
         allow_unscheduled_aks=input_data.config.allow_unscheduled_aks,
     )
 

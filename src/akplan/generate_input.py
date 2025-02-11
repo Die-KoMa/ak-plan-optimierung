@@ -3,7 +3,7 @@
 import argparse
 import json
 from collections import defaultdict
-from typing import Any
+from typing import Any, cast
 
 import numpy as np
 
@@ -15,6 +15,8 @@ def generate(
     num_room_constraints: int,
     seed: int,
     room_poisson_mean: float,
+    num_of_conflicts: int,
+    num_of_dependencies: int,
 ) -> dict[str, Any]:
     """Generate a test input to test scheduling.
 
@@ -29,6 +31,10 @@ def generate(
         seed (int): The seed to make the generation reproducible.
         room_poisson_mean (float): The number of room constraints a AK requests is
             modelled with a Poisson distribution with this mean.
+        num_of_conflicts (int): Number of randomly sampled AK conflicts to
+            generate.
+        num_of_dependencies (int): Number of randomly sampled AK dependencies to
+            generate.
 
     Returns:
         dict: The generated test input as a dict. For a format
@@ -58,7 +64,7 @@ def generate(
         list_of_time_blocks.append(
             [
                 {
-                    "id": str(global_timeslot_cnt + slot_idx),
+                    "id": global_timeslot_cnt + slot_idx,
                     "info": {"start": f"{block_label}, {8 + slot_idx} Uhr"},
                     "fulfilled_time_constraints": list(fulfilled_time_constraints),
                 }
@@ -78,7 +84,7 @@ def generate(
     # create rooms:
     rooms = [
         {
-            "id": str(room_idx),
+            "id": room_idx,
             "info": {"name": f"room {room_idx}"},
             "capacity": int(rng.integers(low=10, high=51)),
             "fulfilled_room_constraints": list(
@@ -110,9 +116,9 @@ def generate(
 
     aks = [
         {
-            "id": str(ak_idx),
+            "id": ak_idx,
             "duration": int(duration),
-            "properties": {},
+            "properties": {"conflicts": [], "dependencies": []},
             "room_constraints": list(room_constraints),
             "time_constraints": ["ResoAK"] if is_reso_ak else [],
             "info": {
@@ -140,6 +146,18 @@ def generate(
         for person_idx, num_prefs in enumerate(num_preferences_arr)
     }
 
+    # Add AK conflicts and dependencies
+    for _ in range(num_of_conflicts):
+        ak_a, ak_b = rng.choice(num_aks, size=2, replace=False)
+        properties_dict = cast(dict[str, list[Any]], aks[ak_a]["properties"])
+        properties_dict["conflicts"].append(aks[ak_b]["id"])
+
+    # Add AK conflicts and dependencies
+    for _ in range(num_of_dependencies):
+        ak_a, ak_b = rng.choice(num_aks, size=2, replace=False)
+        properties_dict = cast(dict[str, list[Any]], aks[ak_a]["properties"])
+        properties_dict["dependencies"].append(aks[ak_b]["id"])
+
     # 1. Ignore one half of participants
     required_indices = rng.choice(
         num_persons, size=round(0.5 * num_persons), replace=False
@@ -163,11 +181,11 @@ def generate(
     # TODO: Generate room & time constraints
     participants = [
         {
-            "id": str(person_idx),
+            "id": person_idx,
             "info": {"name": f"Person {person_idx}"},
             "preferences": [
                 {
-                    "ak_id": str(ak_idx),
+                    "ak_id": ak_idx,
                     "required": bool(ak_idx in required_aks[person_idx]),
                     "preference_score": _calc_preferred_score(person_idx, ak_idx),
                 }
@@ -197,6 +215,8 @@ if __name__ == "__main__":
     parser.add_argument("--num_room_constraints", type=int, default=2)
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--room_poisson_mean", type=float, default=1)
+    parser.add_argument("--conflicts", type=int, default=0)
+    parser.add_argument("--dependencies", type=int, default=0)
     args = parser.parse_args()
 
     output_dict = generate(
@@ -206,19 +226,22 @@ if __name__ == "__main__":
         num_room_constraints=args.num_room_constraints,
         seed=args.seed,
         room_poisson_mean=args.room_poisson_mean,
+        num_of_conflicts=args.conflicts,
+        num_of_dependencies=args.dependencies,
     )
 
-    filename = "_".join(
-        [
-            "examples/test",
-            f"{args.aks}a",
-            f"{args.persons}p",
-            f"{args.rooms}r",
-            f"{args.num_room_constraints}rc",
-            f"{args.room_poisson_mean:.2f}rc-lam",
-            f"{args.seed}.json",
-        ]
-    )
+    arg_list = [
+        "examples/test",
+        f"{args.aks}a",
+        f"{args.persons}p",
+        f"{args.rooms}r",
+        f"{args.num_room_constraints}rc",
+        f"{args.room_poisson_mean:.2f}rc-lam",
+        (f"{args.conflicts}confl" if args.conflicts > 0 else ""),
+        (f"{args.dependencies}dep" if args.dependencies > 0 else ""),
+        f"{args.seed}.json",
+    ]
+    filename = "_".join([x for x in arg_list if x])
 
     with open(filename, "w") as output_file:
         json.dump(output_dict, output_file, indent=4)

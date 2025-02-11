@@ -34,6 +34,10 @@ def _test_uniqueness(lst) -> tuple[np.ndarray, np.ndarray, bool]:
         "examples/test_20a_40p_4r_5rc_0.25rc-lam_0.json",
         "examples/test_20a_100p_4r_5rc_0.25rc-lam_0.json",
         "examples/test_10a_15p_4r_5rc_0.25rc-lam_0.json",
+        "examples/test_20a_20p_5r_5rc_0.25rc-lam_3confl_3dep_0.json",
+        "examples/test_20a_20p_5r_5rc_0.25rc-lam_5confl_5dep_0.json",
+        "examples/test_20a_20p_5r_5rc_0.25rc-lam_10confl_0.json",
+        "examples/test_20a_20p_5r_5rc_0.25rc-lam_10dep_0.json",
         "examples/test1.json",
         pytest.param(
             "examples/test_30a_20p_3r_5rc_0.25rc-lam_0.json", marks=pytest.mark.slow
@@ -228,12 +232,15 @@ def test_room_constraints(
             room_dict[ak.room_id].fulfilled_room_constraints
         )
         room_constraints_ak = set(ak_dict[ak_id].room_constraints)
-        room_constraints_participants = set.union(
-            *(
-                set(participant_dict[participant_id].room_constraints)
-                for participant_id in ak.participant_ids
+        if ak.participant_ids:
+            room_constraints_participants = set.union(
+                *(
+                    set(participant_dict[participant_id].room_constraints)
+                    for participant_id in ak.participant_ids
+                )
             )
-        )
+        else:
+            room_constraints_participants = set()
         assert not room_constraints_ak.difference(fulfilled_room_constraints)
         assert not room_constraints_participants.difference(fulfilled_room_constraints)
 
@@ -257,12 +264,15 @@ def test_time_constraints(
             fullfilled_time_constraints = fullfilled_time_constraints.intersection(
                 set(timeslot_dict[timeslot_id].fulfilled_time_constraints)
             )
-        time_constraints_participants = set.union(
-            *(
-                set(participant_dict[participant_id].time_constraints)
-                for participant_id in ak.participant_ids
+        if ak.participant_ids:
+            time_constraints_participants = set.union(
+                *(
+                    set(participant_dict[participant_id].time_constraints)
+                    for participant_id in ak.participant_ids
+                )
             )
-        )
+        else:
+            time_constraints_participants = set()
         assert not time_constraints_room.difference(fullfilled_time_constraints)
         assert not time_constraints_ak.difference(fullfilled_time_constraints)
         assert not time_constraints_participants.difference(fullfilled_time_constraints)
@@ -276,6 +286,24 @@ def test_required(scheduled_aks, participant_dict: dict[str, ParticipantData]) -
             # required => pref_fulfilled
             # equivalent to (not required) or pref_fulfilled
             assert not pref.required or pref_fulfilled
+
+
+def test_conflicts(scheduled_aks, ak_dict) -> None:
+    """Test that conflicting AKs are not overlapping."""
+    for ak_id, ak in ak_dict.items():
+        for conflicting_ak in ak.properties.get("conflicts", []):
+            ak_timeslots = scheduled_aks[ak_id].timeslot_ids
+            conflicting_ak_timeslots = scheduled_aks[conflicting_ak].timeslot_ids
+            assert not set(ak_timeslots).intersection(set(conflicting_ak_timeslots))
+
+
+def test_dependencies(scheduled_aks, ak_dict: dict[str, AKData]) -> None:
+    """Test that AKs do not overlap their dependencies."""
+    for ak_id, ak in ak_dict.items():
+        for dependent_ak in ak.properties.get("dependencies", []):
+            ak_timeslots = scheduled_aks[ak_id].timeslot_ids
+            dependent_ak_timeslots = scheduled_aks[dependent_ak].timeslot_ids
+            assert max(map(int, dependent_ak_timeslots)) < min(map(int, ak_timeslots))
 
 
 def _print_missing_stats(

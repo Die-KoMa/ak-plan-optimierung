@@ -6,6 +6,11 @@ from dataclasses import asdict, dataclass
 from typing import Any
 
 from dacite import from_dict
+from pulp import LpVariable
+
+VarDict = dict[int, dict[int, LpVariable]]
+PartialSolvedVarDict = dict[int, dict[int, int | None]]
+SolvedVarDict = dict[int, dict[int, int]]
 
 
 @dataclass(frozen=True)
@@ -16,7 +21,7 @@ class AKData:
     https://github.com/Die-KoMa/ak-plan-optimierung/wiki/Input-&-output-format
 
     Args:
-        id (str): The unique id of the AK.
+        id (int): The unique id of the AK.
         duration (int): The number of consecutive slots needed for the AK.
         properties (dict): A dict containing additional properties of the AK.
         room_constraints (list of str): A list of all room constraints required
@@ -27,7 +32,7 @@ class AKData:
             human readable name or a description. Not used for the optimization.
     """
 
-    id: str
+    id: int
     duration: int
     properties: dict[str, Any]
     room_constraints: list[str]
@@ -43,13 +48,13 @@ class PreferenceData:
     https://github.com/Die-KoMa/ak-plan-optimierung/wiki/Input-&-output-format
 
     Args:
-        ak_id (str): The unique id of the AK the preference object is about.
+        ak_id (int): The unique id of the AK the preference object is about.
         required (bool): Whether the participant is required for the AK or not.
         preference_score (int): The score of the preference: not interested (0),
             weakly interested (1), strongly interested (2) or required (-1).
     """
 
-    ak_id: str
+    ak_id: int
     required: bool
     preference_score: int
 
@@ -62,7 +67,7 @@ class ParticipantData:
     https://github.com/Die-KoMa/ak-plan-optimierung/wiki/Input-&-output-format
 
     Args:
-        id (str): The unique id of the participant.
+        id (int): The unique id of the participant.
         prefereces (list of PreferenceData): A list of preferences.
             AKs not contained in this list are assumed to have zero preference.
         room_constraints (list of str): A list of all room constraints required
@@ -73,7 +78,7 @@ class ParticipantData:
             e.g. a human readable name. Not used for the optimization.
     """
 
-    id: str
+    id: int
     preferences: list[PreferenceData]
     room_constraints: list[str]
     time_constraints: list[str]
@@ -88,7 +93,7 @@ class RoomData:
     https://github.com/Die-KoMa/ak-plan-optimierung/wiki/Input-&-output-format
 
     Args:
-        id (str): The unique id of the room.
+        id (int): The unique id of the room.
         capacity (int): The capacity of the room. May be -1 in case of unbounded
             room capacity.
         fulfilled_room_constraints (list of str): A list of all room constraints
@@ -99,7 +104,7 @@ class RoomData:
             e.g. a human readable name. Not used for the optimization.
     """
 
-    id: str
+    id: int
     capacity: int
     fulfilled_room_constraints: list[str]
     time_constraints: list[str]
@@ -114,14 +119,14 @@ class TimeSlotData:
     https://github.com/Die-KoMa/ak-plan-optimierung/wiki/Input-&-output-format
 
     Args:
-        id (str): The unique id of the timeslot.
+        id (int): The unique id of the timeslot.
         fulfilled_time_constraints (list of str): A list of all time constraints
             fulfilled by the timeslot.
         info (dict): A dictionary containing additional information about the timeslot,
             e.g. a human readable start time and date. Not used for the optimization.
     """
 
-    id: str
+    id: int
     fulfilled_time_constraints: list[str]
     info: dict[str, Any]
 
@@ -131,17 +136,17 @@ class ScheduleAtom:
     """Dataclass containing one scheduled ak.
 
     Args:
-        ak_id (str): The id of the AK scheduled.
-        room_id (str | None): The id of the room, where the AK is scheduled or None
+        ak_id (int): The id of the AK scheduled.
+        room_id (int | None): The id of the room, where the AK is scheduled or None
             if the room is not fixed yet.
-        timeslot_ids (list of str): The list of timeslots when the AK is scheduled.
-        participant_ids (list of str): The list of participants that are meant to go to this AK.
+        timeslot_ids (list of int): The list of timeslots when the AK is scheduled.
+        participant_ids (list of int): The list of participants that are meant to go to this AK.
     """
 
-    ak_id: str
-    room_id: str | None
-    timeslot_ids: list[str]
-    participant_ids: list[str]
+    ak_id: int
+    room_id: int | None
+    timeslot_ids: list[int]
+    participant_ids: list[int]
 
 
 @dataclass(frozen=False)

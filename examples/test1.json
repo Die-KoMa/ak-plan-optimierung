@@ -1,7 +1,7 @@
 {
 	"rooms": [
 		{
-            "id": "room0",
+            "id": 0,
             "info": {
                 "name": "Raum 0.003"
             },
@@ -11,7 +11,7 @@
 			],
             "time_constraints": ["room0.003"]
 		},{
-			"id": "room1",
+			"id": 1,
             "info": {
                 "name": "Raum 0.008"
             },
@@ -22,7 +22,7 @@
 			],
             "time_constraints": ["room0.008"]
 		},{
-			"id": "room2",
+			"id": 2,
             "info": {
                 "name": "Zeichensaal"
             },"capacity": 10,
@@ -39,7 +39,7 @@
         "blocks": [
             [
                 {
-                    "id": "timeslot0",
+                    "id": 0,
                     "info": {
                         "start": "Donnerstag 8:00"
                     },
@@ -53,7 +53,7 @@
                     ]
                 },
                 {
-                    "id": "timeslot1",
+                    "id": 1,
                     "info": {
                         "start": "Donnerstag 10:00"
                     },
@@ -68,7 +68,7 @@
             ],
             [
                 {
-                    "id": "timeslot2",
+                    "id": 2,
                     "info": {
                         "start": "Freitag 14:00"
                     },
@@ -81,7 +81,7 @@
                     ]
                 },
                 {
-                    "id": "timeslot3",
+                    "id": 3,
                     "info": {
                         "start": "Freitag 16:00"
                     },
@@ -96,7 +96,7 @@
             ],
             [
                 {
-                    "id": "timeslot4",
+                    "id": 4,
                     "info": {
                         "start": "Samstag 08:00"
                     },
@@ -109,7 +109,7 @@
                     ]
                 },
                 {
-                    "id": "timeslot5",
+                    "id": 5,
                     "info": {
                         "start": "Samstag 10:00"
                     },
@@ -124,7 +124,7 @@
     },
 	"aks": [
 		{
-			"id": "ak00",
+			"id": 0,
             "duration": 1,
             "properties": {},
             "room_constraints": [],
@@ -137,7 +137,7 @@
             }
 		},
         {
-			"id": "ak01",
+			"id": 1,
             "duration": 1,
             "properties": {},
             "room_constraints": ["Beamer"],
@@ -150,7 +150,7 @@
             }
 		},
         {
-			"id": "ak02",
+			"id": 2,
             "duration": 1,
             "properties": {},
             "room_constraints": ["Beamer"],
@@ -163,7 +163,7 @@
             }
 		},
         {
-			"id": "ak03",
+			"id": 3,
             "duration": 1,
             "properties": {},
             "room_constraints": ["Beamer", "Tafel"],
@@ -176,7 +176,7 @@
             }
 		},
         {
-			"id": "ak04",
+			"id": 4,
             "duration": 1,
             "properties": {},
             "room_constraints": ["Beamer"],
@@ -189,7 +189,7 @@
             }
 		},
         {
-			"id": "ak05",
+			"id": 5,
             "duration": 1,
             "properties": {},
             "room_constraints": [],
@@ -202,7 +202,7 @@
             }
 		},
         {
-			"id": "ak06",
+			"id": 6,
             "duration": 1,
             "properties": {},
             "room_constraints": [],
@@ -215,7 +215,7 @@
             }
 		},
         {
-			"id": "ak07",
+			"id": 7,
             "duration": 1,
             "properties": {},
             "room_constraints": [],
@@ -228,7 +228,7 @@
             }
 		},
         {
-			"id": "ak08",
+			"id": 8,
             "duration": 1,
             "properties": {},
             "room_constraints": ["Tafel"],
@@ -241,7 +241,7 @@
             }
 		},
         {
-			"id": "ak09",
+			"id": 9,
             "duration": 1,
             "properties": {},
             "room_constraints": [],
@@ -254,7 +254,7 @@
             }
 		},
         {
-			"id": "ak10",
+			"id": 10,
             "duration": 1,
             "properties": {},
             "room_constraints": ["Beamer"],
@@ -267,7 +267,7 @@
             }
 		},
         {
-			"id": "ak11",
+			"id": 11,
             "duration": 1,
             "properties": {},
             "room_constraints": [],
@@ -282,41 +282,41 @@
 	],
     "participants": [
         {
-            "id": "participant0",
+            "id": 0,
             "info": {"name": "Alice"},
             "preferences": [
                 {
-                    "ak_id": "ak00",
+                    "ak_id": 0,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "ak01",
+                    "ak_id": 1,
                     "required": true,
                     "preference_score": -1
                 },
                 {
-                    "ak_id": "ak04",
+                    "ak_id": 4,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "ak05",
+                    "ak_id": 5,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "ak08",
+                    "ak_id": 8,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "ak09",
+                    "ak_id": 9,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "ak11",
+                    "ak_id": 11,
                     "required": false,
                     "preference_score": 1
                 }
@@ -325,26 +325,26 @@
             "time_constraints": []
         },
         {
-            "id": "participant1",
+            "id": 1,
             "info": {"name": "Bob"},
             "preferences": [
                 {
-                    "ak_id": "ak08",
+                    "ak_id": 8,
                     "required": true,
                     "preference_score": -1
                 },
                 {
-                    "ak_id": "ak09",
+                    "ak_id": 9,
                     "required": true,
                     "preference_score": -1
                 },
                 {
-                    "ak_id": "ak10",
+                    "ak_id": 10,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "ak11",
+                    "ak_id": 11,
                     "required": false,
                     "preference_score": 1
                 }
@@ -353,31 +353,31 @@
             "time_constraints": []
         },
         {
-            "id": "participant2",
+            "id": 2,
             "info": {"name": "Claire"},
             "preferences": [
                 {
-                    "ak_id": "ak00",
+                    "ak_id": 0,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "ak01",
+                    "ak_id": 1,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "ak02",
+                    "ak_id": 2,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "ak03",
+                    "ak_id": 3,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "ak04",
+                    "ak_id": 4,
                     "required": false,
                     "preference_score": 1
                 }
@@ -386,21 +386,21 @@
             "time_constraints": []
         },
         {
-            "id": "participant3",
+            "id": 3,
             "info": {"name": "David"},
             "preferences": [
                 {
-                    "ak_id": "ak05",
+                    "ak_id": 5,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "ak07",
+                    "ak_id": 7,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "ak10",
+                    "ak_id": 10,
                     "required": true,
                     "preference_score": -1
                 }
@@ -409,21 +409,21 @@
             "time_constraints": []
         },
         {
-            "id": "participant4",
+            "id": 4,
             "info": {"name": "Emil"},
             "preferences": [
                 {
-                    "ak_id": "ak06",
+                    "ak_id": 6,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "ak07",
+                    "ak_id": 7,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "ak09",
+                    "ak_id": 9,
                     "required": false,
                     "preference_score": 1
                 }
@@ -432,41 +432,41 @@
             "time_constraints": []
         },
         {
-            "id": "participant5",
+            "id": 5,
             "info": {"name": "Fried"},
             "preferences": [
                 {
-                    "ak_id": "ak00",
+                    "ak_id": 0,
                     "required": true,
                     "preference_score": -1
                 },
                 {
-                    "ak_id": "ak02",
+                    "ak_id": 2,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "ak04",
+                    "ak_id": 4,
                     "required": true,
                     "preference_score": -1
                 },
                 {
-                    "ak_id": "ak06",
+                    "ak_id": 6,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "ak07",
+                    "ak_id": 7,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "ak08",
+                    "ak_id": 8,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "ak09",
+                    "ak_id": 9,
                     "required": false,
                     "preference_score": 1
                 }
@@ -475,36 +475,36 @@
             "time_constraints": []
         },
         {
-            "id": "participant6",
+            "id": 6,
             "info": {"name": "Gerti"},
             "preferences": [
                 {
-                    "ak_id": "ak00",
+                    "ak_id": 0,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "ak02",
+                    "ak_id": 2,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "ak04",
+                    "ak_id": 4,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "ak06",
+                    "ak_id": 6,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "ak08",
+                    "ak_id": 8,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "ak10",
+                    "ak_id": 10,
                     "required": false,
                     "preference_score": 1
                 }
@@ -513,26 +513,26 @@
             "time_constraints": []
         },
         {
-            "id": "participant7",
+            "id": 7,
             "info": {"name": "Hans"},
             "preferences": [
                 {
-                    "ak_id": "ak00",
+                    "ak_id": 0,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "ak03",
+                    "ak_id": 3,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "ak06",
+                    "ak_id": 6,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "ak09",
+                    "ak_id": 9,
                     "required": false,
                     "preference_score": 1
                 }

@@ -3,10 +3,11 @@
         {
             "id": 0,
             "duration": 1,
-            "properties": {},
-            "room_constraints": [
-                "room-constraint-1"
-            ],
+            "properties": {
+                "conflicts": [],
+                "dependencies": []
+            },
+            "room_constraints": [],
             "time_constraints": [],
             "info": {
                 "name": "AK 0",
@@ -18,20 +19,30 @@
         {
             "id": 1,
             "duration": 1,
-            "properties": {},
+            "properties": {
+                "conflicts": [
+                    10
+                ],
+                "dependencies": []
+            },
             "room_constraints": [],
-            "time_constraints": [],
+            "time_constraints": [
+                "ResoAK"
+            ],
             "info": {
                 "name": "AK 1",
                 "head": "N/A",
                 "description": "N/A",
-                "reso": false
+                "reso": true
             }
         },
         {
             "id": 2,
             "duration": 2,
-            "properties": {},
+            "properties": {
+                "conflicts": [],
+                "dependencies": []
+            },
             "room_constraints": [],
             "time_constraints": [],
             "info": {
@@ -43,8 +54,11 @@
         },
         {
             "id": 3,
-            "duration": 2,
-            "properties": {},
+            "duration": 1,
+            "properties": {
+                "conflicts": [],
+                "dependencies": []
+            },
             "room_constraints": [],
             "time_constraints": [],
             "info": {
@@ -57,22 +71,28 @@
         {
             "id": 4,
             "duration": 2,
-            "properties": {},
-            "room_constraints": [
-                "room-constraint-4"
+            "properties": {
+                "conflicts": [],
+                "dependencies": []
+            },
+            "room_constraints": [],
+            "time_constraints": [
+                "ResoAK"
             ],
-            "time_constraints": [],
             "info": {
                 "name": "AK 4",
                 "head": "N/A",
                 "description": "N/A",
-                "reso": false
+                "reso": true
             }
         },
         {
             "id": 5,
             "duration": 2,
-            "properties": {},
+            "properties": {
+                "conflicts": [],
+                "dependencies": []
+            },
             "room_constraints": [],
             "time_constraints": [],
             "info": {
@@ -85,8 +105,14 @@
         {
             "id": 6,
             "duration": 2,
-            "properties": {},
-            "room_constraints": [],
+            "properties": {
+                "conflicts": [],
+                "dependencies": []
+            },
+            "room_constraints": [
+                "room-constraint-1",
+                "room-constraint-4"
+            ],
             "time_constraints": [],
             "info": {
                 "name": "AK 6",
@@ -97,8 +123,13 @@
         },
         {
             "id": 7,
-            "duration": 1,
-            "properties": {},
+            "duration": 2,
+            "properties": {
+                "conflicts": [
+                    4
+                ],
+                "dependencies": []
+            },
             "room_constraints": [],
             "time_constraints": [],
             "info": {
@@ -111,7 +142,10 @@
         {
             "id": 8,
             "duration": 1,
-            "properties": {},
+            "properties": {
+                "conflicts": [],
+                "dependencies": []
+            },
             "room_constraints": [],
             "time_constraints": [],
             "info": {
@@ -124,7 +158,12 @@
         {
             "id": 9,
             "duration": 1,
-            "properties": {},
+            "properties": {
+                "conflicts": [],
+                "dependencies": [
+                    5
+                ]
+            },
             "room_constraints": [],
             "time_constraints": [],
             "info": {
@@ -136,8 +175,11 @@
         },
         {
             "id": 10,
-            "duration": 2,
-            "properties": {},
+            "duration": 1,
+            "properties": {
+                "conflicts": [],
+                "dependencies": []
+            },
             "room_constraints": [],
             "time_constraints": [],
             "info": {
@@ -150,7 +192,10 @@
         {
             "id": 11,
             "duration": 2,
-            "properties": {},
+            "properties": {
+                "conflicts": [],
+                "dependencies": []
+            },
             "room_constraints": [],
             "time_constraints": [],
             "info": {
@@ -162,27 +207,28 @@
         },
         {
             "id": 12,
-            "duration": 2,
-            "properties": {},
+            "duration": 1,
+            "properties": {
+                "conflicts": [],
+                "dependencies": []
+            },
             "room_constraints": [],
-            "time_constraints": [
-                "ResoAK"
-            ],
+            "time_constraints": [],
             "info": {
                 "name": "AK 12",
                 "head": "N/A",
                 "description": "N/A",
-                "reso": true
+                "reso": false
             }
         },
         {
             "id": 13,
-            "duration": 2,
-            "properties": {},
-            "room_constraints": [
-                "room-constraint-3",
-                "room-constraint-4"
-            ],
+            "duration": 1,
+            "properties": {
+                "conflicts": [],
+                "dependencies": []
+            },
+            "room_constraints": [],
             "time_constraints": [],
             "info": {
                 "name": "AK 13",
@@ -193,9 +239,15 @@
         },
         {
             "id": 14,
-            "duration": 2,
-            "properties": {},
-            "room_constraints": [],
+            "duration": 1,
+            "properties": {
+                "conflicts": [],
+                "dependencies": []
+            },
+            "room_constraints": [
+                "room-constraint-4",
+                "room-constraint-2"
+            ],
             "time_constraints": [],
             "info": {
                 "name": "AK 14",
@@ -206,8 +258,11 @@
         },
         {
             "id": 15,
-            "duration": 2,
-            "properties": {},
+            "duration": 1,
+            "properties": {
+                "conflicts": [],
+                "dependencies": []
+            },
             "room_constraints": [],
             "time_constraints": [],
             "info": {
@@ -219,23 +274,33 @@
         },
         {
             "id": 16,
-            "duration": 1,
-            "properties": {},
+            "duration": 2,
+            "properties": {
+                "conflicts": [
+                    0
+                ],
+                "dependencies": [
+                    19
+                ]
+            },
             "room_constraints": [],
-            "time_constraints": [
-                "ResoAK"
-            ],
+            "time_constraints": [],
             "info": {
                 "name": "AK 16",
                 "head": "N/A",
                 "description": "N/A",
-                "reso": true
+                "reso": false
             }
         },
         {
             "id": 17,
-            "duration": 1,
-            "properties": {},
+            "duration": 2,
+            "properties": {
+                "conflicts": [],
+                "dependencies": [
+                    1
+                ]
+            },
             "room_constraints": [],
             "time_constraints": [],
             "info": {
@@ -247,173 +312,38 @@
         },
         {
             "id": 18,
-            "duration": 2,
-            "properties": {},
-            "room_constraints": [],
-            "time_constraints": [
-                "ResoAK"
+            "duration": 1,
+            "properties": {
+                "conflicts": [],
+                "dependencies": []
+            },
+            "room_constraints": [
+                "room-constraint-1"
             ],
+            "time_constraints": [],
             "info": {
                 "name": "AK 18",
                 "head": "N/A",
                 "description": "N/A",
-                "reso": true
+                "reso": false
             }
         },
         {
             "id": 19,
-            "duration": 1,
-            "properties": {},
+            "duration": 2,
+            "properties": {
+                "conflicts": [],
+                "dependencies": []
+            },
             "room_constraints": [],
-            "time_constraints": [],
+            "time_constraints": [
+                "ResoAK"
+            ],
             "info": {
                 "name": "AK 19",
                 "head": "N/A",
                 "description": "N/A",
-                "reso": false
-            }
-        },
-        {
-            "id": 20,
-            "duration": 2,
-            "properties": {},
-            "room_constraints": [
-                "room-constraint-2",
-                "room-constraint-3"
-            ],
-            "time_constraints": [],
-            "info": {
-                "name": "AK 20",
-                "head": "N/A",
-                "description": "N/A",
-                "reso": false
-            }
-        },
-        {
-            "id": 21,
-            "duration": 2,
-            "properties": {},
-            "room_constraints": [],
-            "time_constraints": [],
-            "info": {
-                "name": "AK 21",
-                "head": "N/A",
-                "description": "N/A",
-                "reso": false
-            }
-        },
-        {
-            "id": 22,
-            "duration": 2,
-            "properties": {},
-            "room_constraints": [],
-            "time_constraints": [
-                "ResoAK"
-            ],
-            "info": {
-                "name": "AK 22",
-                "head": "N/A",
-                "description": "N/A",
                 "reso": true
-            }
-        },
-        {
-            "id": 23,
-            "duration": 1,
-            "properties": {},
-            "room_constraints": [],
-            "time_constraints": [
-                "ResoAK"
-            ],
-            "info": {
-                "name": "AK 23",
-                "head": "N/A",
-                "description": "N/A",
-                "reso": true
-            }
-        },
-        {
-            "id": 24,
-            "duration": 1,
-            "properties": {},
-            "room_constraints": [],
-            "time_constraints": [],
-            "info": {
-                "name": "AK 24",
-                "head": "N/A",
-                "description": "N/A",
-                "reso": false
-            }
-        },
-        {
-            "id": 25,
-            "duration": 2,
-            "properties": {},
-            "room_constraints": [
-                "room-constraint-3"
-            ],
-            "time_constraints": [],
-            "info": {
-                "name": "AK 25",
-                "head": "N/A",
-                "description": "N/A",
-                "reso": false
-            }
-        },
-        {
-            "id": 26,
-            "duration": 2,
-            "properties": {},
-            "room_constraints": [],
-            "time_constraints": [],
-            "info": {
-                "name": "AK 26",
-                "head": "N/A",
-                "description": "N/A",
-                "reso": false
-            }
-        },
-        {
-            "id": 27,
-            "duration": 1,
-            "properties": {},
-            "room_constraints": [
-                "room-constraint-3"
-            ],
-            "time_constraints": [],
-            "info": {
-                "name": "AK 27",
-                "head": "N/A",
-                "description": "N/A",
-                "reso": false
-            }
-        },
-        {
-            "id": 28,
-            "duration": 2,
-            "properties": {},
-            "room_constraints": [],
-            "time_constraints": [],
-            "info": {
-                "name": "AK 28",
-                "head": "N/A",
-                "description": "N/A",
-                "reso": false
-            }
-        },
-        {
-            "id": 29,
-            "duration": 1,
-            "properties": {},
-            "room_constraints": [
-                "room-constraint-3"
-            ],
-            "time_constraints": [],
-            "info": {
-                "name": "AK 29",
-                "head": "N/A",
-                "description": "N/A",
-                "reso": false
             }
         }
     ],
@@ -456,6 +386,35 @@
                 "room-constraint-3"
             ],
             "time_constraints": []
+        },
+        {
+            "id": 3,
+            "info": {
+                "name": "room 3"
+            },
+            "capacity": 21,
+            "fulfilled_room_constraints": [
+                "room-constraint-4",
+                "room-constraint-0",
+                "room-constraint-1",
+                "room-constraint-3"
+            ],
+            "time_constraints": []
+        },
+        {
+            "id": 4,
+            "info": {
+                "name": "room 4"
+            },
+            "capacity": 39,
+            "fulfilled_room_constraints": [
+                "room-constraint-1",
+                "room-constraint-4",
+                "room-constraint-3",
+                "room-constraint-0",
+                "room-constraint-2"
+            ],
+            "time_constraints": []
         }
     ],
     "participants": [
@@ -468,15 +427,25 @@
                 {
                     "ak_id": 0,
                     "required": false,
-                    "preference_score": 1
+                    "preference_score": 2
                 },
                 {
                     "ak_id": 1,
-                    "required": true,
-                    "preference_score": -1
+                    "required": false,
+                    "preference_score": 2
                 },
                 {
                     "ak_id": 2,
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": 4,
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": 5,
                     "required": false,
                     "preference_score": 1
                 },
@@ -487,11 +456,31 @@
                 },
                 {
                     "ak_id": 8,
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": 9,
                     "required": true,
                     "preference_score": -1
                 },
                 {
-                    "ak_id": 9,
+                    "ak_id": 10,
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
+                    "ak_id": 11,
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": 13,
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": 14,
                     "required": false,
                     "preference_score": 2
                 },
@@ -501,34 +490,24 @@
                     "preference_score": 1
                 },
                 {
-                    "ak_id": 17,
+                    "ak_id": 16,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": 18,
+                    "ak_id": 17,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": 23,
+                    "ak_id": 18,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": 25,
+                    "ak_id": 19,
                     "required": false,
                     "preference_score": 1
-                },
-                {
-                    "ak_id": 26,
-                    "required": false,
-                    "preference_score": 1
-                },
-                {
-                    "ak_id": 27,
-                    "required": true,
-                    "preference_score": -1
                 }
             ],
             "room_constraints": [],
@@ -541,7 +520,32 @@
             },
             "preferences": [
                 {
+                    "ak_id": 0,
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
                     "ak_id": 1,
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": 5,
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": 6,
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
+                    "ak_id": 7,
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": 8,
                     "required": false,
                     "preference_score": 2
                 },
@@ -551,14 +555,14 @@
                     "preference_score": 2
                 },
                 {
-                    "ak_id": 11,
-                    "required": false,
-                    "preference_score": 2
+                    "ak_id": 10,
+                    "required": true,
+                    "preference_score": -1
                 },
                 {
-                    "ak_id": 12,
+                    "ak_id": 13,
                     "required": false,
-                    "preference_score": 1
+                    "preference_score": 2
                 },
                 {
                     "ak_id": 14,
@@ -566,17 +570,17 @@
                     "preference_score": 2
                 },
                 {
-                    "ak_id": 25,
-                    "required": false,
-                    "preference_score": 1
-                },
-                {
-                    "ak_id": 26,
+                    "ak_id": 16,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": 28,
+                    "ak_id": 17,
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": 18,
                     "required": false,
                     "preference_score": 2
                 }
@@ -591,9 +595,19 @@
             },
             "preferences": [
                 {
-                    "ak_id": 4,
+                    "ak_id": 1,
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": 3,
                     "required": false,
                     "preference_score": 1
+                },
+                {
+                    "ak_id": 4,
+                    "required": false,
+                    "preference_score": 2
                 },
                 {
                     "ak_id": 5,
@@ -601,24 +615,19 @@
                     "preference_score": 1
                 },
                 {
-                    "ak_id": 9,
+                    "ak_id": 6,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": 10,
+                    "ak_id": 8,
                     "required": false,
                     "preference_score": 1
                 },
                 {
                     "ak_id": 12,
-                    "required": true,
-                    "preference_score": -1
-                },
-                {
-                    "ak_id": 13,
                     "required": false,
-                    "preference_score": 1
+                    "preference_score": 2
                 },
                 {
                     "ak_id": 14,
@@ -627,38 +636,13 @@
                 },
                 {
                     "ak_id": 15,
-                    "required": true,
-                    "preference_score": -1
-                },
-                {
-                    "ak_id": 16,
-                    "required": false,
-                    "preference_score": 2
-                },
-                {
-                    "ak_id": 17,
                     "required": false,
                     "preference_score": 2
                 },
                 {
                     "ak_id": 18,
                     "required": false,
-                    "preference_score": 2
-                },
-                {
-                    "ak_id": 21,
-                    "required": false,
                     "preference_score": 1
-                },
-                {
-                    "ak_id": 24,
-                    "required": true,
-                    "preference_score": -1
-                },
-                {
-                    "ak_id": 29,
-                    "required": false,
-                    "preference_score": 2
                 }
             ],
             "room_constraints": [],
@@ -671,24 +655,29 @@
             },
             "preferences": [
                 {
+                    "ak_id": 0,
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
+                    "ak_id": 2,
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": 3,
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
                     "ak_id": 4,
                     "required": false,
-                    "preference_score": 2
+                    "preference_score": 1
                 },
                 {
-                    "ak_id": 5,
-                    "required": true,
-                    "preference_score": -1
-                },
-                {
-                    "ak_id": 6,
+                    "ak_id": 9,
                     "required": false,
                     "preference_score": 2
-                },
-                {
-                    "ak_id": 8,
-                    "required": true,
-                    "preference_score": -1
                 },
                 {
                     "ak_id": 10,
@@ -698,10 +687,15 @@
                 {
                     "ak_id": 11,
                     "required": false,
-                    "preference_score": 2
+                    "preference_score": 1
                 },
                 {
-                    "ak_id": 15,
+                    "ak_id": 12,
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": 13,
                     "required": false,
                     "preference_score": 2
                 },
@@ -711,37 +705,12 @@
                     "preference_score": -1
                 },
                 {
-                    "ak_id": 17,
+                    "ak_id": 18,
                     "required": false,
                     "preference_score": 1
                 },
                 {
                     "ak_id": 19,
-                    "required": false,
-                    "preference_score": 2
-                },
-                {
-                    "ak_id": 20,
-                    "required": false,
-                    "preference_score": 1
-                },
-                {
-                    "ak_id": 21,
-                    "required": true,
-                    "preference_score": -1
-                },
-                {
-                    "ak_id": 22,
-                    "required": false,
-                    "preference_score": 1
-                },
-                {
-                    "ak_id": 25,
-                    "required": false,
-                    "preference_score": 1
-                },
-                {
-                    "ak_id": 26,
                     "required": true,
                     "preference_score": -1
                 }
@@ -756,17 +725,17 @@
             },
             "preferences": [
                 {
-                    "ak_id": 2,
+                    "ak_id": 3,
                     "required": false,
-                    "preference_score": 2
+                    "preference_score": 1
                 },
                 {
-                    "ak_id": 4,
+                    "ak_id": 7,
                     "required": false,
-                    "preference_score": 2
+                    "preference_score": 1
                 },
                 {
-                    "ak_id": 8,
+                    "ak_id": 9,
                     "required": false,
                     "preference_score": 2
                 },
@@ -776,14 +745,9 @@
                     "preference_score": 2
                 },
                 {
-                    "ak_id": 11,
-                    "required": false,
-                    "preference_score": 1
-                },
-                {
                     "ak_id": 12,
                     "required": false,
-                    "preference_score": 1
+                    "preference_score": 2
                 },
                 {
                     "ak_id": 13,
@@ -791,12 +755,12 @@
                     "preference_score": 1
                 },
                 {
-                    "ak_id": 15,
+                    "ak_id": 14,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": 17,
+                    "ak_id": 15,
                     "required": false,
                     "preference_score": 1
                 },
@@ -806,19 +770,9 @@
                     "preference_score": 2
                 },
                 {
-                    "ak_id": 25,
-                    "required": false,
-                    "preference_score": 1
-                },
-                {
-                    "ak_id": 28,
+                    "ak_id": 19,
                     "required": false,
                     "preference_score": 2
-                },
-                {
-                    "ak_id": 29,
-                    "required": false,
-                    "preference_score": 1
                 }
             ],
             "room_constraints": [],
@@ -831,17 +785,22 @@
             },
             "preferences": [
                 {
-                    "ak_id": 2,
+                    "ak_id": 0,
                     "required": false,
-                    "preference_score": 2
+                    "preference_score": 1
                 },
                 {
-                    "ak_id": 3,
-                    "required": false,
-                    "preference_score": 2
+                    "ak_id": 1,
+                    "required": true,
+                    "preference_score": -1
                 },
                 {
-                    "ak_id": 6,
+                    "ak_id": 7,
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
+                    "ak_id": 9,
                     "required": false,
                     "preference_score": 1
                 },
@@ -851,17 +810,17 @@
                     "preference_score": 2
                 },
                 {
-                    "ak_id": 12,
+                    "ak_id": 13,
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
+                    "ak_id": 15,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": 13,
-                    "required": false,
-                    "preference_score": 2
-                },
-                {
-                    "ak_id": 14,
+                    "ak_id": 16,
                     "required": false,
                     "preference_score": 1
                 },
@@ -873,42 +832,7 @@
                 {
                     "ak_id": 19,
                     "required": false,
-                    "preference_score": 1
-                },
-                {
-                    "ak_id": 21,
-                    "required": false,
-                    "preference_score": 1
-                },
-                {
-                    "ak_id": 22,
-                    "required": false,
                     "preference_score": 2
-                },
-                {
-                    "ak_id": 24,
-                    "required": false,
-                    "preference_score": 2
-                },
-                {
-                    "ak_id": 25,
-                    "required": false,
-                    "preference_score": 2
-                },
-                {
-                    "ak_id": 27,
-                    "required": false,
-                    "preference_score": 1
-                },
-                {
-                    "ak_id": 28,
-                    "required": false,
-                    "preference_score": 2
-                },
-                {
-                    "ak_id": 29,
-                    "required": false,
-                    "preference_score": 1
                 }
             ],
             "room_constraints": [],
@@ -921,34 +845,39 @@
             },
             "preferences": [
                 {
-                    "ak_id": 2,
+                    "ak_id": 1,
                     "required": false,
-                    "preference_score": 1
+                    "preference_score": 2
                 },
                 {
-                    "ak_id": 3,
-                    "required": false,
-                    "preference_score": 1
-                },
-                {
-                    "ak_id": 4,
+                    "ak_id": 6,
                     "required": false,
                     "preference_score": 2
                 },
                 {
                     "ak_id": 7,
                     "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": 9,
+                    "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": 8,
+                    "ak_id": 10,
                     "required": false,
                     "preference_score": 2
                 },
                 {
                     "ak_id": 11,
                     "required": false,
-                    "preference_score": 1
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": 12,
+                    "required": false,
+                    "preference_score": 2
                 },
                 {
                     "ak_id": 14,
@@ -961,32 +890,12 @@
                     "preference_score": 2
                 },
                 {
-                    "ak_id": 17,
+                    "ak_id": 18,
                     "required": false,
                     "preference_score": 1
                 },
                 {
                     "ak_id": 19,
-                    "required": false,
-                    "preference_score": 2
-                },
-                {
-                    "ak_id": 22,
-                    "required": false,
-                    "preference_score": 1
-                },
-                {
-                    "ak_id": 24,
-                    "required": false,
-                    "preference_score": 2
-                },
-                {
-                    "ak_id": 28,
-                    "required": false,
-                    "preference_score": 2
-                },
-                {
-                    "ak_id": 29,
                     "required": false,
                     "preference_score": 2
                 }
@@ -1002,33 +911,48 @@
             "preferences": [
                 {
                     "ak_id": 0,
-                    "required": true,
-                    "preference_score": -1
+                    "required": false,
+                    "preference_score": 1
                 },
                 {
                     "ak_id": 2,
                     "required": false,
-                    "preference_score": 2
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": 3,
+                    "required": false,
+                    "preference_score": 1
                 },
                 {
                     "ak_id": 4,
-                    "required": true,
-                    "preference_score": -1
+                    "required": false,
+                    "preference_score": 2
                 },
                 {
-                    "ak_id": 10,
-                    "required": true,
-                    "preference_score": -1
+                    "ak_id": 7,
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": 9,
+                    "required": false,
+                    "preference_score": 2
                 },
                 {
                     "ak_id": 11,
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": 12,
                     "required": false,
                     "preference_score": 1
                 },
                 {
                     "ak_id": 13,
-                    "required": true,
-                    "preference_score": -1
+                    "required": false,
+                    "preference_score": 1
                 },
                 {
                     "ak_id": 14,
@@ -1036,22 +960,12 @@
                     "preference_score": 1
                 },
                 {
-                    "ak_id": 17,
-                    "required": true,
-                    "preference_score": -1
-                },
-                {
-                    "ak_id": 19,
+                    "ak_id": 15,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": 20,
-                    "required": false,
-                    "preference_score": 1
-                },
-                {
-                    "ak_id": 23,
+                    "ak_id": 18,
                     "required": false,
                     "preference_score": 1
                 }
@@ -1066,42 +980,67 @@
             },
             "preferences": [
                 {
-                    "ak_id": 19,
+                    "ak_id": 0,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": 20,
-                    "required": true,
-                    "preference_score": -1
-                },
-                {
-                    "ak_id": 5,
+                    "ak_id": 1,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": 23,
+                    "ak_id": 3,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": 27,
+                    "ak_id": 4,
                     "required": false,
                     "preference_score": 1
+                },
+                {
+                    "ak_id": 7,
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": 8,
+                    "required": false,
+                    "preference_score": 2
                 },
                 {
                     "ak_id": 12,
                     "required": false,
-                    "preference_score": 2
+                    "preference_score": 1
                 },
                 {
-                    "ak_id": 28,
+                    "ak_id": 13,
                     "required": false,
                     "preference_score": 2
                 },
                 {
                     "ak_id": 14,
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": 15,
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": 17,
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": 18,
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": 19,
                     "required": false,
                     "preference_score": 1
                 }
@@ -1116,157 +1055,37 @@
             },
             "preferences": [
                 {
-                    "ak_id": 1,
+                    "ak_id": 0,
                     "required": false,
                     "preference_score": 1
+                },
+                {
+                    "ak_id": 1,
+                    "required": false,
+                    "preference_score": 2
                 },
                 {
                     "ak_id": 2,
                     "required": false,
-                    "preference_score": 1
-                },
-                {
-                    "ak_id": 7,
-                    "required": false,
                     "preference_score": 2
                 },
-                {
-                    "ak_id": 10,
-                    "required": false,
-                    "preference_score": 2
-                },
-                {
-                    "ak_id": 11,
-                    "required": false,
-                    "preference_score": 1
-                },
-                {
-                    "ak_id": 13,
-                    "required": false,
-                    "preference_score": 2
-                },
-                {
-                    "ak_id": 14,
-                    "required": true,
-                    "preference_score": -1
-                },
-                {
-                    "ak_id": 15,
-                    "required": false,
-                    "preference_score": 2
-                },
-                {
-                    "ak_id": 16,
-                    "required": false,
-                    "preference_score": 1
-                },
-                {
-                    "ak_id": 19,
-                    "required": true,
-                    "preference_score": -1
-                },
-                {
-                    "ak_id": 20,
-                    "required": false,
-                    "preference_score": 1
-                },
-                {
-                    "ak_id": 21,
-                    "required": false,
-                    "preference_score": 1
-                },
-                {
-                    "ak_id": 22,
-                    "required": false,
-                    "preference_score": 2
-                },
-                {
-                    "ak_id": 23,
-                    "required": false,
-                    "preference_score": 2
-                },
-                {
-                    "ak_id": 27,
-                    "required": true,
-                    "preference_score": -1
-                },
-                {
-                    "ak_id": 28,
-                    "required": false,
-                    "preference_score": 1
-                },
-                {
-                    "ak_id": 29,
-                    "required": false,
-                    "preference_score": 1
-                }
-            ],
-            "room_constraints": [],
-            "time_constraints": []
-        },
-        {
-            "id": 10,
-            "info": {
-                "name": "Person 10"
-            },
-            "preferences": [
-                {
-                    "ak_id": 17,
-                    "required": false,
-                    "preference_score": 1
-                },
-                {
-                    "ak_id": 20,
-                    "required": false,
-                    "preference_score": 1
-                },
-                {
-                    "ak_id": 21,
-                    "required": false,
-                    "preference_score": 2
-                },
-                {
-                    "ak_id": 23,
-                    "required": false,
-                    "preference_score": 2
-                },
-                {
-                    "ak_id": 7,
-                    "required": false,
-                    "preference_score": 2
-                },
-                {
-                    "ak_id": 26,
-                    "required": false,
-                    "preference_score": 2
-                }
-            ],
-            "room_constraints": [],
-            "time_constraints": []
-        },
-        {
-            "id": 11,
-            "info": {
-                "name": "Person 11"
-            },
-            "preferences": [
                 {
                     "ak_id": 3,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": 5,
+                    "ak_id": 4,
                     "required": false,
                     "preference_score": 1
+                },
+                {
+                    "ak_id": 6,
+                    "required": false,
+                    "preference_score": 2
                 },
                 {
                     "ak_id": 7,
-                    "required": false,
-                    "preference_score": 1
-                },
-                {
-                    "ak_id": 8,
                     "required": false,
                     "preference_score": 1
                 },
@@ -1286,22 +1105,172 @@
                     "preference_score": 2
                 },
                 {
+                    "ak_id": 12,
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
                     "ak_id": 13,
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": 14,
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
+                    "ak_id": 15,
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": 16,
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": 17,
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": 19,
+                    "required": false,
+                    "preference_score": 1
+                }
+            ],
+            "room_constraints": [],
+            "time_constraints": []
+        },
+        {
+            "id": 10,
+            "info": {
+                "name": "Person 10"
+            },
+            "preferences": [
+                {
+                    "ak_id": 0,
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": 1,
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": 2,
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
+                    "ak_id": 3,
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": 4,
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": 5,
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": 8,
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": 10,
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": 11,
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": 12,
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": 14,
                     "required": false,
                     "preference_score": 1
                 },
                 {
                     "ak_id": 15,
                     "required": false,
-                    "preference_score": 2
+                    "preference_score": 1
                 },
                 {
-                    "ak_id": 25,
+                    "ak_id": 17,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": 27,
+                    "ak_id": 18,
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": 19,
+                    "required": false,
+                    "preference_score": 2
+                }
+            ],
+            "room_constraints": [],
+            "time_constraints": []
+        },
+        {
+            "id": 11,
+            "info": {
+                "name": "Person 11"
+            },
+            "preferences": [
+                {
+                    "ak_id": 0,
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": 1,
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": 2,
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": 5,
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": 6,
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": 7,
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": 12,
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
+                    "ak_id": 14,
                     "required": false,
                     "preference_score": 2
                 }
@@ -1321,39 +1290,9 @@
                     "preference_score": 2
                 },
                 {
-                    "ak_id": 3,
-                    "required": true,
-                    "preference_score": -1
-                },
-                {
-                    "ak_id": 7,
-                    "required": false,
-                    "preference_score": 2
-                },
-                {
-                    "ak_id": 10,
+                    "ak_id": 16,
                     "required": false,
                     "preference_score": 1
-                },
-                {
-                    "ak_id": 11,
-                    "required": true,
-                    "preference_score": -1
-                },
-                {
-                    "ak_id": 12,
-                    "required": false,
-                    "preference_score": 2
-                },
-                {
-                    "ak_id": 14,
-                    "required": false,
-                    "preference_score": 2
-                },
-                {
-                    "ak_id": 15,
-                    "required": false,
-                    "preference_score": 2
                 },
                 {
                     "ak_id": 17,
@@ -1361,32 +1300,22 @@
                     "preference_score": 2
                 },
                 {
-                    "ak_id": 18,
-                    "required": true,
-                    "preference_score": -1
-                },
-                {
-                    "ak_id": 19,
-                    "required": true,
-                    "preference_score": -1
-                },
-                {
-                    "ak_id": 20,
+                    "ak_id": 6,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": 22,
-                    "required": false,
-                    "preference_score": 2
-                },
-                {
-                    "ak_id": 25,
+                    "ak_id": 8,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": 27,
+                    "ak_id": 14,
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": 15,
                     "required": false,
                     "preference_score": 1
                 }
@@ -1401,14 +1330,24 @@
             },
             "preferences": [
                 {
+                    "ak_id": 1,
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
                     "ak_id": 2,
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": 3,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": 6,
+                    "ak_id": 4,
                     "required": false,
-                    "preference_score": 2
+                    "preference_score": 1
                 },
                 {
                     "ak_id": 7,
@@ -1416,27 +1355,52 @@
                     "preference_score": 1
                 },
                 {
+                    "ak_id": 9,
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": 10,
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
                     "ak_id": 11,
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": 12,
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": 13,
                     "required": false,
                     "preference_score": 2
                 },
                 {
                     "ak_id": 14,
                     "required": false,
-                    "preference_score": 1
-                },
-                {
-                    "ak_id": 18,
-                    "required": false,
-                    "preference_score": 1
-                },
-                {
-                    "ak_id": 23,
-                    "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": 25,
+                    "ak_id": 15,
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": 16,
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": 17,
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": 19,
                     "required": false,
                     "preference_score": 1
                 }
@@ -1451,34 +1415,39 @@
             },
             "preferences": [
                 {
-                    "ak_id": 2,
+                    "ak_id": 1,
                     "required": false,
                     "preference_score": 1
                 },
                 {
+                    "ak_id": 4,
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
                     "ak_id": 5,
-                    "required": false,
-                    "preference_score": 2
-                },
-                {
-                    "ak_id": 6,
-                    "required": false,
-                    "preference_score": 2
-                },
-                {
-                    "ak_id": 7,
-                    "required": false,
-                    "preference_score": 2
-                },
-                {
-                    "ak_id": 9,
-                    "required": false,
-                    "preference_score": 2
+                    "required": true,
+                    "preference_score": -1
                 },
                 {
                     "ak_id": 11,
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
+                    "ak_id": 13,
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": 14,
                     "required": false,
                     "preference_score": 2
+                },
+                {
+                    "ak_id": 15,
+                    "required": true,
+                    "preference_score": -1
                 },
                 {
                     "ak_id": 16,
@@ -1487,33 +1456,8 @@
                 },
                 {
                     "ak_id": 17,
-                    "required": false,
-                    "preference_score": 1
-                },
-                {
-                    "ak_id": 20,
-                    "required": false,
-                    "preference_score": 1
-                },
-                {
-                    "ak_id": 22,
-                    "required": false,
-                    "preference_score": 2
-                },
-                {
-                    "ak_id": 23,
-                    "required": false,
-                    "preference_score": 2
-                },
-                {
-                    "ak_id": 24,
-                    "required": false,
-                    "preference_score": 2
-                },
-                {
-                    "ak_id": 26,
-                    "required": false,
-                    "preference_score": 1
+                    "required": true,
+                    "preference_score": -1
                 }
             ],
             "room_constraints": [],
@@ -1526,39 +1470,34 @@
             },
             "preferences": [
                 {
-                    "ak_id": 3,
-                    "required": false,
-                    "preference_score": 1
-                },
-                {
-                    "ak_id": 4,
-                    "required": false,
-                    "preference_score": 1
-                },
-                {
-                    "ak_id": 6,
+                    "ak_id": 0,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": 7,
+                    "ak_id": 1,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": 8,
+                    "ak_id": 5,
                     "required": false,
-                    "preference_score": 1
+                    "preference_score": 2
                 },
                 {
                     "ak_id": 9,
-                    "required": true,
-                    "preference_score": -1
-                },
-                {
-                    "ak_id": 11,
                     "required": false,
                     "preference_score": 1
+                },
+                {
+                    "ak_id": 10,
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": 14,
+                    "required": false,
+                    "preference_score": 2
                 },
                 {
                     "ak_id": 15,
@@ -1568,7 +1507,12 @@
                 {
                     "ak_id": 16,
                     "required": false,
-                    "preference_score": 1
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": 17,
+                    "required": false,
+                    "preference_score": 2
                 },
                 {
                     "ak_id": 18,
@@ -1577,46 +1521,6 @@
                 },
                 {
                     "ak_id": 19,
-                    "required": false,
-                    "preference_score": 1
-                },
-                {
-                    "ak_id": 20,
-                    "required": false,
-                    "preference_score": 1
-                },
-                {
-                    "ak_id": 22,
-                    "required": false,
-                    "preference_score": 2
-                },
-                {
-                    "ak_id": 23,
-                    "required": false,
-                    "preference_score": 1
-                },
-                {
-                    "ak_id": 24,
-                    "required": false,
-                    "preference_score": 1
-                },
-                {
-                    "ak_id": 25,
-                    "required": true,
-                    "preference_score": -1
-                },
-                {
-                    "ak_id": 26,
-                    "required": false,
-                    "preference_score": 1
-                },
-                {
-                    "ak_id": 27,
-                    "required": false,
-                    "preference_score": 1
-                },
-                {
-                    "ak_id": 29,
                     "required": false,
                     "preference_score": 1
                 }
@@ -1631,9 +1535,24 @@
             },
             "preferences": [
                 {
+                    "ak_id": 1,
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": 3,
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
                     "ak_id": 4,
                     "required": false,
                     "preference_score": 2
+                },
+                {
+                    "ak_id": 5,
+                    "required": false,
+                    "preference_score": 1
                 },
                 {
                     "ak_id": 6,
@@ -1643,17 +1562,32 @@
                 {
                     "ak_id": 7,
                     "required": false,
-                    "preference_score": 2
+                    "preference_score": 1
                 },
                 {
                     "ak_id": 10,
                     "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": 11,
+                    "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": 14,
+                    "ak_id": 12,
                     "required": false,
                     "preference_score": 1
+                },
+                {
+                    "ak_id": 15,
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": 16,
+                    "required": false,
+                    "preference_score": 2
                 },
                 {
                     "ak_id": 18,
@@ -1662,21 +1596,6 @@
                 },
                 {
                     "ak_id": 19,
-                    "required": false,
-                    "preference_score": 1
-                },
-                {
-                    "ak_id": 23,
-                    "required": false,
-                    "preference_score": 2
-                },
-                {
-                    "ak_id": 24,
-                    "required": false,
-                    "preference_score": 1
-                },
-                {
-                    "ak_id": 25,
                     "required": false,
                     "preference_score": 2
                 }
@@ -1691,11 +1610,6 @@
             },
             "preferences": [
                 {
-                    "ak_id": 0,
-                    "required": false,
-                    "preference_score": 2
-                },
-                {
                     "ak_id": 2,
                     "required": false,
                     "preference_score": 2
@@ -1703,22 +1617,12 @@
                 {
                     "ak_id": 4,
                     "required": false,
-                    "preference_score": 1
-                },
-                {
-                    "ak_id": 5,
-                    "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": 10,
+                    "ak_id": 9,
                     "required": false,
-                    "preference_score": 1
-                },
-                {
-                    "ak_id": 11,
-                    "required": false,
-                    "preference_score": 1
+                    "preference_score": 2
                 },
                 {
                     "ak_id": 12,
@@ -1726,37 +1630,22 @@
                     "preference_score": 1
                 },
                 {
-                    "ak_id": 13,
-                    "required": false,
-                    "preference_score": 2
-                },
-                {
                     "ak_id": 15,
                     "required": false,
-                    "preference_score": 2
+                    "preference_score": 1
                 },
                 {
                     "ak_id": 16,
                     "required": false,
-                    "preference_score": 1
+                    "preference_score": 2
                 },
                 {
                     "ak_id": 17,
                     "required": false,
-                    "preference_score": 1
-                },
-                {
-                    "ak_id": 21,
-                    "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": 26,
-                    "required": false,
-                    "preference_score": 2
-                },
-                {
-                    "ak_id": 29,
+                    "ak_id": 19,
                     "required": false,
                     "preference_score": 2
                 }
@@ -1771,17 +1660,42 @@
             },
             "preferences": [
                 {
-                    "ak_id": 1,
-                    "required": false,
-                    "preference_score": 2
-                },
-                {
-                    "ak_id": 4,
+                    "ak_id": 0,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": 9,
+                    "ak_id": 2,
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": 3,
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": 4,
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": 5,
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": 7,
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": 8,
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": 10,
                     "required": false,
                     "preference_score": 2
                 },
@@ -1791,29 +1705,29 @@
                     "preference_score": 1
                 },
                 {
-                    "ak_id": 14,
-                    "required": false,
-                    "preference_score": 1
-                },
-                {
-                    "ak_id": 15,
+                    "ak_id": 13,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": 20,
+                    "ak_id": 16,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": 25,
+                    "ak_id": 17,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": 27,
+                    "ak_id": 18,
+                    "required": true,
+                    "preference_score": -1
+                },
+                {
+                    "ak_id": 19,
                     "required": false,
-                    "preference_score": 1
+                    "preference_score": 2
                 }
             ],
             "room_constraints": [],
@@ -1826,9 +1740,34 @@
             },
             "preferences": [
                 {
+                    "ak_id": 0,
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": 1,
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": 2,
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
                     "ak_id": 3,
                     "required": false,
                     "preference_score": 1
+                },
+                {
+                    "ak_id": 4,
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": 5,
+                    "required": false,
+                    "preference_score": 2
                 },
                 {
                     "ak_id": 6,
@@ -1837,13 +1776,13 @@
                 },
                 {
                     "ak_id": 7,
-                    "required": true,
-                    "preference_score": -1
+                    "required": false,
+                    "preference_score": 2
                 },
                 {
                     "ak_id": 8,
                     "required": false,
-                    "preference_score": 1
+                    "preference_score": 2
                 },
                 {
                     "ak_id": 9,
@@ -1851,24 +1790,44 @@
                     "preference_score": 1
                 },
                 {
-                    "ak_id": 16,
+                    "ak_id": 10,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": 22,
-                    "required": true,
-                    "preference_score": -1
-                },
-                {
-                    "ak_id": 25,
+                    "ak_id": 11,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": 26,
+                    "ak_id": 12,
                     "required": false,
                     "preference_score": 2
+                },
+                {
+                    "ak_id": 13,
+                    "required": false,
+                    "preference_score": 1
+                },
+                {
+                    "ak_id": 15,
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": 17,
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": 18,
+                    "required": false,
+                    "preference_score": 2
+                },
+                {
+                    "ak_id": 19,
+                    "required": false,
+                    "preference_score": 1
                 }
             ],
             "room_constraints": [],
