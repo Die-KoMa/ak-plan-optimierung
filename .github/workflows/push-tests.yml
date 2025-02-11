@@ -1,0 +1,28 @@
+name: Run nox tests
+
+on: [push]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.11
+      - name: Install uv and nox
+        run: |
+          pip install --upgrade pip
+          pip install uv
+          uv tool install nox
+      - name: Lint
+        run: |
+          uvx nox -s lint
+      - name: Check typing
+        run: |
+          uvx nox -s typing
+      - name: fast-test
+        run: |
+          uvx nox -s fast-test
