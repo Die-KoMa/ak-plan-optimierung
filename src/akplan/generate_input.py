@@ -185,7 +185,7 @@ def generate(
             "info": {"name": f"Person {person_idx}"},
             "preferences": [
                 {
-                    "ak_id": ak_idx,
+                    "ak_id": int(ak_idx),
                     "required": bool(ak_idx in required_aks[person_idx]),
                     "preference_score": _calc_preferred_score(person_idx, ak_idx),
                 }
