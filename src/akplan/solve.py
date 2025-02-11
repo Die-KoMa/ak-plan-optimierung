@@ -146,19 +146,10 @@ def create_lp(
         A tuple (`lp_problem`, `dec_vars`) where `lp_problem` is the
         constructed MILP instance and `dec_vars` is the nested dictionary
         containing the MILP variables.
-
-    Raises:
-        ValueError: if the timeslot ids cannot be casted to int.
     """
     # Get ids from input_dict
     ak_ids, person_ids, room_ids, timeslot_ids = get_ids(input_data)
-    try:
-        sorted_timeslot_ids = sorted(timeslot_ids, key=int)
-    except ValueError as e:
-        raise ValueError(
-            "Make sure the timeslot ids can be casted to int. "
-            "Otherwise the order cannot be determined."
-        ) from e
+    sorted_timeslot_ids = sorted(timeslot_ids)
 
     block_idx_dict = {
         block_idx: sorted([timeslot.id for timeslot in block])
