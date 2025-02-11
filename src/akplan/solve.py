@@ -3,7 +3,7 @@
 import argparse
 import json
 from dataclasses import asdict
-from itertools import chain, combinations, product
+from itertools import chain, product
 from pathlib import Path
 from typing import Any, Iterable, Literal, cast, overload
 
@@ -240,10 +240,11 @@ def create_lp(
         "Block", (ak_ids, block_idx_dict.keys()), cat=LpBinary
     )
     person_var: VarDict = LpVariable.dicts("Part", (ak_ids, person_ids), cat=LpBinary)
-    person_time_var: VarDict = LpVariable.dicts(
-        "Working",
-        (person_ids, timeslot_ids),
-        cat=LpBinary,
+    room_time_var: dict[int, VarDict] = LpVariable.dicts(
+        "ART", (ak_ids, room_ids, timeslot_ids), cat=LpBinary
+    )
+    person_time_var: dict[int, VarDict] = LpVariable.dicts(
+        "APT", (ak_ids, person_ids, timeslot_ids), cat=LpBinary
     )
 
     # Set objective function
@@ -260,41 +261,54 @@ def create_lp(
     )
 
     # Add constraints
-    # for all x, a, a', t time[a][t]+F[a][x]+time[a'][t]+F[a'][x] <= 3
-    # a,a' AKs, t timeslot, x Person or Room
-    for (ak_id1, ak_id2), timeslot_id in product(combinations(ak_ids, 2), timeslot_ids):
+    # for all x, a, t time[a][t] + F[a][x] <= F[a][x][t]
+    for ak_id, timeslot_id in product(ak_ids, timeslot_ids):
         for person_id in person_ids:
             constraint = lpSum(
                 [
-                    time_var[ak_id1][timeslot_id],
-                    time_var[ak_id2][timeslot_id],
-                    person_var[ak_id1][person_id],
-                    person_var[ak_id2][person_id],
+                    time_var[ak_id][timeslot_id],
+                    person_var[ak_id][person_id],
                 ]
             )
-            prob += constraint <= 3, _construct_constraint_name(
-                "MaxOneAKPerPersonAndTime",
-                ak_id1,
-                ak_id2,
-                timeslot_id,
+            prob += constraint <= person_time_var[ak_id][person_id][
+                timeslot_id
+            ] + 1, _construct_constraint_name(
+                "SetAPT",
+                ak_id,
                 person_id,
+                timeslot_id,
             )
-        # MaxOneAKPerRoomAndTime
+
         for room_id in room_ids:
             constraint = lpSum(
                 [
-                    time_var[ak_id1][timeslot_id],
-                    time_var[ak_id2][timeslot_id],
-                    room_var[ak_id1][room_id],
-                    room_var[ak_id2][room_id],
+                    time_var[ak_id][timeslot_id],
+                    room_var[ak_id][room_id],
                 ]
             )
-            prob += constraint <= 3, _construct_constraint_name(
-                "MaxOneAKPerRoomAndTime",
-                ak_id1,
-                ak_id2,
-                timeslot_id,
+            prob += constraint <= room_time_var[ak_id][room_id][
+                timeslot_id
+            ] + 1, _construct_constraint_name(
+                "SetART",
+                ak_id,
                 room_id,
+                timeslot_id,
+            )
+
+    for timeslot_id in timeslot_ids:
+        for person_id in person_ids:
+            constraint = lpSum(
+                [person_time_var[ak_id][person_id][timeslot_id]] for ak_id in ak_ids
+            )
+            prob += constraint <= 1, _construct_constraint_name(
+                "MaxOneAKPerPersonAndTime", person_id, timeslot_id
+            )
+        for room_id in room_ids:
+            constraint = lpSum(
+                [room_time_var[ak_id][room_id][timeslot_id]] for ak_id in ak_ids
+            )
+            prob += constraint <= 1, _construct_constraint_name(
+                "MaxOneAKPerRoomAndTime", room_id, timeslot_id
             )
 
     for ak_id in ak_ids:
@@ -364,24 +378,12 @@ def create_lp(
         # TimeImpossibleForPerson
         # Real person P cannot attend AKs with timeslot Z
         for timeslot_id in timeslot_ids:
-            for ak_id in ak_ids:
-                constraint_sum = lpSum(
-                    [time_var[ak_id][timeslot_id], person_var[ak_id][person_id]]
-                )
-                prob += (
-                    constraint_sum <= person_time_var[person_id][timeslot_id] + 1,
-                    _construct_constraint_name(
-                        "TimePersonVar",
-                        person_id,
-                        timeslot_id,
-                        ak_id,
-                    ),
-                )
             if participant_time_constraint_dict[person_id].difference(
                 fulfilled_time_constraints[timeslot_id]
             ):
-                person_time_var[person_id][timeslot_id].setInitialValue(0)
-                person_time_var[person_id][timeslot_id].fixValue()
+                for ak_id in ak_ids:
+                    person_time_var[ak_id][person_id][timeslot_id].setInitialValue(0)
+                    person_time_var[ak_id][person_id][timeslot_id].fixValue()
 
         # RoomImpossibleForPerson
         # Real person P cannot attend AKs with room R
@@ -407,12 +409,15 @@ def create_lp(
                 ):
                     sum_of_vars = lpSum(
                         [
-                            person_time_var[person_id][timeslot_id]
-                            for timeslot_id in block[
-                                i : i
-                                + input_data.config.max_num_timeslots_before_break
-                                + 1
-                            ]
+                            person_time_var[ak_id][person_id][timeslot_id]
+                            for ak_id, timeslot_id in product(
+                                ak_ids,
+                                block[
+                                    i : i
+                                    + input_data.config.max_num_timeslots_before_break
+                                    + 1
+                                ],
+                            )
                         ]
                     )
 
