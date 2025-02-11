@@ -1,7 +1,7 @@
 {
     "aks": [
         {
-            "id": "0",
+            "id": 0,
             "duration": 2,
             "properties": {},
             "room_constraints": [
@@ -18,7 +18,7 @@
             }
         },
         {
-            "id": "1",
+            "id": 1,
             "duration": 2,
             "properties": {},
             "room_constraints": [],
@@ -33,7 +33,7 @@
             }
         },
         {
-            "id": "2",
+            "id": 2,
             "duration": 2,
             "properties": {},
             "room_constraints": [],
@@ -46,7 +46,7 @@
             }
         },
         {
-            "id": "3",
+            "id": 3,
             "duration": 2,
             "properties": {},
             "room_constraints": [],
@@ -59,7 +59,7 @@
             }
         },
         {
-            "id": "4",
+            "id": 4,
             "duration": 1,
             "properties": {},
             "room_constraints": [
@@ -74,7 +74,7 @@
             }
         },
         {
-            "id": "5",
+            "id": 5,
             "duration": 2,
             "properties": {},
             "room_constraints": [],
@@ -87,7 +87,7 @@
             }
         },
         {
-            "id": "6",
+            "id": 6,
             "duration": 1,
             "properties": {},
             "room_constraints": [],
@@ -100,7 +100,7 @@
             }
         },
         {
-            "id": "7",
+            "id": 7,
             "duration": 2,
             "properties": {},
             "room_constraints": [],
@@ -113,7 +113,7 @@
             }
         },
         {
-            "id": "8",
+            "id": 8,
             "duration": 1,
             "properties": {},
             "room_constraints": [],
@@ -128,7 +128,7 @@
             }
         },
         {
-            "id": "9",
+            "id": 9,
             "duration": 2,
             "properties": {},
             "room_constraints": [],
@@ -141,7 +141,7 @@
             }
         },
         {
-            "id": "10",
+            "id": 10,
             "duration": 1,
             "properties": {},
             "room_constraints": [],
@@ -154,7 +154,7 @@
             }
         },
         {
-            "id": "11",
+            "id": 11,
             "duration": 2,
             "properties": {},
             "room_constraints": [],
@@ -167,7 +167,7 @@
             }
         },
         {
-            "id": "12",
+            "id": 12,
             "duration": 1,
             "properties": {},
             "room_constraints": [],
@@ -182,7 +182,7 @@
             }
         },
         {
-            "id": "13",
+            "id": 13,
             "duration": 2,
             "properties": {},
             "room_constraints": [
@@ -198,7 +198,7 @@
             }
         },
         {
-            "id": "14",
+            "id": 14,
             "duration": 2,
             "properties": {},
             "room_constraints": [],
@@ -211,7 +211,7 @@
             }
         },
         {
-            "id": "15",
+            "id": 15,
             "duration": 2,
             "properties": {},
             "room_constraints": [],
@@ -226,7 +226,7 @@
             }
         },
         {
-            "id": "16",
+            "id": 16,
             "duration": 1,
             "properties": {},
             "room_constraints": [],
@@ -239,7 +239,7 @@
             }
         },
         {
-            "id": "17",
+            "id": 17,
             "duration": 2,
             "properties": {},
             "room_constraints": [],
@@ -252,7 +252,7 @@
             }
         },
         {
-            "id": "18",
+            "id": 18,
             "duration": 2,
             "properties": {},
             "room_constraints": [],
@@ -265,7 +265,7 @@
             }
         },
         {
-            "id": "19",
+            "id": 19,
             "duration": 2,
             "properties": {},
             "room_constraints": [],
@@ -280,7 +280,7 @@
     ],
     "rooms": [
         {
-            "id": "0",
+            "id": 0,
             "info": {
                 "name": "room 0"
             },
@@ -293,7 +293,7 @@
             "time_constraints": []
         },
         {
-            "id": "1",
+            "id": 1,
             "info": {
                 "name": "room 1"
             },
@@ -304,7 +304,7 @@
             "time_constraints": []
         },
         {
-            "id": "2",
+            "id": 2,
             "info": {
                 "name": "room 2"
             },
@@ -321,88 +321,88 @@
     ],
     "participants": [
         {
-            "id": "0",
+            "id": 0,
             "info": {
                 "name": "Person 0"
             },
             "preferences": [
                 {
-                    "ak_id": "0",
+                    "ak_id": 0,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "1",
+                    "ak_id": 1,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "2",
+                    "ak_id": 2,
                     "required": true,
                     "preference_score": -1
                 },
                 {
-                    "ak_id": "4",
+                    "ak_id": 4,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "6",
+                    "ak_id": 6,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "7",
+                    "ak_id": 7,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "8",
+                    "ak_id": 8,
                     "required": true,
                     "preference_score": -1
                 },
                 {
-                    "ak_id": "9",
+                    "ak_id": 9,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "10",
+                    "ak_id": 10,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "11",
+                    "ak_id": 11,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "12",
+                    "ak_id": 12,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "13",
+                    "ak_id": 13,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "15",
+                    "ak_id": 15,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "17",
+                    "ak_id": 17,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "18",
+                    "ak_id": 18,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "19",
+                    "ak_id": 19,
                     "required": false,
                     "preference_score": 2
                 }
@@ -411,33 +411,33 @@
             "time_constraints": []
         },
         {
-            "id": "1",
+            "id": 1,
             "info": {
                 "name": "Person 1"
             },
             "preferences": [
                 {
-                    "ak_id": "0",
+                    "ak_id": 0,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "1",
+                    "ak_id": 1,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "4",
+                    "ak_id": 4,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "9",
+                    "ak_id": 9,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "11",
+                    "ak_id": 11,
                     "required": false,
                     "preference_score": 2
                 }
@@ -446,88 +446,88 @@
             "time_constraints": []
         },
         {
-            "id": "2",
+            "id": 2,
             "info": {
                 "name": "Person 2"
             },
             "preferences": [
                 {
-                    "ak_id": "0",
+                    "ak_id": 0,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "1",
+                    "ak_id": 1,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "2",
+                    "ak_id": 2,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "5",
+                    "ak_id": 5,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "6",
+                    "ak_id": 6,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "7",
+                    "ak_id": 7,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "8",
+                    "ak_id": 8,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "9",
+                    "ak_id": 9,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "11",
+                    "ak_id": 11,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "12",
+                    "ak_id": 12,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "13",
+                    "ak_id": 13,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "14",
+                    "ak_id": 14,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "16",
+                    "ak_id": 16,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "17",
+                    "ak_id": 17,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "18",
+                    "ak_id": 18,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "19",
+                    "ak_id": 19,
                     "required": false,
                     "preference_score": 1
                 }
@@ -536,93 +536,93 @@
             "time_constraints": []
         },
         {
-            "id": "3",
+            "id": 3,
             "info": {
                 "name": "Person 3"
             },
             "preferences": [
                 {
-                    "ak_id": "0",
+                    "ak_id": 0,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "1",
+                    "ak_id": 1,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "2",
+                    "ak_id": 2,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "3",
+                    "ak_id": 3,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "4",
+                    "ak_id": 4,
                     "required": true,
                     "preference_score": -1
                 },
                 {
-                    "ak_id": "7",
+                    "ak_id": 7,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "8",
+                    "ak_id": 8,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "9",
+                    "ak_id": 9,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "10",
+                    "ak_id": 10,
                     "required": true,
                     "preference_score": -1
                 },
                 {
-                    "ak_id": "11",
+                    "ak_id": 11,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "12",
+                    "ak_id": 12,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "14",
+                    "ak_id": 14,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "15",
+                    "ak_id": 15,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "16",
+                    "ak_id": 16,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "17",
+                    "ak_id": 17,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "18",
+                    "ak_id": 18,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "19",
+                    "ak_id": 19,
                     "required": false,
                     "preference_score": 2
                 }
@@ -631,53 +631,53 @@
             "time_constraints": []
         },
         {
-            "id": "4",
+            "id": 4,
             "info": {
                 "name": "Person 4"
             },
             "preferences": [
                 {
-                    "ak_id": "6",
+                    "ak_id": 6,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "8",
+                    "ak_id": 8,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "11",
+                    "ak_id": 11,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "13",
+                    "ak_id": 13,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "14",
+                    "ak_id": 14,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "15",
+                    "ak_id": 15,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "16",
+                    "ak_id": 16,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "17",
+                    "ak_id": 17,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "19",
+                    "ak_id": 19,
                     "required": false,
                     "preference_score": 2
                 }
@@ -686,58 +686,58 @@
             "time_constraints": []
         },
         {
-            "id": "5",
+            "id": 5,
             "info": {
                 "name": "Person 5"
             },
             "preferences": [
                 {
-                    "ak_id": "2",
+                    "ak_id": 2,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "5",
+                    "ak_id": 5,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "8",
+                    "ak_id": 8,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "9",
+                    "ak_id": 9,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "10",
+                    "ak_id": 10,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "11",
+                    "ak_id": 11,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "13",
+                    "ak_id": 13,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "14",
+                    "ak_id": 14,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "16",
+                    "ak_id": 16,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "18",
+                    "ak_id": 18,
                     "required": false,
                     "preference_score": 2
                 }
@@ -746,58 +746,58 @@
             "time_constraints": []
         },
         {
-            "id": "6",
+            "id": 6,
             "info": {
                 "name": "Person 6"
             },
             "preferences": [
                 {
-                    "ak_id": "0",
+                    "ak_id": 0,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "6",
+                    "ak_id": 6,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "7",
+                    "ak_id": 7,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "8",
+                    "ak_id": 8,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "10",
+                    "ak_id": 10,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "13",
+                    "ak_id": 13,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "14",
+                    "ak_id": 14,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "17",
+                    "ak_id": 17,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "18",
+                    "ak_id": 18,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "19",
+                    "ak_id": 19,
                     "required": false,
                     "preference_score": 1
                 }
@@ -806,73 +806,73 @@
             "time_constraints": []
         },
         {
-            "id": "7",
+            "id": 7,
             "info": {
                 "name": "Person 7"
             },
             "preferences": [
                 {
-                    "ak_id": "1",
+                    "ak_id": 1,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "5",
+                    "ak_id": 5,
                     "required": true,
                     "preference_score": -1
                 },
                 {
-                    "ak_id": "6",
+                    "ak_id": 6,
                     "required": true,
                     "preference_score": -1
                 },
                 {
-                    "ak_id": "8",
+                    "ak_id": 8,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "9",
+                    "ak_id": 9,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "10",
+                    "ak_id": 10,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "12",
+                    "ak_id": 12,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "14",
+                    "ak_id": 14,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "15",
+                    "ak_id": 15,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "16",
+                    "ak_id": 16,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "17",
+                    "ak_id": 17,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "18",
+                    "ak_id": 18,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "19",
+                    "ak_id": 19,
                     "required": false,
                     "preference_score": 1
                 }
@@ -881,68 +881,68 @@
             "time_constraints": []
         },
         {
-            "id": "8",
+            "id": 8,
             "info": {
                 "name": "Person 8"
             },
             "preferences": [
                 {
-                    "ak_id": "1",
+                    "ak_id": 1,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "2",
+                    "ak_id": 2,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "4",
+                    "ak_id": 4,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "5",
+                    "ak_id": 5,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "7",
+                    "ak_id": 7,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "11",
+                    "ak_id": 11,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "12",
+                    "ak_id": 12,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "14",
+                    "ak_id": 14,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "15",
+                    "ak_id": 15,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "16",
+                    "ak_id": 16,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "18",
+                    "ak_id": 18,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "19",
+                    "ak_id": 19,
                     "required": true,
                     "preference_score": -1
                 }
@@ -951,88 +951,88 @@
             "time_constraints": []
         },
         {
-            "id": "9",
+            "id": 9,
             "info": {
                 "name": "Person 9"
             },
             "preferences": [
                 {
-                    "ak_id": "0",
+                    "ak_id": 0,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "1",
+                    "ak_id": 1,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "2",
+                    "ak_id": 2,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "3",
+                    "ak_id": 3,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "4",
+                    "ak_id": 4,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "5",
+                    "ak_id": 5,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "7",
+                    "ak_id": 7,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "8",
+                    "ak_id": 8,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "9",
+                    "ak_id": 9,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "10",
+                    "ak_id": 10,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "11",
+                    "ak_id": 11,
                     "required": true,
                     "preference_score": -1
                 },
                 {
-                    "ak_id": "12",
+                    "ak_id": 12,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "13",
+                    "ak_id": 13,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "15",
+                    "ak_id": 15,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "17",
+                    "ak_id": 17,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "18",
+                    "ak_id": 18,
                     "required": false,
                     "preference_score": 2
                 }
@@ -1041,108 +1041,108 @@
             "time_constraints": []
         },
         {
-            "id": "10",
+            "id": 10,
             "info": {
                 "name": "Person 10"
             },
             "preferences": [
                 {
-                    "ak_id": "0",
+                    "ak_id": 0,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "1",
+                    "ak_id": 1,
                     "required": true,
                     "preference_score": -1
                 },
                 {
-                    "ak_id": "2",
+                    "ak_id": 2,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "3",
+                    "ak_id": 3,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "4",
+                    "ak_id": 4,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "5",
+                    "ak_id": 5,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "6",
+                    "ak_id": 6,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "7",
+                    "ak_id": 7,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "8",
+                    "ak_id": 8,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "9",
+                    "ak_id": 9,
                     "required": true,
                     "preference_score": -1
                 },
                 {
-                    "ak_id": "10",
+                    "ak_id": 10,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "11",
+                    "ak_id": 11,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "12",
+                    "ak_id": 12,
                     "required": true,
                     "preference_score": -1
                 },
                 {
-                    "ak_id": "13",
+                    "ak_id": 13,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "14",
+                    "ak_id": 14,
                     "required": true,
                     "preference_score": -1
                 },
                 {
-                    "ak_id": "15",
+                    "ak_id": 15,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "16",
+                    "ak_id": 16,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "17",
+                    "ak_id": 17,
                     "required": true,
                     "preference_score": -1
                 },
                 {
-                    "ak_id": "18",
+                    "ak_id": 18,
                     "required": true,
                     "preference_score": -1
                 },
                 {
-                    "ak_id": "19",
+                    "ak_id": 19,
                     "required": false,
                     "preference_score": 1
                 }
@@ -1151,93 +1151,93 @@
             "time_constraints": []
         },
         {
-            "id": "11",
+            "id": 11,
             "info": {
                 "name": "Person 11"
             },
             "preferences": [
                 {
-                    "ak_id": "0",
+                    "ak_id": 0,
                     "required": true,
                     "preference_score": -1
                 },
                 {
-                    "ak_id": "1",
+                    "ak_id": 1,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "2",
+                    "ak_id": 2,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "3",
+                    "ak_id": 3,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "4",
+                    "ak_id": 4,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "5",
+                    "ak_id": 5,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "6",
+                    "ak_id": 6,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "7",
+                    "ak_id": 7,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "8",
+                    "ak_id": 8,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "10",
+                    "ak_id": 10,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "12",
+                    "ak_id": 12,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "13",
+                    "ak_id": 13,
                     "required": true,
                     "preference_score": -1
                 },
                 {
-                    "ak_id": "14",
+                    "ak_id": 14,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "15",
+                    "ak_id": 15,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "16",
+                    "ak_id": 16,
                     "required": true,
                     "preference_score": -1
                 },
                 {
-                    "ak_id": "17",
+                    "ak_id": 17,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "19",
+                    "ak_id": 19,
                     "required": false,
                     "preference_score": 1
                 }
@@ -1246,73 +1246,73 @@
             "time_constraints": []
         },
         {
-            "id": "12",
+            "id": 12,
             "info": {
                 "name": "Person 12"
             },
             "preferences": [
                 {
-                    "ak_id": "3",
+                    "ak_id": 3,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "4",
+                    "ak_id": 4,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "5",
+                    "ak_id": 5,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "6",
+                    "ak_id": 6,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "7",
+                    "ak_id": 7,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "8",
+                    "ak_id": 8,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "9",
+                    "ak_id": 9,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "10",
+                    "ak_id": 10,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "12",
+                    "ak_id": 12,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "14",
+                    "ak_id": 14,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "15",
+                    "ak_id": 15,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "17",
+                    "ak_id": 17,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "18",
+                    "ak_id": 18,
                     "required": false,
                     "preference_score": 2
                 }
@@ -1321,43 +1321,43 @@
             "time_constraints": []
         },
         {
-            "id": "13",
+            "id": 13,
             "info": {
                 "name": "Person 13"
             },
             "preferences": [
                 {
-                    "ak_id": "0",
+                    "ak_id": 0,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "1",
+                    "ak_id": 1,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "18",
+                    "ak_id": 18,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "19",
+                    "ak_id": 19,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "7",
+                    "ak_id": 7,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "8",
+                    "ak_id": 8,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "12",
+                    "ak_id": 12,
                     "required": false,
                     "preference_score": 2
                 }
@@ -1366,88 +1366,88 @@
             "time_constraints": []
         },
         {
-            "id": "14",
+            "id": 14,
             "info": {
                 "name": "Person 14"
             },
             "preferences": [
                 {
-                    "ak_id": "0",
+                    "ak_id": 0,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "1",
+                    "ak_id": 1,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "2",
+                    "ak_id": 2,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "4",
+                    "ak_id": 4,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "5",
+                    "ak_id": 5,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "6",
+                    "ak_id": 6,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "7",
+                    "ak_id": 7,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "9",
+                    "ak_id": 9,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "10",
+                    "ak_id": 10,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "11",
+                    "ak_id": 11,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "12",
+                    "ak_id": 12,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "13",
+                    "ak_id": 13,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "15",
+                    "ak_id": 15,
                     "required": true,
                     "preference_score": -1
                 },
                 {
-                    "ak_id": "16",
+                    "ak_id": 16,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "17",
+                    "ak_id": 17,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "19",
+                    "ak_id": 19,
                     "required": false,
                     "preference_score": 1
                 }
@@ -1456,63 +1456,63 @@
             "time_constraints": []
         },
         {
-            "id": "15",
+            "id": 15,
             "info": {
                 "name": "Person 15"
             },
             "preferences": [
                 {
-                    "ak_id": "2",
+                    "ak_id": 2,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "3",
+                    "ak_id": 3,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "5",
+                    "ak_id": 5,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "7",
+                    "ak_id": 7,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "8",
+                    "ak_id": 8,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "9",
+                    "ak_id": 9,
                     "required": true,
                     "preference_score": -1
                 },
                 {
-                    "ak_id": "11",
+                    "ak_id": 11,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "13",
+                    "ak_id": 13,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "16",
+                    "ak_id": 16,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "17",
+                    "ak_id": 17,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "19",
+                    "ak_id": 19,
                     "required": false,
                     "preference_score": 2
                 }
@@ -1521,88 +1521,88 @@
             "time_constraints": []
         },
         {
-            "id": "16",
+            "id": 16,
             "info": {
                 "name": "Person 16"
             },
             "preferences": [
                 {
-                    "ak_id": "0",
+                    "ak_id": 0,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "1",
+                    "ak_id": 1,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "2",
+                    "ak_id": 2,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "3",
+                    "ak_id": 3,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "4",
+                    "ak_id": 4,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "5",
+                    "ak_id": 5,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "6",
+                    "ak_id": 6,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "7",
+                    "ak_id": 7,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "10",
+                    "ak_id": 10,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "11",
+                    "ak_id": 11,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "12",
+                    "ak_id": 12,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "13",
+                    "ak_id": 13,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "15",
+                    "ak_id": 15,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "16",
+                    "ak_id": 16,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "18",
+                    "ak_id": 18,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "19",
+                    "ak_id": 19,
                     "required": false,
                     "preference_score": 1
                 }
@@ -1611,68 +1611,68 @@
             "time_constraints": []
         },
         {
-            "id": "17",
+            "id": 17,
             "info": {
                 "name": "Person 17"
             },
             "preferences": [
                 {
-                    "ak_id": "0",
+                    "ak_id": 0,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "2",
+                    "ak_id": 2,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "5",
+                    "ak_id": 5,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "6",
+                    "ak_id": 6,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "8",
+                    "ak_id": 8,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "11",
+                    "ak_id": 11,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "12",
+                    "ak_id": 12,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "14",
+                    "ak_id": 14,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "15",
+                    "ak_id": 15,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "16",
+                    "ak_id": 16,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "18",
+                    "ak_id": 18,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "19",
+                    "ak_id": 19,
                     "required": false,
                     "preference_score": 1
                 }
@@ -1681,28 +1681,28 @@
             "time_constraints": []
         },
         {
-            "id": "18",
+            "id": 18,
             "info": {
                 "name": "Person 18"
             },
             "preferences": [
                 {
-                    "ak_id": "16",
+                    "ak_id": 16,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "1",
+                    "ak_id": 1,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "13",
+                    "ak_id": 13,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "17",
+                    "ak_id": 17,
                     "required": false,
                     "preference_score": 1
                 }
@@ -1711,63 +1711,63 @@
             "time_constraints": []
         },
         {
-            "id": "19",
+            "id": 19,
             "info": {
                 "name": "Person 19"
             },
             "preferences": [
                 {
-                    "ak_id": "1",
+                    "ak_id": 1,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "2",
+                    "ak_id": 2,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "4",
+                    "ak_id": 4,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "5",
+                    "ak_id": 5,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "6",
+                    "ak_id": 6,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "7",
+                    "ak_id": 7,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "10",
+                    "ak_id": 10,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "12",
+                    "ak_id": 12,
                     "required": false,
                     "preference_score": 1
                 },
                 {
-                    "ak_id": "15",
+                    "ak_id": 15,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "17",
+                    "ak_id": 17,
                     "required": false,
                     "preference_score": 2
                 },
                 {
-                    "ak_id": "18",
+                    "ak_id": 18,
                     "required": false,
                     "preference_score": 2
                 }
@@ -1783,7 +1783,7 @@
         "blocks": [
             [
                 {
-                    "id": "0",
+                    "id": 0,
                     "info": {
                         "start": "Dienstag, 8 Uhr"
                     },
@@ -1793,7 +1793,7 @@
                     ]
                 },
                 {
-                    "id": "1",
+                    "id": 1,
                     "info": {
                         "start": "Dienstag, 9 Uhr"
                     },
@@ -1803,7 +1803,7 @@
                     ]
                 },
                 {
-                    "id": "2",
+                    "id": 2,
                     "info": {
                         "start": "Dienstag, 10 Uhr"
                     },
@@ -1813,7 +1813,7 @@
                     ]
                 },
                 {
-                    "id": "3",
+                    "id": 3,
                     "info": {
                         "start": "Dienstag, 11 Uhr"
                     },
@@ -1823,7 +1823,7 @@
                     ]
                 },
                 {
-                    "id": "4",
+                    "id": 4,
                     "info": {
                         "start": "Dienstag, 12 Uhr"
                     },
@@ -1833,7 +1833,7 @@
                     ]
                 },
                 {
-                    "id": "5",
+                    "id": 5,
                     "info": {
                         "start": "Dienstag, 13 Uhr"
                     },
@@ -1843,7 +1843,7 @@
                     ]
                 },
                 {
-                    "id": "6",
+                    "id": 6,
                     "info": {
                         "start": "Dienstag, 14 Uhr"
                     },
@@ -1853,7 +1853,7 @@
                     ]
                 },
                 {
-                    "id": "7",
+                    "id": 7,
                     "info": {
                         "start": "Dienstag, 15 Uhr"
                     },
@@ -1863,7 +1863,7 @@
                     ]
                 },
                 {
-                    "id": "8",
+                    "id": 8,
                     "info": {
                         "start": "Dienstag, 16 Uhr"
                     },
@@ -1873,7 +1873,7 @@
                     ]
                 },
                 {
-                    "id": "9",
+                    "id": 9,
                     "info": {
                         "start": "Dienstag, 17 Uhr"
                     },
@@ -1885,7 +1885,7 @@
             ],
             [
                 {
-                    "id": "10",
+                    "id": 10,
                     "info": {
                         "start": "Mittwoch, 8 Uhr"
                     },
@@ -1894,7 +1894,7 @@
                     ]
                 },
                 {
-                    "id": "11",
+                    "id": 11,
                     "info": {
                         "start": "Mittwoch, 9 Uhr"
                     },
@@ -1903,7 +1903,7 @@
                     ]
                 },
                 {
-                    "id": "12",
+                    "id": 12,
                     "info": {
                         "start": "Mittwoch, 10 Uhr"
                     },
@@ -1912,7 +1912,7 @@
                     ]
                 },
                 {
-                    "id": "13",
+                    "id": 13,
                     "info": {
                         "start": "Mittwoch, 11 Uhr"
                     },
@@ -1921,7 +1921,7 @@
                     ]
                 },
                 {
-                    "id": "14",
+                    "id": 14,
                     "info": {
                         "start": "Mittwoch, 12 Uhr"
                     },
@@ -1930,7 +1930,7 @@
                     ]
                 },
                 {
-                    "id": "15",
+                    "id": 15,
                     "info": {
                         "start": "Mittwoch, 13 Uhr"
                     },
@@ -1939,7 +1939,7 @@
                     ]
                 },
                 {
-                    "id": "16",
+                    "id": 16,
                     "info": {
                         "start": "Mittwoch, 14 Uhr"
                     },
@@ -1948,7 +1948,7 @@
                     ]
                 },
                 {
-                    "id": "17",
+                    "id": 17,
                     "info": {
                         "start": "Mittwoch, 15 Uhr"
                     },
@@ -1959,7 +1959,7 @@
             ],
             [
                 {
-                    "id": "18",
+                    "id": 18,
                     "info": {
                         "start": "Donnerstag, 8 Uhr"
                     },
@@ -1968,7 +1968,7 @@
                     ]
                 },
                 {
-                    "id": "19",
+                    "id": 19,
                     "info": {
                         "start": "Donnerstag, 9 Uhr"
                     },
@@ -1977,7 +1977,7 @@
                     ]
                 },
                 {
-                    "id": "20",
+                    "id": 20,
                     "info": {
                         "start": "Donnerstag, 10 Uhr"
                     },
@@ -1986,7 +1986,7 @@
                     ]
                 },
                 {
-                    "id": "21",
+                    "id": 21,
                     "info": {
                         "start": "Donnerstag, 11 Uhr"
                     },
@@ -1995,7 +1995,7 @@
                     ]
                 },
                 {
-                    "id": "22",
+                    "id": 22,
                     "info": {
                         "start": "Donnerstag, 12 Uhr"
                     },
@@ -2004,7 +2004,7 @@
                     ]
                 },
                 {
-                    "id": "23",
+                    "id": 23,
                     "info": {
                         "start": "Donnerstag, 13 Uhr"
                     },
@@ -2013,7 +2013,7 @@
                     ]
                 },
                 {
-                    "id": "24",
+                    "id": 24,
                     "info": {
                         "start": "Donnerstag, 14 Uhr"
                     },
@@ -2022,7 +2022,7 @@
                     ]
                 },
                 {
-                    "id": "25",
+                    "id": 25,
                     "info": {
                         "start": "Donnerstag, 15 Uhr"
                     },
@@ -2033,7 +2033,7 @@
             ],
             [
                 {
-                    "id": "26",
+                    "id": 26,
                     "info": {
                         "start": "Freitag, 8 Uhr"
                     },
@@ -2042,7 +2042,7 @@
                     ]
                 },
                 {
-                    "id": "27",
+                    "id": 27,
                     "info": {
                         "start": "Freitag, 9 Uhr"
                     },
@@ -2051,7 +2051,7 @@
                     ]
                 },
                 {
-                    "id": "28",
+                    "id": 28,
                     "info": {
                         "start": "Freitag, 10 Uhr"
                     },
@@ -2060,7 +2060,7 @@
                     ]
                 },
                 {
-                    "id": "29",
+                    "id": 29,
                     "info": {
                         "start": "Freitag, 11 Uhr"
                     },
@@ -2069,7 +2069,7 @@
                     ]
                 },
                 {
-                    "id": "30",
+                    "id": 30,
                     "info": {
                         "start": "Freitag, 12 Uhr"
                     },
@@ -2078,7 +2078,7 @@
                     ]
                 },
                 {
-                    "id": "31",
+                    "id": 31,
                     "info": {
                         "start": "Freitag, 13 Uhr"
                     },
@@ -2087,7 +2087,7 @@
                     ]
                 },
                 {
-                    "id": "32",
+                    "id": 32,
                     "info": {
                         "start": "Freitag, 14 Uhr"
                     },
@@ -2096,7 +2096,7 @@
                     ]
                 },
                 {
-                    "id": "33",
+                    "id": 33,
                     "info": {
                         "start": "Freitag, 15 Uhr"
                     },
@@ -2105,7 +2105,7 @@
                     ]
                 },
                 {
-                    "id": "34",
+                    "id": 34,
                     "info": {
                         "start": "Freitag, 16 Uhr"
                     },
@@ -2114,7 +2114,7 @@
                     ]
                 },
                 {
-                    "id": "35",
+                    "id": 35,
                     "info": {
                         "start": "Freitag, 17 Uhr"
                     },

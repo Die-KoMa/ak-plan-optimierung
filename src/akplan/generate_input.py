@@ -64,7 +64,7 @@ def generate(
         list_of_time_blocks.append(
             [
                 {
-                    "id": str(global_timeslot_cnt + slot_idx),
+                    "id": global_timeslot_cnt + slot_idx,
                     "info": {"start": f"{block_label}, {8 + slot_idx} Uhr"},
                     "fulfilled_time_constraints": list(fulfilled_time_constraints),
                 }
@@ -84,7 +84,7 @@ def generate(
     # create rooms:
     rooms = [
         {
-            "id": str(room_idx),
+            "id": room_idx,
             "info": {"name": f"room {room_idx}"},
             "capacity": int(rng.integers(low=10, high=51)),
             "fulfilled_room_constraints": list(
@@ -116,7 +116,7 @@ def generate(
 
     aks = [
         {
-            "id": str(ak_idx),
+            "id": ak_idx,
             "duration": int(duration),
             "properties": {"conflicts": [], "dependencies": []},
             "room_constraints": list(room_constraints),
@@ -181,11 +181,11 @@ def generate(
     # TODO: Generate room & time constraints
     participants = [
         {
-            "id": str(person_idx),
+            "id": person_idx,
             "info": {"name": f"Person {person_idx}"},
             "preferences": [
                 {
-                    "ak_id": str(ak_idx),
+                    "ak_id": ak_idx,
                     "required": bool(ak_idx in required_aks[person_idx]),
                     "preference_score": _calc_preferred_score(person_idx, ak_idx),
                 }

@@ -232,12 +232,15 @@ def test_room_constraints(
             room_dict[ak.room_id].fulfilled_room_constraints
         )
         room_constraints_ak = set(ak_dict[ak_id].room_constraints)
-        room_constraints_participants = set.union(
-            *(
-                set(participant_dict[participant_id].room_constraints)
-                for participant_id in ak.participant_ids
+        if ak.participant_ids:
+            room_constraints_participants = set.union(
+                *(
+                    set(participant_dict[participant_id].room_constraints)
+                    for participant_id in ak.participant_ids
+                )
             )
-        )
+        else:
+            room_constraints_participants = set()
         assert not room_constraints_ak.difference(fulfilled_room_constraints)
         assert not room_constraints_participants.difference(fulfilled_room_constraints)
 
@@ -261,12 +264,15 @@ def test_time_constraints(
             fullfilled_time_constraints = fullfilled_time_constraints.intersection(
                 set(timeslot_dict[timeslot_id].fulfilled_time_constraints)
             )
-        time_constraints_participants = set.union(
-            *(
-                set(participant_dict[participant_id].time_constraints)
-                for participant_id in ak.participant_ids
+        if ak.participant_ids:
+            time_constraints_participants = set.union(
+                *(
+                    set(participant_dict[participant_id].time_constraints)
+                    for participant_id in ak.participant_ids
+                )
             )
-        )
+        else:
+            time_constraints_participants = set()
         assert not time_constraints_room.difference(fullfilled_time_constraints)
         assert not time_constraints_ak.difference(fullfilled_time_constraints)
         assert not time_constraints_participants.difference(fullfilled_time_constraints)
