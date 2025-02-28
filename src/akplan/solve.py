@@ -456,12 +456,12 @@ def create_lp(
     # AK conflicts
     conflict_pairs: set[tuple[int, int]] = set()
     for ak in input_data.aks:
-        other_ak_ids: list[int] = ak.properties.get("conflicts", [])
-        other_ak_ids += ak.properties.get("dependencies", [])
+        conflicting_aks: list[int] = ak.properties.get("conflicts", [])
+        depending_aks: list[int] = ak.properties.get("dependencies", [])
         conflict_pairs.update(
             [
                 (ak.id, other_ak_id) if ak.id < other_ak_id else (other_ak_id, ak.id)
-                for other_ak_id in other_ak_ids
+                for other_ak_id in conflicting_aks + depending_aks
             ]
         )
 
