@@ -337,10 +337,10 @@ def create_lp(
             prob += constraint, _construct_constraint_name("Roomsize", room_id, ak_id)
     for ak_id in ak_ids:
         prob += lpSum(room_var[ak_id].values()) <= 1, _construct_constraint_name(
-            "AtMostOneRoomPerAK", ak_id, room_id
+            "AtMostOneRoomPerAK", ak_id
         )
         prob += lpSum(room_var[ak_id].values()) >= 1, _construct_constraint_name(
-            "AtLeastOneRoomPerAK", ak_id, room_id
+            "AtLeastOneRoomPerAK", ak_id
         )
         # We need this constraint so the Roomsize is correct
         constraint_sum = lpSum(person_var[ak_id].values())
