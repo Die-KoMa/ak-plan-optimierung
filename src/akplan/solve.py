@@ -20,6 +20,7 @@ from pulp import (
     getSolver,
     lpSum,
 )
+from tqdm import tqdm
 
 from .util import (
     AKData,
@@ -121,6 +122,7 @@ def get_ak_name(input_data: SchedulingInput, ak_id: int) -> str:
 def create_lp(
     input_data: SchedulingInput,
     output_file: str | None = "koma-plan.lp",
+    show_progress: bool = False,
 ) -> tuple[LpProblem, dict[str, VarDict]]:
     """Create the MILP problem as pulp object.
 
@@ -141,6 +143,8 @@ def create_lp(
         input_data (SchedulingInput): The input data used to construct the MILP.
         output_file (str, optional): If not None, the created LP is written
             as an `.lp` file to this location. Defaults to `koma-plan.lp`.
+        show_progress (bool): Whether progress bars should be displayed.
+            Defaults to False.
 
     Returns:
         A tuple (`lp_problem`, `dec_vars`) where `lp_problem` is the
@@ -262,7 +266,12 @@ def create_lp(
     # Add constraints
     # for all x, a, a', t time[a][t]+F[a][x]+time[a'][t]+F[a'][x] <= 3
     # a,a' AKs, t timeslot, x Person or Room
-    for (ak_id1, ak_id2), timeslot_id in product(combinations(ak_ids, 2), timeslot_ids):
+    for (ak_id1, ak_id2), timeslot_id in tqdm(
+        product(combinations(ak_ids, 2), timeslot_ids),
+        total=0.5 * len(timeslot_ids) * len(ak_ids) * (len(ak_ids) - 1),
+        desc="MaxOneAKPerPersonAndTime/MaxOneAKPerRoomAndTime",
+        disable=not show_progress,
+    ):
         for person_id in person_ids:
             constraint = lpSum(
                 [
@@ -297,7 +306,12 @@ def create_lp(
                 room_id,
             )
 
-    for ak_id in ak_ids:
+    for ak_id in tqdm(
+        ak_ids,
+        total=len(ak_ids),
+        desc="AKDurations/SingleBlock/Contiguous",
+        disable=not show_progress,
+    ):
         # AKDurations
         constraint = lpSum(time_var[ak_id].values()) >= ak_durations[ak_id]
         prob += constraint, _construct_constraint_name("AKDuration", ak_id)
@@ -327,7 +341,12 @@ def create_lp(
                     )
 
     # Roomsizes
-    for room_id, ak_id in product(room_ids, ak_ids):
+    for room_id, ak_id in tqdm(
+        product(room_ids, ak_ids),
+        total=len(room_ids) * len(ak_ids),
+        desc="Roomsizes",
+        disable=not show_progress,
+    ):
         if ak_num_interested[ak_id] > room_capacities[room_id]:
             constraint_sum = lpSum(person_var[ak_id].values())
             constraint_sum += ak_num_interested[ak_id] * room_var[ak_id][room_id]
@@ -335,7 +354,12 @@ def create_lp(
                 constraint_sum <= ak_num_interested[ak_id] + room_capacities[room_id]
             )
             prob += constraint, _construct_constraint_name("Roomsize", room_id, ak_id)
-    for ak_id in ak_ids:
+    for ak_id in tqdm(
+        ak_ids,
+        total=len(ak_ids),
+        desc="AtMostOneRoomPerAK/AtLeastOneRoomPerAK/NotMorePeopleThanInterested",
+        disable=not show_progress,
+    ):
         prob += lpSum(room_var[ak_id].values()) <= 1, _construct_constraint_name(
             "AtMostOneRoomPerAK", ak_id
         )
@@ -360,7 +384,12 @@ def create_lp(
             person_var[ak_id][person_id].setInitialValue(1)
             person_var[ak_id][person_id].fixValue()
 
-    for person_id in weighted_preference_dict:
+    for person_id in tqdm(
+        weighted_preference_dict,
+        total=len(weighted_preference_dict),
+        desc="TimeImpossibleForPerson/RoomImpossibleForPerson/PersonNeedsBreak",
+        disable=not show_progress,
+    ):
         # TimeImpossibleForPerson
         # Real person P cannot attend AKs with timeslot Z
         for timeslot_id in timeslot_ids:
@@ -423,7 +452,12 @@ def create_lp(
                         ),
                     )
 
-    for ak_id in ak_ids:
+    for ak_id in tqdm(
+        ak_ids,
+        total=len(ak_ids),
+        desc="TimeImpossibleForAK/RoomImpossibleForAK/TimeImpossibleForRoom",
+        disable=not show_progress,
+    ):
         # TimeImpossibleForAK
         for timeslot_id in timeslot_ids:
             if ak_time_constraint_dict[ak_id].difference(
@@ -584,6 +618,7 @@ def solve_scheduling(
     input_data: SchedulingInput,
     solver_name: str | None = None,
     output_lp_file: str | None = "koma-plan.lp",
+    show_progress: bool = False,
     **solver_kwargs: dict[str, Any],
 ) -> tuple[LpProblem, dict[str, PartialSolvedVarDict]]:
     """Solve the scheduling problem.
@@ -608,6 +643,8 @@ def solve_scheduling(
             default solver. Defaults to None.
         output_lp_file (str, optional): If not None, the created LP is written
             as an `.lp` file to this location. Defaults to `koma-plan.lp`.
+        show_progress (bool): Whether progress bars should be displayed during
+            LP creation. Defaults to False.
         **solver_kwargs: kwargs are passed to the solver.
 
     Returns:
@@ -615,7 +652,9 @@ def solve_scheduling(
         constructed and solved MILP instance and `solution` contains
         the nested dicts with the solution.
     """
-    lp_problem, dec_vars = create_lp(input_data, output_lp_file)
+    lp_problem, dec_vars = create_lp(
+        input_data, output_lp_file, show_progress=show_progress
+    )
 
     if not solver_name:
         # The problem is solved using PuLP's default solver
@@ -750,6 +789,11 @@ def main() -> None:
         action="store_true",
         help="If set, overrides the output file if it exists.",
     )
+    parser.add_argument(
+        "--progress",
+        action="store_true",
+        help="If set, shows progress bars during LP generation.",
+    )
     args = parser.parse_args()
 
     solver_kwargs = {}
@@ -789,6 +833,7 @@ def main() -> None:
     solved_lp_problem, solution = solve_scheduling(
         scheduling_input,
         args.solver,
+        show_progress=args.progress,
         **solver_kwargs,
     )
 
