@@ -2,11 +2,12 @@
 
 from __future__ import annotations
 
+from collections.abc import Collection
 from dataclasses import asdict, dataclass
-from typing import Any
+from typing import Any, Type
 
 from dacite import from_dict
-from pulp import LpVariable
+from pulp import LpBinary, LpVariable
 
 VarDict = dict[int, dict[int, LpVariable]]
 PartialSolvedVarDict = dict[int, dict[int, int | None]]
@@ -251,3 +252,53 @@ class SchedulingInput:
         ]
         return_dict["timeslots"] = {"info": self.timeslot_info, "blocks": blocks}
         return return_dict
+
+
+@dataclass(frozen=True)
+class LPVarDicts:
+    """Dataclass containing the decision variable dicts for the LP."""
+
+    room: VarDict
+    time: VarDict
+    block: VarDict
+    person: VarDict
+    person_time: VarDict
+
+    def to_export_dict(self) -> dict[str, VarDict]:
+        """We only export the variables for room, time, and persons."""
+        return {"Room": self.room, "Time": self.time, "Part": self.person}
+
+    @classmethod
+    def init_from_ids(
+        cls: Type["LPVarDicts"],
+        ak_ids: Collection[int],
+        room_ids: Collection[int],
+        timeslot_ids: Collection[int],
+        block_ids: Collection[int],
+        person_ids: Collection[int],
+    ) -> "LPVarDicts":
+        """Initialize decision variables from the problem ids."""
+        room_var: VarDict = LpVariable.dicts("Room", (ak_ids, room_ids), cat=LpBinary)
+        time_var: VarDict = LpVariable.dicts(
+            "Time",
+            (ak_ids, timeslot_ids),
+            cat=LpBinary,
+        )
+        block_var: VarDict = LpVariable.dicts(
+            "Block", (ak_ids, block_ids), cat=LpBinary
+        )
+        person_var: VarDict = LpVariable.dicts(
+            "Part", (ak_ids, person_ids), cat=LpBinary
+        )
+        person_time_var: VarDict = LpVariable.dicts(
+            "Working",
+            (person_ids, timeslot_ids),
+            cat=LpBinary,
+        )
+        return cls(
+            room=room_var,
+            time=time_var,
+            block=block_var,
+            person=person_var,
+            person_time=person_time_var,
+        )
