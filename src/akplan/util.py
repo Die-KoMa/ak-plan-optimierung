@@ -329,6 +329,7 @@ class ProblemIds:
     person: set[int]
     block_dict: dict[int, list[int]]
     sorted_timeslot: list[int]
+    conflict_pairs: set[tuple[int, int]]
 
     @staticmethod
     def get_ids(
@@ -363,6 +364,21 @@ class ProblemIds:
             for block_idx, block in enumerate(input_data.timeslot_blocks)
         }
 
+        conflict_pairs: set[tuple[int, int]] = set()
+        for ak in input_data.aks:
+            conflicting_aks: list[int] = ak.properties.get("conflicts", [])
+            depending_aks: list[int] = ak.properties.get("dependencies", [])
+            conflict_pairs.update(
+                [
+                    (
+                        (ak.id, other_ak_id)
+                        if ak.id < other_ak_id
+                        else (other_ak_id, ak.id)
+                    )
+                    for other_ak_id in conflicting_aks + depending_aks
+                ]
+            )
+
         return cls(
             ak=ak_ids,
             room=room_ids,
@@ -370,6 +386,7 @@ class ProblemIds:
             person=person_ids,
             block_dict=block_dict,
             sorted_timeslot=sorted_timeslot_ids,
+            conflict_pairs=conflict_pairs,
         )
 
 
@@ -535,3 +552,7 @@ class LPVarDicts:
             person=person_var,
             person_time=person_time_var,
         )
+
+
+def _construct_constraint_name(name: str, *args: Any) -> str:
+    return name + "_" + "_".join(map(str, args))

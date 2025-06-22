@@ -2,12 +2,15 @@
 
 import argparse
 import json
+import multiprocessing
+from collections.abc import Iterable
 from dataclasses import asdict
-from itertools import combinations, product
+from itertools import combinations, product, repeat
 from pathlib import Path
-from typing import Any, Literal, cast, overload
+from typing import Any, Literal, TypeVar, cast, overload
 
 from pulp import (
+    LpConstraint,
     LpMaximize,
     LpProblem,
     LpSolution,
@@ -18,8 +21,8 @@ from pulp import (
     getSolver,
     lpSum,
 )
-from tqdm import tqdm
 
+from . import constraints
 from .util import (
     LPVarDicts,
     PartialSolvedVarDict,
@@ -29,17 +32,17 @@ from .util import (
     SchedulingInput,
     SolvedVarDict,
     VarDict,
+    _construct_constraint_name,
 )
 
-
-def _construct_constraint_name(name: str, *args: Any) -> str:
-    return name + "_" + "_".join(map(str, args))
+T = TypeVar("T")
 
 
 def create_lp(
     input_data: SchedulingInput,
     output_file: str | None = "koma-plan.lp",
     show_progress: bool = False,
+    chunksize: int = 1,
 ) -> tuple[LpProblem, dict[str, VarDict]]:
     """Create the MILP problem as pulp object.
 
@@ -62,6 +65,9 @@ def create_lp(
             as an `.lp` file to this location. Defaults to `koma-plan.lp`.
         show_progress (bool): Whether progress bars should be displayed.
             Defaults to False.
+        chunksize (int): The size of chunks that are passed to processes of the
+            multiprocessing Pool. Defaults to 1.
+
 
     Returns:
         A tuple (`lp_problem`, `dec_vars`) where `lp_problem` is the
@@ -96,116 +102,56 @@ def create_lp(
         "cost_function",
     )
 
-    # Add constraints
-    # for all x, a, a', t time[a][t]+F[a][x]+time[a'][t]+F[a'][x] <= 3
-    # a,a' AKs, t timeslot, x Person or Room
-    for (ak_id1, ak_id2), timeslot_id in tqdm(
-        product(combinations(ids.ak, 2), ids.timeslot),
-        total=0.5 * len(ids.timeslot) * len(ids.ak) * (len(ids.ak) - 1),
-        desc="MaxOneAKPerPersonAndTime/MaxOneAKPerRoomAndTime",
-        disable=not show_progress,
-    ):
-        for person_id in ids.person:
-            constraint = lpSum(
-                [
-                    var.time[ak_id1][timeslot_id],
-                    var.time[ak_id2][timeslot_id],
-                    var.person[ak_id1][person_id],
-                    var.person[ak_id2][person_id],
-                ]
-            )
-            prob += constraint <= 3, _construct_constraint_name(
-                "MaxOneAKPerPersonAndTime",
-                ak_id1,
-                ak_id2,
-                timeslot_id,
-                person_id,
-            )
-        # MaxOneAKPerRoomAndTime
-        for room_id in ids.room:
-            constraint = lpSum(
-                [
-                    var.time[ak_id1][timeslot_id],
-                    var.time[ak_id2][timeslot_id],
-                    var.room[ak_id1][room_id],
-                    var.room[ak_id2][room_id],
-                ]
-            )
-            prob += constraint <= 3, _construct_constraint_name(
-                "MaxOneAKPerRoomAndTime",
-                ak_id1,
-                ak_id2,
-                timeslot_id,
-                room_id,
-            )
+    tasks: list[constraints.TaskItem[Any]] = []
 
-    for ak_id in tqdm(
-        ids.ak,
-        total=len(ids.ak),
-        desc="AKDurations/SingleBlock/Contiguous",
-        disable=not show_progress,
-    ):
-        # AKDurations
-        constraint = lpSum(var.time[ak_id].values()) >= props.ak_durations[ak_id]
-        prob += constraint, _construct_constraint_name("AKDuration", ak_id)
+    def _create_task_item(
+        func: constraints.ConstraintFunc[T], params: Iterable[T]
+    ) -> None:
+        """Construct task item and add it to the list. Used to facilitate type checking."""
+        task_item: constraints.TaskItem[T] = (func, params)
+        tasks.append(task_item)
 
-        # AKSingleBlock
-        constraint = lpSum(var.block[ak_id].values()) <= 1
-        prob += constraint, _construct_constraint_name("AKSingleBlock", ak_id)
-        for block_id, block in ids.block_dict.items():
-            constraint_sum = lpSum(
-                [var.time[ak_id][timeslot_id] for timeslot_id in block]
-            )
-            prob += (
-                constraint_sum
-                <= props.ak_durations[ak_id] * var.block[ak_id][block_id],
-                _construct_constraint_name("AKSingleBlock", ak_id, str(block_id)),
-            )
-            # AKContiguous
-            for timeslot_idx, timeslot_id_a in enumerate(block):
-                for timeslot_id_b in block[timeslot_idx + props.ak_durations[ak_id] :]:
-                    prob += lpSum(
-                        [var.time[ak_id][timeslot_id_a], var.time[ak_id][timeslot_id_b]]
-                    ) <= 1, _construct_constraint_name(
-                        "AKContiguous",
-                        ak_id,
-                        str(block_id),
-                        timeslot_id_a,
-                        timeslot_id_b,
-                    )
+    _create_task_item(
+        constraints._max_one_ak_per_person_and_time,
+        zip(repeat(var), product(combinations(ids.ak, 2), ids.timeslot, ids.person)),
+    )
+    _create_task_item(
+        constraints._max_one_ak_per_room_and_time,
+        zip(repeat(var), product(combinations(ids.ak, 2), ids.timeslot, ids.room)),
+    )
+    _create_task_item(
+        constraints._ak_durations, zip(repeat(var), repeat(props), ids.ak)
+    )
+    _create_task_item(constraints._ak_single_block, zip(repeat(var), ids.ak))
+    _create_task_item(
+        constraints._ak_single_block_per_block,
+        zip(repeat(var), repeat(props), product(ids.ak, ids.block_dict.items())),
+    )
+    _create_task_item(constraints._at_most_one_room_per_ak, zip(repeat(var), ids.ak))
+    _create_task_item(constraints._at_least_one_room_per_ak, zip(repeat(var), ids.ak))
+    _create_task_item(
+        constraints._not_more_people_than_interested,
+        zip(repeat(var), repeat(props), ids.ak),
+    )
+    _create_task_item(
+        constraints._room_sizes,
+        zip(repeat(var), repeat(props), product(ids.room, ids.ak)),
+    )
+    _create_task_item(
+        constraints._time_impossible_for_person,
+        zip(repeat(var), product(ids.person, ids.timeslot, ids.ak)),
+    )
+    _create_task_item(constraints._room_for_ak, zip(repeat(var), ids.ak))
+    _create_task_item(
+        constraints._time_impossible_for_room,
+        zip(repeat(var), repeat(props), product(ids.room, ids.timeslot, ids.ak)),
+    )
+    _create_task_item(
+        constraints._ak_conflict,
+        zip(repeat(var), product(ids.timeslot, ids.conflict_pairs)),
+    )
 
-    # Roomsizes
-    for room_id, ak_id in tqdm(
-        product(ids.room, ids.ak),
-        total=len(ids.room) * len(ids.ak),
-        desc="Roomsizes",
-        disable=not show_progress,
-    ):
-        if props.ak_num_interested[ak_id] > props.room_capacities[room_id]:
-            constraint_sum = lpSum(var.person[ak_id].values())
-            constraint_sum += props.ak_num_interested[ak_id] * var.room[ak_id][room_id]
-            constraint = (
-                constraint_sum
-                <= props.ak_num_interested[ak_id] + props.room_capacities[room_id]
-            )
-            prob += constraint, _construct_constraint_name("Roomsize", room_id, ak_id)
-    for ak_id in tqdm(
-        ids.ak,
-        total=len(ids.ak),
-        desc="AtMostOneRoomPerAK/AtLeastOneRoomPerAK/NotMorePeopleThanInterested",
-        disable=not show_progress,
-    ):
-        prob += lpSum(var.room[ak_id].values()) <= 1, _construct_constraint_name(
-            "AtMostOneRoomPerAK", ak_id
-        )
-        prob += lpSum(var.room[ak_id].values()) >= 1, _construct_constraint_name(
-            "AtLeastOneRoomPerAK", ak_id
-        )
-        # We need this constraint so the Roomsize is correct
-        constraint_sum = lpSum(var.person[ak_id].values())
-        prob += constraint_sum <= props.ak_num_interested[
-            ak_id
-        ], _construct_constraint_name("NotMorePeopleThanInterested", ak_id)
+    # INITIAL VALUES #
 
     # PersonNotInterestedInAK
     # For all A, Z, R, P: If P_{P, A} = 0: Y_{A,Z,R,P} = 0 (non-dummy P)
@@ -219,126 +165,82 @@ def create_lp(
             var.person[ak_id][person_id].setInitialValue(1)
             var.person[ak_id][person_id].fixValue()
 
-    for person_id in tqdm(
-        props.weighted_preferences,
-        total=len(props.weighted_preferences),
-        desc="TimeImpossibleForPerson/RoomImpossibleForPerson/PersonNeedsBreak",
-        disable=not show_progress,
-    ):
-        # TimeImpossibleForPerson
-        # Real person P cannot attend AKs with timeslot Z
-        for timeslot_id in ids.timeslot:
+    # TimeImpossibleForPerson
+    # Real person P cannot attend AKs with timeslot Z
+    for person_id, timeslot_id in product(ids.person, ids.timeslot):
+        if props.participant_time_constraints[person_id].difference(
+            props.fulfilled_time_constraints[timeslot_id]
+        ):
+            var.person_time[person_id][timeslot_id].setInitialValue(0)
+            var.person_time[person_id][timeslot_id].fixValue()
+
+    # TimeImpossibleForAK
+    for ak_id, timeslot_id in product(ids.ak, ids.timeslot):
+        if props.ak_time_constraints[ak_id].difference(
+            props.fulfilled_time_constraints[timeslot_id]
+        ):
+            var.time[ak_id][timeslot_id].setInitialValue(0)
+            var.time[ak_id][timeslot_id].fixValue()
+
+    # RoomImpossibleForAK
+    for ak_id, room_id in product(ids.ak, ids.room):
+        if props.ak_room_constraints[ak_id].difference(
+            props.fulfilled_room_constraints[room_id]
+        ):
+            var.room[ak_id][room_id].setInitialValue(0)
+            var.room[ak_id][room_id].fixValue()
+
+    # COMPLEX LOGIC CONSTRAINTS #
+
+    for ak_id, (block_id, block) in product(ids.ak, ids.block_dict.items()):
+        # AKContiguous
+        for timeslot_idx, timeslot_id_a in enumerate(block):
+            for timeslot_id_b in block[timeslot_idx + props.ak_durations[ak_id] :]:
+                prob += lpSum(
+                    [var.time[ak_id][timeslot_id_a], var.time[ak_id][timeslot_id_b]]
+                ) <= 1, _construct_constraint_name(
+                    "AKContiguous",
+                    ak_id,
+                    str(block_id),
+                    timeslot_id_a,
+                    timeslot_id_b,
+                )
+
+    # RoomImpossibleForPerson
+    # Real person P cannot attend AKs with room R
+    for person_id, room_id in product(ids.person, ids.room):
+        if props.participant_room_constraints[person_id].difference(
+            props.fulfilled_room_constraints[room_id]
+        ):
             for ak_id in ids.ak:
                 constraint_sum = lpSum(
-                    [var.time[ak_id][timeslot_id], var.person[ak_id][person_id]]
+                    [var.room[ak_id][room_id], var.person[ak_id][person_id]]
                 )
-                prob += (
-                    constraint_sum <= var.person_time[person_id][timeslot_id] + 1,
-                    _construct_constraint_name(
-                        "TimePersonVar",
-                        person_id,
-                        timeslot_id,
-                        ak_id,
-                    ),
-                )
-            if props.participant_time_constraints[person_id].difference(
-                props.fulfilled_time_constraints[timeslot_id]
-            ):
-                var.person_time[person_id][timeslot_id].setInitialValue(0)
-                var.person_time[person_id][timeslot_id].fixValue()
+    prob.extend
 
-        # RoomImpossibleForPerson
-        # Real person P cannot attend AKs with room R
-        for room_id in ids.room:
-            if props.participant_room_constraints[person_id].difference(
-                props.fulfilled_room_constraints[room_id]
-            ):
-                for ak_id in ids.ak:
-                    constraint_sum = lpSum(
-                        [var.room[ak_id][room_id], var.person[ak_id][person_id]]
-                    )
-                    prob += constraint_sum <= 1, _construct_constraint_name(
-                        "RoomImpossibleForPerson", person_id, room_id, ak_id
-                    )
-
+    if input_data.config.max_num_timeslots_before_break > 0:
         # PersonNeedsBreak
         # Any real person needs a break after some number of time slots
         # So in each block at most  consecutive timeslots can be active for any person
-        if input_data.config.max_num_timeslots_before_break > 0:
-            for _block_id, block in ids.block_dict.items():
-                for i in range(
-                    len(block) - input_data.config.max_num_timeslots_before_break - 1
-                ):
-                    sum_of_vars = lpSum(
-                        [
-                            var.person_time[person_id][timeslot_id]
-                            for timeslot_id in block[
-                                i : i
-                                + input_data.config.max_num_timeslots_before_break
-                                + 1
-                            ]
+        for person_id, (_block_id, block) in product(
+            ids.person, ids.block_dict.items()
+        ):
+            for i in range(
+                len(block) - input_data.config.max_num_timeslots_before_break - 1
+            ):
+                sum_of_vars = lpSum(
+                    [
+                        var.person_time[person_id][timeslot_id]
+                        for timeslot_id in block[
+                            i : i + input_data.config.max_num_timeslots_before_break + 1
                         ]
-                    )
-
-                    prob += (
-                        sum_of_vars <= input_data.config.max_num_timeslots_before_break,
-                        _construct_constraint_name(
-                            "BreakForPerson", person_id, block[i]
-                        ),
-                    )
-
-    for ak_id in tqdm(
-        ids.ak,
-        total=len(ids.ak),
-        desc="TimeImpossibleForAK/RoomImpossibleForAK/TimeImpossibleForRoom",
-        disable=not show_progress,
-    ):
-        # TimeImpossibleForAK
-        for timeslot_id in ids.timeslot:
-            if props.ak_time_constraints[ak_id].difference(
-                props.fulfilled_time_constraints[timeslot_id]
-            ):
-                var.time[ak_id][timeslot_id].setInitialValue(0)
-                var.time[ak_id][timeslot_id].fixValue()
-        # RoomImpossibleForAK
-        for room_id in ids.room:
-            if props.ak_room_constraints[ak_id].difference(
-                props.fulfilled_room_constraints[room_id]
-            ):
-                var.room[ak_id][room_id].setInitialValue(0)
-                var.room[ak_id][room_id].fixValue()
-        prob += lpSum(
-            [var.room[ak_id][room_id] for room_id in ids.room]
-        ) >= 1, _construct_constraint_name("RoomForAK", ak_id)
-
-        # TimeImpossibleForRoom
-        for room_id, timeslot_id in product(ids.room, ids.timeslot):
-            if props.room_time_constraints[room_id].difference(
-                props.fulfilled_time_constraints[timeslot_id]
-            ):
-                prob += lpSum(
-                    [var.room[ak_id][room_id], var.time[ak_id][timeslot_id]]
-                ) <= 1, _construct_constraint_name(
-                    "TimeImpossibleForRoom", room_id, timeslot_id, ak_id
+                    ]
                 )
 
-    # AK conflicts
-    conflict_pairs: set[tuple[int, int]] = set()
-    for ak in input_data.aks:
-        conflicting_aks: list[int] = ak.properties.get("conflicts", [])
-        depending_aks: list[int] = ak.properties.get("dependencies", [])
-        conflict_pairs.update(
-            [
-                (ak.id, other_ak_id) if ak.id < other_ak_id else (other_ak_id, ak.id)
-                for other_ak_id in conflicting_aks + depending_aks
-            ]
-        )
-
-    for timeslot_id, (ak_a, ak_b) in product(ids.timeslot, conflict_pairs):
-        prob += (
-            lpSum([var.time[ak_a][timeslot_id], var.time[ak_b][timeslot_id]]) <= 1,
-            _construct_constraint_name("AKConflict", ak_a, ak_b, timeslot_id),
-        )
+                prob += (
+                    sum_of_vars <= input_data.config.max_num_timeslots_before_break,
+                    _construct_constraint_name("BreakForPerson", person_id, block[i]),
+                )
 
     # AK dependencies
     for ak in input_data.aks:
@@ -357,6 +259,18 @@ def create_lp(
             prob += constraint, _construct_constraint_name(
                 "AKDependenciesDoneBeforeAK", ak.id, timeslot_id, other_ak_id
             )
+
+    all_constraints: list[tuple[str, LpConstraint]] = []
+
+    with multiprocessing.Pool(processes=4) as pool:
+        for task_func, task_params in tasks:
+            for result in pool.imap_unordered(
+                task_func, task_params, chunksize=chunksize
+            ):
+                if result is not None:
+                    all_constraints.append(result)
+
+    prob.extend(all_constraints)
 
     # Fix Values for already scheduled aks
     for scheduled_ak in input_data.scheduled_aks:
