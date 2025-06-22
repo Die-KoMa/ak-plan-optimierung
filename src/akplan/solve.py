@@ -3,9 +3,9 @@
 import argparse
 import json
 from dataclasses import asdict
-from itertools import chain, combinations, product
+from itertools import combinations, product
 from pathlib import Path
-from typing import Any, Iterable, Literal, cast, overload
+from typing import Any, Literal, cast, overload
 
 from pulp import (
     LpMaximize,
@@ -21,101 +21,19 @@ from pulp import (
 from tqdm import tqdm
 
 from .util import (
-    AKData,
     LPVarDicts,
     PartialSolvedVarDict,
-    ParticipantData,
-    RoomData,
+    ProblemIds,
+    ProblemProperties,
     ScheduleAtom,
     SchedulingInput,
     SolvedVarDict,
-    TimeSlotData,
     VarDict,
 )
 
 
-def process_pref_score(preference_score: int, required: bool, mu: float) -> float:
-    """Process the input preference score for the MILP constraints.
-
-    Args:
-        preference_score (int): The input score of preference: not interested (0),
-            weakly interested (1), strongly interested (2) or required (-1).
-        required (bool): Whether the participant is required for the AK or not.
-        mu (float): The weight associated with a strong preference for an AK.
-
-    Returns:
-        float: The processed preference score: Required AKs are weighted with 0,
-        weakly preferred AKs with 1 and strongly preferred AKs with `mu`.
-
-    Raises:
-        ValueError: if `preference_score` is not in [0, 1, 2, -1].
-    """
-    if required or preference_score == -1:
-        return 0
-    elif preference_score in [0, 1]:
-        return preference_score
-    elif preference_score == 2:
-        return mu
-    else:
-        raise ValueError(preference_score)
-
-
-def process_room_cap(room_capacity: int, num_participants: int) -> int:
-    """Process the input room capacity for the MILP constraints.
-
-    Args:
-        room_capacity (int): The input room capacity: infinite (-1) or actual capacity >=0
-        num_participants (int): The total number of participants (needed to model infinity)
-
-    Returns:
-        int: The processed room capacity: Rooms with infinite capacity or capacity larger than
-        num_participants are set to num_participants. Rooms with a smaller non-negative capacity
-        hold their capacity.
-
-    Raises:
-        ValueError: if 'room_capacity' < -1
-    """
-    if room_capacity == -1:
-        return num_participants
-    if room_capacity >= num_participants:
-        return num_participants
-    if room_capacity < 0:
-        raise ValueError(
-            f"Invalid room capacity {room_capacity}. "
-            "Room capacity must be non-negative or -1."
-        )
-    return room_capacity
-
-
 def _construct_constraint_name(name: str, *args: Any) -> str:
     return name + "_" + "_".join(map(str, args))
-
-
-def get_ids(
-    input_data: SchedulingInput,
-) -> tuple[set[int], set[int], set[int], set[int]]:
-    """Create id sets from scheduling input."""
-
-    def _retrieve_ids(
-        input_iterable: Iterable[AKData | ParticipantData | RoomData | TimeSlotData],
-    ) -> set[int]:
-        return {obj.id for obj in input_iterable}
-
-    ak_ids = _retrieve_ids(input_data.aks)
-    participant_ids = _retrieve_ids(input_data.participants)
-    room_ids = _retrieve_ids(input_data.rooms)
-    timeslot_ids = _retrieve_ids(chain.from_iterable(input_data.timeslot_blocks))
-    return ak_ids, participant_ids, room_ids, timeslot_ids
-
-
-def get_ak_name(input_data: SchedulingInput, ak_id: int) -> str:
-    """Get name string for an AK."""
-    ak_names = [
-        ak.info["name"]
-        for ak in input_data.aks
-        if ak.id == ak_id and "name" in ak.info.keys()
-    ]
-    return ", ".join(ak_names)
 
 
 def create_lp(
@@ -150,96 +68,20 @@ def create_lp(
         constructed MILP instance and `dec_vars` is the nested dictionary
         containing the MILP variables.
     """
-    # Get ids from input_dict
-    ak_ids, person_ids, room_ids, timeslot_ids = get_ids(input_data)
-    sorted_timeslot_ids = sorted(timeslot_ids)
-
-    block_idx_dict = {
-        block_idx: sorted([timeslot.id for timeslot in block])
-        for block_idx, block in enumerate(input_data.timeslot_blocks)
-    }
-    # Get values needed from the input_dict
-    room_capacities = {
-        room.id: process_room_cap(room.capacity, len(person_ids))
-        for room in input_data.rooms
-    }
-    ak_durations = {ak.id: ak.duration for ak in input_data.aks}
-
-    # dict of real participants only (without dummy participants)
-    # with numerical preferences
-    weighted_preference_dict = {
-        person.id: {
-            pref.ak_id: process_pref_score(
-                pref.preference_score,
-                pref.required,
-                mu=input_data.config.mu,
-            )
-            for pref in person.preferences
-        }
-        for person in input_data.participants
-    }
-    required_persons = {
-        ak_id: {
-            person.id
-            for person in input_data.participants
-            for pref in person.preferences
-            if pref.ak_id == ak_id and pref.required
-        }
-        for ak_id in ak_ids
-    }
-    for ak_id, persons in required_persons.items():
-        if len(persons) == 0:
-            print(
-                f"Warning: AK {get_ak_name(input_data, ak_id)} with id {ak_id} "
-                "has no required persons. Who owns this?"
-            )
-    ak_num_interested = {
-        ak_id: len(required_persons[ak_id])
-        + sum(
-            1
-            for person, prefs in weighted_preference_dict.items()
-            if ak_id in prefs.keys() and prefs[ak_id] != 0
-        )
-        for ak_id in ak_ids
-    }
-
-    # Get constraints from input_dict
-    participant_time_constraint_dict = {
-        participant.id: set(participant.time_constraints)
-        for participant in input_data.participants
-    }
-    participant_room_constraint_dict = {
-        participant.id: set(participant.room_constraints)
-        for participant in input_data.participants
-    }
-
-    ak_time_constraint_dict = {ak.id: set(ak.time_constraints) for ak in input_data.aks}
-    ak_room_constraint_dict = {ak.id: set(ak.room_constraints) for ak in input_data.aks}
-
-    room_time_constraint_dict = {
-        room.id: set(room.time_constraints) for room in input_data.rooms
-    }
-
-    fulfilled_time_constraints = {
-        timeslot.id: set(timeslot.fulfilled_time_constraints)
-        for block in input_data.timeslot_blocks
-        for timeslot in block
-    }
-    fulfilled_room_constraints = {
-        room.id: set(room.fulfilled_room_constraints) for room in input_data.rooms
-    }
-
-    # Create problem
-    prob = LpProblem("MLPKoMa", sense=LpMaximize)
+    ids = ProblemIds.init_from_problem(input_data)
+    props = ProblemProperties.init_from_problem(input_data, ids=ids)
 
     # Create decision variables
     var = LPVarDicts.init_from_ids(
-        ak_ids=ak_ids,
-        room_ids=room_ids,
-        timeslot_ids=timeslot_ids,
-        block_ids=block_idx_dict.keys(),
-        person_ids=person_ids,
+        ak_ids=ids.ak,
+        room_ids=ids.room,
+        timeslot_ids=ids.timeslot,
+        block_ids=ids.block_dict.keys(),
+        person_ids=ids.person,
     )
+
+    # Create problem
+    prob = LpProblem("MLPKoMa", sense=LpMaximize)
 
     # Set objective function
     # \sum_{P,A} \frac{P_{P,A}}{\sum_{P_{P,A}}\neq 0} T_{P,A}
@@ -247,7 +89,7 @@ def create_lp(
         lpSum(
             [
                 pref * var.person[ak_id][person_id] / len(preferences)
-                for person_id, preferences in weighted_preference_dict.items()
+                for person_id, preferences in props.weighted_preferences.items()
                 for ak_id, pref in preferences.items()
             ]
         ),
@@ -258,12 +100,12 @@ def create_lp(
     # for all x, a, a', t time[a][t]+F[a][x]+time[a'][t]+F[a'][x] <= 3
     # a,a' AKs, t timeslot, x Person or Room
     for (ak_id1, ak_id2), timeslot_id in tqdm(
-        product(combinations(ak_ids, 2), timeslot_ids),
-        total=0.5 * len(timeslot_ids) * len(ak_ids) * (len(ak_ids) - 1),
+        product(combinations(ids.ak, 2), ids.timeslot),
+        total=0.5 * len(ids.timeslot) * len(ids.ak) * (len(ids.ak) - 1),
         desc="MaxOneAKPerPersonAndTime/MaxOneAKPerRoomAndTime",
         disable=not show_progress,
     ):
-        for person_id in person_ids:
+        for person_id in ids.person:
             constraint = lpSum(
                 [
                     var.time[ak_id1][timeslot_id],
@@ -280,7 +122,7 @@ def create_lp(
                 person_id,
             )
         # MaxOneAKPerRoomAndTime
-        for room_id in room_ids:
+        for room_id in ids.room:
             constraint = lpSum(
                 [
                     var.time[ak_id1][timeslot_id],
@@ -298,29 +140,30 @@ def create_lp(
             )
 
     for ak_id in tqdm(
-        ak_ids,
-        total=len(ak_ids),
+        ids.ak,
+        total=len(ids.ak),
         desc="AKDurations/SingleBlock/Contiguous",
         disable=not show_progress,
     ):
         # AKDurations
-        constraint = lpSum(var.time[ak_id].values()) >= ak_durations[ak_id]
+        constraint = lpSum(var.time[ak_id].values()) >= props.ak_durations[ak_id]
         prob += constraint, _construct_constraint_name("AKDuration", ak_id)
 
         # AKSingleBlock
         constraint = lpSum(var.block[ak_id].values()) <= 1
         prob += constraint, _construct_constraint_name("AKSingleBlock", ak_id)
-        for block_id, block in block_idx_dict.items():
+        for block_id, block in ids.block_dict.items():
             constraint_sum = lpSum(
                 [var.time[ak_id][timeslot_id] for timeslot_id in block]
             )
             prob += (
-                constraint_sum <= ak_durations[ak_id] * var.block[ak_id][block_id],
+                constraint_sum
+                <= props.ak_durations[ak_id] * var.block[ak_id][block_id],
                 _construct_constraint_name("AKSingleBlock", ak_id, str(block_id)),
             )
             # AKContiguous
             for timeslot_idx, timeslot_id_a in enumerate(block):
-                for timeslot_id_b in block[timeslot_idx + ak_durations[ak_id] :]:
+                for timeslot_id_b in block[timeslot_idx + props.ak_durations[ak_id] :]:
                     prob += lpSum(
                         [var.time[ak_id][timeslot_id_a], var.time[ak_id][timeslot_id_b]]
                     ) <= 1, _construct_constraint_name(
@@ -333,21 +176,22 @@ def create_lp(
 
     # Roomsizes
     for room_id, ak_id in tqdm(
-        product(room_ids, ak_ids),
-        total=len(room_ids) * len(ak_ids),
+        product(ids.room, ids.ak),
+        total=len(ids.room) * len(ids.ak),
         desc="Roomsizes",
         disable=not show_progress,
     ):
-        if ak_num_interested[ak_id] > room_capacities[room_id]:
+        if props.ak_num_interested[ak_id] > props.room_capacities[room_id]:
             constraint_sum = lpSum(var.person[ak_id].values())
-            constraint_sum += ak_num_interested[ak_id] * var.room[ak_id][room_id]
+            constraint_sum += props.ak_num_interested[ak_id] * var.room[ak_id][room_id]
             constraint = (
-                constraint_sum <= ak_num_interested[ak_id] + room_capacities[room_id]
+                constraint_sum
+                <= props.ak_num_interested[ak_id] + props.room_capacities[room_id]
             )
             prob += constraint, _construct_constraint_name("Roomsize", room_id, ak_id)
     for ak_id in tqdm(
-        ak_ids,
-        total=len(ak_ids),
+        ids.ak,
+        total=len(ids.ak),
         desc="AtMostOneRoomPerAK/AtLeastOneRoomPerAK/NotMorePeopleThanInterested",
         disable=not show_progress,
     ):
@@ -359,32 +203,32 @@ def create_lp(
         )
         # We need this constraint so the Roomsize is correct
         constraint_sum = lpSum(var.person[ak_id].values())
-        prob += constraint_sum <= ak_num_interested[ak_id], _construct_constraint_name(
-            "NotMorePeopleThanInterested", ak_id
-        )
+        prob += constraint_sum <= props.ak_num_interested[
+            ak_id
+        ], _construct_constraint_name("NotMorePeopleThanInterested", ak_id)
 
     # PersonNotInterestedInAK
     # For all A, Z, R, P: If P_{P, A} = 0: Y_{A,Z,R,P} = 0 (non-dummy P)
-    for person_id, preferences in weighted_preference_dict.items():
+    for person_id, preferences in props.weighted_preferences.items():
         # aks not in pref_aks have P_{P,A} = 0 implicitly
-        for ak_id in ak_ids.difference(preferences.keys()):
+        for ak_id in ids.ak.difference(preferences.keys()):
             var.person[ak_id][person_id].setInitialValue(0)
             var.person[ak_id][person_id].fixValue()
-    for ak_id, persons in required_persons.items():
+    for ak_id, persons in props.required_persons.items():
         for person_id in persons:
             var.person[ak_id][person_id].setInitialValue(1)
             var.person[ak_id][person_id].fixValue()
 
     for person_id in tqdm(
-        weighted_preference_dict,
-        total=len(weighted_preference_dict),
+        props.weighted_preferences,
+        total=len(props.weighted_preferences),
         desc="TimeImpossibleForPerson/RoomImpossibleForPerson/PersonNeedsBreak",
         disable=not show_progress,
     ):
         # TimeImpossibleForPerson
         # Real person P cannot attend AKs with timeslot Z
-        for timeslot_id in timeslot_ids:
-            for ak_id in ak_ids:
+        for timeslot_id in ids.timeslot:
+            for ak_id in ids.ak:
                 constraint_sum = lpSum(
                     [var.time[ak_id][timeslot_id], var.person[ak_id][person_id]]
                 )
@@ -397,19 +241,19 @@ def create_lp(
                         ak_id,
                     ),
                 )
-            if participant_time_constraint_dict[person_id].difference(
-                fulfilled_time_constraints[timeslot_id]
+            if props.participant_time_constraints[person_id].difference(
+                props.fulfilled_time_constraints[timeslot_id]
             ):
                 var.person_time[person_id][timeslot_id].setInitialValue(0)
                 var.person_time[person_id][timeslot_id].fixValue()
 
         # RoomImpossibleForPerson
         # Real person P cannot attend AKs with room R
-        for room_id in room_ids:
-            if participant_room_constraint_dict[person_id].difference(
-                fulfilled_room_constraints[room_id]
+        for room_id in ids.room:
+            if props.participant_room_constraints[person_id].difference(
+                props.fulfilled_room_constraints[room_id]
             ):
-                for ak_id in ak_ids:
+                for ak_id in ids.ak:
                     constraint_sum = lpSum(
                         [var.room[ak_id][room_id], var.person[ak_id][person_id]]
                     )
@@ -421,7 +265,7 @@ def create_lp(
         # Any real person needs a break after some number of time slots
         # So in each block at most  consecutive timeslots can be active for any person
         if input_data.config.max_num_timeslots_before_break > 0:
-            for _block_id, block in block_idx_dict.items():
+            for _block_id, block in ids.block_dict.items():
                 for i in range(
                     len(block) - input_data.config.max_num_timeslots_before_break - 1
                 ):
@@ -444,33 +288,33 @@ def create_lp(
                     )
 
     for ak_id in tqdm(
-        ak_ids,
-        total=len(ak_ids),
+        ids.ak,
+        total=len(ids.ak),
         desc="TimeImpossibleForAK/RoomImpossibleForAK/TimeImpossibleForRoom",
         disable=not show_progress,
     ):
         # TimeImpossibleForAK
-        for timeslot_id in timeslot_ids:
-            if ak_time_constraint_dict[ak_id].difference(
-                fulfilled_time_constraints[timeslot_id]
+        for timeslot_id in ids.timeslot:
+            if props.ak_time_constraints[ak_id].difference(
+                props.fulfilled_time_constraints[timeslot_id]
             ):
                 var.time[ak_id][timeslot_id].setInitialValue(0)
                 var.time[ak_id][timeslot_id].fixValue()
         # RoomImpossibleForAK
-        for room_id in room_ids:
-            if ak_room_constraint_dict[ak_id].difference(
-                fulfilled_room_constraints[room_id]
+        for room_id in ids.room:
+            if props.ak_room_constraints[ak_id].difference(
+                props.fulfilled_room_constraints[room_id]
             ):
                 var.room[ak_id][room_id].setInitialValue(0)
                 var.room[ak_id][room_id].fixValue()
         prob += lpSum(
-            [var.room[ak_id][room_id] for room_id in room_ids]
+            [var.room[ak_id][room_id] for room_id in ids.room]
         ) >= 1, _construct_constraint_name("RoomForAK", ak_id)
 
         # TimeImpossibleForRoom
-        for room_id, timeslot_id in product(room_ids, timeslot_ids):
-            if room_time_constraint_dict[room_id].difference(
-                fulfilled_time_constraints[timeslot_id]
+        for room_id, timeslot_id in product(ids.room, ids.timeslot):
+            if props.room_time_constraints[room_id].difference(
+                props.fulfilled_time_constraints[timeslot_id]
             ):
                 prob += lpSum(
                     [var.room[ak_id][room_id], var.time[ak_id][timeslot_id]]
@@ -490,7 +334,7 @@ def create_lp(
             ]
         )
 
-    for timeslot_id, (ak_a, ak_b) in product(timeslot_ids, conflict_pairs):
+    for timeslot_id, (ak_a, ak_b) in product(ids.timeslot, conflict_pairs):
         prob += (
             lpSum([var.time[ak_a][timeslot_id], var.time[ak_b][timeslot_id]]) <= 1,
             _construct_constraint_name("AKConflict", ak_a, ak_b, timeslot_id),
@@ -500,12 +344,12 @@ def create_lp(
     for ak in input_data.aks:
         other_ak_ids = ak.properties.get("dependencies", [])
         for other_ak_id, (idx, timeslot_id) in product(
-            other_ak_ids, enumerate(sorted_timeslot_ids)
+            other_ak_ids, enumerate(ids.sorted_timeslot)
         ):
             constraint_sum = lpSum(
                 [
                     var.time[ak.id][succ_timeslot_id]
-                    for succ_timeslot_id in sorted_timeslot_ids[idx:]
+                    for succ_timeslot_id in ids.sorted_timeslot[idx:]
                 ]
             )
             constraint = var.time[other_ak_id][timeslot_id] <= constraint_sum
@@ -554,7 +398,7 @@ def export_scheduling_result(
     Returns:
         dict: The constructed output dict (as specified).
     """
-    ak_ids, person_ids, room_ids, timeslot_ids = get_ids(input_data)
+    ids = ProblemIds.init_from_problem(input_data)
 
     @overload
     def _get_id(
@@ -599,7 +443,7 @@ def export_scheduling_result(
                 ak_id=ak_id, var_key="Part", allow_multiple=True, allow_none=True
             ),
         )
-        for ak_id in ak_ids
+        for ak_id in ids.ak
     }
 
     return scheduled_ak_dict

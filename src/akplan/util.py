@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
-from collections.abc import Collection
+from collections.abc import Collection, Iterable
 from dataclasses import asdict, dataclass
+from itertools import chain
 from typing import Any, Type
 
 from dacite import from_dict
@@ -12,6 +13,7 @@ from pulp import LpBinary, LpVariable
 VarDict = dict[int, dict[int, LpVariable]]
 PartialSolvedVarDict = dict[int, dict[int, int | None]]
 SolvedVarDict = dict[int, dict[int, int]]
+ConstraintSetDict = dict[int, set[str]]
 
 
 @dataclass(frozen=True)
@@ -252,6 +254,237 @@ class SchedulingInput:
         ]
         return_dict["timeslots"] = {"info": self.timeslot_info, "blocks": blocks}
         return return_dict
+
+
+def get_ak_name(input_data: SchedulingInput, ak_id: int) -> str:
+    """Get name string for an AK."""
+    ak_names = [
+        ak.info["name"]
+        for ak in input_data.aks
+        if ak.id == ak_id and "name" in ak.info.keys()
+    ]
+    return ", ".join(ak_names)
+
+
+def process_pref_score(preference_score: int, required: bool, mu: float) -> float:
+    """Process the input preference score for the MILP constraints.
+
+    Args:
+        preference_score (int): The input score of preference: not interested (0),
+            weakly interested (1), strongly interested (2) or required (-1).
+        required (bool): Whether the participant is required for the AK or not.
+        mu (float): The weight associated with a strong preference for an AK.
+
+    Returns:
+        float: The processed preference score: Required AKs are weighted with 0,
+        weakly preferred AKs with 1 and strongly preferred AKs with `mu`.
+
+    Raises:
+        ValueError: if `preference_score` is not in [0, 1, 2, -1].
+    """
+    if required or preference_score == -1:
+        return 0
+    elif preference_score in [0, 1]:
+        return preference_score
+    elif preference_score == 2:
+        return mu
+    else:
+        raise ValueError(preference_score)
+
+
+def process_room_cap(room_capacity: int, num_participants: int) -> int:
+    """Process the input room capacity for the MILP constraints.
+
+    Args:
+        room_capacity (int): The input room capacity: infinite (-1) or actual capacity >=0
+        num_participants (int): The total number of participants (needed to model infinity)
+
+    Returns:
+        int: The processed room capacity: Rooms with infinite capacity or capacity larger than
+        num_participants are set to num_participants. Rooms with a smaller non-negative capacity
+        hold their capacity.
+
+    Raises:
+        ValueError: if 'room_capacity' < -1
+    """
+    if room_capacity == -1:
+        return num_participants
+    if room_capacity >= num_participants:
+        return num_participants
+    if room_capacity < 0:
+        raise ValueError(
+            f"Invalid room capacity {room_capacity}. "
+            "Room capacity must be non-negative or -1."
+        )
+    return room_capacity
+
+
+@dataclass(frozen=True)
+class ProblemIds:
+    """Dataclass containing the id collections from a problem."""
+
+    ak: set[int]
+    room: set[int]
+    timeslot: set[int]
+    person: set[int]
+    block_dict: dict[int, list[int]]
+    sorted_timeslot: list[int]
+
+    @staticmethod
+    def get_ids(
+        input_data: SchedulingInput,
+    ) -> tuple[set[int], set[int], set[int], set[int]]:
+        """Create id sets from scheduling input."""
+
+        def _retrieve_ids(
+            input_iterable: Iterable[
+                AKData | ParticipantData | RoomData | TimeSlotData
+            ],
+        ) -> set[int]:
+            return {obj.id for obj in input_iterable}
+
+        ak_ids = _retrieve_ids(input_data.aks)
+        participant_ids = _retrieve_ids(input_data.participants)
+        room_ids = _retrieve_ids(input_data.rooms)
+        timeslot_ids = _retrieve_ids(chain.from_iterable(input_data.timeslot_blocks))
+        return ak_ids, participant_ids, room_ids, timeslot_ids
+
+    @classmethod
+    def init_from_problem(
+        cls: Type["ProblemIds"],
+        input_data: SchedulingInput,
+    ) -> "ProblemIds":
+        """Get problem ids from the input data."""
+        ak_ids, person_ids, room_ids, timeslot_ids = cls.get_ids(input_data)
+        sorted_timeslot_ids = sorted(timeslot_ids)
+
+        block_dict = {
+            block_idx: sorted([timeslot.id for timeslot in block])
+            for block_idx, block in enumerate(input_data.timeslot_blocks)
+        }
+
+        return cls(
+            ak=ak_ids,
+            room=room_ids,
+            timeslot=timeslot_ids,
+            person=person_ids,
+            block_dict=block_dict,
+            sorted_timeslot=sorted_timeslot_ids,
+        )
+
+
+@dataclass(frozen=True)
+class ProblemProperties:
+    """Dataclass containing derived properties from a problem."""
+
+    room_capacities: dict[int, int]
+    ak_durations: dict[int, int]
+    weighted_preferences: dict[int, dict[int, float]]
+    required_persons: dict[int, set[int]]
+    ak_num_interested: dict[int, int]
+    participant_time_constraints: ConstraintSetDict
+    participant_room_constraints: ConstraintSetDict
+    ak_time_constraints: ConstraintSetDict
+    ak_room_constraints: ConstraintSetDict
+    room_time_constraints: ConstraintSetDict
+    fulfilled_time_constraints: ConstraintSetDict
+    fulfilled_room_constraints: ConstraintSetDict
+
+    @classmethod
+    def init_from_problem(
+        cls: Type["ProblemProperties"],
+        input_data: SchedulingInput,
+        ids: ProblemIds | None = None,
+    ) -> "ProblemProperties":
+        """Get derived problem properties from the input data."""
+        if ids is None:
+            ids = ProblemIds.init_from_problem(input_data)
+
+        # Get values needed from the input_dict
+        room_capacities = {
+            room.id: process_room_cap(room.capacity, len(ids.person))
+            for room in input_data.rooms
+        }
+        ak_durations = {ak.id: ak.duration for ak in input_data.aks}
+
+        # dict of real participants only (without dummy participants)
+        # with numerical preferences
+        weighted_preferences = {
+            person.id: {
+                pref.ak_id: process_pref_score(
+                    pref.preference_score,
+                    pref.required,
+                    mu=input_data.config.mu,
+                )
+                for pref in person.preferences
+            }
+            for person in input_data.participants
+        }
+        required_persons = {
+            ak_id: {
+                person.id
+                for person in input_data.participants
+                for pref in person.preferences
+                if pref.ak_id == ak_id and pref.required
+            }
+            for ak_id in ids.ak
+        }
+        for ak_id, persons in required_persons.items():
+            if len(persons) == 0:
+                print(
+                    f"Warning: AK {get_ak_name(input_data, ak_id)} with id {ak_id} "
+                    "has no required persons. Who owns this?"
+                )
+        ak_num_interested = {
+            ak_id: len(required_persons[ak_id])
+            + sum(
+                1
+                for person, prefs in weighted_preferences.items()
+                if ak_id in prefs.keys() and prefs[ak_id] != 0
+            )
+            for ak_id in ids.ak
+        }
+
+        # Get constraints from input_dict
+        participant_time_constraints = {
+            participant.id: set(participant.time_constraints)
+            for participant in input_data.participants
+        }
+        participant_room_constraints = {
+            participant.id: set(participant.room_constraints)
+            for participant in input_data.participants
+        }
+
+        ak_time_constraints = {ak.id: set(ak.time_constraints) for ak in input_data.aks}
+        ak_room_constraints = {ak.id: set(ak.room_constraints) for ak in input_data.aks}
+
+        room_time_constraints = {
+            room.id: set(room.time_constraints) for room in input_data.rooms
+        }
+
+        fulfilled_time_constraints = {
+            timeslot.id: set(timeslot.fulfilled_time_constraints)
+            for block in input_data.timeslot_blocks
+            for timeslot in block
+        }
+        fulfilled_room_constraints = {
+            room.id: set(room.fulfilled_room_constraints) for room in input_data.rooms
+        }
+
+        return cls(
+            room_capacities=room_capacities,
+            ak_durations=ak_durations,
+            weighted_preferences=weighted_preferences,
+            required_persons=required_persons,
+            ak_num_interested=ak_num_interested,
+            participant_time_constraints=participant_time_constraints,
+            participant_room_constraints=participant_room_constraints,
+            ak_time_constraints=ak_time_constraints,
+            ak_room_constraints=ak_room_constraints,
+            room_time_constraints=room_time_constraints,
+            fulfilled_time_constraints=fulfilled_time_constraints,
+            fulfilled_room_constraints=fulfilled_room_constraints,
+        )
 
 
 @dataclass(frozen=True)
