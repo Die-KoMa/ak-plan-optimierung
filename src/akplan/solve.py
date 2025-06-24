@@ -6,6 +6,7 @@ import math
 import multiprocessing
 import os
 from collections.abc import Iterable
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import asdict
 from itertools import combinations, product, repeat
 from pathlib import Path
@@ -339,10 +340,6 @@ def create_lp(
             var.time[scheduled_ak.ak_id][timeslot_id].setInitialValue(1)
             var.time[scheduled_ak.ak_id][timeslot_id].fixValue()
 
-    # The problem data is written to an .lp file
-    if output_file is not None:
-        prob.writeLP(output_file)
-
     return prob, var.to_export_tuple()
 
 
@@ -427,6 +424,7 @@ def solve_scheduling(
     solver_name: str | None = None,
     output_lp_file: str | None = "koma-plan.lp",
     show_progress: bool = False,
+    lp_file_format: Literal["MPS", "LP"] = "MPS",
     **solver_kwargs: dict[str, Any],
 ) -> tuple[LpProblem, types.ExportTuple[types.PartialSolved]]:
     """Solve the scheduling problem.
@@ -453,6 +451,8 @@ def solve_scheduling(
             as an `.lp` file to this location. Defaults to `koma-plan.lp`.
         show_progress (bool): Whether progress bars should be displayed during
             LP creation. Defaults to False.
+        lp_file_format (str): The format to use when exporting the LP format.
+            Choose from 'MPS' and 'LP'. Defaults to MPS.
         **solver_kwargs: kwargs are passed to the solver.
 
     Returns:
@@ -464,11 +464,37 @@ def solve_scheduling(
         input_data, output_lp_file, show_progress=show_progress
     )
 
-    if not solver_name:
-        # The problem is solved using PuLP's default solver
-        solver_name = "PULP_CBC_CMD"
-    solver = getSolver(solver_name, **solver_kwargs)
-    lp_problem.solve(solver)
+    def _write_lp_problem(
+        lp_problem: LpProblem,
+        output_file: str | None,
+        lp_file_format: Literal["MPS", "LP"],
+    ) -> None:
+        if output_file is None:
+            return
+
+        if lp_file_format == "LP":
+            lp_problem.writeLP(output_file)
+        else:
+            lp_problem.writeMPS(output_file)
+
+    with ThreadPoolExecutor(max_workers=1) as executor:
+        # Write to disk in a separate thread
+        write_lp_to_disk_future = executor.submit(
+            _write_lp_problem,
+            lp_problem=lp_problem,
+            output_file=output_lp_file,
+            lp_file_format=lp_file_format,
+        )
+
+        if not solver_name:
+            # The problem is solved using PuLP's default solver
+            solver_name = "PULP_CBC_CMD"
+        solver = getSolver(solver_name, **solver_kwargs)
+        print("Starting solve")
+        lp_problem.solve(solver)
+
+        # wait on disk writing to complete
+        write_lp_to_disk_future.result()
 
     print("Status:", LpStatus[lp_problem.status])
     print("Solution Status:", LpSolution[lp_problem.sol_status])
