@@ -5,6 +5,7 @@ import json
 from dataclasses import asdict
 from itertools import combinations, product
 from pathlib import Path
+from time import perf_counter
 from typing import Any, Literal, cast, overload
 
 from pulp import (
@@ -65,6 +66,8 @@ def create_lp(
     """
     ids = ProblemIds.init_from_problem(input_data)
     props = ProblemProperties.init_from_problem(input_data, ids=ids)
+
+    time_lp_construction_start = perf_counter()
 
     # Create decision variables
     var = LPVarDicts.init_from_ids(
@@ -366,6 +369,12 @@ def create_lp(
             var.time[scheduled_ak.ak_id][timeslot_id].setInitialValue(1)
             var.time[scheduled_ak.ak_id][timeslot_id].fixValue()
 
+    time_lp_construction_end = perf_counter()
+    print(
+        "LP constructed. Time elapsed: "
+        f"{time_lp_construction_end - time_lp_construction_start:.1f}s"
+    )
+
     # The problem data is written to an .lp file
     if output_file is not None:
         prob.writeLP(output_file)
@@ -507,6 +516,7 @@ def solve_scheduling(
             iis_path = Path(output_lp_file)
             iis_path = iis_path.parent / f"{iis_path.stem}-iis.ilp"
             lp_problem.solverModel.write(str(iis_path))
+            print("IIS written")
 
     def value_processing(value: float | None) -> int | None:
         if value is None:
