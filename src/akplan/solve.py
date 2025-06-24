@@ -10,6 +10,7 @@ from concurrent.futures import ThreadPoolExecutor
 from dataclasses import asdict
 from itertools import combinations, product, repeat
 from pathlib import Path
+from time import perf_counter
 from typing import Any, Literal, TypeVar, cast, overload
 
 from pulp import (
@@ -101,6 +102,7 @@ def create_lp(
         n_processes = max(1, min(estimated_n_processes, n_processes))
 
     print(f"Constructing the LP in parallel using {n_processes} processes")
+    time_lp_construction_start = perf_counter()
 
     # Create decision variables
     var = LPVarDicts.init_from_ids(
@@ -344,6 +346,11 @@ def create_lp(
             var.time[scheduled_ak.ak_id][timeslot_id].setInitialValue(1)
             var.time[scheduled_ak.ak_id][timeslot_id].fixValue()
 
+    time_lp_construction_end = perf_counter()
+    print(
+        "LP constructed. Time elapsed: "
+        f"{time_lp_construction_end - time_lp_construction_start:.1f}s"
+    )
     return prob, var.to_export_tuple()
 
 
@@ -510,6 +517,7 @@ def solve_scheduling(
             iis_path = Path(output_lp_file)
             iis_path = iis_path.parent / f"{iis_path.stem}-iis.ilp"
             lp_problem.solverModel.write(str(iis_path))
+            print("IIS written")
 
     def value_processing(value: float | None) -> int | None:
         if value is None:
