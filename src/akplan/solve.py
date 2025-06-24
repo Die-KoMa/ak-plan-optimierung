@@ -43,6 +43,7 @@ def create_lp(
     output_file: str | None = "koma-plan.lp",
     show_progress: bool = False,
     chunksize: int = 1,
+    n_processes: int | None = None,
 ) -> tuple[LpProblem, dict[str, VarDict]]:
     """Create the MILP problem as pulp object.
 
@@ -67,13 +68,20 @@ def create_lp(
             Defaults to False.
         chunksize (int): The size of chunks that are passed to processes of the
             multiprocessing Pool. Defaults to 1.
-
+        n_processes (int, optional): The number of processes to use in the Pool
+            for parallel constraint construction. If None, the number is calculated
+            based on the number of available processes and the problem size.
+            Defaults to None.
 
     Returns:
         A tuple (`lp_problem`, `dec_vars`) where `lp_problem` is the
         constructed MILP instance and `dec_vars` is the nested dictionary
         containing the MILP variables.
     """
+    if n_processes is None:
+        # TODO: Calculate n_processes
+        n_processes = 8
+
     ids = ProblemIds.init_from_problem(input_data)
     props = ProblemProperties.init_from_problem(input_data, ids=ids)
 
@@ -262,7 +270,7 @@ def create_lp(
 
     all_constraints: list[tuple[str, LpConstraint]] = []
 
-    with multiprocessing.Pool(processes=4) as pool:
+    with multiprocessing.Pool(processes=n_processes) as pool:
         for task_func, task_params in tasks:
             for result in pool.imap_unordered(
                 task_func, task_params, chunksize=chunksize
