@@ -23,6 +23,7 @@ from pulp import (
     getSolver,
     lpSum,
 )
+from tqdm import tqdm
 
 from . import constraints
 from .util import (
@@ -313,17 +314,19 @@ def create_lp(
 
     with multiprocessing.Pool(processes=n_processes) as pool:
         for (task_func, task_params), size_estimate in tasks:
-            # evenly split task among pool
-            chunksize, extra = divmod(size_estimate, n_processes)
+            # default chunksize formula from the standard library
+            chunksize, extra = divmod(size_estimate, n_processes * 4)
             if extra:
                 chunksize += 1
             chunksize = max(chunksize, 1)
 
-            for result in pool.imap_unordered(
-                task_func, task_params, chunksize=int(chunksize)
-            ):
-                if result is not None:
-                    all_constraints.append(result)
+            with tqdm(total=int(size_estimate), desc=task_func.__name__) as pbar:
+                for result in pool.imap_unordered(
+                    task_func, task_params, chunksize=int(chunksize)
+                ):
+                    if result is not None:
+                        all_constraints.append(result)
+                    pbar.update(1)
 
     prob.extend(all_constraints)
     # Fix Values for already scheduled aks
