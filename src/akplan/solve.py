@@ -111,6 +111,8 @@ def create_lp(
         person_ids=ids.person,
     )
 
+    var_name_dict = var.name_dict()
+
     # Create problem
     prob = LpProblem("MLPKoMa", sense=LpMaximize)
 
@@ -323,7 +325,9 @@ def create_lp(
                     task_func, task_params, chunksize=int(chunksize)
                 ):
                     if result is not None:
-                        all_constraints.append(result)
+                        all_constraints.append(
+                            LpConstraint.fromDataclass(result, var_name_dict)
+                        )
                     pbar.update(1)
 
     prob.extend(all_constraints)

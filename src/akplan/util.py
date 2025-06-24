@@ -517,6 +517,31 @@ class LPVarDicts:
         """We only export the variables for room, time, and persons."""
         return types.ExportTuple(room=self.room, time=self.time, person=self.person)
 
+    def name_dict(self) -> dict[str, LpVariable]:
+        variables: list[tuple[str, LpVariable]] = []
+
+        def _add_to_variables_list(var_dict: types.VarDict[types.Id, types.Id]) -> None:
+            variables.extend(
+                map(
+                    lambda v: (v.name, v),
+                    chain.from_iterable((d.values() for d in var_dict.values())),
+                )
+            )
+
+        for entries in [
+            self.room,
+            self.time,
+            self.block,
+            self.person,
+            self.person_time,
+        ]:
+            _add_to_variables_list(entries)
+
+        return_dict = dict(variables)
+        if len(return_dict) != len(variables):
+            raise ValueError("Length mismatch; some variables share a name!")
+        return return_dict
+
     @classmethod
     def init_from_ids(
         cls: Type["LPVarDicts"],

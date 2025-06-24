@@ -1,24 +1,30 @@
 """Functions and types for constructing the LP constraints."""
 
 from collections.abc import Callable, Iterable
-from typing import TypeVar
+from typing import TypeAlias, TypeVar
 
-from pulp import LpConstraint, lpSum
+from pulp import LpConstraint, lpSum, mps_lp
 
 from .types import AkId, Block, BlockId, PersonId, RoomId, TimeslotId
 from .util import LPVarDicts, ProblemProperties, _construct_constraint_name
 
 T = TypeVar("T")
 
-ConstraintItem = tuple[str, LpConstraint]
-ConstraintItemOrNone = ConstraintItem | None
-ConstraintFunc = Callable[[T], ConstraintItemOrNone]
+ConstraintItem: TypeAlias = mps_lp.MPSConstraint
+ConstraintFunc = Callable[[T], ConstraintItem | None]
 TaskItem = tuple[ConstraintFunc[T], Iterable[T]]
+
+
+def _postprocess_constraint(
+    constraint_name: str, constraint: LpConstraint
+) -> ConstraintItem:
+    constraint.name = constraint_name
+    return constraint.toDataclass()
 
 
 def _max_one_ak_per_person_and_time(
     packed: tuple[LPVarDicts, tuple[tuple[AkId, AkId], TimeslotId, PersonId]],
-) -> tuple[str, LpConstraint]:
+) -> ConstraintItem:
     var, ((ak_id1, ak_id2), timeslot_id, person_id) = packed
     constraint = lpSum(
         [
@@ -28,7 +34,7 @@ def _max_one_ak_per_person_and_time(
             var.person[ak_id2][person_id],
         ]
     )
-    return (
+    return _postprocess_constraint(
         _construct_constraint_name(
             "MaxOneAKPerPersonAndTime",
             ak_id1,
@@ -42,7 +48,7 @@ def _max_one_ak_per_person_and_time(
 
 def _max_one_ak_per_room_and_time(
     packed: tuple[LPVarDicts, tuple[tuple[AkId, AkId], TimeslotId, RoomId]],
-) -> tuple[str, LpConstraint]:
+) -> ConstraintItem:
     var, ((ak_id1, ak_id2), timeslot_id, room_id) = packed
     constraint = lpSum(
         [
@@ -52,7 +58,7 @@ def _max_one_ak_per_room_and_time(
             var.room[ak_id2][room_id],
         ]
     )
-    return (
+    return _postprocess_constraint(
         _construct_constraint_name(
             "MaxOneAKPerRoomAndTime",
             ak_id1,
@@ -66,24 +72,28 @@ def _max_one_ak_per_room_and_time(
 
 def _ak_durations(
     packed: tuple[LPVarDicts, ProblemProperties, AkId],
-) -> tuple[str, LpConstraint]:
+) -> ConstraintItem:
     var, props, ak_id = packed
     constraint = lpSum(var.time[ak_id].values()) >= props.ak_durations[ak_id]
-    return _construct_constraint_name("AKDuration", ak_id), constraint
+    return _postprocess_constraint(
+        _construct_constraint_name("AKDuration", ak_id), constraint
+    )
 
 
-def _ak_single_block(packed: tuple[LPVarDicts, AkId]) -> tuple[str, LpConstraint]:
+def _ak_single_block(packed: tuple[LPVarDicts, AkId]) -> ConstraintItem:
     var, ak_id = packed
     constraint = lpSum(var.block[ak_id].values()) <= 1
-    return _construct_constraint_name("AKSingleBlock", ak_id), constraint
+    return _postprocess_constraint(
+        _construct_constraint_name("AKSingleBlock", ak_id), constraint
+    )
 
 
 def _ak_single_block_per_block(
     packed: tuple[LPVarDicts, ProblemProperties, tuple[AkId, tuple[BlockId, Block]]],
-) -> tuple[str, LpConstraint]:
+) -> ConstraintItem:
     var, props, (ak_id, (block_id, block)) = packed
     constraint_sum = lpSum([var.time[ak_id][timeslot_id] for timeslot_id in block])
-    return (
+    return _postprocess_constraint(
         _construct_constraint_name("AKSingleBlock", ak_id, str(block_id)),
         constraint_sum <= props.ak_durations[ak_id] * var.block[ak_id][block_id],
     )
@@ -91,7 +101,7 @@ def _ak_single_block_per_block(
 
 def _room_sizes(
     packed: tuple[LPVarDicts, ProblemProperties, tuple[RoomId, AkId]],
-) -> tuple[str, LpConstraint] | None:
+) -> ConstraintItem | None:
     var, props, (room_id, ak_id) = packed
     if props.ak_num_interested[ak_id] > props.room_capacities[room_id]:
         constraint_sum = lpSum(var.person[ak_id].values())
@@ -100,15 +110,17 @@ def _room_sizes(
             constraint_sum
             <= props.ak_num_interested[ak_id] + props.room_capacities[room_id]
         )
-        return _construct_constraint_name("Roomsize", room_id, ak_id), constraint
+        return _postprocess_constraint(
+            _construct_constraint_name("Roomsize", room_id, ak_id), constraint
+        )
     return None
 
 
 def _at_most_one_room_per_ak(
     packed: tuple[LPVarDicts, AkId],
-) -> tuple[str, LpConstraint]:
+) -> ConstraintItem:
     var, ak_id = packed
-    return (
+    return _postprocess_constraint(
         _construct_constraint_name("AtMostOneRoomPerAK", ak_id),
         lpSum(var.room[ak_id].values()) <= 1,
     )
@@ -116,9 +128,9 @@ def _at_most_one_room_per_ak(
 
 def _at_least_one_room_per_ak(
     packed: tuple[LPVarDicts, AkId],
-) -> tuple[str, LpConstraint]:
+) -> ConstraintItem:
     var, ak_id = packed
-    return (
+    return _postprocess_constraint(
         _construct_constraint_name("AtLeastOneRoomPerAK", ak_id),
         lpSum(var.room[ak_id].values()) >= 1,
     )
@@ -126,11 +138,11 @@ def _at_least_one_room_per_ak(
 
 def _not_more_people_than_interested(
     packed: tuple[LPVarDicts, ProblemProperties, AkId],
-) -> tuple[str, LpConstraint]:
+) -> ConstraintItem:
     var, props, ak_id = packed
     # We need this constraint so the Roomsize is correct
     constraint_sum = lpSum(var.person[ak_id].values())
-    return (
+    return _postprocess_constraint(
         _construct_constraint_name("NotMorePeopleThanInterested", ak_id),
         constraint_sum <= props.ak_num_interested[ak_id],
     )
@@ -138,10 +150,10 @@ def _not_more_people_than_interested(
 
 def _time_impossible_for_person(
     packed: tuple[LPVarDicts, tuple[PersonId, TimeslotId, AkId]],
-) -> tuple[str, LpConstraint]:
+) -> ConstraintItem:
     var, (person_id, timeslot_id, ak_id) = packed
     constraint_sum = lpSum([var.time[ak_id][timeslot_id], var.person[ak_id][person_id]])
-    return (
+    return _postprocess_constraint(
         _construct_constraint_name(
             "TimePersonVar",
             person_id,
@@ -154,10 +166,10 @@ def _time_impossible_for_person(
 
 def _room_impossible_for_person(
     packed: tuple[LPVarDicts, tuple[PersonId, RoomId, AkId]],
-) -> tuple[str, LpConstraint]:
+) -> ConstraintItem:
     var, (person_id, room_id, ak_id) = packed
     constraint_sum = lpSum([var.room[ak_id][room_id], var.person[ak_id][person_id]])
-    return (
+    return _postprocess_constraint(
         _construct_constraint_name(
             "RoomImpossibleForPerson", person_id, room_id, ak_id
         ),
@@ -165,9 +177,9 @@ def _room_impossible_for_person(
     )
 
 
-def _room_for_ak(packed: tuple[LPVarDicts, AkId]) -> tuple[str, LpConstraint]:
+def _room_for_ak(packed: tuple[LPVarDicts, AkId]) -> ConstraintItem:
     var, ak_id = packed
-    return (
+    return _postprocess_constraint(
         _construct_constraint_name("RoomForAK", ak_id),
         lpSum([var.room[ak_id].values()]) >= 1,
     )
@@ -175,13 +187,13 @@ def _room_for_ak(packed: tuple[LPVarDicts, AkId]) -> tuple[str, LpConstraint]:
 
 def _time_impossible_for_room(
     packed: tuple[LPVarDicts, ProblemProperties, tuple[RoomId, TimeslotId, AkId]],
-) -> tuple[str, LpConstraint] | None:
+) -> ConstraintItem | None:
     var, props, (room_id, timeslot_id, ak_id) = packed
 
     if props.room_time_constraints[room_id].difference(
         props.fulfilled_time_constraints[timeslot_id]
     ):
-        return (
+        return _postprocess_constraint(
             _construct_constraint_name(
                 "TimeImpossibleForRoom", room_id, timeslot_id, ak_id
             ),
@@ -192,9 +204,9 @@ def _time_impossible_for_room(
 
 def _ak_conflict(
     packed: tuple[LPVarDicts, tuple[TimeslotId, tuple[AkId, AkId]]],
-) -> tuple[str, LpConstraint]:
+) -> ConstraintItem:
     var, (timeslot_id, (ak_a, ak_b)) = packed
-    return (
+    return _postprocess_constraint(
         _construct_constraint_name("AKConflict", ak_a, ak_b, timeslot_id),
         lpSum([var.time[ak_a][timeslot_id], var.time[ak_b][timeslot_id]]) <= 1,
     )
