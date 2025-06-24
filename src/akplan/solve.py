@@ -20,27 +20,22 @@ from pulp import (
 )
 from tqdm import tqdm
 
+from . import types
 from .util import (
     LPVarDicts,
-    PartialSolvedVarDict,
     ProblemIds,
     ProblemProperties,
     ScheduleAtom,
     SchedulingInput,
-    SolvedVarDict,
-    VarDict,
+    _construct_constraint_name,
 )
-
-
-def _construct_constraint_name(name: str, *args: Any) -> str:
-    return name + "_" + "_".join(map(str, args))
 
 
 def create_lp(
     input_data: SchedulingInput,
     output_file: str | None = "koma-plan.lp",
     show_progress: bool = False,
-) -> tuple[LpProblem, dict[str, VarDict]]:
+) -> tuple[LpProblem, types.ExportTuple[types.Var]]:
     """Create the MILP problem as pulp object.
 
     Creates the problem with all constraints, preferences and the objective function.
@@ -375,14 +370,14 @@ def create_lp(
     if output_file is not None:
         prob.writeLP(output_file)
 
-    return prob, var.to_export_dict()
+    return prob, var.to_export_tuple()
 
 
 def export_scheduling_result(
     input_data: SchedulingInput,
-    solution: dict[str, SolvedVarDict],
+    solution: types.ExportTuple[types.Solved],
     allow_unscheduled_aks: bool = False,
-) -> dict[int, ScheduleAtom]:
+) -> dict[types.AkId, ScheduleAtom]:
     """Create a dictionary from the solved MILP.
 
     For a specification of the output format, see
@@ -402,18 +397,23 @@ def export_scheduling_result(
 
     @overload
     def _get_id(
-        ak_id: int, var_key: str, allow_multiple: Literal[True], allow_none: bool
-    ) -> list[int]: ...
+        ak_id: types.AkId, var_key: str, allow_multiple: Literal[True], allow_none: bool
+    ) -> list[types.Id]: ...
 
     @overload
     def _get_id(
-        ak_id: int, var_key: str, allow_multiple: Literal[False], allow_none: bool
-    ) -> int | None: ...
+        ak_id: types.AkId,
+        var_key: str,
+        allow_multiple: Literal[False],
+        allow_none: bool,
+    ) -> types.Id | None: ...
 
     def _get_id(
-        ak_id: int, var_key: str, allow_multiple: bool, allow_none: bool
-    ) -> int | list[int] | None:
-        matched_ids = [id for id, val in solution[var_key][ak_id].items() if val > 0]
+        ak_id: types.AkId, var_key: str, allow_multiple: bool, allow_none: bool
+    ) -> types.Id | list[types.Id] | None:
+        matched_ids = [
+            id for id, val in getattr(solution, var_key)[ak_id].items() if val > 0
+        ]
         if not allow_multiple and len(matched_ids) > 1:
             raise ValueError(f"AK {ak_id} is assigned multiple {var_key}")
         elif len(matched_ids) == 0 and not allow_none:
@@ -424,23 +424,23 @@ def export_scheduling_result(
             else:
                 return matched_ids[0] if len(matched_ids) > 0 else None
 
-    scheduled_ak_dict: dict[int, ScheduleAtom] = {
+    scheduled_ak_dict: dict[types.AkId, ScheduleAtom] = {
         ak_id: ScheduleAtom(
             ak_id=ak_id,
             room_id=_get_id(
                 ak_id=ak_id,
-                var_key="Room",
+                var_key="room",
                 allow_multiple=False,
                 allow_none=allow_unscheduled_aks,
             ),
             timeslot_ids=_get_id(
                 ak_id=ak_id,
-                var_key="Time",
+                var_key="time",
                 allow_multiple=True,
                 allow_none=allow_unscheduled_aks,
             ),
             participant_ids=_get_id(
-                ak_id=ak_id, var_key="Part", allow_multiple=True, allow_none=True
+                ak_id=ak_id, var_key="person", allow_multiple=True, allow_none=True
             ),
         )
         for ak_id in ids.ak
@@ -455,7 +455,7 @@ def solve_scheduling(
     output_lp_file: str | None = "koma-plan.lp",
     show_progress: bool = False,
     **solver_kwargs: dict[str, Any],
-) -> tuple[LpProblem, dict[str, PartialSolvedVarDict]]:
+) -> tuple[LpProblem, types.ExportTuple[types.PartialSolved]]:
     """Solve the scheduling problem.
 
     Solves the ILP scheduling problem described by the input data using an ILP
@@ -513,35 +513,40 @@ def solve_scheduling(
             return None
         return round(value)
 
-    solution = {
-        var_key: {
-            ak_id: {id: value_processing(var.value()) for id, var in vars.items()}
-            for ak_id, vars in vars_dict.items()
+    def _process_var_dict(
+        var_dict: types.VarDict[types.AkId, types.IdType],
+    ) -> types.PartialSolvedVarDict[types.AkId, types.IdType]:
+        return {
+            ak_id: {id: value_processing(var.value()) for id, var in variables.items()}
+            for ak_id, variables in var_dict.items()
         }
-        for var_key, vars_dict in dec_vars.items()
-    }
 
+    solution = types.ExportTuple(
+        room=_process_var_dict(dec_vars.room),
+        time=_process_var_dict(dec_vars.time),
+        person=_process_var_dict(dec_vars.person),
+    )
     return (lp_problem, solution)
 
 
 def _check_for_partial_solve(
-    solution: dict[str, PartialSolvedVarDict],
+    solution: types.ExportTuple[types.PartialSolved],
     solved_lp_problem: LpProblem,
-) -> dict[str, SolvedVarDict]:
-    if any(None in d.values() for dd in solution.values() for d in dd.values()):
+) -> types.ExportTuple[types.Solved]:
+    if any(None in d.values() for dd in solution for d in dd.values()):
         print(
             "Warning: some variables are not assigned a value "
             f"with solution status {solved_lp_problem.sol_status}."
         )
         raise ValueError
-    return cast(dict[str, SolvedVarDict], solution)
+    return cast(types.ExportTuple[types.Solved], solution)
 
 
 def process_solved_lp(
     solved_lp_problem: LpProblem,
-    solution: dict[str, PartialSolvedVarDict],
+    solution: types.ExportTuple[types.PartialSolved],
     input_data: SchedulingInput,
-) -> dict[int, ScheduleAtom] | None:
+) -> dict[types.AkId, ScheduleAtom] | None:
     """Process the solved LP model and create a schedule output.
 
     Args:
