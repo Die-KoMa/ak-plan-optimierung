@@ -10,10 +10,7 @@ from typing import Any, Type
 from dacite import from_dict
 from pulp import LpBinary, LpVariable
 
-VarDict = dict[int, dict[int, LpVariable]]
-PartialSolvedVarDict = dict[int, dict[int, int | None]]
-SolvedVarDict = dict[int, dict[int, int]]
-ConstraintSetDict = dict[int, set[str]]
+from . import types
 
 
 @dataclass(frozen=True)
@@ -35,7 +32,7 @@ class AKData:
             human readable name or a description. Not used for the optimization.
     """
 
-    id: int
+    id: types.AkId
     duration: int
     properties: dict[str, Any]
     room_constraints: list[str]
@@ -57,7 +54,7 @@ class PreferenceData:
             weakly interested (1), strongly interested (2) or required (-1).
     """
 
-    ak_id: int
+    ak_id: types.AkId
     required: bool
     preference_score: int
 
@@ -81,7 +78,7 @@ class ParticipantData:
             e.g. a human readable name. Not used for the optimization.
     """
 
-    id: int
+    id: types.PersonId
     preferences: list[PreferenceData]
     room_constraints: list[str]
     time_constraints: list[str]
@@ -107,7 +104,7 @@ class RoomData:
             e.g. a human readable name. Not used for the optimization.
     """
 
-    id: int
+    id: types.RoomId
     capacity: int
     fulfilled_room_constraints: list[str]
     time_constraints: list[str]
@@ -129,7 +126,7 @@ class TimeSlotData:
             e.g. a human readable start time and date. Not used for the optimization.
     """
 
-    id: int
+    id: types.TimeslotId
     fulfilled_time_constraints: list[str]
     info: dict[str, Any]
 
@@ -146,10 +143,10 @@ class ScheduleAtom:
         participant_ids (list of int): The list of participants that are meant to go to this AK.
     """
 
-    ak_id: int
-    room_id: int | None
-    timeslot_ids: list[int]
-    participant_ids: list[int]
+    ak_id: types.AkId
+    room_id: types.RoomId | None
+    timeslot_ids: list[types.TimeslotId]
+    participant_ids: list[types.PersonId]
 
 
 @dataclass(frozen=False)
@@ -256,7 +253,7 @@ class SchedulingInput:
         return return_dict
 
 
-def get_ak_name(input_data: SchedulingInput, ak_id: int) -> str:
+def get_ak_name(input_data: SchedulingInput, ak_id: types.AkId) -> str:
     """Get name string for an AK."""
     ak_names = [
         ak.info["name"]
@@ -323,25 +320,27 @@ def process_room_cap(room_capacity: int, num_participants: int) -> int:
 class ProblemIds:
     """Dataclass containing the id collections from a problem."""
 
-    ak: set[int]
-    room: set[int]
-    timeslot: set[int]
-    person: set[int]
-    block_dict: dict[int, list[int]]
-    sorted_timeslot: list[int]
-    conflict_pairs: set[tuple[int, int]]
+    ak: set[types.AkId]
+    room: set[types.RoomId]
+    timeslot: set[types.TimeslotId]
+    person: set[types.PersonId]
+    block_dict: dict[types.BlockId, types.Block]
+    sorted_timeslot: list[types.TimeslotId]
+    conflict_pairs: set[tuple[types.AkId, types.AkId]]
 
     @staticmethod
     def get_ids(
         input_data: SchedulingInput,
-    ) -> tuple[set[int], set[int], set[int], set[int]]:
+    ) -> tuple[
+        set[types.AkId], set[types.PersonId], set[types.RoomId], set[types.TimeslotId]
+    ]:
         """Create id sets from scheduling input."""
 
         def _retrieve_ids(
             input_iterable: Iterable[
                 AKData | ParticipantData | RoomData | TimeSlotData
             ],
-        ) -> set[int]:
+        ) -> set[types.Id]:
             return {obj.id for obj in input_iterable}
 
         ak_ids = _retrieve_ids(input_data.aks)
@@ -364,10 +363,10 @@ class ProblemIds:
             for block_idx, block in enumerate(input_data.timeslot_blocks)
         }
 
-        conflict_pairs: set[tuple[int, int]] = set()
+        conflict_pairs: set[tuple[types.AkId, types.AkId]] = set()
         for ak in input_data.aks:
-            conflicting_aks: list[int] = ak.properties.get("conflicts", [])
-            depending_aks: list[int] = ak.properties.get("dependencies", [])
+            conflicting_aks: list[types.AkId] = ak.properties.get("conflicts", [])
+            depending_aks: list[types.AkId] = ak.properties.get("dependencies", [])
             conflict_pairs.update(
                 [
                     (
@@ -394,18 +393,18 @@ class ProblemIds:
 class ProblemProperties:
     """Dataclass containing derived properties from a problem."""
 
-    room_capacities: dict[int, int]
-    ak_durations: dict[int, int]
-    weighted_preferences: dict[int, dict[int, float]]
-    required_persons: dict[int, set[int]]
-    ak_num_interested: dict[int, int]
-    participant_time_constraints: ConstraintSetDict
-    participant_room_constraints: ConstraintSetDict
-    ak_time_constraints: ConstraintSetDict
-    ak_room_constraints: ConstraintSetDict
-    room_time_constraints: ConstraintSetDict
-    fulfilled_time_constraints: ConstraintSetDict
-    fulfilled_room_constraints: ConstraintSetDict
+    room_capacities: dict[types.RoomId, int]
+    ak_durations: dict[types.AkId, int]
+    weighted_preferences: dict[types.PersonId, dict[types.AkId, float]]
+    required_persons: dict[types.AkId, set[types.PersonId]]
+    ak_num_interested: dict[types.AkId, int]
+    participant_time_constraints: types.ConstraintSetDict[types.PersonId]
+    participant_room_constraints: types.ConstraintSetDict[types.PersonId]
+    ak_time_constraints: types.ConstraintSetDict[types.AkId]
+    ak_room_constraints: types.ConstraintSetDict[types.AkId]
+    room_time_constraints: types.ConstraintSetDict[types.RoomId]
+    fulfilled_time_constraints: types.ConstraintSetDict[types.TimeslotId]
+    fulfilled_room_constraints: types.ConstraintSetDict[types.RoomId]
 
     @classmethod
     def init_from_problem(
@@ -508,42 +507,46 @@ class ProblemProperties:
 class LPVarDicts:
     """Dataclass containing the decision variable dicts for the LP."""
 
-    room: VarDict
-    time: VarDict
-    block: VarDict
-    person: VarDict
-    person_time: VarDict
+    room: types.VarDict[types.AkId, types.RoomId]
+    time: types.VarDict[types.AkId, types.TimeslotId]
+    block: types.VarDict[types.AkId, types.BlockId]
+    person: types.VarDict[types.AkId, types.PersonId]
+    person_time: types.VarDict[types.PersonId, types.TimeslotId]
 
-    def to_export_dict(self) -> dict[str, VarDict]:
+    def to_export_tuple(self) -> types.ExportTuple[types.Var]:
         """We only export the variables for room, time, and persons."""
-        return {"Room": self.room, "Time": self.time, "Part": self.person}
+        return types.ExportTuple(room=self.room, time=self.time, person=self.person)
 
     @classmethod
     def init_from_ids(
         cls: Type["LPVarDicts"],
-        ak_ids: Collection[int],
-        room_ids: Collection[int],
-        timeslot_ids: Collection[int],
-        block_ids: Collection[int],
-        person_ids: Collection[int],
+        ak_ids: Collection[types.AkId],
+        room_ids: Collection[types.RoomId],
+        timeslot_ids: Collection[types.TimeslotId],
+        block_ids: Collection[types.BlockId],
+        person_ids: Collection[types.PersonId],
     ) -> "LPVarDicts":
         """Initialize decision variables from the problem ids."""
-        room_var: VarDict = LpVariable.dicts("Room", (ak_ids, room_ids), cat=LpBinary)
-        time_var: VarDict = LpVariable.dicts(
+        room_var: types.VarDict[types.AkId, types.RoomId] = LpVariable.dicts(
+            "Room", (ak_ids, room_ids), cat=LpBinary
+        )
+        time_var: types.VarDict[types.AkId, types.TimeslotId] = LpVariable.dicts(
             "Time",
             (ak_ids, timeslot_ids),
             cat=LpBinary,
         )
-        block_var: VarDict = LpVariable.dicts(
+        block_var: types.VarDict[types.AkId, types.BlockId] = LpVariable.dicts(
             "Block", (ak_ids, block_ids), cat=LpBinary
         )
-        person_var: VarDict = LpVariable.dicts(
+        person_var: types.VarDict[types.AkId, types.PersonId] = LpVariable.dicts(
             "Part", (ak_ids, person_ids), cat=LpBinary
         )
-        person_time_var: VarDict = LpVariable.dicts(
-            "Working",
-            (person_ids, timeslot_ids),
-            cat=LpBinary,
+        person_time_var: types.VarDict[types.PersonId, types.TimeslotId] = (
+            LpVariable.dicts(
+                "Working",
+                (person_ids, timeslot_ids),
+                cat=LpBinary,
+            )
         )
         return cls(
             room=room_var,
