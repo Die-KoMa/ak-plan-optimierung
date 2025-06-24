@@ -2,7 +2,9 @@
 
 import argparse
 import json
+import math
 import multiprocessing
+import os
 from collections.abc import Iterable
 from dataclasses import asdict
 from itertools import combinations, product, repeat
@@ -42,8 +44,8 @@ def create_lp(
     input_data: SchedulingInput,
     output_file: str | None = "koma-plan.lp",
     show_progress: bool = False,
-    chunksize: int = 1,
     n_processes: int | None = None,
+    min_chunk_size: int = 10_000,
 ) -> tuple[LpProblem, dict[str, VarDict]]:
     """Create the MILP problem as pulp object.
 
@@ -66,24 +68,40 @@ def create_lp(
             as an `.lp` file to this location. Defaults to `koma-plan.lp`.
         show_progress (bool): Whether progress bars should be displayed.
             Defaults to False.
-        chunksize (int): The size of chunks that are passed to processes of the
-            multiprocessing Pool. Defaults to 1.
         n_processes (int, optional): The number of processes to use in the Pool
             for parallel constraint construction. If None, the number is calculated
             based on the number of available processes and the problem size.
             Defaults to None.
+        min_chunk_size (int): If `n_processes` is None, it is calculated such that
+            an even split of the estimated largest task has at least this size
+            per process.
 
     Returns:
         A tuple (`lp_problem`, `dec_vars`) where `lp_problem` is the
         constructed MILP instance and `dec_vars` is the nested dictionary
         containing the MILP variables.
     """
-    if n_processes is None:
-        # TODO: Calculate n_processes
-        n_processes = 8
-
     ids = ProblemIds.init_from_problem(input_data)
     props = ProblemProperties.init_from_problem(input_data, ids=ids)
+
+    if n_processes is None:
+        try:
+            # use process_cpu_count if it is available (added in python 3.13)
+            n_processes = os.process_cpu_count()  # type: ignore[attr-defined]
+        except AttributeError:
+            # fallback to cpu_count
+            n_processes = os.cpu_count()
+
+        n_processes = cast(int, n_processes)
+
+        estimated_max_task_size = (
+            0.5 * len(ids.ak) * (len(ids.ak) - 1) * len(ids.timeslot)
+        )
+        estimated_max_task_size *= max(len(ids.person), len(ids.room))
+        estimated_n_processes = math.ceil(estimated_max_task_size / min_chunk_size)
+        n_processes = max(1, min(estimated_n_processes, n_processes))
+
+    print(f"Constructing the LP in parallel using {n_processes} processes")
 
     # Create decision variables
     var = LPVarDicts.init_from_ids(
@@ -110,53 +128,77 @@ def create_lp(
         "cost_function",
     )
 
-    tasks: list[constraints.TaskItem[Any]] = []
+    tasks: list[tuple[constraints.TaskItem[Any], float]] = []
 
     def _create_task_item(
-        func: constraints.ConstraintFunc[T], params: Iterable[T]
+        func: constraints.ConstraintFunc[T], params: Iterable[T], size_estimate: float
     ) -> None:
         """Construct task item and add it to the list. Used to facilitate type checking."""
         task_item: constraints.TaskItem[T] = (func, params)
-        tasks.append(task_item)
+        tasks.append((task_item, size_estimate))
 
     _create_task_item(
         constraints._max_one_ak_per_person_and_time,
         zip(repeat(var), product(combinations(ids.ak, 2), ids.timeslot, ids.person)),
+        0.5 * len(ids.ak) * (len(ids.ak) - 1) * len(ids.timeslot) * len(ids.person),
     )
     _create_task_item(
         constraints._max_one_ak_per_room_and_time,
         zip(repeat(var), product(combinations(ids.ak, 2), ids.timeslot, ids.room)),
+        0.5 * len(ids.ak) * (len(ids.ak) - 1) * len(ids.timeslot) * len(ids.room),
     )
     _create_task_item(
-        constraints._ak_durations, zip(repeat(var), repeat(props), ids.ak)
+        constraints._ak_durations,
+        zip(repeat(var), repeat(props), ids.ak),
+        size_estimate=len(ids.ak),
     )
-    _create_task_item(constraints._ak_single_block, zip(repeat(var), ids.ak))
+    _create_task_item(
+        constraints._ak_single_block,
+        zip(repeat(var), ids.ak),
+        size_estimate=len(ids.ak),
+    )
     _create_task_item(
         constraints._ak_single_block_per_block,
         zip(repeat(var), repeat(props), product(ids.ak, ids.block_dict.items())),
+        size_estimate=len(ids.ak) * len(ids.block_dict),
     )
-    _create_task_item(constraints._at_most_one_room_per_ak, zip(repeat(var), ids.ak))
-    _create_task_item(constraints._at_least_one_room_per_ak, zip(repeat(var), ids.ak))
+    _create_task_item(
+        constraints._at_most_one_room_per_ak,
+        zip(repeat(var), ids.ak),
+        size_estimate=len(ids.ak),
+    )
+    _create_task_item(
+        constraints._at_least_one_room_per_ak,
+        zip(repeat(var), ids.ak),
+        size_estimate=len(ids.ak),
+    )
     _create_task_item(
         constraints._not_more_people_than_interested,
         zip(repeat(var), repeat(props), ids.ak),
+        size_estimate=len(ids.ak),
     )
     _create_task_item(
         constraints._room_sizes,
         zip(repeat(var), repeat(props), product(ids.room, ids.ak)),
+        size_estimate=len(ids.room) * len(ids.ak),
     )
     _create_task_item(
         constraints._time_impossible_for_person,
         zip(repeat(var), product(ids.person, ids.timeslot, ids.ak)),
+        size_estimate=len(ids.person) * len(ids.timeslot) * len(ids.ak),
     )
-    _create_task_item(constraints._room_for_ak, zip(repeat(var), ids.ak))
+    _create_task_item(
+        constraints._room_for_ak, zip(repeat(var), ids.ak), size_estimate=len(ids.ak)
+    )
     _create_task_item(
         constraints._time_impossible_for_room,
         zip(repeat(var), repeat(props), product(ids.room, ids.timeslot, ids.ak)),
+        size_estimate=len(ids.room) * len(ids.timeslot) * len(ids.ak),
     )
     _create_task_item(
         constraints._ak_conflict,
         zip(repeat(var), product(ids.timeslot, ids.conflict_pairs)),
+        size_estimate=len(ids.timeslot) * len(ids.conflict_pairs),
     )
 
     # INITIAL VALUES #
@@ -224,7 +266,6 @@ def create_lp(
                 constraint_sum = lpSum(
                     [var.room[ak_id][room_id], var.person[ak_id][person_id]]
                 )
-    prob.extend
 
     if input_data.config.max_num_timeslots_before_break > 0:
         # PersonNeedsBreak
@@ -271,15 +312,20 @@ def create_lp(
     all_constraints: list[tuple[str, LpConstraint]] = []
 
     with multiprocessing.Pool(processes=n_processes) as pool:
-        for task_func, task_params in tasks:
+        for (task_func, task_params), size_estimate in tasks:
+            # evenly split task among pool
+            chunksize, extra = divmod(size_estimate, n_processes)
+            if extra:
+                chunksize += 1
+            chunksize = max(chunksize, 1)
+
             for result in pool.imap_unordered(
-                task_func, task_params, chunksize=chunksize
+                task_func, task_params, chunksize=int(chunksize)
             ):
                 if result is not None:
                     all_constraints.append(result)
 
     prob.extend(all_constraints)
-
     # Fix Values for already scheduled aks
     for scheduled_ak in input_data.scheduled_aks:
         if scheduled_ak.room_id is not None:
