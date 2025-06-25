@@ -27,6 +27,15 @@ def run_test_fast(session):
     session.run("pytest", "-m", "not slow and not extensive", *session.posargs)
 
 
+@nox.session(name="fast-unlicensed-test")
+def run_test_fast_unlicensed(session):
+    """Run pytest on fast test cases without any license."""
+    session = _setup_test_session(session)
+    session.run(
+        "pytest", "-m", "not slow and not extensive and not licensed", *session.posargs
+    )
+
+
 @nox.session(name="extensive-test")
 def run_test_extensive(session):
     """Run pytest on all test cases."""

@@ -23,6 +23,6 @@ jobs:
       - name: Check typing
         run: |
           uvx nox -s typing
-      - name: fast-test
+      - name: fast-unlicensed-test
         run: |
-          uvx nox -s fast-test
+          uvx nox -s fast-unlicensed-test

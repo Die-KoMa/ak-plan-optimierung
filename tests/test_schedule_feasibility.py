@@ -68,36 +68,37 @@ def scheduling_input(request: pytest.FixtureRequest) -> SchedulingInput:
     return SchedulingInput.from_dict(input_dict)
 
 
-mus = [2, 1, 5]
+mus: list[float] = [2, 1, 5]
+fast_mu_values = mus[:1]
 available_solvers = linopy.solvers.available_solvers + [None]
 core_solver_set = {"highs", "gurobi"}
+licensed_solvers = {"gurobi"}
 
-fast_scheduled_ak_params = list(product(mus[:1], core_solver_set))
 
-scheduled_aks_params: list[ParameterSet] = [
-    (
-        pytest.param(param_pair)
-        if param_pair in fast_scheduled_ak_params
-        else (
-            pytest.param(param_pair, marks=pytest.mark.slow)
-            if param_pair[1] in core_solver_set
-            else pytest.param(
-                param_pair, marks=[pytest.mark.slow, pytest.mark.extensive]
-            )
-        )
-    )
-    for param_pair in product(mus, available_solvers)
-]
-scheduled_aks_param_ids: list[str] = []
-for param in scheduled_aks_params:
+scheduling_params: list[ParameterSet] = []
+for mu, solver_name in product(mus, available_solvers):
+    marks = []
+    if solver_name not in core_solver_set:
+        marks.extend([pytest.mark.slow, pytest.mark.extensive])
+    elif mu not in fast_mu_values:
+        marks.append(pytest.mark.slow)
+
+    if solver_name in licensed_solvers:
+        marks.append(pytest.mark.licensed)
+
+    scheduling_params.append(pytest.param((mu, solver_name), marks=marks))
+
+
+scheduling_param_ids: list[str] = []
+for param in scheduling_params:
     mu, solver_name = cast(tuple[float, str], param.values[0])
-    scheduled_aks_param_ids.append(f"mu={mu}-{solver_name}")
+    scheduling_param_ids.append(f"mu={mu}-{solver_name}")
 
 
 @pytest.fixture(
     scope="module",
-    ids=scheduled_aks_param_ids,
-    params=scheduled_aks_params,
+    ids=scheduling_param_ids,
+    params=scheduling_params,
 )
 def solved_lp_fixture(
     request: pytest.FixtureRequest, scheduling_input: SchedulingInput
