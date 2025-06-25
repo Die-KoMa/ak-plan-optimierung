@@ -23,10 +23,12 @@ ConstraintSetDict = dict[IdType, set[str]]
 Var: TypeAlias = LpVariable
 PartialSolved = int | None
 Solved = int
+VarName = str
 
 # nested dictionaries containing either the LP variables (`VarDict`)
 # or the values assigned to them by the solver (`PartialSolvedVarDict`, `SolvedVarDict`)
 GenericVarDict = dict[IdType, dict[IdType2, T]]
+VarNameDict = GenericVarDict[IdType, IdType2, VarName]
 VarDict = GenericVarDict[IdType, IdType2, Var]
 PartialSolvedVarDict = GenericVarDict[IdType, IdType2, PartialSolved]
 SolvedVarDict = GenericVarDict[IdType, IdType2, Solved]

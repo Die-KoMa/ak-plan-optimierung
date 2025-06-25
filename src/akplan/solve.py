@@ -3,7 +3,7 @@
 import argparse
 import json
 import math
-import multiprocessing
+import multiprocessing as mp
 import os
 from collections.abc import Iterable
 from concurrent.futures import ThreadPoolExecutor
@@ -29,6 +29,7 @@ from tqdm import tqdm
 
 from . import constraints, types
 from .util import (
+    ExportLPVarDicts,
     LPVarDicts,
     ProblemIds,
     ProblemProperties,
@@ -40,12 +41,19 @@ from .util import (
 T = TypeVar("T")
 
 
+def worker(
+    q_in: mp.Queue, q_out: mp.Queue, var: ExportLPVarDicts, props: ProblemProperties
+):
+    for func, param in iter(q_in.get, "STOP"):
+        q_out.put_nowait(func(param, props=props, var=var))
+
+
 def create_lp(
     input_data: SchedulingInput,
     output_file: str | None = "koma-plan.lp",
     show_progress: bool = False,
     n_processes: int | None = None,
-    min_chunk_size: int = 10_000,
+    min_chunk_size: int = 100_000,
 ) -> tuple[LpProblem, types.ExportTuple[types.Var]]:
     """Create the MILP problem as pulp object.
 
@@ -113,6 +121,7 @@ def create_lp(
         person_ids=ids.person,
     )
 
+    export_var = ExportLPVarDicts.from_lp_var_dicts(var)
     var_name_dict = var.name_dict()
 
     # Create problem
@@ -134,74 +143,64 @@ def create_lp(
     tasks: list[tuple[constraints.TaskItem[Any], float]] = []
 
     def _create_task_item(
-        func: constraints.ConstraintFunc[T], params: Iterable[T], size_estimate: float
+        func: constraints.ConstraintFunc[T],
+        params: Iterable[T],
     ) -> None:
         """Construct task item and add it to the list. Used to facilitate type checking."""
         task_item: constraints.TaskItem[T] = (func, params)
-        tasks.append((task_item, size_estimate))
+        tasks.append((func, params))
 
     _create_task_item(
         constraints._max_one_ak_per_person_and_time,
-        zip(repeat(var), product(combinations(ids.ak, 2), ids.timeslot, ids.person)),
-        0.5 * len(ids.ak) * (len(ids.ak) - 1) * len(ids.timeslot) * len(ids.person),
+        product(combinations(ids.ak, 2), ids.timeslot, ids.person),
     )
     _create_task_item(
         constraints._max_one_ak_per_room_and_time,
-        zip(repeat(var), product(combinations(ids.ak, 2), ids.timeslot, ids.room)),
-        0.5 * len(ids.ak) * (len(ids.ak) - 1) * len(ids.timeslot) * len(ids.room),
+        product(combinations(ids.ak, 2), ids.timeslot, ids.room),
     )
     _create_task_item(
         constraints._ak_durations,
-        zip(repeat(var), repeat(props), ids.ak),
-        size_estimate=len(ids.ak),
+        ids.ak,
     )
     _create_task_item(
         constraints._ak_single_block,
-        zip(repeat(var), ids.ak),
-        size_estimate=len(ids.ak),
+        ids.ak,
     )
     _create_task_item(
         constraints._ak_single_block_per_block,
-        zip(repeat(var), repeat(props), product(ids.ak, ids.block_dict.items())),
-        size_estimate=len(ids.ak) * len(ids.block_dict),
+        product(ids.ak, ids.block_dict.items()),
     )
     _create_task_item(
         constraints._at_most_one_room_per_ak,
-        zip(repeat(var), ids.ak),
-        size_estimate=len(ids.ak),
+        ids.ak,
     )
     _create_task_item(
         constraints._at_least_one_room_per_ak,
-        zip(repeat(var), ids.ak),
-        size_estimate=len(ids.ak),
+        ids.ak,
     )
     _create_task_item(
         constraints._not_more_people_than_interested,
-        zip(repeat(var), repeat(props), ids.ak),
-        size_estimate=len(ids.ak),
+        ids.ak,
     )
     _create_task_item(
         constraints._room_sizes,
-        zip(repeat(var), repeat(props), product(ids.room, ids.ak)),
-        size_estimate=len(ids.room) * len(ids.ak),
+        product(ids.room, ids.ak),
     )
     _create_task_item(
         constraints._time_impossible_for_person,
-        zip(repeat(var), product(ids.person, ids.timeslot, ids.ak)),
-        size_estimate=len(ids.person) * len(ids.timeslot) * len(ids.ak),
+        product(ids.person, ids.timeslot, ids.ak),
     )
     _create_task_item(
-        constraints._room_for_ak, zip(repeat(var), ids.ak), size_estimate=len(ids.ak)
+        constraints._room_for_ak,
+        ids.ak,
     )
     _create_task_item(
         constraints._time_impossible_for_room,
-        zip(repeat(var), repeat(props), product(ids.room, ids.timeslot, ids.ak)),
-        size_estimate=len(ids.room) * len(ids.timeslot) * len(ids.ak),
+        product(ids.room, ids.timeslot, ids.ak),
     )
     _create_task_item(
         constraints._ak_conflict,
-        zip(repeat(var), product(ids.timeslot, ids.conflict_pairs)),
-        size_estimate=len(ids.timeslot) * len(ids.conflict_pairs),
+        product(ids.timeslot, ids.conflict_pairs),
     )
 
     # INITIAL VALUES #
@@ -314,23 +313,53 @@ def create_lp(
 
     all_constraints: list[tuple[str, LpConstraint]] = []
 
-    with multiprocessing.Pool(processes=n_processes) as pool:
-        for (task_func, task_params), size_estimate in tasks:
-            # default chunksize formula from the standard library
-            chunksize, extra = divmod(size_estimate, n_processes * 4)
-            if extra:
-                chunksize += 1
-            chunksize = max(chunksize, 1)
+    param_queue = mp.Queue()
+    result_queue = mp.Queue()
 
-            with tqdm(total=int(size_estimate), desc=task_func.__name__) as pbar:
-                for result in pool.imap_unordered(
-                    task_func, task_params, chunksize=int(chunksize)
-                ):
-                    if result is not None:
-                        all_constraints.append(
-                            LpConstraint.fromDataclass(result, var_name_dict)
-                        )
-                    pbar.update(1)
+    num_put_in_queue = 0
+
+    from itertools import islice
+
+    def batched(iterable, n):
+        "Batch data into lists of length n. The last batch may be shorter."
+        # batched('ABCDEFG', 3) --> ABC DEF G
+        it = iter(iterable)
+        while True:
+            batch = tuple(islice(it, n))
+            if not batch:
+                return
+            yield batch
+
+    # Start worker processes
+    for i in range(n_processes):
+        mp.Process(
+            target=worker, args=(param_queue, result_queue, export_var, props)
+        ).start()
+
+    for task_func, task_params in tasks:
+        # default chunksize formula from the standard library
+        idx = -1
+        for idx, param_batch in enumerate(
+            task_params
+        ):  # batched(task_params, 100_000):
+            # num_put_in_queue += len(param_batch)
+            param_queue.put_nowait((task_func, param_batch))
+        num_put_in_queue += idx + 1
+
+    processed = 0
+    with tqdm(total=num_put_in_queue) as pbar:
+        while processed < num_put_in_queue:
+            result = result_queue.get()
+            processed += 1
+            pbar.update(1)
+            if result is not None:
+                all_constraints.append(
+                    LpConstraint.fromDataclass(result, var_name_dict)
+                )
+
+    # Tell child processes to stop
+    for _ in range(n_processes):
+        param_queue.put("STOP")
 
     prob.extend(all_constraints)
     # Fix Values for already scheduled aks

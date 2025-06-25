@@ -518,10 +518,10 @@ class LPVarDicts:
         return types.ExportTuple(room=self.room, time=self.time, person=self.person)
 
     def name_dict(self) -> dict[str, LpVariable]:
-        variables: list[tuple[str, LpVariable]] = []
+        variables: dict[str, LpVariable] = {}
 
         def _add_to_variables_list(var_dict: types.VarDict[types.Id, types.Id]) -> None:
-            variables.extend(
+            variables.update(
                 map(
                     lambda v: (v.name, v),
                     chain.from_iterable((d.values() for d in var_dict.values())),
@@ -537,10 +537,7 @@ class LPVarDicts:
         ]:
             _add_to_variables_list(entries)
 
-        return_dict = dict(variables)
-        if len(return_dict) != len(variables):
-            raise ValueError("Length mismatch; some variables share a name!")
-        return return_dict
+        return variables
 
     @classmethod
     def init_from_ids(
@@ -579,6 +576,32 @@ class LPVarDicts:
             block=block_var,
             person=person_var,
             person_time=person_time_var,
+        )
+
+
+@dataclass(frozen=True)
+class ExportLPVarDicts:
+    """Dataclass containing the decision variable dicts for the LP."""
+
+    room: types.VarNameDict[types.AkId, types.RoomId]
+    time: types.VarNameDict[types.AkId, types.TimeslotId]
+    block: types.VarNameDict[types.AkId, types.BlockId]
+    person: types.VarNameDict[types.AkId, types.PersonId]
+    person_time: types.VarNameDict[types.PersonId, types.TimeslotId]
+
+    @classmethod
+    def from_lp_var_dicts(cls, source: LPVarDicts) -> "ExportLPVarDicts":
+        def _map_to_names(
+            d: types.VarDict[types.IdType, types.IdType2],
+        ) -> types.VarNameDict[types.IdType, types.IdType2]:
+            return {k: {kk: vv.name for kk, vv in dd.items()} for k, dd in d.items()}
+
+        return cls(
+            room=_map_to_names(source.room),
+            time=_map_to_names(source.time),
+            block=_map_to_names(source.block),
+            person=_map_to_names(source.person),
+            person_time=_map_to_names(source.person_time),
         )
 
 
