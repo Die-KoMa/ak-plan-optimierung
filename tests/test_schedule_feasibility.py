@@ -5,13 +5,17 @@ import multiprocessing
 from collections import defaultdict
 from itertools import product
 from pathlib import Path
+from typing import TypeVar
 
+import linopy
+import linopy.solvers
 import numpy as np
-import pulp
 import pytest
+from pytest.structure import ParameterSet
 
-from src.akplan.solve import process_solved_lp, solve_scheduling
-from src.akplan.util import (
+from akplan import types
+from akplan.solve import process_solved_lp, solve_scheduling
+from akplan.util import (
     AKData,
     ParticipantData,
     RoomData,
@@ -20,8 +24,10 @@ from src.akplan.util import (
     TimeSlotData,
 )
 
+T = TypeVar("T")
 
-def _test_uniqueness(lst) -> tuple[np.ndarray, np.ndarray, bool]:
+
+def _test_uniqueness(lst: list[T]) -> tuple[np.ndarray, np.ndarray, bool]:
     arr = np.asarray(lst)
     unique_vals, cnts = np.unique(arr, axis=0, return_counts=True)
     return unique_vals, cnts, not bool(np.abs(cnts - 1).sum())
@@ -51,7 +57,7 @@ def _test_uniqueness(lst) -> tuple[np.ndarray, np.ndarray, bool]:
         pytest.param("examples/test2.json", marks=pytest.mark.slow),
     ],
 )
-def scheduling_input(request) -> SchedulingInput:
+def scheduling_input(request: pytest.FixtureRequest) -> SchedulingInput:
     """Load scheduling input from a JSON file."""
     json_file = Path(request.param)
     assert json_file.suffix == ".json"
@@ -62,12 +68,12 @@ def scheduling_input(request) -> SchedulingInput:
 
 
 mus = [2, 1, 5]
-available_solvers = pulp.listSolvers(onlyAvailable=True) + [None]
-core_solver_set = {"HiGHS_CMD", "GUROBI"}
+available_solvers = linopy.solvers.available_solvers + [None]
+core_solver_set = {"highs", "gurobi"}
 
 fast_scheduled_ak_params = list(product(mus[:1], core_solver_set))
 
-scheduled_aks_params = [
+scheduled_aks_params: list[ParameterSet] = [
     (
         pytest.param(param_pair)
         if param_pair in fast_scheduled_ak_params
@@ -92,46 +98,51 @@ scheduled_aks_params = [
     params=scheduled_aks_params,
 )
 def solved_lp_fixture(
-    request, scheduling_input
-) -> tuple[pulp.LpProblem, dict[str, dict[str, dict[str, int]]], SchedulingInput]:
+    request: pytest.FixtureRequest, scheduling_input: SchedulingInput
+) -> tuple[linopy.Model, types.ExportTuple, SchedulingInput]:
     """Solve an ILP."""
     mu, solver_name = request.param
-    solver_kwargs = {}
-    if solver_name not in ["GLPK_CMD"]:
+    solver_kwargs: types.SolverKwargs = {}
+    if solver_name not in ["glpk"]:
         solver_kwargs["threads"] = max(1, multiprocessing.cpu_count() - 1)
+    solver_kwargs["timeLimit"] = 60
     scheduling_input.config.mu = mu
 
     solved_lp_problem, solution = solve_scheduling(
         scheduling_input,
         solver_name=solver_name,
-        output_lp_file=None,
-        timeLimit=60,
         **solver_kwargs,
     )
     return (solved_lp_problem, solution, scheduling_input)
 
 
 @pytest.fixture(scope="module")
-def scheduled_aks(solved_lp_fixture) -> dict[str, ScheduleAtom]:
+def scheduled_aks(
+    solved_lp_fixture: tuple[linopy.Model, types.ExportTuple, SchedulingInput],
+) -> dict[types.AkId, ScheduleAtom]:
     """Construct a schedule from solved ILP."""
     solved_lp_problem, solution, scheduling_input = solved_lp_fixture
 
-    aks = process_solved_lp(solved_lp_problem, solution, input_data=scheduling_input)
+    schedule = process_solved_lp(
+        solved_lp_problem, solution, input_data=scheduling_input
+    )
 
-    if aks is None:
+    if schedule is None:
         pytest.skip("No LP solution found")
 
-    return aks
+    return schedule
 
 
 @pytest.fixture(scope="module")
-def ak_dict(scheduling_input: SchedulingInput) -> dict[str, AKData]:
+def ak_dict(scheduling_input: SchedulingInput) -> dict[types.AkId, AKData]:
     """Construct dict mapping AK ids to AKs."""
     return {ak.id: ak for ak in scheduling_input.aks}
 
 
 @pytest.fixture(scope="module")
-def participant_dict(scheduling_input: SchedulingInput) -> dict[str, ParticipantData]:
+def participant_dict(
+    scheduling_input: SchedulingInput,
+) -> dict[types.PersonId, ParticipantData]:
     """Construct dict mapping participant ids to participant."""
     return {
         participant.id: participant for participant in scheduling_input.participants
@@ -139,13 +150,15 @@ def participant_dict(scheduling_input: SchedulingInput) -> dict[str, Participant
 
 
 @pytest.fixture(scope="module")
-def room_dict(scheduling_input: SchedulingInput) -> dict[str, RoomData]:
+def room_dict(scheduling_input: SchedulingInput) -> dict[types.RoomId, RoomData]:
     """Construct dict mapping room ids to rooms."""
     return {room.id: room for room in scheduling_input.rooms}
 
 
 @pytest.fixture(scope="module")
-def timeslot_dict(scheduling_input: SchedulingInput) -> dict[str, TimeSlotData]:
+def timeslot_dict(
+    scheduling_input: SchedulingInput,
+) -> dict[types.TimeslotId, TimeSlotData]:
     """Construct dict mapping timeslot ids to timeslots."""
     return {
         timeslot.id: timeslot
@@ -160,7 +173,7 @@ def timeslot_blocks(scheduling_input: SchedulingInput) -> list[list[TimeSlotData
     return scheduling_input.timeslot_blocks
 
 
-def test_rooms_not_overbooked(scheduled_aks) -> None:
+def test_rooms_not_overbooked(scheduled_aks: dict[types.AkId, ScheduleAtom]) -> None:
     """Test that no room is used more than once at a time."""
     assert _test_uniqueness(
         [
@@ -171,7 +184,9 @@ def test_rooms_not_overbooked(scheduled_aks) -> None:
     )[-1]
 
 
-def test_participant_no_overlapping_timeslot(scheduled_aks) -> None:
+def test_participant_no_overlapping_timeslot(
+    scheduled_aks: dict[types.AkId, ScheduleAtom],
+) -> None:
     """Test that no participant visits more than one AK at a time."""
     assert _test_uniqueness(
         [
@@ -183,25 +198,32 @@ def test_participant_no_overlapping_timeslot(scheduled_aks) -> None:
     )[-1]
 
 
-def test_ak_lengths(scheduled_aks, ak_dict: dict[str, AKData]) -> None:
+def test_ak_lengths(
+    scheduled_aks: dict[types.AkId, ScheduleAtom], ak_dict: dict[types.AkId, AKData]
+) -> None:
     """Test that the scheduled AK length matched the specified one."""
-    for ak_id, ak in scheduled_aks.items():
+    for ak in scheduled_aks.values():
         timeslots = set(ak.timeslot_ids)
         assert len(ak.timeslot_ids) == len(timeslots)
-        assert len(timeslots) == ak_dict[ak_id].duration
+        assert len(timeslots) == ak_dict[ak.ak_id].duration
 
 
-def test_room_capacities(scheduled_aks, room_dict: dict[str, RoomData]) -> None:
+def test_room_capacities(
+    scheduled_aks: dict[types.AkId, ScheduleAtom],
+    room_dict: dict[types.RoomId, RoomData],
+) -> None:
     """Test that the room capacity is not exceeded."""
     for ak in scheduled_aks.values():
         participants = set(ak.participant_ids)
         assert len(ak.participant_ids) == len(participants)
+        assert ak.room_id is not None
         assert len(participants) <= room_dict[ak.room_id].capacity
 
 
 def test_timeslots_consecutive(
-    scheduled_aks, timeslot_blocks: list[list[TimeSlotData]]
-) -> bool:
+    scheduled_aks: dict[types.AkId, ScheduleAtom],
+    timeslot_blocks: list[list[TimeSlotData]],
+) -> None:
     """Test that the scheduled timeslots for an AK are consecutive."""
     for ak in scheduled_aks.values():
         timeslots = [
@@ -221,17 +243,18 @@ def test_timeslots_consecutive(
 
 
 def test_room_constraints(
-    scheduled_aks,
-    ak_dict: dict[str, AKData],
-    participant_dict: dict[str, ParticipantData],
-    room_dict: dict[str, RoomData],
+    scheduled_aks: dict[types.AkId, ScheduleAtom],
+    ak_dict: dict[types.AkId, AKData],
+    participant_dict: dict[types.PersonId, ParticipantData],
+    room_dict: dict[types.RoomId, RoomData],
 ) -> None:
     """Test that the room constraints are fulfilled."""
-    for ak_id, ak in scheduled_aks.items():
+    for ak in scheduled_aks.values():
+        assert ak.room_id is not None
         fulfilled_room_constraints = set(
             room_dict[ak.room_id].fulfilled_room_constraints
         )
-        room_constraints_ak = set(ak_dict[ak_id].room_constraints)
+        room_constraints_ak = set(ak_dict[ak.ak_id].room_constraints)
         if ak.participant_ids:
             room_constraints_participants = set.union(
                 *(
@@ -246,16 +269,17 @@ def test_room_constraints(
 
 
 def test_time_constraints(
-    scheduled_aks,
-    ak_dict: dict[str, AKData],
-    participant_dict: dict[str, ParticipantData],
-    room_dict: dict[str, RoomData],
-    timeslot_dict: dict[str, TimeSlotData],
+    scheduled_aks: dict[types.AkId, ScheduleAtom],
+    ak_dict: dict[types.AkId, AKData],
+    participant_dict: dict[types.PersonId, ParticipantData],
+    room_dict: dict[types.RoomId, RoomData],
+    timeslot_dict: dict[types.TimeslotId, TimeSlotData],
 ) -> None:
     """Test that the time constraints are fulfilled."""
-    for ak_id, ak in scheduled_aks.items():
+    for ak in scheduled_aks.values():
+        assert ak.room_id is not None
         time_constraints_room = set(room_dict[ak.room_id].time_constraints)
-        time_constraints_ak = set(ak_dict[ak_id].time_constraints)
+        time_constraints_ak = set(ak_dict[ak.ak_id].time_constraints)
 
         fullfilled_time_constraints = set(
             timeslot_dict[ak.timeslot_ids[0]].fulfilled_time_constraints
@@ -278,7 +302,10 @@ def test_time_constraints(
         assert not time_constraints_participants.difference(fullfilled_time_constraints)
 
 
-def test_required(scheduled_aks, participant_dict: dict[str, ParticipantData]) -> None:
+def test_required(
+    scheduled_aks: dict[types.AkId, ScheduleAtom],
+    participant_dict: dict[types.PersonId, ParticipantData],
+) -> None:
     """Test that the required preferences are fulfilled."""
     for participant_id, participant in participant_dict.items():
         for pref in participant.preferences:
@@ -288,7 +315,9 @@ def test_required(scheduled_aks, participant_dict: dict[str, ParticipantData]) -
             assert not pref.required or pref_fulfilled
 
 
-def test_conflicts(scheduled_aks, ak_dict) -> None:
+def test_conflicts(
+    scheduled_aks: dict[types.AkId, ScheduleAtom], ak_dict: dict[types.AkId, AKData]
+) -> None:
     """Test that conflicting AKs are not overlapping."""
     for ak_id, ak in ak_dict.items():
         for conflicting_ak in ak.properties.get("conflicts", []):
@@ -297,7 +326,9 @@ def test_conflicts(scheduled_aks, ak_dict) -> None:
             assert not set(ak_timeslots).intersection(set(conflicting_ak_timeslots))
 
 
-def test_dependencies(scheduled_aks, ak_dict: dict[str, AKData]) -> None:
+def test_dependencies(
+    scheduled_aks: dict[types.AkId, ScheduleAtom], ak_dict: dict[types.AkId, AKData]
+) -> None:
     """Test that AKs do not overlap their dependencies."""
     for ak_id, ak in ak_dict.items():
         for dependent_ak in ak.properties.get("dependencies", []):
@@ -307,12 +338,13 @@ def test_dependencies(scheduled_aks, ak_dict: dict[str, AKData]) -> None:
 
 
 def _print_missing_stats(
-    scheduled_aks, participant_dict: dict[str, ParticipantData]
+    scheduled_aks: dict[types.AkId, ScheduleAtom],
+    participant_dict: dict[types.PersonId, ParticipantData],
 ) -> None:
-    num_weak_misses = defaultdict(int)
-    num_strong_misses = defaultdict(int)
-    num_weak_prefs = defaultdict(int)
-    num_strong_prefs = defaultdict(int)
+    num_weak_misses: dict[types.PersonId, int] = defaultdict(int)
+    num_strong_misses: dict[types.PersonId, int] = defaultdict(int)
+    num_weak_prefs: dict[types.PersonId, int] = defaultdict(int)
+    num_strong_prefs: dict[types.PersonId, int] = defaultdict(int)
     for participant_id, participant in participant_dict.items():
         for pref in participant.preferences:
             pref_fulfilled = participant_id in scheduled_aks[pref.ak_id].participant_ids
@@ -330,7 +362,7 @@ def _print_missing_stats(
     # PRINT STATS ABOUT MISSING AKs
     print(f"\n{' ' * 5}=== STATS ON PARTICIPANT PREFERENCE MISSES ===\n")
     max_participant_id_len = max(
-        len(participant_id) for participant_id in participant_dict
+        len(str(participant_id)) for participant_id in participant_dict
     )
     print(f"| {' ' * max_participant_id_len} |    WEAK MISSES    |   STRONG MISSES   |")
     print(f"| {'-' * max_participant_id_len} | {'-' * 17} | {'-' * 17} |")
@@ -387,11 +419,11 @@ def _print_missing_stats(
 
 
 def _print_ak_stats(
-    scheduled_aks,
-    ak_dict: dict[str, AKData],
-    participant_dict: dict[str, ParticipantData],
-    room_dict: dict[str, RoomData],
-    timeslot_dict: dict[str, TimeSlotData],
+    scheduled_aks: dict[types.AkId, ScheduleAtom],
+    ak_dict: dict[types.AkId, AKData],
+    participant_dict: dict[types.PersonId, ParticipantData],
+    room_dict: dict[types.RoomId, RoomData],
+    timeslot_dict: dict[types.TimeslotId, TimeSlotData],
 ) -> None:
     # PRINT STATS ABOUT MISSING AKs
     print("\n=== AK STATS ===\n")
@@ -406,10 +438,10 @@ def _print_ak_stats(
 
 
 def _print_participant_schedules(
-    scheduled_aks,
-    ak_dict: dict[str, AKData],
-    room_dict: dict[str, RoomData],
-    timeslot_dict: dict[str, TimeSlotData],
+    scheduled_aks: dict[types.AkId, ScheduleAtom],
+    ak_dict: dict[types.AkId, AKData],
+    room_dict: dict[types.RoomId, RoomData],
+    timeslot_dict: dict[types.TimeslotId, TimeSlotData],
 ) -> None:
     print("\n=== PARTICIPANT SCHEDULES ===\n")
     participant_schedules = defaultdict(list)

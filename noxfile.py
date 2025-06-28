@@ -60,6 +60,8 @@ def lint(session):
 def mypy(session):
     """Check type hints."""
     session.install(".")
+    # TODO add dev dependencies to setup.cfg
+    session.install("pytest")
     session.install("mypy")
     session.run(
         "mypy",
@@ -68,6 +70,7 @@ def mypy(session):
         "--ignore-missing-imports",
         "--strict",
         "src",
+        "tests",
         *session.posargs
     )
 
