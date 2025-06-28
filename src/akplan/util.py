@@ -2,18 +2,20 @@
 
 from __future__ import annotations
 
-from collections.abc import Collection, Iterable
+from collections.abc import Iterable
 from dataclasses import asdict, dataclass
 from itertools import chain
 from typing import Any, Type
 
+import numpy as np
+import pandas as pd
+import xarray as xr
 from dacite import from_dict
-from pulp import LpBinary, LpVariable
 
 from . import types
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, order=True)
 class AKData:
     """Dataclass containing the input data of an AK.
 
@@ -40,7 +42,7 @@ class AKData:
     info: dict[str, Any]
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, order=True)
 class PreferenceData:
     """Dataclass containing the input data of a preference a participant has.
 
@@ -55,11 +57,11 @@ class PreferenceData:
     """
 
     ak_id: types.AkId
-    required: bool
     preference_score: int
+    required: bool
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, order=True)
 class ParticipantData:
     """Dataclass containing the input data of a participant.
 
@@ -85,7 +87,7 @@ class ParticipantData:
     info: dict[str, Any]
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, order=True)
 class RoomData:
     """Dataclass containing the input data of a room.
 
@@ -111,7 +113,7 @@ class RoomData:
     info: dict[str, Any]
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, order=True)
 class TimeSlotData:
     """Dataclass containing the input data of a timeslot.
 
@@ -131,7 +133,7 @@ class TimeSlotData:
     info: dict[str, Any]
 
 
-@dataclass(frozen=False)
+@dataclass(frozen=False, order=True)
 class ScheduleAtom:
     """Dataclass containing one scheduled ak.
 
@@ -145,8 +147,8 @@ class ScheduleAtom:
 
     ak_id: types.AkId
     room_id: types.RoomId | None
-    timeslot_ids: list[types.TimeslotId]
-    participant_ids: list[types.PersonId]
+    timeslot_ids: np.ndarray
+    participant_ids: np.ndarray
 
 
 @dataclass(frozen=False)
@@ -201,23 +203,25 @@ class SchedulingInput:
     @classmethod
     def from_dict(cls, input_dict: dict[str, Any]) -> SchedulingInput:
         """Create a SchedulingInput object from a dictionary."""
-        aks = [from_dict(data_class=AKData, data=ak) for ak in input_dict["aks"]]
-        rooms = [
+        aks = sorted(from_dict(data_class=AKData, data=ak) for ak in input_dict["aks"])
+        rooms = sorted(
             from_dict(data_class=RoomData, data=room) for room in input_dict["rooms"]
-        ]
-        participants = [
+        )
+        participants = sorted(
             from_dict(data_class=ParticipantData, data=participant)
             for participant in input_dict["participants"]
-        ]
+        )
         timeslot_blocks = [
-            [from_dict(data_class=TimeSlotData, data=timeslot) for timeslot in block]
+            sorted(
+                from_dict(data_class=TimeSlotData, data=timeslot) for timeslot in block
+            )
             for block in input_dict["timeslots"]["blocks"]
         ]
         scheduled_aks = (
-            [
+            sorted(
                 from_dict(data_class=ScheduleAtom, data=scheduled_ak)
                 for scheduled_ak in input_dict["scheduled_aks"]
-            ]
+            )
             if "scheduled_aks" in input_dict
             else []
         )
@@ -320,28 +324,31 @@ def process_room_cap(room_capacity: int, num_participants: int) -> int:
 class ProblemIds:
     """Dataclass containing the id collections from a problem."""
 
-    ak: set[types.AkId]
-    room: set[types.RoomId]
-    timeslot: set[types.TimeslotId]
-    person: set[types.PersonId]
+    ak: pd.Index[types.AkId]
+    room: pd.Index[types.RoomId]
+    timeslot: pd.Index[types.TimeslotId]
+    person: pd.Index[types.PersonId]
+    block: pd.Index[types.BlockId]
     block_dict: dict[types.BlockId, types.Block]
-    sorted_timeslot: list[types.TimeslotId]
     conflict_pairs: set[tuple[types.AkId, types.AkId]]
 
     @staticmethod
     def get_ids(
         input_data: SchedulingInput,
     ) -> tuple[
-        set[types.AkId], set[types.PersonId], set[types.RoomId], set[types.TimeslotId]
+        list[types.AkId],
+        list[types.PersonId],
+        list[types.RoomId],
+        list[types.TimeslotId],
     ]:
-        """Create id sets from scheduling input."""
+        """Create ids from scheduling input."""
 
         def _retrieve_ids(
             input_iterable: Iterable[
                 AKData | ParticipantData | RoomData | TimeSlotData
             ],
-        ) -> set[types.Id]:
-            return {obj.id for obj in input_iterable}
+        ) -> list[types.Id]:
+            return [obj.id for obj in input_iterable]
 
         ak_ids = _retrieve_ids(input_data.aks)
         participant_ids = _retrieve_ids(input_data.participants)
@@ -356,10 +363,11 @@ class ProblemIds:
     ) -> "ProblemIds":
         """Get problem ids from the input data."""
         ak_ids, person_ids, room_ids, timeslot_ids = cls.get_ids(input_data)
-        sorted_timeslot_ids = sorted(timeslot_ids)
 
         block_dict = {
-            block_idx: sorted([timeslot.id for timeslot in block])
+            block_idx: pd.Index(
+                [timeslot.id for timeslot in block], name=f"block-{block_idx}"
+            )
             for block_idx, block in enumerate(input_data.timeslot_blocks)
         }
 
@@ -379,12 +387,12 @@ class ProblemIds:
             )
 
         return cls(
-            ak=ak_ids,
-            room=room_ids,
-            timeslot=timeslot_ids,
-            person=person_ids,
+            ak=pd.Index(ak_ids, name="ak"),
+            room=pd.Index(room_ids, name="room"),
+            timeslot=pd.Index(timeslot_ids, name="timeslot"),
+            person=pd.Index(person_ids, name="person"),
+            block=pd.Index(block_dict.keys(), name="block"),
             block_dict=block_dict,
-            sorted_timeslot=sorted_timeslot_ids,
             conflict_pairs=conflict_pairs,
         )
 
@@ -393,18 +401,21 @@ class ProblemIds:
 class ProblemProperties:
     """Dataclass containing derived properties from a problem."""
 
-    room_capacities: dict[types.RoomId, int]
-    ak_durations: dict[types.AkId, int]
-    weighted_preferences: dict[types.PersonId, dict[types.AkId, float]]
-    required_persons: dict[types.AkId, set[types.PersonId]]
-    ak_num_interested: dict[types.AkId, int]
-    participant_time_constraints: types.ConstraintSetDict[types.PersonId]
-    participant_room_constraints: types.ConstraintSetDict[types.PersonId]
-    ak_time_constraints: types.ConstraintSetDict[types.AkId]
-    ak_room_constraints: types.ConstraintSetDict[types.AkId]
-    room_time_constraints: types.ConstraintSetDict[types.RoomId]
-    fulfilled_time_constraints: types.ConstraintSetDict[types.TimeslotId]
-    fulfilled_room_constraints: types.ConstraintSetDict[types.RoomId]
+    time_constraint: pd.Index[str]
+    room_constraint: pd.Index[str]
+    room_capacities: xr.DataArray
+    ak_durations: xr.DataArray
+    preferences: xr.DataArray
+    required_persons: xr.DataArray
+    ak_num_interested: xr.DataArray
+    block_mask: xr.DataArray
+    participant_time_constraints: xr.DataArray
+    participant_room_constraints: xr.DataArray
+    ak_time_constraints: xr.DataArray
+    ak_room_constraints: xr.DataArray
+    room_time_constraints: xr.DataArray
+    fulfilled_time_constraints: xr.DataArray
+    fulfilled_room_constraints: xr.DataArray
 
     @classmethod
     def init_from_problem(
@@ -417,82 +428,108 @@ class ProblemProperties:
             ids = ProblemIds.init_from_problem(input_data)
 
         # Get values needed from the input_dict
-        room_capacities = {
-            room.id: process_room_cap(room.capacity, len(ids.person))
-            for room in input_data.rooms
-        }
-        ak_durations = {ak.id: ak.duration for ak in input_data.aks}
+        room_capacities = xr.DataArray(
+            data=[
+                process_room_cap(room.capacity, len(ids.person))
+                for room in input_data.rooms
+            ],
+            coords=[ids.room],
+        )
+        ak_durations = xr.DataArray(
+            data=[ak.duration for ak in input_data.aks],
+            coords=[ids.ak],
+        )
 
         # dict of real participants only (without dummy participants)
         # with numerical preferences
-        weighted_preferences = {
-            person.id: {
-                pref.ak_id: process_pref_score(
+        preferences = xr.DataArray(0.0, coords=[ids.ak, ids.person])
+        required_persons = xr.DataArray(False, coords=[ids.ak, ids.person])
+        for person in input_data.participants:
+            for pref in person.preferences:
+                preferences.loc[pref.ak_id, person.id] = process_pref_score(
                     pref.preference_score,
                     pref.required,
                     mu=input_data.config.mu,
                 )
-                for pref in person.preferences
-            }
-            for person in input_data.participants
-        }
-        required_persons = {
-            ak_id: {
-                person.id
-                for person in input_data.participants
-                for pref in person.preferences
-                if pref.ak_id == ak_id and pref.required
-            }
-            for ak_id in ids.ak
-        }
-        for ak_id, persons in required_persons.items():
-            if len(persons) == 0:
+                if pref.required:
+                    required_persons.loc[pref.ak_id, person.id] = True
+
+        num_required_per_ak = required_persons.sum("person")
+        if (num_required_per_ak == 0).any():
+            for ak_id in num_required_per_ak.where(
+                num_required_per_ak == 0, drop=True
+            ).coords["ak"]:
                 print(
                     f"Warning: AK {get_ak_name(input_data, ak_id)} with id {ak_id} "
                     "has no required persons. Who owns this?"
                 )
-        ak_num_interested = {
-            ak_id: len(required_persons[ak_id])
-            + sum(
-                1
-                for person, prefs in weighted_preferences.items()
-                if ak_id in prefs.keys() and prefs[ak_id] != 0
+
+        ak_num_interested = num_required_per_ak + (preferences != 0).sum("person")
+
+        block_mask = xr.DataArray(data=False, coords=[ids.block, ids.timeslot])
+        for block_id, block_lst in ids.block_dict.items():
+            block_mask.loc[block_id, block_lst] = True
+
+        # collect all constraint strings
+        all_time_constraints = set()
+        all_room_constraints = set()
+        for participant in input_data.participants:
+            all_time_constraints.update(participant.time_constraints)
+            all_room_constraints.update(participant.room_constraints)
+        for ak in input_data.aks:
+            all_time_constraints.update(ak.time_constraints)
+            all_room_constraints.update(ak.room_constraints)
+        for room in input_data.rooms:
+            all_time_constraints.update(room.time_constraints)
+            all_room_constraints.update(room.fulfilled_room_constraints)
+        for timeslot in chain.from_iterable(input_data.timeslot_blocks):
+            all_time_constraints.update(timeslot.fulfilled_time_constraints)
+
+        time_constraint = pd.Index(sorted(all_time_constraints), name="time_constraint")
+        room_constraint = pd.Index(sorted(all_room_constraints), name="room_constraint")
+
+        participant_time_constraints = xr.DataArray(
+            False, coords=[ids.person, time_constraint]
+        )
+        participant_room_constraints = xr.DataArray(
+            False, coords=[ids.person, room_constraint]
+        )
+        for person in input_data.participants:
+            participant_time_constraints.loc[person.id, person.time_constraints] = True
+            participant_room_constraints.loc[person.id, person.room_constraints] = True
+        ak_time_constraints = xr.DataArray(False, coords=[ids.ak, time_constraint])
+        ak_room_constraints = xr.DataArray(False, coords=[ids.ak, room_constraint])
+        for ak in input_data.aks:
+            ak_time_constraints.loc[ak.id, ak.time_constraints] = True
+            ak_room_constraints.loc[ak.id, ak.room_constraints] = True
+
+        room_time_constraints = xr.DataArray(False, coords=[ids.room, time_constraint])
+        fulfilled_room_constraints = xr.DataArray(
+            False, coords=[ids.room, room_constraint]
+        )
+        for room in input_data.rooms:
+            room_time_constraints.loc[room.id, room.time_constraints] = True
+            fulfilled_room_constraints.loc[room.id, room.fulfilled_room_constraints] = (
+                True
             )
-            for ak_id in ids.ak
-        }
 
-        # Get constraints from input_dict
-        participant_time_constraints = {
-            participant.id: set(participant.time_constraints)
-            for participant in input_data.participants
-        }
-        participant_room_constraints = {
-            participant.id: set(participant.room_constraints)
-            for participant in input_data.participants
-        }
-
-        ak_time_constraints = {ak.id: set(ak.time_constraints) for ak in input_data.aks}
-        ak_room_constraints = {ak.id: set(ak.room_constraints) for ak in input_data.aks}
-
-        room_time_constraints = {
-            room.id: set(room.time_constraints) for room in input_data.rooms
-        }
-
-        fulfilled_time_constraints = {
-            timeslot.id: set(timeslot.fulfilled_time_constraints)
-            for block in input_data.timeslot_blocks
-            for timeslot in block
-        }
-        fulfilled_room_constraints = {
-            room.id: set(room.fulfilled_room_constraints) for room in input_data.rooms
-        }
+        fulfilled_time_constraints = xr.DataArray(
+            False, coords=[ids.timeslot, time_constraint]
+        )
+        for timeslot in chain.from_iterable(input_data.timeslot_blocks):
+            fulfilled_time_constraints.loc[
+                timeslot.id, timeslot.fulfilled_time_constraints
+            ] = True
 
         return cls(
             room_capacities=room_capacities,
             ak_durations=ak_durations,
-            weighted_preferences=weighted_preferences,
+            preferences=preferences,
             required_persons=required_persons,
             ak_num_interested=ak_num_interested,
+            block_mask=block_mask,
+            room_constraint=room_constraint,
+            time_constraint=time_constraint,
             participant_time_constraints=participant_time_constraints,
             participant_room_constraints=participant_room_constraints,
             ak_time_constraints=ak_time_constraints,
@@ -500,60 +537,6 @@ class ProblemProperties:
             room_time_constraints=room_time_constraints,
             fulfilled_time_constraints=fulfilled_time_constraints,
             fulfilled_room_constraints=fulfilled_room_constraints,
-        )
-
-
-@dataclass(frozen=True)
-class LPVarDicts:
-    """Dataclass containing the decision variable dicts for the LP."""
-
-    room: types.VarDict[types.AkId, types.RoomId]
-    time: types.VarDict[types.AkId, types.TimeslotId]
-    block: types.VarDict[types.AkId, types.BlockId]
-    person: types.VarDict[types.AkId, types.PersonId]
-    person_time: types.VarDict[types.PersonId, types.TimeslotId]
-
-    def to_export_tuple(self) -> types.ExportTuple[types.Var]:
-        """We only export the variables for room, time, and persons."""
-        return types.ExportTuple(room=self.room, time=self.time, person=self.person)
-
-    @classmethod
-    def init_from_ids(
-        cls: Type["LPVarDicts"],
-        ak_ids: Collection[types.AkId],
-        room_ids: Collection[types.RoomId],
-        timeslot_ids: Collection[types.TimeslotId],
-        block_ids: Collection[types.BlockId],
-        person_ids: Collection[types.PersonId],
-    ) -> "LPVarDicts":
-        """Initialize decision variables from the problem ids."""
-        room_var: types.VarDict[types.AkId, types.RoomId] = LpVariable.dicts(
-            "Room", (ak_ids, room_ids), cat=LpBinary
-        )
-        time_var: types.VarDict[types.AkId, types.TimeslotId] = LpVariable.dicts(
-            "Time",
-            (ak_ids, timeslot_ids),
-            cat=LpBinary,
-        )
-        block_var: types.VarDict[types.AkId, types.BlockId] = LpVariable.dicts(
-            "Block", (ak_ids, block_ids), cat=LpBinary
-        )
-        person_var: types.VarDict[types.AkId, types.PersonId] = LpVariable.dicts(
-            "Part", (ak_ids, person_ids), cat=LpBinary
-        )
-        person_time_var: types.VarDict[types.PersonId, types.TimeslotId] = (
-            LpVariable.dicts(
-                "Working",
-                (person_ids, timeslot_ids),
-                cat=LpBinary,
-            )
-        )
-        return cls(
-            room=room_var,
-            time=time_var,
-            block=block_var,
-            person=person_var,
-            person_time=person_time_var,
         )
 
 

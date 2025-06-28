@@ -1,8 +1,11 @@
 """Type definitions."""
 
-from typing import Generic, NamedTuple, TypeAlias, TypeVar
+from pathlib import Path
+from typing import NamedTuple, TypedDict, TypeVar
 
-from pulp import LpVariable
+import pandas as pd
+import xarray as xr
+from typing_extensions import NotRequired
 
 Id = int
 T = TypeVar("T")
@@ -14,27 +17,23 @@ PersonId = Id
 AkId = Id
 TimeslotId = Id
 BlockId = Id
-Block = list[TimeslotId]
-
-ConstraintSetDict = dict[IdType, set[str]]
-"""Dictionary containing the constraint strings per object id."""
-
-# different values to store for the different solving stages
-Var: TypeAlias = LpVariable
-PartialSolved = int | None
-Solved = int
-
-# nested dictionaries containing either the LP variables (`VarDict`)
-# or the values assigned to them by the solver (`PartialSolvedVarDict`, `SolvedVarDict`)
-GenericVarDict = dict[IdType, dict[IdType2, T]]
-VarDict = GenericVarDict[IdType, IdType2, Var]
-PartialSolvedVarDict = GenericVarDict[IdType, IdType2, PartialSolved]
-SolvedVarDict = GenericVarDict[IdType, IdType2, Solved]
+Block = pd.Index[TimeslotId]
 
 
-class ExportTuple(NamedTuple, Generic[T]):
+class ExportTuple(NamedTuple):
     """Named tuple containing the LP variables resp. their values."""
 
-    room: GenericVarDict[AkId, RoomId, T]
-    time: GenericVarDict[AkId, TimeslotId, T]
-    person: GenericVarDict[AkId, PersonId, T]
+    room: xr.DataArray
+    time: xr.DataArray
+    person: xr.DataArray
+
+
+class SolverKwargs(TypedDict, total=False):
+    """Key word arguments to initialize the linopy solver."""
+
+    # TODO check kwargs names
+    timeLimit: NotRequired[float]  # noqa: N815
+    gapRel: NotRequired[float]  # noqa: N815
+    gapAbs: NotRequired[float]  # noqa: N815
+    threads: NotRequired[int]
+    warmstart_fn: NotRequired[str | Path | None]
