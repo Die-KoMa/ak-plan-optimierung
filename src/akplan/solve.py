@@ -99,31 +99,33 @@ def create_lp(input_data: SchedulingInput) -> linopy.Model:
 
     # construct variables
 
+    # all variables are binary
+    # but we use 'integer' since we manually set the lower/upper bound to fix values
     room = m.add_variables(
         name="Room",
-        binary=True,
+        integer=True,
         coords=[ids.ak, ids.room],
         lower=room_lower,
         upper=room_upper,
     )
     time = m.add_variables(
         name="Time",
-        binary=True,
+        integer=True,
         coords=[ids.ak, ids.timeslot],
         lower=time_lower,
         upper=time_upper,
     )
-    block = m.add_variables(name="Block", binary=True, coords=[ids.ak, ids.block])
+    block = m.add_variables(name="Block", integer=True, coords=[ids.ak, ids.block])
     person = m.add_variables(
         name="Part",
-        binary=True,
+        integer=True,
         coords=[ids.ak, ids.person],
         lower=person_lower,
         upper=person_upper,
     )
     person_time = m.add_variables(
         name="Working",
-        binary=True,
+        integer=True,
         coords=[ids.person, ids.timeslot],
         lower=person_time_lower,
         upper=person_time_upper,
@@ -200,7 +202,9 @@ def create_lp(input_data: SchedulingInput) -> linopy.Model:
     for ak_id, (block_id, block_lst) in product(ids.ak, ids.block_dict.items()):
         # AKContiguous
         for timeslot_idx, timeslot_id_a in enumerate(block_lst):
-            for timeslot_id_b in block_lst[timeslot_idx + props.ak_durations[ak_id] :]:
+            for timeslot_id_b in block_lst[
+                timeslot_idx + props.ak_durations.loc[ak_id].item() :
+            ]:
                 m.add_constraints(
                     time.loc[ak_id, [timeslot_id_a, timeslot_id_b]].sum("timeslot")
                     <= 1,
@@ -280,7 +284,11 @@ def export_scheduling_result(
 
     @overload
     def _get_id(
-        ak_id: types.AkId, var_key: str, allow_multiple: Literal[True], allow_none: bool
+        ak_id: types.AkId,
+        var_key: str,
+        allow_multiple: Literal[True],
+        allow_none: bool,
+        coord: str | None = None,
     ) -> np.ndarray: ...
 
     @overload
@@ -289,20 +297,27 @@ def export_scheduling_result(
         var_key: str,
         allow_multiple: Literal[False],
         allow_none: bool,
+        coord: str | None = None,
     ) -> types.Id | None: ...
 
     def _get_id(
-        ak_id: types.AkId, var_key: str, allow_multiple: bool, allow_none: bool
+        ak_id: types.AkId,
+        var_key: str,
+        allow_multiple: bool,
+        allow_none: bool,
+        coord: str | None = None,
     ) -> Any:
+        if coord is None:
+            coord = var_key
         ak_row = getattr(solution, var_key).loc[ak_id]
-        matched_ids = ak_row.where(ak_row > 0, drop=True).coords[var_key]
+        matched_ids = ak_row.where(ak_row > 0, drop=True).coords[coord]
         if not allow_multiple and matched_ids.size > 1:
             raise ValueError(f"AK {ak_id} is assigned multiple {var_key}")
         elif matched_ids.size == 0 and not allow_none:
             raise ValueError(f"no {var_key} assigned to ak {ak_id}")
         else:
             if allow_multiple:
-                return matched_ids
+                return matched_ids.data.tolist()
             else:
                 return matched_ids.item() if matched_ids.size > 0 else None
 
@@ -318,6 +333,7 @@ def export_scheduling_result(
             timeslot_ids=_get_id(
                 ak_id=ak_id,
                 var_key="time",
+                coord="timeslot",
                 allow_multiple=True,
                 allow_none=allow_unscheduled_aks,
             ),

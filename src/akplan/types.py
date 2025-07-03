@@ -17,7 +17,7 @@ PersonId = Id
 AkId = Id
 TimeslotId = Id
 BlockId = Id
-Block = pd.Index[TimeslotId]
+Block = pd.Index
 
 
 class ExportTuple(NamedTuple):

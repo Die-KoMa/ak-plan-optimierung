@@ -5,13 +5,13 @@ import multiprocessing
 from collections import defaultdict
 from itertools import product
 from pathlib import Path
-from typing import TypeVar
+from typing import TypeVar, cast
 
 import linopy
 import linopy.solvers
 import numpy as np
 import pytest
-from pytest.structure import ParameterSet
+from _pytest.mark import ParameterSet
 
 from akplan import types
 from akplan.solve import process_solved_lp, solve_scheduling
@@ -87,14 +87,15 @@ scheduled_aks_params: list[ParameterSet] = [
     )
     for param_pair in product(mus, available_solvers)
 ]
+scheduled_aks_param_ids: list[str] = []
+for param in scheduled_aks_params:
+    mu, solver_name = cast(tuple[float, str], param.values[0])
+    scheduled_aks_param_ids.append(f"mu={mu}-{solver_name}")
 
 
 @pytest.fixture(
     scope="module",
-    ids=[
-        f"mu={param.values[0][0]}-{param.values[0][1]}"
-        for param in scheduled_aks_params
-    ],
+    ids=scheduled_aks_param_ids,
     params=scheduled_aks_params,
 )
 def solved_lp_fixture(

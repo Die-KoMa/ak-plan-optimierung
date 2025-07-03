@@ -324,11 +324,11 @@ def process_room_cap(room_capacity: int, num_participants: int) -> int:
 class ProblemIds:
     """Dataclass containing the id collections from a problem."""
 
-    ak: pd.Index[types.AkId]
-    room: pd.Index[types.RoomId]
-    timeslot: pd.Index[types.TimeslotId]
-    person: pd.Index[types.PersonId]
-    block: pd.Index[types.BlockId]
+    ak: pd.Index
+    room: pd.Index
+    timeslot: pd.Index
+    person: pd.Index
+    block: pd.Index
     block_dict: dict[types.BlockId, types.Block]
     conflict_pairs: set[tuple[types.AkId, types.AkId]]
 
@@ -460,7 +460,7 @@ class ProblemProperties:
                 num_required_per_ak == 0, drop=True
             ).coords["ak"]:
                 print(
-                    f"Warning: AK {get_ak_name(input_data, ak_id)} with id {ak_id} "
+                    f"Warning: AK {get_ak_name(input_data, ak_id)} with id {ak_id.item()} "
                     "has no required persons. Who owns this?"
                 )
 
