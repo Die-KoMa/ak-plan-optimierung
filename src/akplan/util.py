@@ -5,7 +5,8 @@ from __future__ import annotations
 from collections.abc import Iterable
 from dataclasses import asdict, dataclass
 from itertools import chain
-from typing import Any, Type
+from pathlib import Path
+from typing import Any, Literal, Type, overload
 
 import numpy as np
 import pandas as pd
@@ -542,3 +543,82 @@ class ProblemProperties:
 
 def _construct_constraint_name(name: str, *args: Any) -> str:
     return name + "_" + "_".join(map(str, args))
+
+
+@dataclass(frozen=True)
+class SolverConfig:
+    """Dataclass storing config values for the solver to run."""
+
+    time_limit: float | None = None
+    gap_abs: float | None = None
+    gap_rel: float | None = None
+    threads: int | None = None
+    warmstart_fn: str | Path | None = None
+
+    @property
+    def _has_non_none_attr(self) -> bool:
+        if (
+            self.time_limit is not None
+            or self.gap_abs is not None
+            or self.gap_rel is not None
+            or self.threads is not None
+        ):
+            return True
+        return False
+
+    @overload
+    def generate_kwargs(self, solver_name: None) -> types.SolverKwargs: ...
+
+    @overload
+    def generate_kwargs(
+        self, solver_name: Literal["gurobi"]
+    ) -> types.HighsSolverKwargs: ...
+
+    @overload
+    def generate_kwargs(
+        self, solver_name: Literal["highs"]
+    ) -> types.HighsSolverKwargs: ...
+
+    @overload
+    def generate_kwargs(self, solver_name: str) -> types.SolverKwargs: ...
+
+    def generate_kwargs(
+        self, solver_name: str | None
+    ) -> types.GurobiSolverKwargs | types.HighsSolverKwargs | types.SolverKwargs:
+        """Export solver config to solver kwargs. Keys differ between solvers."""
+        if solver_name == "highs":
+            highs_solver_kwargs: types.HighsSolverKwargs = {}
+            if self.time_limit is not None:
+                highs_solver_kwargs["time_limit"] = self.time_limit
+            if self.gap_abs is not None:
+                highs_solver_kwargs["mip_abs_gap"] = self.gap_abs
+            if self.gap_rel is not None:
+                highs_solver_kwargs["mip_rel_gap"] = self.gap_rel
+            if self.threads is not None:
+                highs_solver_kwargs["threads"] = self.threads
+            if self.warmstart_fn is not None:
+                highs_solver_kwargs["warmstart_fn"] = self.warmstart_fn
+            return highs_solver_kwargs
+        elif solver_name == "gurobi":
+            gurobi_solver_kwargs: types.GurobiSolverKwargs = {}
+            if self.time_limit is not None:
+                gurobi_solver_kwargs["TimeLimit"] = self.time_limit
+            if self.gap_abs is not None:
+                gurobi_solver_kwargs["MIPGapAbs"] = self.gap_abs
+            if self.gap_rel is not None:
+                gurobi_solver_kwargs["MIPGap"] = self.gap_rel
+            if self.threads is not None:
+                gurobi_solver_kwargs["Threads"] = self.threads
+            if self.warmstart_fn is not None:
+                gurobi_solver_kwargs["warmstart_fn"] = self.warmstart_fn
+            return gurobi_solver_kwargs
+        else:
+            if self._has_non_none_attr:
+                print(
+                    f"Warning: exporting CLI args to solver '{solver_name}' is not supported. "
+                    "The solver is run with its default parameters."
+                )
+            solver_kwargs: types.SolverKwargs = {}
+            if self.warmstart_fn is not None:
+                solver_kwargs["warmstart_fn"] = self.warmstart_fn
+            return solver_kwargs

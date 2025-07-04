@@ -6,13 +6,12 @@ from dataclasses import asdict
 from itertools import combinations, product
 from pathlib import Path
 from time import perf_counter
-from typing import Any, Literal, overload
+from typing import Any, Literal, cast, get_args, overload
 
 import linopy
 import numpy as np
 import pandas as pd
 import xarray as xr
-from typing_extensions import Unpack
 
 from . import types
 from .util import (
@@ -20,6 +19,7 @@ from .util import (
     ProblemProperties,
     ScheduleAtom,
     SchedulingInput,
+    SolverConfig,
     _construct_constraint_name,
 )
 
@@ -349,8 +349,8 @@ def export_scheduling_result(
 
 def solve_scheduling(
     input_data: SchedulingInput,
+    solver_config: SolverConfig,
     solver_name: str | None = None,
-    **solver_kwargs: Unpack[types.SolverKwargs],
 ) -> tuple[linopy.Model, types.ExportTuple]:
     """Solve the scheduling problem.
 
@@ -370,16 +370,42 @@ def solve_scheduling(
 
     Args:
         input_data (SchedulingInput): The input data used to construct the ILP.
-        solver_name (str, optional): The solver to use. If None, uses linopy's
-            default solver. Defaults to None.
-        **solver_kwargs: kwargs are passed to the solver.
+        solver_config (SolverConfig): The config of the solver to apply.
+        solver_name (str, optional): The solver to use. If None, uses a
+            default solver choice. Defaults to None.
 
     Returns:
         A tuple (`lp_problem`, `solution`) where `lp_problem` is the
         constructed and solved linopy MILP model and `solution` contains
         the named tuple with the solution.
+
+    Raises:
+        ValueError: if no solvers are installed.
     """
+    if not linopy.available_solvers:
+        raise ValueError(
+            "No linopy solvers available! "
+            "Consider installing any solver of "
+            f"{get_args(types.SupportedSolver)}."
+        )
+
+    if solver_name is None:
+        for solver_candidate in get_args(types.SupportedSolver):
+            if solver_candidate in linopy.available_solvers:
+                solver_name = cast(str, solver_candidate)
+                break
+        else:
+            solver_name = linopy.available_solvers[0]
+            print(
+                "WARNING: no supported solver available. "
+                f"Solver {solver_name} will be used with default config values."
+            )
+
     model = create_lp(input_data)
+
+    solver_kwargs = solver_config.generate_kwargs(solver_name)
+    print(f"Running solver with {solver_kwargs=}")
+
     status, term_cond = model.solve(
         solver_name=solver_name,
         **solver_kwargs,
@@ -474,16 +500,12 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    # TODO check solver kwargs if they fit
-    solver_kwargs = {}
-    if args.timelimit:
-        solver_kwargs["timeLimit"] = args.timelimit
-    if args.gap_rel:
-        solver_kwargs["gapRel"] = args.gap_rel
-    if args.gap_abs:
-        solver_kwargs["gapAbs"] = args.gap_abs
-    if args.threads:
-        solver_kwargs["threads"] = args.threads
+    solver_config = SolverConfig(
+        time_limit=args.timelimit,
+        gap_rel=args.gap_rel,
+        gap_abs=args.gap_abs,
+        threads=args.threads,
+    )
 
     json_file = Path(args.path)
     assert json_file.suffix == ".json"
@@ -505,8 +527,8 @@ def main() -> None:
 
     model, solution = solve_scheduling(
         scheduling_input,
+        solver_config,
         args.solver,
-        **solver_kwargs,
     )
 
     schedule = process_solved_lp(model, solution, input_data=scheduling_input)

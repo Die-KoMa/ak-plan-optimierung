@@ -1,7 +1,7 @@
 """Type definitions."""
 
 from pathlib import Path
-from typing import NamedTuple, TypedDict, TypeVar
+from typing import Literal, NamedTuple, TypedDict, TypeVar
 
 import pandas as pd
 import xarray as xr
@@ -28,12 +28,28 @@ class ExportTuple(NamedTuple):
     person: xr.DataArray
 
 
-class SolverKwargs(TypedDict, total=False):
-    """Key word arguments to initialize the linopy solver."""
+SupportedSolver = Literal["gurobi", "highs"]
 
-    # TODO check kwargs names
-    timeLimit: NotRequired[float]  # noqa: N815
-    gapRel: NotRequired[float]  # noqa: N815
-    gapAbs: NotRequired[float]  # noqa: N815
-    threads: NotRequired[int]
+
+class SolverKwargs(TypedDict, total=False):
+    """Key word arguments to initialize an unsupported linopy solver."""
+
     warmstart_fn: NotRequired[str | Path | None]
+
+
+class GurobiSolverKwargs(SolverKwargs):
+    """Key word arguments to initialize the Gurobi linopy solver."""
+
+    TimeLimit: NotRequired[float]  # noqa: N815
+    MIPGap: NotRequired[float]  # noqa: N815
+    MIPGapAbs: NotRequired[float]  # noqa: N815
+    Threads: NotRequired[int]  # noqa: N815
+
+
+class HighsSolverKwargs(SolverKwargs):
+    """Key word arguments to initialize the HiGHS linopy solver."""
+
+    time_limit: NotRequired[float]
+    mip_rel_gap: NotRequired[float]
+    mip_abs_gap: NotRequired[float]
+    threads: NotRequired[int]

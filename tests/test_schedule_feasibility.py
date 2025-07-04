@@ -21,6 +21,7 @@ from akplan.util import (
     RoomData,
     ScheduleAtom,
     SchedulingInput,
+    SolverConfig,
     TimeSlotData,
 )
 
@@ -103,16 +104,16 @@ def solved_lp_fixture(
 ) -> tuple[linopy.Model, types.ExportTuple, SchedulingInput]:
     """Solve an ILP."""
     mu, solver_name = request.param
-    solver_kwargs: types.SolverKwargs = {}
-    if solver_name not in ["glpk"]:
-        solver_kwargs["threads"] = max(1, multiprocessing.cpu_count() - 1)
-    solver_kwargs["timeLimit"] = 60
+    solver_config = SolverConfig(
+        threads=max(1, multiprocessing.cpu_count() - 1),
+        time_limit=60,
+    )
     scheduling_input.config.mu = mu
 
     solved_lp_problem, solution = solve_scheduling(
         scheduling_input,
+        solver_config=solver_config,
         solver_name=solver_name,
-        **solver_kwargs,
     )
     return (solved_lp_problem, solution, scheduling_input)
 
