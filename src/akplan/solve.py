@@ -500,8 +500,8 @@ def main() -> None:
         default=None,
         help=(
             "The solver to use. We currently only support passing CLI args to solvers in "
-            f"{get_args(types.SupportedSolver)}. If None, uses linopy's default solver. "
-            "Defaults to None."
+            f"{get_args(types.SupportedSolver)}. If None, chooses a default "
+            "from installed solvers. Defaults to None."
         ),
     )
     parser.add_argument(
@@ -551,14 +551,14 @@ def main() -> None:
         "--threads",
         type=int,
         default=None,
-        help="Number of threads to use. Defaults to #CPUs minus 1",
+        help="Number of threads to use. Defaults to #CPUs minus 1.",
     )
     parser.add_argument(
         "--loglevel",
         type=str.lower,
         choices=["error", "warning", "info", "debug"],
         default="info",
-        help="Select logging level",
+        help="Select logging level. Defaults to 'info'.",
     )
     parser.add_argument(
         "path", type=str, help="Path of the JSON input file to the solver."

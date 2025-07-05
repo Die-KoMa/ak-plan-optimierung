@@ -6,8 +6,8 @@ The interaction with a graphical frontend is done via import/export of `json` fi
 
 The general workflow is:
 1. Read in the constraints from a `.json` file. The input format is specified on [this wiki page](https://github.com/Die-KoMa/ak-plan-optimierung/wiki/Input-&-output-format#input--output-format).
-2. Construct an integer linear program (ILP) from the constraints using [PuLP](https://coin-or.github.io/pulp/). The ILP formulation is described on [this wiki page](https://github.com/Die-KoMa/ak-plan-optimierung/wiki/New-LP-Formulation).
-3. Solve the ILP using a solver supported by PuLP, e.g. HiGHS or Gurobi.
+2. Construct an integer linear program (ILP) from the constraints using [linopy](https://github.com/PyPSA/linopy). The ILP formulation is described on [this wiki page](https://github.com/Die-KoMa/ak-plan-optimierung/wiki/New-LP-Formulation).
+3. Solve the ILP using a solver supported by linopy, e.g. HiGHS or Gurobi.
 4. Output the solution into a `.json` file. The output format is specified on [this wiki page](https://github.com/Die-KoMa/ak-plan-optimierung/wiki/Input-&-output-format#input--output-format).
 
 
@@ -19,9 +19,9 @@ $ pip install git+https://github.com/Die-KoMa/ak-plan-optimierung.git
 ```
 To run the solver, simply call
 ```sh
-$ python -m akplan.solve PATH_TO_JSON_INPUT
+$ akplan-solve PATH_TO_JSON_INPUT
 ```
-For a list of available cli options, run `python -m akplan.solve --help`.
+For a list of available cli options, run `akplan-solve --help`.
 
 ### Development setup
 
@@ -30,8 +30,9 @@ Further, install the tool [`nox`](https://nox.thea.codes/en/stable/).
 
 To see all available `nox` sessions, run `nox --list`:
 ```
-* test -> Run pytest on all test cases.
+* test -> Run pytest on all test cases besides the extensive suite.
 * fast-test -> Run pytest on fast test cases.
+* extensive-test -> Run pytest on all test cases.
 * lint -> Check code conventions.
 * typing -> Check type hints.
 * format -> Fix common convention problems automatically.
