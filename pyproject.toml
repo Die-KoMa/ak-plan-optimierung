@@ -1,11 +1,11 @@
 [build-system]
-requires = ["setuptools >= 77.0.3"]
+requires = ["setuptools >= 77.0.3", "setuptools-scm>=8"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "akplan"
 description = "Optimal conference schedules with ILPs"
-version = "0.0.2-dev"
+dynamic = ["version"]
 readme = "README.md"
 requires-python = ">= 3.11"
 license = "MIT"
@@ -13,9 +13,12 @@ classifiers = [
     "Development Status :: 4 - Beta",
     "Environment :: Console",
     "Intended Audience :: Developers",
-    "Progranmming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Office/Business :: Scheduling",
     "Topic :: Scientific/Engineering :: Mathematics",
+    "Typing :: Typed",
 ]
 dependencies = [
     "dacite",
@@ -45,6 +48,13 @@ typing = ["pytest", "mypy"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+akplan = ["py.typed"]
+
+[tool.setuptools_scm]
+version_file = "src/akplan/version.py"
+version_scheme = "python-simplified-semver"
 
 
 [project.urls]
