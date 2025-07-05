@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 from collections.abc import Iterable
 from dataclasses import asdict, dataclass
 from itertools import chain
@@ -14,6 +15,8 @@ import xarray as xr
 from dacite import from_dict
 
 from . import types
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass(frozen=True, order=True)
@@ -460,9 +463,10 @@ class ProblemProperties:
             for ak_id in num_required_per_ak.where(
                 num_required_per_ak == 0, drop=True
             ).coords["ak"]:
-                print(
-                    f"Warning: AK {get_ak_name(input_data, ak_id)} with id {ak_id.item()} "
-                    "has no required persons. Who owns this?"
+                logger.warning(
+                    "AK %s with id %d has no required persons. Who owns this?",
+                    get_ak_name(input_data, ak_id),
+                    ak_id.item(),
                 )
 
         ak_num_interested = num_required_per_ak + (preferences != 0).sum("person")
@@ -614,9 +618,10 @@ class SolverConfig:
             return gurobi_solver_kwargs
         else:
             if self._has_non_none_attr:
-                print(
-                    f"Warning: exporting CLI args to solver '{solver_name}' is not supported. "
-                    "The solver is run with its default parameters."
+                logger.warning(
+                    "Exporting CLI args to solver '%s' is not supported. "
+                    "The solver is run with its default parameters.",
+                    solver_name,
                 )
             solver_kwargs: types.SolverKwargs = {}
             if self.warmstart_fn is not None:

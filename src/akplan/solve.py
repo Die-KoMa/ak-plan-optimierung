@@ -2,11 +2,12 @@
 
 import argparse
 import json
+import logging
 from dataclasses import asdict
 from itertools import combinations, product
 from pathlib import Path
 from time import perf_counter
-from typing import Any, Literal, cast, get_args, overload
+from typing import Any, Literal, TypeVar, cast, get_args, overload
 
 import linopy
 import numpy as np
@@ -22,6 +23,10 @@ from .util import (
     SolverConfig,
     _construct_constraint_name,
 )
+
+logger = logging.getLogger(__name__)
+
+T = TypeVar("T")
 
 
 def create_lp(input_data: SchedulingInput) -> linopy.Model:
@@ -48,8 +53,12 @@ def create_lp(input_data: SchedulingInput) -> linopy.Model:
     """
     time_lp_construction_start = perf_counter()
 
+    logger.debug("Start construction of the LP")
+
     ids = ProblemIds.init_from_problem(input_data)
     props = ProblemProperties.init_from_problem(input_data, ids=ids)
+
+    logger.debug("IDs and Properties initialized")
 
     # TODO: Chunking
     m = linopy.Model(force_dim_names=True)
@@ -130,6 +139,7 @@ def create_lp(input_data: SchedulingInput) -> linopy.Model:
         lower=person_time_lower,
         upper=person_time_upper,
     )
+    logger.debug("Variables added")
 
     # Set objective function
     # \sum_{P,A} \frac{P_{P,A}}{\sum_{P_{P,A}}\neq 0} T_{P,A}
@@ -142,6 +152,7 @@ def create_lp(input_data: SchedulingInput) -> linopy.Model:
         num_prefs_per_person != 0
     )
     m.add_objective((weighted_prefs * person).sum(), sense="max")
+    logger.debug("Objective added")
 
     c = time + person
     for ak_id1, ak_id2 in combinations(ids.ak, 2):
@@ -149,6 +160,7 @@ def create_lp(input_data: SchedulingInput) -> linopy.Model:
             (c.loc[ak_id1] + c.loc[ak_id2] <= 3),
             name=_construct_constraint_name("MaxOneAKPerPersonAndTime", ak_id1, ak_id2),
         )
+    logger.debug("Constraints MaxOneAKPerPersonAndTime added")
 
     c = time + room
     for ak_id1, ak_id2 in combinations(ids.ak, 2):
@@ -156,14 +168,18 @@ def create_lp(input_data: SchedulingInput) -> linopy.Model:
             (c.loc[ak_id1] + c.loc[ak_id2] <= 3),
             name=_construct_constraint_name("MaxOneAKPerRoomAndTime", ak_id1, ak_id2),
         )
+    logger.debug("Constraints MaxOneAKPerRoomAndTime added")
 
     m.add_constraints((time.sum("timeslot") >= props.ak_durations), name="AKDuration")
+    logger.debug("Constraints AKDuration added")
     m.add_constraints((block.sum("block") <= 1), name="AKSingleBlock")
+    logger.debug("Constraints AKSingleBlock added")
 
     m.add_constraints(
         (time - props.ak_durations * block).where(props.block_mask) <= 0,
         name="AKBlockAssign",
     )
+    logger.debug("Constraints AKBlockAssign added")
 
     m.add_constraints(
         lhs=person.sum("person") + props.ak_num_interested * room,
@@ -172,31 +188,40 @@ def create_lp(input_data: SchedulingInput) -> linopy.Model:
         mask=props.ak_num_interested > props.room_capacities,
         name="Roomsize",
     )
+    logger.debug("Constraints Roomsize added")
 
     m.add_constraints(room.sum("room") <= 1, name="AtMostOneRoomPerAK")
+    logger.debug("Constraints AtMostOneRoomPerAK added")
     m.add_constraints(room.sum("room") >= 1, name="AtLeastOneRoomPerAK")
+    logger.debug("Constraints AtLeastOneRoomPerAK added")
     m.add_constraints(
         person.sum("person") <= props.ak_num_interested,
         name="NotMorePeopleThanInterested",
     )
+    logger.debug("Constraints NotMorePeopleThanInterested added")
     m.add_constraints(time + person - person_time <= 1, name="TimePersonVar")
+    logger.debug("Constraints TimePersonVar added")
     m.add_constraints(room.sum("room") >= 1, name="RoomForAK")
+    logger.debug("Constraints RoomForAK added")
 
     mask = (
         props.participant_room_constraints & (~props.fulfilled_room_constraints)
     ).any("room_constraint")
     m.add_constraints(room + person <= 1, name="RoomImpossibleForPerson", mask=mask)
+    logger.debug("Constraints RoomImpossibleForPerson added")
 
     mask = (props.room_time_constraints & (~props.fulfilled_time_constraints)).any(
         "time_constraint"
     )
     m.add_constraints(room + time <= 1, name="TimeImpossibleForRoom", mask=mask)
+    logger.debug("Constraints TimeImpossibleForRoom added")
 
     for ak_a, ak_b in ids.conflict_pairs:
         m.add_constraints(
             time.loc[ak_a] + time.loc[ak_b] <= 1,
             name=_construct_constraint_name("AKConflict", ak_a, ak_b),
         )
+    logger.debug("Constraints AKConflict added")
 
     # TODO vectorize
     for ak_id, (block_id, block_lst) in product(ids.ak, ids.block_dict.items()):
@@ -216,6 +241,7 @@ def create_lp(input_data: SchedulingInput) -> linopy.Model:
                         timeslot_id_b,
                     ),
                 )
+    logger.debug("Constraints AKContiguous added")
 
     # TODO vectorize
     if input_data.config.max_num_timeslots_before_break > 0:
@@ -235,6 +261,7 @@ def create_lp(input_data: SchedulingInput) -> linopy.Model:
                     rhs=input_data.config.max_num_timeslots_before_break,
                     name=_construct_constraint_name("BreakForPerson", block_entry[idx]),
                 )
+    logger.debug("Constraints BreakForPerson added")
 
     # TODO vectorize
     # AK dependencies
@@ -252,11 +279,12 @@ def create_lp(input_data: SchedulingInput) -> linopy.Model:
                     "AKDependenciesDoneBeforeAK", ak.id, timeslot_id
                 ),
             )
+    logger.debug("Constraints AKDependenciesDoneBeforeAK added")
 
     time_lp_construction_end = perf_counter()
-    print(
-        "LP constructed. Time elapsed: "
-        f"{time_lp_construction_end - time_lp_construction_start:.1f}s"
+    logger.info(
+        "LP constructed. Time elapsed: %.1fs",
+        time_lp_construction_end - time_lp_construction_start,
     )
     return m
 
@@ -396,29 +424,29 @@ def solve_scheduling(
                 break
         else:
             solver_name = linopy.available_solvers[0]
-            print(
-                "WARNING: no supported solver available. "
+            logger.warning(
+                "No supported solver available. "
                 f"Solver {solver_name} will be used with default config values."
             )
 
     model = create_lp(input_data)
 
     solver_kwargs = solver_config.generate_kwargs(solver_name)
-    print(f"Running solver with {solver_kwargs=}")
+    logger.info(f"Running solver with {solver_kwargs=}")
 
     status, term_cond = model.solve(
         solver_name=solver_name,
         **solver_kwargs,
     )
 
-    print(f"Termination Condition: {term_cond}")
-    print(f"Solution status: {status}")
+    logger.info(f"Termination Condition: {term_cond}")
+    logger.info(f"Solution status: {status}")
 
     if term_cond == "infeasible":
         if model.solver_name == "gurobi":
             model.print_infeasibilities()
         else:
-            print(
+            logger.warning(
                 "To calculate the IIS of the infeasible model, use 'gurobi' as a solver"
             )
 
@@ -483,6 +511,13 @@ def main() -> None:
         "--threads", type=int, default=None, help="Number of threads to use"
     )
     parser.add_argument(
+        "--loglevel",
+        type=str.lower,
+        choices=["error", "warning", "info", "debug"],
+        default="info",
+        help="Select logging level",
+    )
+    parser.add_argument(
         "path", type=str, help="Path of the JSON input file to the solver."
     )
     parser.add_argument(
@@ -499,6 +534,21 @@ def main() -> None:
         help="If set, overrides the output file if it exists.",
     )
     args = parser.parse_args()
+
+    # set logging level
+    numeric_loglevel = getattr(logging, args.loglevel.upper(), None)
+    if not isinstance(numeric_loglevel, int):
+        raise ValueError(f"Invalid log level: {args.loglevel}")
+    logging.basicConfig(
+        level=numeric_loglevel,
+        format="[%(levelname)s] %(asctime)s: %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S",
+    )
+
+    # disable duplicate logging from gurobi logger
+    # https://linopy.readthedocs.io/en/latest/gurobi-double-logging.html
+    gurobi_logger = logging.getLogger("gurobipy")
+    gurobi_logger.propagate = False
 
     solver_config = SolverConfig(
         time_limit=args.timelimit,
@@ -542,7 +592,7 @@ def main() -> None:
         }
         with args.output.open("w") as ff:
             json.dump(out_dict, ff)
-        print(f"Stored result at {args.output}")
+        logger.info("Stored result at %s", args.output)
 
 
 if __name__ == "__main__":
