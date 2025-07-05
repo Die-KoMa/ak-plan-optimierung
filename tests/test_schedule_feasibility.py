@@ -110,12 +110,14 @@ def solved_lp_fixture(
     )
     scheduling_input.config.mu = mu
 
-    solved_lp_problem, solution = solve_scheduling(
+    solution_tuple = solve_scheduling(
         scheduling_input,
         solver_config=solver_config,
         solver_name=solver_name,
     )
-    return (solved_lp_problem, solution, scheduling_input)
+    assert solution_tuple is not None, "Model is infeasible!"
+
+    return (*solution_tuple, scheduling_input)
 
 
 @pytest.fixture(scope="module")

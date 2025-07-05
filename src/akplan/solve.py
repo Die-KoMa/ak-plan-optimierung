@@ -385,7 +385,7 @@ def solve_scheduling(
     input_data: SchedulingInput,
     solver_config: SolverConfig,
     solver_name: str | None = None,
-) -> tuple[linopy.Model, types.ExportTuple]:
+) -> tuple[linopy.Model, types.ExportTuple] | None:
     """Solve the scheduling problem.
 
     Solves the ILP scheduling problem described by the input data using an ILP
@@ -409,9 +409,10 @@ def solve_scheduling(
             default solver choice. Defaults to None.
 
     Returns:
-        A tuple (`lp_problem`, `solution`) where `lp_problem` is the
-        constructed and solved linopy MILP model and `solution` contains
-        the named tuple with the solution.
+        If a solution is found, a tuple (`lp_problem`, `solution`)
+        where `lp_problem` is the constructed and solved linopy MILP model
+        and `solution` contains the named tuple with the solution.
+        If the model is infeasible, None is returned instead.
 
     Raises:
         ValueError: if no solvers are installed.
@@ -453,7 +454,7 @@ def solve_scheduling(
             logger.warning(
                 "To calculate the IIS of the infeasible model, use 'gurobi' as a solver"
             )
-
+        return None
     solution = types.ExportTuple(
         room=model.variables["Room"].solution.round(),
         time=model.variables["Time"].solution.round(),
@@ -624,13 +625,17 @@ def main() -> None:
 
     scheduling_input = SchedulingInput.from_dict(input_dict)
 
-    model, solution = solve_scheduling(
+    solution_tuple = solve_scheduling(
         scheduling_input,
         solver_config,
         args.solver,
     )
 
-    schedule = process_solved_lp(model, solution, input_data=scheduling_input)
+    if solution_tuple is None:
+        # if no solution was found, exit
+        return
+
+    schedule = process_solved_lp(*solution_tuple, input_data=scheduling_input)
 
     # here we replace the old scheduled aks in the input
     # because these are also part of the produced schedule
