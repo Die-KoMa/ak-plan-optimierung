@@ -22,6 +22,7 @@ from .util import (
     SchedulingInput,
     SolverConfig,
     _construct_constraint_name,
+    default_num_threads,
 )
 
 logger = logging.getLogger(__name__)
@@ -29,7 +30,9 @@ logger = logging.getLogger(__name__)
 T = TypeVar("T")
 
 
-def create_lp(input_data: SchedulingInput) -> linopy.Model:
+def create_lp(
+    input_data: SchedulingInput, solver_dir: str | None = None
+) -> linopy.Model:
     """Create the MILP problem as linopy model.
 
     Creates the problem with all constraints, preferences and the objective function.
@@ -47,6 +50,9 @@ def create_lp(input_data: SchedulingInput) -> linopy.Model:
 
     Args:
         input_data (SchedulingInput): The input data used to construct the MILP.
+        solver_dir (str, optional): Path where linopy's temporary files like the lp file
+            or the intermediate solution file should be stored.
+            The default None results in taking the default temporary directory.
 
     Returns:
         The constructed linopy model instance.
@@ -60,8 +66,8 @@ def create_lp(input_data: SchedulingInput) -> linopy.Model:
 
     logger.debug("IDs and Properties initialized")
 
-    # TODO: Chunking
-    m = linopy.Model(force_dim_names=True)
+    # TODO: Consider chunking
+    m = linopy.Model(force_dim_names=True, solver_dir=solver_dir)
 
     # set initial values by setting lower/upper value of variable
     def _init_lower_upper(coords: list[pd.Index]) -> tuple[xr.DataArray, xr.DataArray]:
@@ -429,14 +435,12 @@ def solve_scheduling(
                 f"Solver {solver_name} will be used with default config values."
             )
 
-    model = create_lp(input_data)
-
-    solver_kwargs = solver_config.generate_kwargs(solver_name)
-    logger.info(f"Running solver with {solver_kwargs=}")
+    model = create_lp(input_data, solver_dir=solver_config.solver_dir)
 
     status, term_cond = model.solve(
+        keep_files=solver_config.solver_dir is not None,
         solver_name=solver_name,
-        **solver_kwargs,
+        **solver_config.generate_kwargs(solver_name),
     )
 
     logger.info(f"Termination Condition: {term_cond}")
@@ -493,7 +497,42 @@ def main() -> None:
         "--solver",
         type=str,
         default=None,
-        help="The solver to use. If None, uses linopy's default solver. Defaults to None.",
+        help=(
+            "The solver to use. We currently only support passing CLI args to solvers in "
+            f"{get_args(types.SupportedSolver)}. If None, uses linopy's default solver. "
+            "Defaults to None."
+        ),
+    )
+    parser.add_argument(
+        "--solver-dir",
+        type=str,
+        default=None,
+        help=(
+            "Path where linopy's temporary files like the lp file "
+            "or the intermediate solution file should be stored. "
+            "The default None results in taking the default temporary directory "
+            " and an automatic removal after the solving is done."
+        ),
+    )
+    parser.add_argument(
+        "--solver-io-api",
+        type=str,
+        choices=["direct", "lp", "mps"],
+        default="direct",
+        help=(
+            "API to use for communicating with the solver, must be one of "
+            "{'lp', 'mps', 'direct'}. If set to 'lp'/'mps' the problem is written to an "
+            "LP/MPS file which is then read by the solver. If set to "
+            "'direct' the problem is communicated to the solver via the solver "
+            "specific API, e.g. gurobipy. This may lead to faster run times. "
+            "Defaults to 'direct'."
+        ),
+    )
+    parser.add_argument(
+        "--solver-warmstart-fn",
+        type=str,
+        default=None,
+        help="Optional path of the basis file which should be used to warmstart the solving.",
     )
     parser.add_argument(
         "--timelimit",
@@ -502,13 +541,16 @@ def main() -> None:
         help="Timelimit as stopping criterion (in seconds)",
     )
     parser.add_argument(
-        "--gap_rel", type=float, default=None, help="Relative gap as stopping criterion"
+        "--gap-rel", type=float, default=None, help="Relative gap as stopping criterion"
     )
     parser.add_argument(
-        "--gap_abs", type=float, default=None, help="Absolute gap as stopping criterion"
+        "--gap-abs", type=float, default=None, help="Absolute gap as stopping criterion"
     )
     parser.add_argument(
-        "--threads", type=int, default=None, help="Number of threads to use"
+        "--threads",
+        type=int,
+        default=None,
+        help="Number of threads to use. Defaults to #CPUs minus 1",
     )
     parser.add_argument(
         "--loglevel",
@@ -545,12 +587,19 @@ def main() -> None:
         datefmt="%Y-%m-%d %H:%M:%S",
     )
 
+    if args.threads is None:
+        # default threads to number of available CPUs minus 1
+        args.threads = default_num_threads()
+
     # disable duplicate logging from gurobi logger
     # https://linopy.readthedocs.io/en/latest/gurobi-double-logging.html
     gurobi_logger = logging.getLogger("gurobipy")
     gurobi_logger.propagate = False
 
     solver_config = SolverConfig(
+        solver_dir=args.solver_dir,
+        solver_io_api=args.solver_io_api,
+        warmstart_fn=args.solver_warmstart_fn,
         time_limit=args.timelimit,
         gap_rel=args.gap_rel,
         gap_abs=args.gap_abs,

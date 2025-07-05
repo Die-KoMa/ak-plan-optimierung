@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+import os
 from collections.abc import Iterable
 from dataclasses import asdict, dataclass
 from itertools import chain
@@ -17,6 +18,9 @@ from dacite import from_dict
 from . import types
 
 logger = logging.getLogger(__name__)
+
+
+solvers_supporting_direct_api = ["gurobi", "highs", "mosek"]
 
 
 @dataclass(frozen=True, order=True)
@@ -553,6 +557,8 @@ def _construct_constraint_name(name: str, *args: Any) -> str:
 class SolverConfig:
     """Dataclass storing config values for the solver to run."""
 
+    solver_io_api: Literal["direct", "lp", "mps"] = "direct"
+    solver_dir: str | None = None
     time_limit: float | None = None
     gap_abs: float | None = None
     gap_rel: float | None = None
@@ -590,8 +596,19 @@ class SolverConfig:
         self, solver_name: str | None
     ) -> types.GurobiSolverKwargs | types.HighsSolverKwargs | types.SolverKwargs:
         """Export solver config to solver kwargs. Keys differ between solvers."""
+        io_api = self.solver_io_api
+        if solver_name not in solvers_supporting_direct_api:
+            logger.warning(
+                "Using 'direct' IO-API for solver %s is not supported. "
+                "Changing IO-API to 'lp' instead.",
+                solver_name,
+            )
+            io_api = "lp"
+
         if solver_name == "highs":
             highs_solver_kwargs: types.HighsSolverKwargs = {}
+            if self.solver_io_api is not None:
+                highs_solver_kwargs["io_api"] = io_api
             if self.time_limit is not None:
                 highs_solver_kwargs["time_limit"] = self.time_limit
             if self.gap_abs is not None:
@@ -605,6 +622,8 @@ class SolverConfig:
             return highs_solver_kwargs
         elif solver_name == "gurobi":
             gurobi_solver_kwargs: types.GurobiSolverKwargs = {}
+            if self.solver_io_api is not None:
+                gurobi_solver_kwargs["io_api"] = io_api
             if self.time_limit is not None:
                 gurobi_solver_kwargs["TimeLimit"] = self.time_limit
             if self.gap_abs is not None:
@@ -624,6 +643,20 @@ class SolverConfig:
                     solver_name,
                 )
             solver_kwargs: types.SolverKwargs = {}
+            if self.solver_io_api is not None:
+                solver_kwargs["io_api"] = io_api
             if self.warmstart_fn is not None:
                 solver_kwargs["warmstart_fn"] = self.warmstart_fn
             return solver_kwargs
+
+
+def default_num_threads() -> int:
+    """Calculate the default # Threads to use as # CPUs minus 1."""
+    try:
+        # gives the number of CPUs that the current process is allowed to use
+        # might be unequal to `os.cpu_count` which gives the # of logical CPUs
+        n_available_cpus = len(os.sched_getaffinity(0))
+    except AttributeError:
+        # on windows / mac, os.sched_getaffinity is not available.
+        n_available_cpus = os.cpu_count() or 0
+    return max(n_available_cpus - 1, 1)

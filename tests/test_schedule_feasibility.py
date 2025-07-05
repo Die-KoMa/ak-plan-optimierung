@@ -1,7 +1,6 @@
 """Unit tests to check feasibility of the constructed schedules."""
 
 import json
-import multiprocessing
 from collections import defaultdict
 from itertools import product
 from pathlib import Path
@@ -23,6 +22,7 @@ from akplan.util import (
     SchedulingInput,
     SolverConfig,
     TimeSlotData,
+    default_num_threads,
 )
 
 T = TypeVar("T")
@@ -105,7 +105,7 @@ def solved_lp_fixture(
     """Solve an ILP."""
     mu, solver_name = request.param
     solver_config = SolverConfig(
-        threads=max(1, multiprocessing.cpu_count() - 1),
+        threads=default_num_threads(),
         time_limit=60,
     )
     scheduling_input.config.mu = mu

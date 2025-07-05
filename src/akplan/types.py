@@ -35,6 +35,7 @@ class SolverKwargs(TypedDict, total=False):
     """Key word arguments to initialize an unsupported linopy solver."""
 
     warmstart_fn: NotRequired[str | Path | None]
+    io_api: Literal["direct", "lp", "mps"]
 
 
 class GurobiSolverKwargs(SolverKwargs):
