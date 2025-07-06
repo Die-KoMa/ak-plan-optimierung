@@ -183,10 +183,7 @@ def create_lp(
     m.add_constraints((block.sum("block") <= 1), name="AKSingleBlock")
     logger.debug("Constraints AKSingleBlock added")
 
-    m.add_constraints(
-        (time - props.ak_durations * block).where(props.block_mask) <= 0,
-        name="AKBlockAssign",
-    )
+    m.add_constraints((time - block).where(props.block_mask) <= 0, name="AKBlockAssign")
     logger.debug("Constraints AKBlockAssign added")
 
     m.add_constraints(
