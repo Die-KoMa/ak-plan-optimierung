@@ -220,6 +220,7 @@ class ConfigData:
     max_num_timeslots_before_break: int = 0
     allow_unscheduled_aks: bool = True
     allow_changing_rooms: bool = False
+    weight_error_num_aks_per_time: float = 0.1
 
 
 @dataclass(frozen=True)

@@ -165,7 +165,9 @@ def create_lp(
         num_prefs_per_person != 0
     )
     m.add_objective(
-        (weighted_prefs * person).sum() - error_num_aks_per_time.sum(),
+        (weighted_prefs * person).sum()
+        - input_data.config.weight_error_num_aks_per_time
+        * error_num_aks_per_time.sum(),
         sense="max",
     )
     logger.debug("Objective added")
