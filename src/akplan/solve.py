@@ -3,6 +3,7 @@
 import argparse
 import json
 import logging
+from collections.abc import Iterable
 from dataclasses import asdict
 from itertools import combinations, product
 from pathlib import Path
@@ -483,10 +484,9 @@ def process_solved_lp(
         model (linopy.Model): The linopy LP model object after the optimizer ran.
         solution (nested dict containing the MILP variables): The solution to the problem.
         input_data (SchedulingInput): The input data used to construct the ILP.
-            If set, the input data is added to the output schedule dict. Defaults to None.
 
     Returns:
-        A list containing the scheduled aks or None if scheduling failed.
+        A dict mapping each AK ID to its scheduleing or None if scheduling failed.
     """
     if model.status != "ok":
         return None
@@ -498,6 +498,29 @@ def process_solved_lp(
         solution,
         allow_unscheduled_aks=input_data.config.allow_unscheduled_aks,
     )
+
+
+def calc_changed_fixed_schedule_atoms(
+    input_atoms: Iterable[ScheduleAtom],
+    schedule_atoms: Iterable[ScheduleAtom],
+) -> list[ScheduleAtom]:
+    """
+    Check if all scheduling atoms of the input are still contained in the output schedule.
+
+    Participants are ignored in the checks.
+
+    Args:
+        input_atoms (iterable of ScheduleAtoms): The fixed schedule atoms of the input.
+        schedule_atoms (iterable of ScheduleAtoms): An iterable of the scheduled atoms.
+
+    Returns:
+        The list of all schedule atoms of the input that are not contained in the output.
+    """
+    input_data_atom_set = {atom.strip_participants() for atom in input_atoms}
+    schedule_atom_set = {atom.strip_participants() for atom in schedule_atoms}
+    changed_schedule_set = input_data_atom_set - schedule_atom_set
+
+    return sorted(changed_schedule_set)
 
 
 def main() -> None:
@@ -646,16 +669,35 @@ def main() -> None:
 
     schedule = process_solved_lp(*solution_tuple, input_data=scheduling_input)
 
-    # here we replace the old scheduled aks in the input
-    # because these are also part of the produced schedule
-    if schedule is not None:
-        out_dict = {
-            "scheduled_aks": list(map(asdict, schedule.values())),
-            "input": scheduling_input.to_dict(),
-        }
-        with args.output.open("w") as ff:
-            json.dump(out_dict, ff)
-        logger.info("Stored result at %s", args.output)
+    if schedule is None:
+        # if no schedule was calculated, exit
+        return
+
+    changed_fixed_schedule_atoms = calc_changed_fixed_schedule_atoms(
+        scheduling_input.scheduled_aks, schedule.values()
+    )
+
+    # check if all fixed schedule atoms of the input are carried over to the output
+    # if not: print warning with affected AKs
+    if changed_fixed_schedule_atoms:
+        string_repr = [
+            f"\t(AK {atom.ak_id}, Room {atom.room_id}, Timeslots {sorted(atom.timeslot_ids)})"
+            for atom in changed_fixed_schedule_atoms
+        ]
+
+        logger.warning(
+            "Some fixed scheduling was NOT respected in the output! "
+            "The following entries of the input are affected:\n%s",
+            "\n".join(string_repr),
+        )
+
+    out_dict = {
+        "scheduled_aks": list(map(asdict, schedule.values())),
+        "input": scheduling_input.to_dict(),
+    }
+    with args.output.open("w") as ff:
+        json.dump(out_dict, ff)
+    logger.info("Stored result at %s", args.output)
 
 
 if __name__ == "__main__":

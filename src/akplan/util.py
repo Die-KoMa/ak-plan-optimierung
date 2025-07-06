@@ -141,7 +141,7 @@ class TimeSlotData:
     info: dict[str, Any]
 
 
-@dataclass(frozen=False, order=True)
+@dataclass(frozen=False)
 class ScheduleAtom:
     """Dataclass containing one scheduled ak.
 
@@ -158,10 +158,48 @@ class ScheduleAtom:
     timeslot_ids: np.ndarray
     participant_ids: np.ndarray
 
+    @property
+    def _comparison_tuple(
+        self,
+    ) -> tuple[
+        types.AkId,
+        types.RoomId | None,
+        tuple[types.TimeslotId, ...],
+        tuple[types.PersonId, ...],
+    ]:
+        return (
+            self.ak_id,
+            self.room_id,
+            tuple(sorted(self.timeslot_ids)),
+            tuple(sorted(self.participant_ids)),
+        )
+
+    def __lt__(self, other: object) -> bool:
+        """Determine lesser than by comparing the `_comparison_tuple`."""
+        if not isinstance(other, ScheduleAtom):
+            return NotImplemented
+        return self._comparison_tuple < other._comparison_tuple
+
+    def __eq__(self, other: object) -> bool:
+        """Determine equality by comparing the `_comparison_tuple`."""
+        if not isinstance(other, ScheduleAtom):
+            return NotImplemented
+        return self._comparison_tuple == other._comparison_tuple
+
+    def __hash__(self) -> int:
+        """Calculate hash by hashing the `_comparison_tuple`."""
+        return hash(self._comparison_tuple)
+
+    def strip_participants(self) -> ScheduleAtom:
+        """Clone this object and remove all participants from the copy."""
+        return ScheduleAtom(
+            self.ak_id, self.room_id, self.timeslot_ids.copy(), np.array([])
+        )
+
 
 @dataclass(frozen=False)
 class ConfigData:
-    """Dataclass containing the config for buildung the ILP and solving it.
+    """Dataclass containing the config for building the ILP and solving it.
 
     Args:
         mu (float): The weight associated with a strong preference for an AK.
@@ -195,6 +233,8 @@ class SchedulingInput:
             Not used for the optimization.
         timeslot_blocks (list of lists of TimeSlotData): A lost containing the
             timeslot block. Each block is a list of timeslots in chronological order
+        scheduled_aks (list of ScheduleAtom): The schedule atoms of all fixed AKs.
+        config (ConfigData): The configuration of the problem.
         info (dict): A dictionary containing additional information about the input,
             e.g. a human readable name of the conference. Not used for the optimization.
     """
