@@ -503,21 +503,37 @@ def process_solved_lp(
 def calc_changed_fixed_schedule_atoms(
     input_atoms: Iterable[ScheduleAtom],
     schedule_atoms: Iterable[ScheduleAtom],
+    ignore_room_change: bool = False,
+    ignore_timeslots_change: bool = False,
+    ignore_participants_change: bool = True,
 ) -> list[ScheduleAtom]:
     """
     Check if all scheduling atoms of the input are still contained in the output schedule.
 
-    Participants are ignored in the checks.
-
     Args:
         input_atoms (iterable of ScheduleAtoms): The fixed schedule atoms of the input.
         schedule_atoms (iterable of ScheduleAtoms): An iterable of the scheduled atoms.
+        ignore_room_change (bool): If True, room changes are ignored in the check.
+        ignore_timeslots_change (bool): If True, timeslots changes are ignored in the check.
+        ignore_participants_change (bool): If True, participants changes
+            are ignored in the check.
 
     Returns:
         The list of all schedule atoms of the input that are not contained in the output.
     """
-    input_data_atom_set = {atom.strip_participants() for atom in input_atoms}
-    schedule_atom_set = {atom.strip_participants() for atom in schedule_atoms}
+
+    def _stripped_atom_set(atom_it: Iterable[ScheduleAtom]) -> set[ScheduleAtom]:
+        return {
+            atom.stripped_copy(
+                strip_room=ignore_room_change,
+                strip_participants=ignore_participants_change,
+                strip_timeslots=ignore_timeslots_change,
+            )
+            for atom in atom_it
+        }
+
+    input_data_atom_set = _stripped_atom_set(input_atoms)
+    schedule_atom_set = _stripped_atom_set(schedule_atoms)
     changed_schedule_set = input_data_atom_set - schedule_atom_set
 
     return sorted(changed_schedule_set)
@@ -674,7 +690,9 @@ def main() -> None:
         return
 
     changed_fixed_schedule_atoms = calc_changed_fixed_schedule_atoms(
-        scheduling_input.scheduled_aks, schedule.values()
+        scheduling_input.scheduled_aks,
+        schedule.values(),
+        ignore_room_change=scheduling_input.config.allow_changing_rooms,
     )
 
     # check if all fixed schedule atoms of the input are carried over to the output

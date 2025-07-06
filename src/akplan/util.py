@@ -190,10 +190,18 @@ class ScheduleAtom:
         """Calculate hash by hashing the `_comparison_tuple`."""
         return hash(self._comparison_tuple)
 
-    def strip_participants(self) -> ScheduleAtom:
-        """Clone this object and remove all participants from the copy."""
+    def stripped_copy(
+        self,
+        strip_room: bool = False,
+        strip_timeslots: bool = False,
+        strip_participants: bool = False,
+    ) -> ScheduleAtom:
+        """Clone this object and strip selectef fields from the copy."""
         return ScheduleAtom(
-            self.ak_id, self.room_id, self.timeslot_ids.copy(), np.array([])
+            self.ak_id,
+            None if strip_room else self.room_id,
+            np.array([]) if strip_timeslots else self.timeslot_ids.copy(),
+            np.array([]) if strip_participants else self.participant_ids.copy(),
         )
 
 
