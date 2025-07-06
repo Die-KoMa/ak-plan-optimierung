@@ -82,24 +82,25 @@ def create_lp(
     )
 
     # TimeImpossibleForPerson
-    mask = (
+    time_impossible_for_person_mask = (
         props.participant_time_constraints & (~props.fulfilled_time_constraints)
     ).any("time_constraint")
     person_time_lower, person_time_upper = _init_lower_upper([ids.person, ids.timeslot])
-    person_time_upper = person_time_upper.where(~mask, 0)
+    person_time_upper = person_time_upper.where(~time_impossible_for_person_mask, 0)
 
     # TimeImpossibleForAK
-    mask = (props.ak_time_constraints & (~props.fulfilled_time_constraints)).any(
-        "time_constraint"
-    )
+    time_impossible_for_ak_mask = (
+        props.ak_time_constraints & (~props.fulfilled_time_constraints)
+    ).any("time_constraint")
     time_lower, time_upper = _init_lower_upper([ids.ak, ids.timeslot])
-    time_upper = time_upper.where(~mask, 0)
+    time_upper = time_upper.where(~time_impossible_for_ak_mask, 0)
 
-    mask = (props.ak_room_constraints & (~props.fulfilled_room_constraints)).any(
-        "room_constraint"
-    )
+    # RoomImpossibleForAK
+    room_impossible_for_ak_mask = (
+        props.ak_room_constraints & (~props.fulfilled_room_constraints)
+    ).any("room_constraint")
     room_lower, room_upper = _init_lower_upper([ids.ak, ids.room])
-    room_upper = room_upper.where(~mask, 0)
+    room_upper = room_upper.where(~room_impossible_for_ak_mask, 0)
 
     # Fix Values for already scheduled aks
     for scheduled_ak in input_data.scheduled_aks:
@@ -210,16 +211,24 @@ def create_lp(
     m.add_constraints(room.sum("room") >= 1, name="RoomForAK")
     logger.debug("Constraints RoomForAK added")
 
-    mask = (
+    room_impossible_for_person_mask = (
         props.participant_room_constraints & (~props.fulfilled_room_constraints)
     ).any("room_constraint")
-    m.add_constraints(room + person <= 1, name="RoomImpossibleForPerson", mask=mask)
+    m.add_constraints(
+        room + person <= 1,
+        name="RoomImpossibleForPerson",
+        mask=room_impossible_for_person_mask,
+    )
     logger.debug("Constraints RoomImpossibleForPerson added")
 
-    mask = (props.room_time_constraints & (~props.fulfilled_time_constraints)).any(
-        "time_constraint"
+    time_impossible_for_room_mask = (
+        props.room_time_constraints & (~props.fulfilled_time_constraints)
+    ).any("time_constraint")
+    m.add_constraints(
+        room + time <= 1,
+        name="TimeImpossibleForRoom",
+        mask=time_impossible_for_room_mask,
     )
-    m.add_constraints(room + time <= 1, name="TimeImpossibleForRoom", mask=mask)
     logger.debug("Constraints TimeImpossibleForRoom added")
 
     for ak_a, ak_b in ids.conflict_pairs:
