@@ -160,11 +160,13 @@ class ScheduleAtom:
 
     @property
     def _comparison_tuple(self) -> types.ScheduleAtomComparisonTuple:
+        self.timeslot_ids.sort()
+        self.participant_ids.sort()
         return (
             self.ak_id,
             self.room_id,
-            tuple(sorted(self.timeslot_ids)),
-            tuple(sorted(self.participant_ids)),
+            tuple(self.timeslot_ids),
+            tuple(self.participant_ids),
         )
 
     def __lt__(self, other: object) -> bool:
@@ -190,6 +192,9 @@ class ScheduleAtom:
         strip_participants: bool = False,
     ) -> ScheduleAtom:
         """Clone this object and strip selectef fields from the copy."""
+        # sort before copy to avoid double effort
+        self.timeslot_ids.sort()
+        self.participant_ids.sort()
         return ScheduleAtom(
             self.ak_id,
             None if strip_room else self.room_id,
