@@ -338,7 +338,6 @@ class ProblemIds:
     person: pd.Index
     block: pd.Index
     block_dict: dict[types.BlockId, types.Block]
-    conflict_pairs: set[tuple[types.AkId, types.AkId]]
 
     @staticmethod
     def get_ids(
@@ -379,21 +378,6 @@ class ProblemIds:
             for block_idx, block in enumerate(input_data.timeslot_blocks)
         }
 
-        conflict_pairs: set[tuple[types.AkId, types.AkId]] = set()
-        for ak in input_data.aks:
-            conflicting_aks: list[types.AkId] = ak.properties.get("conflicts", [])
-            depending_aks: list[types.AkId] = ak.properties.get("dependencies", [])
-            conflict_pairs.update(
-                [
-                    (
-                        (ak.id, other_ak_id)
-                        if ak.id < other_ak_id
-                        else (other_ak_id, ak.id)
-                    )
-                    for other_ak_id in conflicting_aks + depending_aks
-                ]
-            )
-
         return cls(
             ak=pd.Index(ak_ids, name="ak"),
             room=pd.Index(room_ids, name="room"),
@@ -401,7 +385,6 @@ class ProblemIds:
             person=pd.Index(person_ids, name="person"),
             block=pd.Index(block_dict.keys(), name="block"),
             block_dict=block_dict,
-            conflict_pairs=conflict_pairs,
         )
 
 
@@ -409,6 +392,8 @@ class ProblemIds:
 class ProblemProperties:
     """Dataclass containing derived properties from a problem."""
 
+    conflict_pairs: set[tuple[types.AkId, types.AkId]]
+    dependencies: dict[types.AkId, list[types.AkId]]
     time_constraint: pd.Index[str]
     room_constraint: pd.Index[str]
     room_capacities: xr.DataArray
@@ -434,6 +419,24 @@ class ProblemProperties:
         """Get derived problem properties from the input data."""
         if ids is None:
             ids = ProblemIds.init_from_problem(input_data)
+
+        conflict_pairs: set[tuple[types.AkId, types.AkId]] = set()
+        dependencies: dict[types.AkId, list[types.AkId]] = {}
+        for ak in input_data.aks:
+            conflicting_aks: list[types.AkId] = ak.properties.get("conflicts", [])
+            depending_aks: list[types.AkId] = ak.properties.get("dependencies", [])
+            if depending_aks:
+                dependencies[ak.id] = depending_aks
+            conflict_pairs.update(
+                [
+                    (
+                        (ak.id, other_ak_id)
+                        if ak.id < other_ak_id
+                        else (other_ak_id, ak.id)
+                    )
+                    for other_ak_id in conflicting_aks + depending_aks
+                ]
+            )
 
         # Get values needed from the input_dict
         room_capacities = xr.DataArray(
@@ -531,6 +534,8 @@ class ProblemProperties:
             ] = True
 
         return cls(
+            conflict_pairs=conflict_pairs,
+            dependencies=dependencies,
             room_capacities=room_capacities,
             ak_durations=ak_durations,
             preferences=preferences,

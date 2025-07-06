@@ -231,7 +231,7 @@ def create_lp(
     )
     logger.debug("Constraints TimeImpossibleForRoom added")
 
-    for ak_a, ak_b in ids.conflict_pairs:
+    for ak_a, ak_b in props.conflict_pairs:
         m.add_constraints(
             time.loc[ak_a] + time.loc[ak_b] <= 1,
             name=_construct_constraint_name("AKConflict", ak_a, ak_b),
@@ -280,18 +280,18 @@ def create_lp(
 
     # TODO vectorize
     # AK dependencies
-    for ak in input_data.aks:
-        other_ak_ids = ak.properties.get("dependencies", [])
-        if not other_ak_ids:
+    for ak_id in ids.ak:
+        if ak_id not in props.dependencies:
             continue
+        other_ak_ids = props.dependencies[ak_id]
         for idx, timeslot_id in enumerate(ids.timeslot):
             m.add_constraints(
-                lhs=time.loc[ak.id, ids.timeslot[idx:]].sum("timeslot")
+                lhs=time.loc[ak_id, ids.timeslot[idx:]].sum("timeslot")
                 - time.loc[other_ak_ids, timeslot_id],
                 sign=">=",
                 rhs=0,
                 name=_construct_constraint_name(
-                    "AKDependenciesDoneBeforeAK", ak.id, timeslot_id
+                    "AKDependenciesDoneBeforeAK", ak_id, timeslot_id
                 ),
             )
     logger.debug("Constraints AKDependenciesDoneBeforeAK added")
