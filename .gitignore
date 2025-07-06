@@ -1,3 +1,5 @@
+src/akplan/version.py
+
 __pycache__/
 *.log
 *.aux

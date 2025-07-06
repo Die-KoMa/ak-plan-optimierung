@@ -207,7 +207,8 @@ def generate(
     }
 
 
-if __name__ == "__main__":
+def main() -> None:
+    """Run `generate` from CLI."""
     parser = argparse.ArgumentParser()
     parser.add_argument("--persons", type=int, default=30)
     parser.add_argument("--aks", type=int, default=10)
@@ -247,3 +248,7 @@ if __name__ == "__main__":
         json.dump(output_dict, output_file, indent=4)
 
     print(f"Generated {filename}")
+
+
+if __name__ == "__main__":
+    main()

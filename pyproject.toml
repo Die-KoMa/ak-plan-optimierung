@@ -1,0 +1,66 @@
+[build-system]
+requires = ["setuptools >= 77.0.3", "setuptools-scm>=8"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "akplan"
+description = "Optimal conference schedules with ILPs"
+dynamic = ["version"]
+readme = "README.md"
+requires-python = ">= 3.11"
+license = "MIT"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Office/Business :: Scheduling",
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "Typing :: Typed",
+]
+dependencies = [
+    "dacite",
+    "tqdm",
+    "numpy",
+    "linopy",
+    "typing_extensions",
+]
+
+[project.optional-dependencies]
+format = ["black", "isort"]
+lint = [
+    "flake8",
+    "flake8-colors",
+    "flake8-black",
+    "flake8-docstrings",
+    "flake8-bugbear",
+    "flake8-broken-line",
+    "pep8-naming",
+    "pydocstyle",
+    "darglint",
+]
+test = ["highspy", "gurobipy", "pytest", "pytest-timeout"]
+coverage = ["coverage"]
+typing = ["pytest", "mypy"]
+
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+akplan = ["py.typed"]
+
+[tool.setuptools_scm]
+version_file = "src/akplan/version.py"
+version_scheme = "python-simplified-semver"
+
+
+[project.urls]
+Source = "https://github.com/Die-KoMa/ak-plan-optimierung"
+Download = "https://github.com/Die-KoMa/ak-plan-optimierung/releases"
+Issues = "https://github.com/Die-KoMa/ak-plan-optimierung/issues"
+
+[project.scripts]
+akplan-solve = "akplan.solve:main"
