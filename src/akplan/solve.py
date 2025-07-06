@@ -161,7 +161,8 @@ def create_lp(
     )
     m.add_objective(
         (weighted_prefs * person).sum()
-        + ((props.room_capacities * room).sum("room") - person.sum("person")) * input_data.config.weight_empty_seats,
+        + ((props.room_capacities * room).sum("room") - person.sum("person")).sum("ak")
+        * input_data.config.weight_empty_seats,
         sense="max",
     )
     logger.debug("Objective added")
