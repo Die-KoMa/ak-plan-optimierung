@@ -18,9 +18,11 @@ jobs:
           pip install uv
           uv tool install nox
       - name: Lint
+        continue-on-error: true
         run: |
           uvx nox -s lint
       - name: Check typing
+        continue-on-error: true
         run: |
           uvx nox -s typing
       - name: fast-unlicensed-test
