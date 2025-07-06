@@ -19,6 +19,13 @@ TimeslotId = Id
 BlockId = Id
 Block = pd.Index
 
+ScheduleAtomComparisonTuple = tuple[
+    AkId,
+    RoomId | None,
+    tuple[TimeslotId, ...],
+    tuple[PersonId, ...],
+]
+
 
 class ExportTuple(NamedTuple):
     """Named tuple containing the LP variables resp. their values."""

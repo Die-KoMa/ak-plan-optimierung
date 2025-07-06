@@ -159,14 +159,7 @@ class ScheduleAtom:
     participant_ids: np.ndarray
 
     @property
-    def _comparison_tuple(
-        self,
-    ) -> tuple[
-        types.AkId,
-        types.RoomId | None,
-        tuple[types.TimeslotId, ...],
-        tuple[types.PersonId, ...],
-    ]:
+    def _comparison_tuple(self) -> types.ScheduleAtomComparisonTuple:
         return (
             self.ak_id,
             self.room_id,
