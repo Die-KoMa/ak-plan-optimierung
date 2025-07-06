@@ -147,6 +147,11 @@ def create_lp(
         lower=person_time_lower,
         upper=person_time_upper,
     )
+    error_num_aks_per_time = m.add_variables(
+        name="NumAks",
+        integer=True,
+        coords=[ids.timeslot],
+    )
     logger.debug("Variables added")
 
     # Set objective function
@@ -159,9 +164,18 @@ def create_lp(
     weighted_prefs = (props.preferences / num_prefs_per_person).where(
         num_prefs_per_person != 0
     )
-    m.add_objective((weighted_prefs * person).sum(), sense="max")
+    m.add_objective(
+        (weighted_prefs * person).sum() - error_num_aks_per_time.sum(),
+        sense="max",
+    )
     logger.debug("Objective added")
 
+    m.add_constraints(
+        (time.sum("ak") - props.expected_num_aks) <= error_num_aks_per_time
+    )
+    m.add_constraints(
+        (-time.sum("ak") + props.expected_num_aks) <= error_num_aks_per_time
+    )
     c = time + person
     for ak_id1, ak_id2 in combinations(ids.ak, 2):
         m.add_constraints(
