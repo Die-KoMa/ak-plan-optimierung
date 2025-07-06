@@ -491,8 +491,7 @@ class ProblemProperties:
             coords=[ids.ak],
         )
 
-        # dict of real participants only (without dummy participants)
-        # with numerical preferences
+        # xarray of participants with numerical preferences
         preferences = xr.DataArray(0.0, coords=[ids.ak, ids.person])
         required_persons = xr.DataArray(False, coords=[ids.ak, ids.person])
         for person in input_data.participants:
