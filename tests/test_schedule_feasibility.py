@@ -1,7 +1,6 @@
 """Unit tests to check feasibility of the constructed schedules."""
 
 import json
-from collections import defaultdict
 from itertools import product
 from pathlib import Path
 from typing import TypeVar, cast
@@ -9,6 +8,7 @@ from typing import TypeVar, cast
 import linopy
 import linopy.solvers
 import numpy as np
+import numpy.typing as npt
 import pytest
 from _pytest.mark import ParameterSet
 
@@ -28,8 +28,10 @@ from akplan.util import (
 T = TypeVar("T")
 
 
-def _test_uniqueness(lst: list[T]) -> tuple[np.ndarray, np.ndarray, bool]:
-    arr = np.asarray(lst)
+def _test_uniqueness(
+    lst: list[T],
+) -> tuple[npt.NDArray[np.int64], npt.NDArray[np.intp], bool]:
+    arr = np.asarray(lst, dtype=np.int64)
     unique_vals, cnts = np.unique(arr, axis=0, return_counts=True)
     return unique_vals, cnts, not bool(np.abs(cnts - 1).sum())
 
@@ -340,119 +342,3 @@ def test_dependencies(
             ak_timeslots = scheduled_aks[ak_id].timeslot_ids
             dependent_ak_timeslots = scheduled_aks[dependent_ak].timeslot_ids
             assert max(map(int, dependent_ak_timeslots)) < min(map(int, ak_timeslots))
-
-
-def _print_missing_stats(
-    scheduled_aks: dict[types.AkId, ScheduleAtom],
-    participant_dict: dict[types.PersonId, ParticipantData],
-) -> None:
-    num_weak_misses: dict[types.PersonId, int] = defaultdict(int)
-    num_strong_misses: dict[types.PersonId, int] = defaultdict(int)
-    num_weak_prefs: dict[types.PersonId, int] = defaultdict(int)
-    num_strong_prefs: dict[types.PersonId, int] = defaultdict(int)
-    for participant_id, participant in participant_dict.items():
-        for pref in participant.preferences:
-            pref_fulfilled = participant_id in scheduled_aks[pref.ak_id].participant_ids
-            if pref.preference_score == 1:
-                num_weak_misses[participant_id] += not pref_fulfilled
-                num_weak_prefs[participant_id] += 1
-            elif pref.preference_score == 2:
-                num_strong_misses[participant_id] += not pref_fulfilled
-                num_strong_prefs[participant_id] += 1
-            elif pref.required and pref.preference_score == -1:
-                continue
-            else:
-                raise ValueError
-
-    # PRINT STATS ABOUT MISSING AKs
-    print(f"\n{' ' * 5}=== STATS ON PARTICIPANT PREFERENCE MISSES ===\n")
-    max_participant_id_len = max(
-        len(str(participant_id)) for participant_id in participant_dict
-    )
-    print(f"| {' ' * max_participant_id_len} |    WEAK MISSES    |   STRONG MISSES   |")
-    print(f"| {'-' * max_participant_id_len} | {'-' * 17} | {'-' * 17} |")
-    for participant_id in participant_dict:
-        out_lst = ["|", f"{participant_id}", "|"]
-        if num_weak_prefs[participant_id] > 0:
-            weak_perc = num_weak_misses[participant_id] / num_weak_prefs[participant_id]
-            out_lst.extend(
-                [
-                    f"{num_weak_misses[participant_id]:2d}",
-                    "/",
-                    f"{num_weak_prefs[participant_id]:2d}",
-                    f"({weak_perc*100: 6.2f}%)",
-                    "|",
-                ]
-            )
-        else:
-            out_lst.extend([f"{0:2d} / {0:2d}", f"\t({0*100: 6.2f}%)", "|"])
-        if num_strong_prefs[participant_id] > 0:
-            strong_perc = (
-                num_strong_misses[participant_id] / num_strong_prefs[participant_id]
-            )
-            out_lst.extend(
-                [
-                    f"{num_strong_misses[participant_id]:2d}",
-                    "/",
-                    f"{num_strong_prefs[participant_id]:2d}",
-                    f"({strong_perc*100: 6.2f}%)",
-                    "|",
-                ]
-            )
-        else:
-            out_lst.extend([f"{0:2d} / {0:2d}", f"({0*100: 6.2f}%)", "|"])
-        print(" ".join(out_lst))
-
-    weak_misses_perc = [
-        num_weak_misses[participant_id] / num_weak_prefs[participant_id]
-        for participant_id in participant_dict
-        if num_weak_prefs[participant_id] > 0
-    ]
-    strong_misses_perc = [
-        num_strong_misses[participant_id] / num_strong_prefs[participant_id]
-        for participant_id in participant_dict
-        if num_strong_prefs[participant_id] > 0
-    ]
-
-    import matplotlib.pyplot as plt
-
-    plt.title("Histogram of percentage of preference misses")
-    plt.hist(weak_misses_perc, bins=25, alpha=0.7, label="weak prefs")
-    plt.hist(strong_misses_perc, bins=25, alpha=0.7, label="strong prefs")
-    plt.legend(loc="upper right")
-    plt.show()
-
-
-def _print_ak_stats(
-    scheduled_aks: dict[types.AkId, ScheduleAtom],
-    ak_dict: dict[types.AkId, AKData],
-    participant_dict: dict[types.PersonId, ParticipantData],
-    room_dict: dict[types.RoomId, RoomData],
-    timeslot_dict: dict[types.TimeslotId, TimeSlotData],
-) -> None:
-    # PRINT STATS ABOUT MISSING AKs
-    print("\n=== AK STATS ===\n")
-    out_lst = []
-    for ak_id, ak in scheduled_aks.items():
-        out_lst.append(
-            f"{ak_id}\t room {ak.room_id}"
-            f" timeslots{sorted(ak.timeslot_ids)}"
-            f" - {len(ak.participant_ids)} paricipants"
-        )
-    print("\n".join(sorted(out_lst)))
-
-
-def _print_participant_schedules(
-    scheduled_aks: dict[types.AkId, ScheduleAtom],
-    ak_dict: dict[types.AkId, AKData],
-    room_dict: dict[types.RoomId, RoomData],
-    timeslot_dict: dict[types.TimeslotId, TimeSlotData],
-) -> None:
-    print("\n=== PARTICIPANT SCHEDULES ===\n")
-    participant_schedules = defaultdict(list)
-    for ak_id, ak in scheduled_aks.items():
-        for participant_id in ak.participant_ids:
-            participant_schedules[participant_id].append(ak_id)
-
-    for name, schedule in sorted(participant_schedules.items()):
-        print(f"{name}:\t {sorted(schedule)}")

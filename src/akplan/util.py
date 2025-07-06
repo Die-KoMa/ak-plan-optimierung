@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import Any, Literal, Type, overload
 
 import numpy as np
+import numpy.typing as npt
 import pandas as pd
 import xarray as xr
 from dacite import from_dict
@@ -155,8 +156,8 @@ class ScheduleAtom:
 
     ak_id: types.AkId
     room_id: types.RoomId | None
-    timeslot_ids: np.ndarray
-    participant_ids: np.ndarray
+    timeslot_ids: npt.NDArray[np.int64]
+    participant_ids: npt.NDArray[np.int64]
 
     @property
     def _comparison_tuple(self) -> types.ScheduleAtomComparisonTuple:
@@ -198,8 +199,16 @@ class ScheduleAtom:
         return ScheduleAtom(
             self.ak_id,
             None if strip_room else self.room_id,
-            np.array([]) if strip_timeslots else self.timeslot_ids.copy(),
-            np.array([]) if strip_participants else self.participant_ids.copy(),
+            (
+                np.array([], dtype=np.int64)
+                if strip_timeslots
+                else self.timeslot_ids.copy()
+            ),
+            (
+                np.array([], dtype=np.int64)
+                if strip_participants
+                else self.participant_ids.copy()
+            ),
         )
 
 

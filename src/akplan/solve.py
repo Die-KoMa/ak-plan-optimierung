@@ -12,6 +12,7 @@ from typing import Any, Literal, TypeVar, cast, get_args, overload
 
 import linopy
 import numpy as np
+import numpy.typing as npt
 import pandas as pd
 import xarray as xr
 
@@ -330,7 +331,7 @@ def export_scheduling_result(
         allow_multiple: Literal[True],
         allow_none: bool,
         coord: str | None = None,
-    ) -> np.ndarray: ...
+    ) -> npt.NDArray[np.int64]: ...
 
     @overload
     def _get_id(

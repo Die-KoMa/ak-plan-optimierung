@@ -54,16 +54,7 @@ def lint(session):
 def mypy(session):
     """Check type hints."""
     session.install(".[typing]")
-    session.run(
-        "mypy",
-        "--install-types",
-        "--non-interactive",
-        "--ignore-missing-imports",
-        "--strict",
-        "src",
-        "tests",
-        *session.posargs,
-    )
+    session.run("mypy", *session.posargs)
 
 
 @nox.session(name="format")

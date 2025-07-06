@@ -45,6 +45,13 @@ test = ["highspy", "gurobipy", "pytest", "pytest-timeout"]
 coverage = ["coverage"]
 typing = ["pytest", "mypy"]
 
+[project.urls]
+Source = "https://github.com/Die-KoMa/ak-plan-optimierung"
+Download = "https://github.com/Die-KoMa/ak-plan-optimierung/releases"
+Issues = "https://github.com/Die-KoMa/ak-plan-optimierung/issues"
+
+[project.scripts]
+akplan-solve = "akplan.solve:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
@@ -56,11 +63,10 @@ akplan = ["py.typed"]
 version_file = "src/akplan/version.py"
 version_scheme = "python-simplified-semver"
 
-
-[project.urls]
-Source = "https://github.com/Die-KoMa/ak-plan-optimierung"
-Download = "https://github.com/Die-KoMa/ak-plan-optimierung/releases"
-Issues = "https://github.com/Die-KoMa/ak-plan-optimierung/issues"
-
-[project.scripts]
-akplan-solve = "akplan.solve:main"
+[tool.mypy]
+packages = ["akplan", "tests"]
+python_version = "3.11"
+strict = true
+install_types = true
+non_interactive = true
+exclude_gitignore = true
