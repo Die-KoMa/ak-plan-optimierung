@@ -244,7 +244,7 @@ def test_timeslots_consecutive(
         for (prev_block_idx, prev_timeslot_idx), (
             next_block_idx,
             next_timeslot_idx,
-        ) in zip(timeslots, timeslots[1:]):
+        ) in zip(timeslots, timeslots[1:], strict=False):
             assert prev_timeslot_idx + 1 == next_timeslot_idx
             assert prev_block_idx == next_block_idx
 

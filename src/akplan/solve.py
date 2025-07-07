@@ -16,8 +16,8 @@ import numpy.typing as npt
 import pandas as pd
 import xarray as xr
 
-from . import types
-from .util import (
+from akplan import types
+from akplan.util import (
     ProblemIds,
     ProblemProperties,
     ScheduleAtom,
@@ -441,7 +441,8 @@ def solve_scheduling(
             solver_name = linopy.available_solvers[0]
             logger.warning(
                 "No supported solver available. "
-                f"Solver {solver_name} will be used with default config values."
+                "Solver %s will be used with default config values.",
+                solver_name,
             )
 
     model = create_lp(input_data, solver_dir=solver_config.solver_dir)
@@ -452,8 +453,8 @@ def solve_scheduling(
         **solver_config.generate_kwargs(solver_name),
     )
 
-    logger.info(f"Termination Condition: {term_cond}")
-    logger.info(f"Solution status: {status}")
+    logger.info("Termination Condition: %s", term_cond)
+    logger.info("Solution status: %s", status)
 
     if term_cond == "infeasible":
         if model.solver_name == "gurobi":
@@ -480,7 +481,7 @@ def process_solved_lp(
 
     Args:
         model (linopy.Model): The linopy LP model object after the optimizer ran.
-        solution (nested dict containing the MILP variables): The solution to the problem.
+        solution (named tuple of ILP variables): The solution to the problem.
         input_data (SchedulingInput): The input data used to construct the ILP.
 
     Returns:
@@ -505,19 +506,20 @@ def calc_changed_fixed_schedule_atoms(
     ignore_timeslots_change: bool = False,
     ignore_participants_change: bool = True,
 ) -> list[ScheduleAtom]:
-    """
-    Check if all scheduling atoms of the input are still contained in the output schedule.
+    """Check if all scheduling atoms of the input are still contained in the output.
 
     Args:
         input_atoms (iterable of ScheduleAtoms): The fixed schedule atoms of the input.
         schedule_atoms (iterable of ScheduleAtoms): An iterable of the scheduled atoms.
         ignore_room_change (bool): If True, room changes are ignored in the check.
-        ignore_timeslots_change (bool): If True, timeslots changes are ignored in the check.
+        ignore_timeslots_change (bool): If True, timeslots changes are ignored
+            in the check.
         ignore_participants_change (bool): If True, participants changes
             are ignored in the check.
 
     Returns:
-        The list of all schedule atoms of the input that are not contained in the output.
+        The list of all schedule atoms of the input that are not contained
+        in the output.
     """
 
     def _stripped_atom_set(atom_it: Iterable[ScheduleAtom]) -> set[ScheduleAtom]:
@@ -545,8 +547,8 @@ def main() -> None:
         type=str,
         default=None,
         help=(
-            "The solver to use. We currently only support passing CLI args to solvers in "
-            f"{get_args(types.SupportedSolver)}. If None, chooses a default "
+            "The solver to use. We currently only support passing CLI args to solvers "
+            f"in {get_args(types.SupportedSolver)}. If None, chooses a default "
             "from installed solvers. Defaults to None."
         ),
     )
@@ -568,8 +570,8 @@ def main() -> None:
         default="direct",
         help=(
             "API to use for communicating with the solver, must be one of "
-            "{'lp', 'mps', 'direct'}. If set to 'lp'/'mps' the problem is written to an "
-            "LP/MPS file which is then read by the solver. If set to "
+            "{'lp', 'mps', 'direct'}. If set to 'lp'/'mps' the problem is written to "
+            "an LP/MPS file which is then read by the solver. If set to "
             "'direct' the problem is communicated to the solver via the solver "
             "specific API, e.g. gurobipy. This may lead to faster run times. "
             "Defaults to 'direct'."
@@ -579,7 +581,10 @@ def main() -> None:
         "--solver-warmstart-fn",
         type=str,
         default=None,
-        help="Optional path of the basis file which should be used to warmstart the solving.",
+        help=(
+            "Optional path of the basis file which should be used to "
+            "warmstart the solving."
+        ),
     )
     parser.add_argument(
         "--timelimit",
@@ -697,7 +702,11 @@ def main() -> None:
     # if not: print warning with affected AKs
     if changed_fixed_schedule_atoms:
         string_repr = [
-            f"\t(AK {atom.ak_id}, Room {atom.room_id}, Timeslots {sorted(atom.timeslot_ids)})"
+            (
+                f"\t(AK {atom.ak_id}, "
+                f"Room {atom.room_id}, "
+                f"Timeslots {sorted(atom.timeslot_ids)})"
+            )
             for atom in changed_fixed_schedule_atoms
         ]
 

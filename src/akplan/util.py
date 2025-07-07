@@ -8,7 +8,7 @@ from collections.abc import Iterable
 from dataclasses import asdict, dataclass
 from itertools import chain
 from pathlib import Path
-from typing import Any, Literal, Type, overload
+from typing import Any, Literal, overload
 
 import numpy as np
 import numpy.typing as npt
@@ -16,7 +16,7 @@ import pandas as pd
 import xarray as xr
 from dacite import from_dict
 
-from . import types
+from akplan import types
 
 logger = logging.getLogger(__name__)
 
@@ -151,7 +151,8 @@ class ScheduleAtom:
         room_id (int | None): The id of the room, where the AK is scheduled or None
             if the room is not fixed yet.
         timeslot_ids (list of int): The list of timeslots when the AK is scheduled.
-        participant_ids (list of int): The list of participants that are meant to go to this AK.
+        participant_ids (list of int): The list of participants that are meant
+            to go to this AK.
     """
 
     ak_id: types.AkId
@@ -218,8 +219,8 @@ class ConfigData:
 
     Args:
         mu (float): The weight associated with a strong preference for an AK.
-        max_num_timeslots_before_break (int): The maximum number of timeslots any participant
-            is planned to go to before a break.
+        max_num_timeslots_before_break (int): The maximum number of timeslots
+            any participant is planned to go to before a break.
         allow_unscheduled_aks(bool): Whether not scheduling an AK is allowed or not.
         allow_changing_rooms (bool): Whether changing the room for an fixed AK
             is allowed or not.
@@ -360,13 +361,16 @@ def process_room_cap(room_capacity: int, num_participants: int) -> int:
     """Process the input room capacity for the MILP constraints.
 
     Args:
-        room_capacity (int): The input room capacity: infinite (-1) or actual capacity >=0
-        num_participants (int): The total number of participants (needed to model infinity)
+        room_capacity (int): The input room capacity: infinite (-1) or
+            actual capacity >=0
+        num_participants (int): The total number of participants (needed to model
+            infinity)
+
 
     Returns:
-        int: The processed room capacity: Rooms with infinite capacity or capacity larger than
-        num_participants are set to num_participants. Rooms with a smaller non-negative capacity
-        hold their capacity.
+        int: The processed room capacity: Rooms with infinite capacity or
+        capacity larger than num_participants are set to num_participants.
+        Rooms with a smaller non-negative capacity hold their capacity.
 
     Raises:
         ValueError: if 'room_capacity' < -1
@@ -420,9 +424,9 @@ class ProblemIds:
 
     @classmethod
     def init_from_problem(
-        cls: Type["ProblemIds"],
+        cls: type[ProblemIds],
         input_data: SchedulingInput,
-    ) -> "ProblemIds":
+    ) -> ProblemIds:
         """Get problem ids from the input data."""
         ak_ids, person_ids, room_ids, timeslot_ids = cls.get_ids(input_data)
 
@@ -467,10 +471,10 @@ class ProblemProperties:
 
     @classmethod
     def init_from_problem(
-        cls: Type["ProblemProperties"],
+        cls: type[ProblemProperties],
         input_data: SchedulingInput,
         ids: ProblemIds | None = None,
-    ) -> "ProblemProperties":
+    ) -> ProblemProperties:
         """Get derived problem properties from the input data."""
         if ids is None:
             ids = ProblemIds.init_from_problem(input_data)

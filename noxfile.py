@@ -1,4 +1,4 @@
-"""This module implements our CI function calls."""
+"""Module with our CI function calls."""
 
 import nox
 
@@ -47,7 +47,7 @@ def run_test_extensive(session):
 def lint(session):
     """Check code conventions."""
     session.install(".[lint]")
-    session.run("flake8", "src", "tests", "noxfile.py", *session.posargs)
+    session.run("ruff", "check", *session.posargs)
 
 
 @nox.session(name="typing")
@@ -58,11 +58,10 @@ def mypy(session):
 
 
 @nox.session(name="format")
-def format(session):
+def format(session):  # noqa: A001
     """Fix common convention problems automatically."""
     session.install(".[format]")
-    session.run("isort", "src", "tests", "noxfile.py")
-    session.run("black", "src", "tests", "noxfile.py")
+    session.run("ruff", "format", *session.posargs)
 
 
 @nox.session(name="coverage")

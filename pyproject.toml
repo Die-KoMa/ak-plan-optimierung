@@ -24,23 +24,14 @@ dependencies = [
     "dacite",
     "tqdm",
     "numpy",
+    "pandas",
+    "xarray",
     "linopy",
-    "typing_extensions",
 ]
 
 [project.optional-dependencies]
-format = ["black", "isort"]
-lint = [
-    "flake8",
-    "flake8-colors",
-    "flake8-black",
-    "flake8-docstrings",
-    "flake8-bugbear",
-    "flake8-broken-line",
-    "pep8-naming",
-    "pydocstyle",
-    "darglint",
-]
+format = ["ruff"]
+lint = ["ruff"]
 test = ["highspy", "gurobipy", "pytest", "pytest-timeout"]
 coverage = ["coverage"]
 typing = ["pytest", "mypy"]
@@ -70,3 +61,33 @@ strict = true
 install_types = true
 non_interactive = true
 exclude_gitignore = true
+
+[tool.ruff]
+extend-exclude = ["*.ipynb"]
+target-version = "py311"
+
+[tool.ruff.lint]
+select = [
+    'F',   # pyflakes
+    'E',   # pycodestyle: Error
+    'W',   # pycodestyle: Warning
+    'I',   # isort
+    'D',   # pydocstyle
+    'UP',  # pyupgrade
+    'TID', # flake8-tidy-imports
+    'NPY', # numpy
+    'B',   # flake8-bugbear
+    'A',   # flake8-builtins
+    'G',   # flake8-logging-format
+    'LOG', # flake8-logging
+    'N',   # pep8-naming
+]
+ignore = [
+    "D203", # blank line before class docstring
+    "D213", # multiline docstr starts on second line
+    "D413", # blank line after 'Args:'
+]
+
+[tool.ruff.lint.flake8-tidy-imports]
+# Disallow all relative imports.
+ban-relative-imports = "all"
