@@ -279,22 +279,17 @@ def create_lp(
         )
     logger.debug("Constraints BreakForPerson added")
 
-    # TODO vectorize
     # AK dependencies
+
+    # calculate cumulative sum. We use `isel` to index 'from the left' of window
+    time_tail_sum = time.isel(timeslot=slice(None, None, -1)).cumsum("timeslot")
     for ak_id in ids.ak:
         if ak_id not in props.dependencies:
             continue
-        other_ak_ids = props.dependencies[ak_id]
-        for idx, timeslot_id in enumerate(ids.timeslot):
-            m.add_constraints(
-                lhs=time.loc[ak_id, ids.timeslot[idx:]].sum("timeslot")
-                - time.loc[other_ak_ids, timeslot_id],
-                sign=">=",
-                rhs=0,
-                name=_construct_constraint_name(
-                    "AKDependenciesDoneBeforeAK", ak_id, timeslot_id
-                ),
-            )
+        m.add_constraints(
+            time_tail_sum.loc[ak_id] - time.loc[props.dependencies[ak_id]] >= 0,
+            name=_construct_constraint_name("AKDependenciesDoneBeforeAK", ak_id),
+        )
     logger.debug("Constraints AKDependenciesDoneBeforeAK added")
 
     time_lp_construction_end = perf_counter()
