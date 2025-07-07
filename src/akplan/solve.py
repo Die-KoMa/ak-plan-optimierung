@@ -256,24 +256,27 @@ def create_lp(
                 )
     logger.debug("Constraints AKContiguous added")
 
-    # TODO vectorize
-    if input_data.config.max_num_timeslots_before_break > 0:
+    # shorter alias
+    num_max_consec = input_data.config.max_num_timeslots_before_break
+    if num_max_consec > 0:
         # PersonNeedsBreak
         # Any real person needs a break after some number of time slots
         # So in each block at most  consecutive timeslots can be active for any person
-        for block_entry in ids.block_dict.values():
-            for idx in range(
-                len(block_entry) - input_data.config.max_num_timeslots_before_break - 1
-            ):
-                block_subset = block_entry[
-                    idx : idx + input_data.config.max_num_timeslots_before_break + 1
-                ]
-                m.add_constraints(
-                    lhs=person_time.loc[:, block_subset].sum("timeslot"),
-                    sign="<=",
-                    rhs=input_data.config.max_num_timeslots_before_break,
-                    name=_construct_constraint_name("BreakForPerson", block_entry[idx]),
-                )
+
+        # expand person_time to additional block idx
+        block_person_time = props.block_mask * person_time
+
+        # we assume that timeslots are chronologically consecutive
+        rolling_sum = block_person_time.rolling(timeslot=num_max_consec + 1).sum()
+
+        # ignore partial rolling at the beginning of blocks
+        ignore_fist_n_mask = (
+            props.block_mask.cumsum(dim="timeslot") > num_max_consec
+        )
+        m.add_constraints(
+            rolling_sum.where(props.block_mask & ignore_fist_n_mask) <= num_max_consec,
+            name="BreakForPerson",
+        )
     logger.debug("Constraints BreakForPerson added")
 
     # TODO vectorize
