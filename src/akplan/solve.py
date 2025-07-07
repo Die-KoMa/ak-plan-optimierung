@@ -236,24 +236,22 @@ def create_lp(
         )
     logger.debug("Constraints AKConflict added")
 
-    # TODO vectorize
+    # TODO vectorize more
     for ak_id, (block_id, block_lst) in product(ids.ak, ids.block_dict.items()):
         # AKContiguous
-        for timeslot_idx, timeslot_id_a in enumerate(block_lst):
-            for timeslot_id_b in block_lst[
+        for timeslot_idx, timeslot_id in enumerate(block_lst):
+            other_timeslots = block_lst[
                 timeslot_idx + props.ak_durations.loc[ak_id].item() :
-            ]:
-                m.add_constraints(
-                    time.loc[ak_id, [timeslot_id_a, timeslot_id_b]].sum("timeslot")
-                    <= 1,
-                    name=_construct_constraint_name(
-                        "AKContiguous",
-                        ak_id,
-                        block_id,
-                        timeslot_id_a,
-                        timeslot_id_b,
-                    ),
-                )
+            ]
+            m.add_constraints(
+                time.loc[ak_id, timeslot_id] + time.loc[ak_id, other_timeslots] <= 1,
+                name=_construct_constraint_name(
+                    "AKContiguous",
+                    ak_id,
+                    block_id,
+                    timeslot_id,
+                ),
+            )
     logger.debug("Constraints AKContiguous added")
 
     # shorter alias
