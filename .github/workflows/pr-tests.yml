@@ -1,0 +1,66 @@
+name: Tests
+
+# run tests on pull requests and on main
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ '*' ]
+  schedule:
+  - cron: "0 5 * * TUE"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    # Build the Python SDist and wheel, performs metadata and readme linting
+    name: Build and verify package
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Needed for setuptools_scm
+      - uses: hynek/build-and-inspect-python-package@v2
+        id: baipp
+
+    outputs:
+      # collect python versions from `pyproject.toml`
+      python-versions: ${{ steps.baipp.outputs.supported_python_classifiers_json_array }}
+
+  test:
+    # Test package build on all supported Python versions
+    name: Test package
+    needs: [build]
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ${{ fromJSON(needs.build.outputs.python-versions) }}
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0 # Needed for setuptools_scm
+
+    - name: Set up Python ${{ matrix.python-version }} on ubuntu-latest
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Download package
+      uses: actions/download-artifact@v4
+      with:
+        name: Packages
+        path: dist
+
+    - name: Install package and dependencies
+      run: |
+        python -m pip install uv
+        uv tool install nox
+        uv pip install --system "$(ls dist/*.whl)[test]"
+
+    - name: fast-unlicensed-test
+      run: |
+        uvx nox -s fast-unlicensed-test
