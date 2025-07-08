@@ -1,4 +1,4 @@
-"""This module implements our CI function calls."""
+"""Module with our CI function calls."""
 
 import nox
 
@@ -27,6 +27,15 @@ def run_test_fast(session):
     session.run("pytest", "-m", "not slow and not extensive", *session.posargs)
 
 
+@nox.session(name="fast-unlicensed-test")
+def run_test_fast_unlicensed(session):
+    """Run pytest on fast test cases without any license."""
+    session = _setup_test_session(session)
+    session.run(
+        "pytest", "-m", "not slow and not extensive and not licensed", *session.posargs
+    )
+
+
 @nox.session(name="extensive-test")
 def run_test_extensive(session):
     """Run pytest on all test cases."""
@@ -38,31 +47,21 @@ def run_test_extensive(session):
 def lint(session):
     """Check code conventions."""
     session.install(".[lint]")
-    session.run("flake8", "src", "tests", "noxfile.py", *session.posargs)
+    session.run("ruff", "check", *session.posargs)
 
 
 @nox.session(name="typing")
 def mypy(session):
     """Check type hints."""
     session.install(".[typing]")
-    session.run(
-        "mypy",
-        "--install-types",
-        "--non-interactive",
-        "--ignore-missing-imports",
-        "--strict",
-        "src",
-        "tests",
-        *session.posargs,
-    )
+    session.run("mypy", *session.posargs)
 
 
 @nox.session(name="format")
-def format(session):
+def format(session):  # noqa: A001
     """Fix common convention problems automatically."""
     session.install(".[format]")
-    session.run("isort", "src", "tests", "noxfile.py")
-    session.run("black", "src", "tests", "noxfile.py")
+    session.run("ruff", "format", *session.posargs)
 
 
 @nox.session(name="coverage")

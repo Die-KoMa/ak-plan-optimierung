@@ -1,11 +1,10 @@
 """Type definitions."""
 
 from pathlib import Path
-from typing import Literal, NamedTuple, TypedDict, TypeVar
+from typing import Literal, NamedTuple, NotRequired, TypedDict, TypeVar
 
 import pandas as pd
 import xarray as xr
-from typing_extensions import NotRequired
 
 Id = int
 T = TypeVar("T")
