@@ -34,7 +34,7 @@ format = ["ruff"]
 lint = ["ruff"]
 test = ["highspy", "gurobipy", "pytest", "pytest-timeout"]
 coverage = ["coverage"]
-typing = ["pytest", "mypy"]
+typing = ["highspy", "pytest", "mypy"]
 
 [project.urls]
 Source = "https://github.com/Die-KoMa/ak-plan-optimierung"
@@ -61,6 +61,10 @@ strict = true
 install_types = true
 non_interactive = true
 exclude_gitignore = true
+
+[[tool.mypy.overrides]]
+module = ["highspy.*"]
+follow_untyped_imports = true
 
 [tool.ruff]
 extend-exclude = ["*.ipynb"]
