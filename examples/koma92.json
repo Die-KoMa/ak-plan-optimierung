@@ -15680,7 +15680,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Stuhl",
         "head": "",
         "description": "",
         "reso": false,
@@ -15708,7 +15708,7 @@
         "resolution"
       ],
       "info": {
-        "name": "",
+        "name": "Tisch",
         "head": "",
         "description": "",
         "reso": true,
@@ -15737,7 +15737,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Lampe",
         "head": "",
         "description": "",
         "reso": false,
@@ -15763,7 +15763,7 @@
         "availability-cat-Meta BuFaTa"
       ],
       "info": {
-        "name": "",
+        "name": "Buch",
         "head": "",
         "description": "",
         "reso": false,
@@ -15788,7 +15788,7 @@
         "availability-cat-Meta BuFaTa"
       ],
       "info": {
-        "name": "",
+        "name": "Fenster",
         "head": "",
         "description": "",
         "reso": false,
@@ -15815,7 +15815,7 @@
         "resolution"
       ],
       "info": {
-        "name": "",
+        "name": "Tür",
         "head": "",
         "description": "",
         "reso": true,
@@ -15851,7 +15851,7 @@
         "resolution"
       ],
       "info": {
-        "name": "",
+        "name": "Bild",
         "head": "",
         "description": "",
         "reso": true,
@@ -15880,7 +15880,7 @@
         "resolution"
       ],
       "info": {
-        "name": "",
+        "name": "Uhr",
         "head": "",
         "description": "",
         "reso": true,
@@ -15909,7 +15909,7 @@
         "resolution"
       ],
       "info": {
-        "name": "",
+        "name": "Bett",
         "head": "",
         "description": "",
         "reso": true,
@@ -15938,7 +15938,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Sofa",
         "head": "",
         "description": "",
         "reso": false,
@@ -15966,7 +15966,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Schrank",
         "head": "",
         "description": "",
         "reso": false,
@@ -15995,7 +15995,7 @@
         "resolution"
       ],
       "info": {
-        "name": "",
+        "name": "Tasse",
         "head": "",
         "description": "",
         "reso": true,
@@ -16025,7 +16025,7 @@
         "availability-cat-Meta BuFaTa"
       ],
       "info": {
-        "name": "",
+        "name": "Glas",
         "head": "",
         "description": "",
         "reso": false,
@@ -16053,7 +16053,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Teller",
         "head": "",
         "description": "",
         "reso": false,
@@ -16081,7 +16081,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Löffel",
         "head": "",
         "description": "",
         "reso": false,
@@ -16110,7 +16110,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Gabel",
         "head": "",
         "description": "",
         "reso": false,
@@ -16139,7 +16139,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Messer",
         "head": "",
         "description": "",
         "reso": false,
@@ -16166,7 +16166,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Schlüssel",
         "head": "",
         "description": "",
         "reso": false,
@@ -16198,7 +16198,7 @@
         "availability-cat-Meta BuFaTa"
       ],
       "info": {
-        "name": "",
+        "name": "Telefon",
         "head": "",
         "description": "",
         "reso": false,
@@ -16225,7 +16225,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Computer",
         "head": "",
         "description": "",
         "reso": false,
@@ -16251,7 +16251,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Kabel",
         "head": "",
         "description": "",
         "reso": false,
@@ -16287,7 +16287,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Maus",
         "head": "",
         "description": "",
         "reso": false,
@@ -16323,7 +16323,7 @@
         "resolution"
       ],
       "info": {
-        "name": "",
+        "name": "Tastatur",
         "head": "",
         "description": "",
         "reso": true,
@@ -16357,7 +16357,7 @@
         "resolution"
       ],
       "info": {
-        "name": "",
+        "name": "Monitor",
         "head": "",
         "description": "",
         "reso": true,
@@ -16387,7 +16387,7 @@
         "resolution"
       ],
       "info": {
-        "name": "",
+        "name": "Drucker",
         "head": "",
         "description": "",
         "reso": true,
@@ -16413,7 +16413,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Kühlschrank",
         "head": "",
         "description": "",
         "reso": false,
@@ -16439,7 +16439,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Herd",
         "head": "",
         "description": "",
         "reso": false,
@@ -16467,7 +16467,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Backofen",
         "head": "",
         "description": "",
         "reso": false,
@@ -16494,7 +16494,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Waschmaschine",
         "head": "",
         "description": "",
         "reso": false,
@@ -16522,7 +16522,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Spüle",
         "head": "",
         "description": "",
         "reso": false,
@@ -16553,7 +16553,7 @@
         "resolution"
       ],
       "info": {
-        "name": "",
+        "name": "Besen",
         "head": "",
         "description": "",
         "reso": true,
@@ -16579,7 +16579,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Eimer",
         "head": "",
         "description": "",
         "reso": false,
@@ -16605,7 +16605,7 @@
         "availability-cat-Meta BuFaTa"
       ],
       "info": {
-        "name": "",
+        "name": "Müll",
         "head": "",
         "description": "",
         "reso": false,
@@ -16635,7 +16635,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Handtuch",
         "head": "",
         "description": "",
         "reso": false,
@@ -16662,7 +16662,7 @@
         "fixed-akslot-1432"
       ],
       "info": {
-        "name": "",
+        "name": "Seife",
         "head": "",
         "description": "",
         "reso": false,
@@ -16691,7 +16691,7 @@
         "availability-cat-Meta BuFaTa"
       ],
       "info": {
-        "name": "",
+        "name": "Zahnbürste",
         "head": "",
         "description": "",
         "reso": false,
@@ -16719,7 +16719,7 @@
         "availability-cat-Meta BuFaTa"
       ],
       "info": {
-        "name": "",
+        "name": "Spiegel",
         "head": "",
         "description": "",
         "reso": false,
@@ -16745,7 +16745,7 @@
         "availability-cat-Meta BuFaTa"
       ],
       "info": {
-        "name": "",
+        "name": "Kissen",
         "head": "",
         "description": "",
         "reso": false,
@@ -16772,7 +16772,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Decke",
         "head": "",
         "description": "",
         "reso": false,
@@ -16798,7 +16798,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Vorhang",
         "head": "",
         "description": "",
         "reso": false,
@@ -16824,7 +16824,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Blume",
         "head": "",
         "description": "",
         "reso": false,
@@ -16851,7 +16851,7 @@
         "availability-cat-Meta BuFaTa"
       ],
       "info": {
-        "name": "",
+        "name": "Pflanze",
         "head": "",
         "description": "",
         "reso": false,
@@ -16877,7 +16877,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Fahrrad",
         "head": "",
         "description": "",
         "reso": false,
@@ -16903,7 +16903,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Auto",
         "head": "",
         "description": "",
         "reso": false,
@@ -16932,7 +16932,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Bus",
         "head": "",
         "description": "",
         "reso": false,
@@ -16962,7 +16962,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Zug",
         "head": "",
         "description": "",
         "reso": false,
@@ -16993,7 +16993,7 @@
         "resolution"
       ],
       "info": {
-        "name": "",
+        "name": "Flugzeug",
         "head": "",
         "description": "",
         "reso": true,
@@ -17019,7 +17019,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Schiff",
         "head": "",
         "description": "",
         "reso": false,
@@ -17047,7 +17047,7 @@
         "fixed-akslot-1452"
       ],
       "info": {
-        "name": "",
+        "name": "Boot",
         "head": "",
         "description": "",
         "reso": false,
@@ -17078,7 +17078,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Straße",
         "head": "",
         "description": "",
         "reso": false,
@@ -17105,7 +17105,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Brücke",
         "head": "",
         "description": "",
         "reso": false,
@@ -17133,7 +17133,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Haus",
         "head": "",
         "description": "",
         "reso": false,
@@ -17160,7 +17160,7 @@
         "resolution"
       ],
       "info": {
-        "name": "",
+        "name": "Dach",
         "head": "",
         "description": "",
         "reso": true,
@@ -17189,7 +17189,7 @@
         "resolution"
       ],
       "info": {
-        "name": "",
+        "name": "Mauer",
         "head": "",
         "description": "",
         "reso": true,
@@ -17220,7 +17220,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Zaun",
         "head": "",
         "description": "",
         "reso": false,
@@ -17247,7 +17247,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Türschloss",
         "head": "",
         "description": "",
         "reso": false,
@@ -17274,7 +17274,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Lampe",
         "head": "",
         "description": "",
         "reso": false,
@@ -17310,7 +17310,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Kerze",
         "head": "",
         "description": "",
         "reso": false,
@@ -17336,7 +17336,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Batterie",
         "head": "",
         "description": "",
         "reso": false,
@@ -17367,7 +17367,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Fernseher",
         "head": "",
         "description": "",
         "reso": false,
@@ -17399,7 +17399,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Radio",
         "head": "",
         "description": "",
         "reso": false,
@@ -17427,7 +17427,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Lautsprecher",
         "head": "",
         "description": "",
         "reso": false,
@@ -17455,7 +17455,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Mikrofon",
         "head": "",
         "description": "",
         "reso": false,
@@ -17483,7 +17483,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Kamera",
         "head": "",
         "description": "",
         "reso": false,
@@ -17510,7 +17510,7 @@
         "resolution"
       ],
       "info": {
-        "name": "",
+        "name": "Bilderrahmen",
         "head": "",
         "description": "",
         "reso": true,
@@ -17542,7 +17542,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Notizbuch",
         "head": "",
         "description": "",
         "reso": false,
@@ -17570,7 +17570,7 @@
         "availability-cat-Meta BuFaTa"
       ],
       "info": {
-        "name": "",
+        "name": "Stift",
         "head": "",
         "description": "",
         "reso": false,
@@ -17596,7 +17596,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Schere",
         "head": "",
         "description": "",
         "reso": false,
@@ -17624,7 +17624,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Kleber",
         "head": "",
         "description": "",
         "reso": false,
@@ -17651,7 +17651,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Lineal",
         "head": "",
         "description": "",
         "reso": false,
@@ -17679,7 +17679,7 @@
         "resolution"
       ],
       "info": {
-        "name": "",
+        "name": "Radiergummi",
         "head": "",
         "description": "",
         "reso": true,
@@ -17707,7 +17707,7 @@
         "resolution"
       ],
       "info": {
-        "name": "",
+        "name": "Heft",
         "head": "",
         "description": "",
         "reso": true,
@@ -17735,7 +17735,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Ordner",
         "head": "",
         "description": "",
         "reso": false,
@@ -17763,7 +17763,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Kalender",
         "head": "",
         "description": "",
         "reso": false,
@@ -17791,7 +17791,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Lampe",
         "head": "",
         "description": "",
         "reso": false,
@@ -17817,7 +17817,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Teppich",
         "head": "",
         "description": "",
         "reso": false,
@@ -17845,7 +17845,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Schuh",
         "head": "",
         "description": "",
         "reso": false,
@@ -17877,7 +17877,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Jacke",
         "head": "",
         "description": "",
         "reso": false,
@@ -17904,7 +17904,7 @@
         "availability-cat-Meta BuFaTa"
       ],
       "info": {
-        "name": "",
+        "name": "Hut",
         "head": "",
         "description": "",
         "reso": false,
@@ -17935,7 +17935,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Handschuh",
         "head": "",
         "description": "",
         "reso": false,
@@ -17961,7 +17961,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Tasche",
         "head": "",
         "description": "",
         "reso": false,
@@ -17988,7 +17988,7 @@
         "resolution"
       ],
       "info": {
-        "name": "",
+        "name": "Schlüsselanhänger",
         "head": "",
         "description": "",
         "reso": true,
@@ -18015,7 +18015,7 @@
         "resolution"
       ],
       "info": {
-        "name": "",
+        "name": "Mütze",
         "head": "",
         "description": "",
         "reso": true,
@@ -18042,7 +18042,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Schal",
         "head": "",
         "description": "",
         "reso": false,
@@ -18071,7 +18071,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Brille",
         "head": "",
         "description": "",
         "reso": false,
@@ -18097,7 +18097,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Uhr",
         "head": "",
         "description": "",
         "reso": false,
@@ -18123,7 +18123,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Gürtel",
         "head": "",
         "description": "",
         "reso": false,
@@ -18149,7 +18149,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Regenschirm",
         "head": "",
         "description": "",
         "reso": false,
@@ -18176,7 +18176,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Schlüssel",
         "head": "",
         "description": "",
         "reso": false,
@@ -18203,7 +18203,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Karte",
         "head": "",
         "description": "",
         "reso": false,
@@ -18230,7 +18230,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Brief",
         "head": "",
         "description": "",
         "reso": false,
@@ -18263,7 +18263,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Fahrschein",
         "head": "",
         "description": "",
         "reso": false,
@@ -18296,7 +18296,7 @@
         "resolution"
       ],
       "info": {
-        "name": "",
+        "name": "Pass",
         "head": "",
         "description": "",
         "reso": true,
@@ -18322,7 +18322,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Reisetasche",
         "head": "",
         "description": "",
         "reso": false,
@@ -18352,7 +18352,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Rucksack",
         "head": "",
         "description": "",
         "reso": false,
@@ -18385,7 +18385,7 @@
         "resolution"
       ],
       "info": {
-        "name": "",
+        "name": "Koffer",
         "head": "",
         "description": "",
         "reso": true,
@@ -18413,7 +18413,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Tasche",
         "head": "",
         "description": "",
         "reso": false,
@@ -18445,7 +18445,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Stift",
         "head": "",
         "description": "",
         "reso": false,
@@ -18476,7 +18476,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Bleistift",
         "head": "",
         "description": "",
         "reso": false,
@@ -18503,7 +18503,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Marker",
         "head": "",
         "description": "",
         "reso": false,
@@ -18537,7 +18537,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Radiergummi",
         "head": "",
         "description": "",
         "reso": false,
@@ -18563,7 +18563,7 @@
         "availability-cat-Meta BuFaTa"
       ],
       "info": {
-        "name": "",
+        "name": "Buchstütze",
         "head": "",
         "description": "",
         "reso": false,
@@ -18589,7 +18589,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Briefkasten",
         "head": "",
         "description": "",
         "reso": false,
@@ -18616,7 +18616,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Mülltonne",
         "head": "",
         "description": "",
         "reso": false,
@@ -18645,7 +18645,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Laterne",
         "head": "",
         "description": "",
         "reso": false,
@@ -18671,7 +18671,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Straßenschild",
         "head": "",
         "description": "",
         "reso": false,
@@ -18700,7 +18700,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Ampel",
         "head": "",
         "description": "",
         "reso": false,
@@ -18726,7 +18726,7 @@
         "availability-cat-Meta BuFaTa"
       ],
       "info": {
-        "name": "",
+        "name": "Parkbank",
         "head": "",
         "description": "",
         "reso": false,
@@ -18751,7 +18751,7 @@
         "availability-cat-Meta BuFaTa"
       ],
       "info": {
-        "name": "",
+        "name": "Müllsack",
         "head": "",
         "description": "",
         "reso": false,
@@ -18776,7 +18776,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": "Papierkorb",
         "head": "",
         "description": "",
         "reso": false,
@@ -18801,7 +18801,7 @@
         "availability-cat-Inhalt/Arbeit"
       ],
       "info": {
-        "name": "",
+        "name": null,
         "head": "",
         "description": "",
         "reso": false,
@@ -18827,7 +18827,7 @@
         "availability-cat-Meta BuFaTa"
       ],
       "info": {
-        "name": "",
+        "name": null,
         "head": "",
         "description": "",
         "reso": false,
@@ -18853,7 +18853,7 @@
         "resolution"
       ],
       "info": {
-        "name": "",
+        "name": null,
         "head": "",
         "description": "",
         "reso": true,
@@ -18880,7 +18880,7 @@
         "availability-cat-Meta BuFaTa"
       ],
       "info": {
-        "name": "",
+        "name": null,
         "head": "",
         "description": "",
         "reso": false,
@@ -18908,7 +18908,7 @@
         "fixed-akslot-1579"
       ],
       "info": {
-        "name": "",
+        "name": null,
         "head": "",
         "description": "",
         "reso": false,

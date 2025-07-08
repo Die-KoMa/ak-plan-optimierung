@@ -473,7 +473,7 @@
       ],
       "duration": 1,
       "info": {
-        "name": "",
+        "name": "Stuhl",
         "description": "",
         "head": "",
         "reso": false
@@ -489,7 +489,7 @@
         "bbgrtime"
       ],
       "info": {
-        "name": "",
+        "name": "Tisch",
         "description": "",
         "head": "",
         "reso": false
@@ -500,7 +500,7 @@
     },
     {
       "info": {
-        "name": "",
+        "name": "Lampe",
         "description": "",
         "head": "",
         "duration": "1",
@@ -518,7 +518,7 @@
     },
     {
       "info": {
-        "name": "",
+        "name": "Buch",
         "description": "",
         "head": "",
         "duration": "1",
@@ -532,7 +532,7 @@
     },
     {
       "info": {
-        "name": "",
+        "name": "Fenster",
         "description": "",
         "head": "",
         "duration": "2",
@@ -550,7 +550,7 @@
     },
     {
       "info": {
-        "name": "",
+        "name": "Tür",
         "description": "",
         "head": "",
         "duration": "2",
@@ -564,7 +564,7 @@
     },
     {
       "info": {
-        "name": "",
+        "name": "Bild",
         "description": "",
         "head": "",
         "duration": "1",
@@ -578,7 +578,7 @@
     },
     {
       "info": {
-        "name": "",
+        "name": "Uhr",
         "description": "",
         "head": "",
         "duration": "2",
@@ -592,7 +592,7 @@
     },
     {
       "info": {
-        "name": "",
+        "name": "Bett",
         "description": "",
         "head": "",
         "duration": "1",
@@ -610,7 +610,7 @@
     },
     {
       "info": {
-        "name": "",
+        "name": "Sofa",
         "description": "",
         "head": "",
         "duration": "1",
@@ -628,7 +628,7 @@
     },
     {
       "info": {
-        "name": "",
+        "name": "Schrank",
         "description": "",
         "head": "",
         "duration": "1",
@@ -642,7 +642,7 @@
     },
     {
       "info": {
-        "name": "",
+        "name": "Tasse",
         "description": "",
         "head": "",
         "duration": "1",
@@ -656,7 +656,7 @@
     },
     {
       "info": {
-        "name": "",
+        "name": "Glas",
         "description": "",
         "head": "",
         "duration": "2",
@@ -670,7 +670,7 @@
     },
     {
       "info": {
-        "name": "",
+        "name": "Teller",
         "description": "",
         "head": "",
         "duration": "1",
@@ -689,7 +689,7 @@
     },
     {
       "info": {
-        "name": "",
+        "name": "Löffel",
         "description": "",
         "head": "",
         "duration": "1",
@@ -703,7 +703,7 @@
     },
     {
       "info": {
-        "name": "",
+        "name": "Gabel",
         "description": "",
         "head": "",
         "duration": "1",
@@ -717,7 +717,7 @@
     },
     {
       "info": {
-        "name": "",
+        "name": "Messer",
         "description": "",
         "head": "",
         "duration": "1",
@@ -731,7 +731,7 @@
     },
     {
       "info": {
-        "name": "",
+        "name": "Schlüssel",
         "description": "",
         "head": "",
         "duration": "2",
@@ -749,7 +749,7 @@
     },
     {
       "info": {
-        "name": "",
+        "name": "Telefon",
         "description": "",
         "head": "",
         "duration": "1",
@@ -763,7 +763,7 @@
     },
     {
       "info": {
-        "name": "",
+        "name": "Computer",
         "description": "",
         "head": "",
         "duration": "2",
@@ -781,7 +781,7 @@
     },
     {
       "info": {
-        "name": "",
+        "name": "Kabel",
         "description": "",
         "head": "",
         "duration": "1",
@@ -799,7 +799,7 @@
     },
     {
       "info": {
-        "name": "",
+        "name": "Maus",
         "description": "",
         "head": "",
         "duration": "1",
@@ -813,7 +813,7 @@
     },
     {
       "info": {
-        "name": "",
+        "name": "Tastatur",
         "description": "",
         "head": "",
         "duration": "1",
@@ -827,7 +827,7 @@
     },
     {
       "info": {
-        "name": "",
+        "name": "Monitor",
         "description": "",
         "head": "",
         "duration": "1",
@@ -841,7 +841,7 @@
     },
     {
       "info": {
-        "name": "",
+        "name": "Drucker",
         "description": "",
         "head": "",
         "duration": "1",
@@ -855,7 +855,7 @@
     },
     {
       "info": {
-        "name": "",
+        "name": "Kühlschrank",
         "description": "",
         "head": "",
         "duration": "1",
@@ -873,7 +873,7 @@
     },
     {
       "info": {
-        "name": "",
+        "name": "Herd",
         "description": "",
         "head": "",
         "duration": "1",
@@ -891,7 +891,7 @@
     },
     {
       "info": {
-        "name": "",
+        "name": "Backofen",
         "description": "",
         "head": "",
         "duration": "1",
@@ -905,7 +905,7 @@
     },
     {
       "info": {
-        "name": "",
+        "name": "Waschmaschine",
         "description": "",
         "head": "",
         "duration": "1",
@@ -919,7 +919,7 @@
     },
     {
       "info": {
-        "name": "",
+        "name": "Spüle",
         "description": "",
         "head": "",
         "duration": "1",
@@ -933,7 +933,7 @@
     },
     {
       "info": {
-        "name": "",
+        "name": "Besen",
         "description": "",
         "head": "",
         "duration": "1",
@@ -947,7 +947,7 @@
     },
     {
       "info": {
-        "name": "",
+        "name": "Eimer",
         "description": "",
         "head": "",
         "duration": "1",
@@ -961,7 +961,7 @@
     },
     {
       "info": {
-        "name": "",
+        "name": "Müll",
         "description": "",
         "head": "",
         "duration": "1",
@@ -975,7 +975,7 @@
     },
     {
       "info": {
-        "name": "",
+        "name": "Handtuch",
         "description": "",
         "head": "",
         "duration": "1",
@@ -989,7 +989,7 @@
     },
     {
       "info": {
-        "name": "",
+        "name": "Seife",
         "description": "",
         "head": "",
         "duration": "1",
@@ -1003,7 +1003,7 @@
     },
     {
       "info": {
-        "name": "",
+        "name": "Zahnbürste",
         "description": "",
         "head": "",
         "duration": "1",
@@ -1017,7 +1017,7 @@
     },
     {
       "info": {
-        "name": "",
+        "name": "Spiegel",
         "description": "",
         "head": "",
         "duration": "1",
@@ -1031,7 +1031,7 @@
     },
     {
       "info": {
-        "name": "",
+        "name": "Kissen",
         "description": "",
         "head": "",
         "duration": "1",
@@ -1045,7 +1045,7 @@
     },
     {
       "info": {
-        "name": "",
+        "name": "Decke",
         "description": "",
         "head": "",
         "duration": "1",
@@ -1059,7 +1059,7 @@
     },
     {
       "info": {
-        "name": "",
+        "name": "Vorhang",
         "description": "",
         "head": "",
         "duration": "1",
@@ -1073,7 +1073,7 @@
     },
     {
       "info": {
-        "name": "",
+        "name": "Blume",
         "head": "",
         "description": "",
         "reso": false,

@@ -289,7 +289,7 @@
       "room_constraints": [],
       "time_constraints": [],
       "info": {
-        "name": "",
+        "name": "Stuhl",
         "head": "",
         "description": "",
         "reso": false
@@ -302,7 +302,7 @@
       "room_constraints": [],
       "time_constraints": [],
       "info": {
-        "name": "",
+        "name": "Tisch",
         "head": "",
         "description": "",
         "reso": false
@@ -315,7 +315,7 @@
       "room_constraints": [],
       "time_constraints": [],
       "info": {
-        "name": "",
+        "name": "Lampe",
         "head": "",
         "description": "",
         "reso": false
@@ -328,7 +328,7 @@
       "room_constraints": [],
       "time_constraints": [],
       "info": {
-        "name": "",
+        "name": "Buch",
         "head": "",
         "description": "",
         "reso": false
@@ -343,7 +343,7 @@
         "reso_time"
       ],
       "info": {
-        "name": "",
+        "name": "Fenster",
         "head": "",
         "description": "",
         "reso": true
@@ -356,7 +356,7 @@
       "room_constraints": [],
       "time_constraints": [],
       "info": {
-        "name": "",
+        "name": "Tür",
         "head": "",
         "description": "",
         "reso": false
@@ -371,7 +371,7 @@
       ],
       "time_constraints": [],
       "info": {
-        "name": "",
+        "name": "Bild",
         "head": "",
         "description": "",
         "reso": false
@@ -386,7 +386,7 @@
         "reso_time"
       ],
       "info": {
-        "name": "",
+        "name": "Uhr",
         "head": "",
         "description": "",
         "reso": true
@@ -399,7 +399,7 @@
       "room_constraints": [],
       "time_constraints": [],
       "info": {
-        "name": "",
+        "name": "Bett",
         "head": "",
         "description": "",
         "reso": false
@@ -412,7 +412,7 @@
       "room_constraints": [],
       "time_constraints": [],
       "info": {
-        "name": "",
+        "name": "Sofa",
         "head": "",
         "description": "",
         "reso": false
@@ -425,7 +425,7 @@
       "room_constraints": [],
       "time_constraints": [],
       "info": {
-        "name": "",
+        "name": "Schrank",
         "head": "",
         "description": "",
         "reso": false
@@ -440,7 +440,7 @@
         "notfr"
       ],
       "info": {
-        "name": "",
+        "name": "Tasse",
         "head": "",
         "description": "",
         "reso": false
@@ -455,7 +455,7 @@
         "reso_time"
       ],
       "info": {
-        "name": "",
+        "name": "Glas",
         "head": "",
         "description": "",
         "reso": true
@@ -468,7 +468,7 @@
       "room_constraints": [],
       "time_constraints": [],
       "info": {
-        "name": "",
+        "name": "Teller",
         "head": "",
         "description": "",
         "reso": false
@@ -483,7 +483,7 @@
         "reso_time"
       ],
       "info": {
-        "name": "",
+        "name": "Löffel",
         "head": "",
         "description": "",
         "reso": true
@@ -498,7 +498,7 @@
       ],
       "time_constraints": [],
       "info": {
-        "name": "",
+        "name": "Gabel",
         "head": "",
         "description": "",
         "reso": false
@@ -511,7 +511,7 @@
       "room_constraints": [],
       "time_constraints": [],
       "info": {
-        "name": "",
+        "name": "Messer",
         "head": "",
         "description": "",
         "reso": false
@@ -524,7 +524,7 @@
       "room_constraints": [],
       "time_constraints": [],
       "info": {
-        "name": "",
+        "name": "Schlüssel",
         "head": "",
         "description": "",
         "reso": false
@@ -537,7 +537,7 @@
       "room_constraints": [],
       "time_constraints": [],
       "info": {
-        "name": "",
+        "name": "Telefon",
         "head": "",
         "description": "",
         "reso": false
@@ -550,7 +550,7 @@
       "room_constraints": [],
       "time_constraints": [],
       "info": {
-        "name": "",
+        "name": "Computer",
         "head": "",
         "description": "",
         "reso": false
@@ -563,7 +563,7 @@
       "room_constraints": [],
       "time_constraints": [],
       "info": {
-        "name": "",
+        "name": "Kabel",
         "head": "",
         "description": "",
         "reso": false
@@ -580,7 +580,7 @@
         "reso_time"
       ],
       "info": {
-        "name": "",
+        "name": "Maus",
         "head": "",
         "description": "",
         "reso": true
@@ -593,7 +593,7 @@
       "room_constraints": [],
       "time_constraints": [],
       "info": {
-        "name": "",
+        "name": "Tastatur",
         "head": "",
         "description": "",
         "reso": false
@@ -606,7 +606,7 @@
       "room_constraints": [],
       "time_constraints": [],
       "info": {
-        "name": "",
+        "name": "Monitor",
         "head": "",
         "description": "",
         "reso": false
@@ -621,7 +621,7 @@
       ],
       "time_constraints": [],
       "info": {
-        "name": "",
+        "name": "Drucker",
         "head": "",
         "description": "",
         "reso": false
@@ -634,7 +634,7 @@
       "room_constraints": [],
       "time_constraints": [],
       "info": {
-        "name": "",
+        "name": "Kühlschrank",
         "head": "",
         "description": "",
         "reso": false
@@ -647,7 +647,7 @@
       "room_constraints": [],
       "time_constraints": [],
       "info": {
-        "name": "",
+        "name": "Herd",
         "head": "",
         "description": "",
         "reso": false
@@ -662,7 +662,7 @@
         "so"
       ],
       "info": {
-        "name": "",
+        "name": "Backofen",
         "head": "",
         "description": "",
         "reso": false
@@ -675,7 +675,7 @@
       "room_constraints": [],
       "time_constraints": [],
       "info": {
-        "name": "",
+        "name": "Waschmaschine",
         "head": "",
         "description": "",
         "reso": false
@@ -688,7 +688,7 @@
       "room_constraints": [],
       "time_constraints": [],
       "info": {
-        "name": "",
+        "name": "Spüle",
         "head": "",
         "description": "",
         "reso": false
@@ -703,7 +703,7 @@
         "notso"
       ],
       "info": {
-        "name": "",
+        "name": "Besen",
         "head": "",
         "description": "",
         "reso": false
@@ -716,7 +716,7 @@
       "room_constraints": [],
       "time_constraints": [],
       "info": {
-        "name": "",
+        "name": "Eimer",
         "head": "",
         "description": "",
         "reso": false
@@ -729,7 +729,7 @@
       "room_constraints": [],
       "time_constraints": [],
       "info": {
-        "name": "",
+        "name": "Müll",
         "head": "",
         "description": "",
         "reso": false
