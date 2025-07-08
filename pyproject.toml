@@ -27,14 +27,15 @@ dependencies = [
     "pandas",
     "xarray",
     "linopy",
+    "highspy>=1.8.0",
 ]
 
 [project.optional-dependencies]
 format = ["ruff"]
 lint = ["ruff"]
-test = ["highspy", "gurobipy", "pytest", "pytest-timeout"]
+test = ["gurobipy", "pytest", "pytest-timeout"]
 coverage = ["coverage"]
-typing = ["highspy", "pytest", "mypy"]
+typing = ["pytest", "mypy"]
 
 [project.urls]
 Source = "https://github.com/Die-KoMa/ak-plan-optimierung"
