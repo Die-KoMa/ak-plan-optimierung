@@ -1,0 +1,5647 @@
+{
+  "rooms": [
+    {
+      "id": 11,
+      "info": {},
+      "capacity": 21,
+      "fulfilled_room_constraints": [
+        "beamer"
+      ],
+      "time_constraints": []
+    },
+    {
+      "id": 12,
+      "info": {},
+      "capacity": 32,
+      "fulfilled_room_constraints": [
+        "beamer"
+      ],
+      "time_constraints": []
+    },
+    {
+      "id": 104,
+      "info": {},
+      "capacity": 40,
+      "fulfilled_room_constraints": [
+        "beamer"
+      ],
+      "time_constraints": []
+    },
+    {
+      "id": 164,
+      "info": {},
+      "capacity": 20,
+      "fulfilled_room_constraints": [],
+      "time_constraints": [
+        "notso"
+      ]
+    },
+    {
+      "id": 209,
+      "info": {},
+      "capacity": 37,
+      "fulfilled_room_constraints": [
+        "beamer",
+        "notso"
+      ],
+      "time_constraints": []
+    }
+  ],
+  "timeslots": {
+    "info": {
+      "duration": "1 hour blocks"
+    },
+    "blocks": [
+      [
+        {
+          "id": 0,
+          "fulfilled_time_constraints": [
+            "reso_time",
+            "fr",
+            "notsa",
+            "notso"
+          ],
+          "info": {
+            "start": "Fr 14:00"
+          }
+        },
+        {
+          "id": 1,
+          "fulfilled_time_constraints": [
+            "reso_time",
+            "fr",
+            "notsa",
+            "notso"
+          ],
+          "info": {
+            "start": "Fr 15:00"
+          }
+        },
+        {
+          "id": 2,
+          "fulfilled_time_constraints": [
+            "reso_time",
+            "fr",
+            "notsa",
+            "notso"
+          ],
+          "info": {
+            "start": "Fr 16:00"
+          }
+        },
+        {
+          "id": 3,
+          "fulfilled_time_constraints": [
+            "reso_time",
+            "fr",
+            "notsa",
+            "notso"
+          ],
+          "info": {
+            "start": "Fr 17:00"
+          }
+        },
+        {
+          "id": 4,
+          "fulfilled_time_constraints": [
+            "reso_time",
+            "fr",
+            "notsa",
+            "notso"
+          ],
+          "info": {
+            "start": "Fr 18:00"
+          }
+        }
+      ],
+      [
+        {
+          "id": 5,
+          "fulfilled_time_constraints": [
+            "reso_time",
+            "sa",
+            "notfr",
+            "notso"
+          ],
+          "info": {
+            "start": "Sa 14:00"
+          }
+        },
+        {
+          "id": 6,
+          "fulfilled_time_constraints": [
+            "reso_time",
+            "sa",
+            "notfr",
+            "notso"
+          ],
+          "info": {
+            "start": "Sa 15:00"
+          }
+        },
+        {
+          "id": 7,
+          "fulfilled_time_constraints": [
+            "reso_time",
+            "sa",
+            "notfr",
+            "notso"
+          ],
+          "info": {
+            "start": "Sa 16:00"
+          }
+        },
+        {
+          "id": 8,
+          "fulfilled_time_constraints": [
+            "reso_time",
+            "sa",
+            "notfr",
+            "notso"
+          ],
+          "info": {
+            "start": "Sa 17:00"
+          }
+        },
+        {
+          "id": 9,
+          "fulfilled_time_constraints": [
+            "reso_time",
+            "sa",
+            "notfr",
+            "notso"
+          ],
+          "info": {
+            "start": "Sa 18:00"
+          }
+        }
+      ],
+      [
+        {
+          "id": 10,
+          "fulfilled_time_constraints": [
+            "so",
+            "notfr",
+            "notsa"
+          ],
+          "info": {
+            "start": "So 8:30"
+          }
+        },
+        {
+          "id": 11,
+          "fulfilled_time_constraints": [
+            "so",
+            "notfr",
+            "notsa"
+          ],
+          "info": {
+            "start": "So 9:30"
+          }
+        },
+        {
+          "id": 12,
+          "fulfilled_time_constraints": [
+            "so",
+            "notfr",
+            "notsa"
+          ],
+          "info": {
+            "start": "So 10:30"
+          }
+        },
+        {
+          "id": 13,
+          "fulfilled_time_constraints": [
+            "so",
+            "notfr",
+            "notsa"
+          ],
+          "info": {
+            "start": "So 11:30"
+          }
+        }
+      ],
+      [
+        {
+          "id": 14,
+          "fulfilled_time_constraints": [
+            "so",
+            "notfr",
+            "notsa"
+          ],
+          "info": {
+            "start": "So 14:00"
+          }
+        },
+        {
+          "id": 15,
+          "fulfilled_time_constraints": [
+            "so",
+            "notfr",
+            "notsa"
+          ],
+          "info": {
+            "start": "So 15:00"
+          }
+        },
+        {
+          "id": 16,
+          "fulfilled_time_constraints": [
+            "so",
+            "notfr",
+            "notsa"
+          ],
+          "info": {
+            "start": "So 16:00"
+          }
+        },
+        {
+          "id": 17,
+          "fulfilled_time_constraints": [
+            "so",
+            "notfr",
+            "notsa"
+          ],
+          "info": {
+            "start": "So 17:00"
+          }
+        },
+        {
+          "id": 18,
+          "fulfilled_time_constraints": [
+            "so",
+            "notfr",
+            "notsa"
+          ],
+          "info": {
+            "start": "So 18:00"
+          }
+        }
+      ]
+    ]
+  },
+  "aks": [
+    {
+      "id": 2,
+      "duration": 1,
+      "properties": {},
+      "room_constraints": [],
+      "time_constraints": [],
+      "info": {
+        "name": "Stuhl",
+        "head": "",
+        "description": "",
+        "reso": false
+      }
+    },
+    {
+      "id": 4,
+      "duration": 2,
+      "properties": {},
+      "room_constraints": [],
+      "time_constraints": [],
+      "info": {
+        "name": "Tisch",
+        "head": "",
+        "description": "",
+        "reso": false
+      }
+    },
+    {
+      "id": 5,
+      "duration": 1,
+      "properties": {},
+      "room_constraints": [],
+      "time_constraints": [],
+      "info": {
+        "name": "Lampe",
+        "head": "",
+        "description": "",
+        "reso": false
+      }
+    },
+    {
+      "id": 6,
+      "duration": 1,
+      "properties": {},
+      "room_constraints": [],
+      "time_constraints": [],
+      "info": {
+        "name": "Buch",
+        "head": "",
+        "description": "",
+        "reso": false
+      }
+    },
+    {
+      "id": 7,
+      "duration": 1,
+      "properties": {},
+      "room_constraints": [],
+      "time_constraints": [
+        "reso_time"
+      ],
+      "info": {
+        "name": "Fenster",
+        "head": "",
+        "description": "",
+        "reso": true
+      }
+    },
+    {
+      "id": 8,
+      "duration": 2,
+      "properties": {},
+      "room_constraints": [],
+      "time_constraints": [],
+      "info": {
+        "name": "Tür",
+        "head": "",
+        "description": "",
+        "reso": false
+      }
+    },
+    {
+      "id": 9,
+      "duration": 2,
+      "properties": {},
+      "room_constraints": [
+        "beamer"
+      ],
+      "time_constraints": [],
+      "info": {
+        "name": "Bild",
+        "head": "",
+        "description": "",
+        "reso": false
+      }
+    },
+    {
+      "id": 10,
+      "duration": 2,
+      "properties": {},
+      "room_constraints": [],
+      "time_constraints": [
+        "reso_time"
+      ],
+      "info": {
+        "name": "Uhr",
+        "head": "",
+        "description": "",
+        "reso": true
+      }
+    },
+    {
+      "id": 12,
+      "duration": 1,
+      "properties": {},
+      "room_constraints": [],
+      "time_constraints": [],
+      "info": {
+        "name": "Bett",
+        "head": "",
+        "description": "",
+        "reso": false
+      }
+    },
+    {
+      "id": 13,
+      "duration": 1,
+      "properties": {},
+      "room_constraints": [],
+      "time_constraints": [],
+      "info": {
+        "name": "Sofa",
+        "head": "",
+        "description": "",
+        "reso": false
+      }
+    },
+    {
+      "id": 14,
+      "duration": 2,
+      "properties": {},
+      "room_constraints": [],
+      "time_constraints": [],
+      "info": {
+        "name": "Schrank",
+        "head": "",
+        "description": "",
+        "reso": false
+      }
+    },
+    {
+      "id": 15,
+      "duration": 1,
+      "properties": {},
+      "room_constraints": [],
+      "time_constraints": [
+        "notfr"
+      ],
+      "info": {
+        "name": "Tasse",
+        "head": "",
+        "description": "",
+        "reso": false
+      }
+    },
+    {
+      "id": 16,
+      "duration": 1,
+      "properties": {},
+      "room_constraints": [],
+      "time_constraints": [
+        "reso_time"
+      ],
+      "info": {
+        "name": "Glas",
+        "head": "",
+        "description": "",
+        "reso": true
+      }
+    },
+    {
+      "id": 17,
+      "duration": 1,
+      "properties": {},
+      "room_constraints": [],
+      "time_constraints": [],
+      "info": {
+        "name": "Teller",
+        "head": "",
+        "description": "",
+        "reso": false
+      }
+    },
+    {
+      "id": 18,
+      "duration": 1,
+      "properties": {},
+      "room_constraints": [],
+      "time_constraints": [
+        "reso_time"
+      ],
+      "info": {
+        "name": "Löffel",
+        "head": "",
+        "description": "",
+        "reso": true
+      }
+    },
+    {
+      "id": 19,
+      "duration": 2,
+      "properties": {},
+      "room_constraints": [
+        "beamer"
+      ],
+      "time_constraints": [],
+      "info": {
+        "name": "Gabel",
+        "head": "",
+        "description": "",
+        "reso": false
+      }
+    },
+    {
+      "id": 20,
+      "duration": 1,
+      "properties": {},
+      "room_constraints": [],
+      "time_constraints": [],
+      "info": {
+        "name": "Messer",
+        "head": "",
+        "description": "",
+        "reso": false
+      }
+    },
+    {
+      "id": 21,
+      "duration": 2,
+      "properties": {},
+      "room_constraints": [],
+      "time_constraints": [],
+      "info": {
+        "name": "Schlüssel",
+        "head": "",
+        "description": "",
+        "reso": false
+      }
+    },
+    {
+      "id": 22,
+      "duration": 1,
+      "properties": {},
+      "room_constraints": [],
+      "time_constraints": [],
+      "info": {
+        "name": "Telefon",
+        "head": "",
+        "description": "",
+        "reso": false
+      }
+    },
+    {
+      "id": 23,
+      "duration": 1,
+      "properties": {},
+      "room_constraints": [],
+      "time_constraints": [],
+      "info": {
+        "name": "Computer",
+        "head": "",
+        "description": "",
+        "reso": false
+      }
+    },
+    {
+      "id": 0,
+      "duration": 1,
+      "properties": {},
+      "room_constraints": [],
+      "time_constraints": [],
+      "info": {
+        "name": "Kabel",
+        "head": "",
+        "description": "",
+        "reso": false
+      }
+    },
+    {
+      "id": 37,
+      "duration": 2,
+      "properties": {},
+      "room_constraints": [
+        "beamer"
+      ],
+      "time_constraints": [
+        "reso_time"
+      ],
+      "info": {
+        "name": "Maus",
+        "head": "",
+        "description": "",
+        "reso": true
+      }
+    },
+    {
+      "id": 11,
+      "duration": 1,
+      "properties": {},
+      "room_constraints": [],
+      "time_constraints": [],
+      "info": {
+        "name": "Tastatur",
+        "head": "",
+        "description": "",
+        "reso": false
+      }
+    },
+    {
+      "id": 24,
+      "duration": 1,
+      "properties": {},
+      "room_constraints": [],
+      "time_constraints": [],
+      "info": {
+        "name": "Monitor",
+        "head": "",
+        "description": "",
+        "reso": false
+      }
+    },
+    {
+      "id": 26,
+      "duration": 1,
+      "properties": {},
+      "room_constraints": [
+        "beamer"
+      ],
+      "time_constraints": [],
+      "info": {
+        "name": "Drucker",
+        "head": "",
+        "description": "",
+        "reso": false
+      }
+    },
+    {
+      "id": 29,
+      "duration": 1,
+      "properties": {},
+      "room_constraints": [],
+      "time_constraints": [],
+      "info": {
+        "name": "Kühlschrank",
+        "head": "",
+        "description": "",
+        "reso": false
+      }
+    },
+    {
+      "id": 30,
+      "duration": 1,
+      "properties": {},
+      "room_constraints": [],
+      "time_constraints": [],
+      "info": {
+        "name": "Herd",
+        "head": "",
+        "description": "",
+        "reso": false
+      }
+    },
+    {
+      "id": 31,
+      "duration": 2,
+      "properties": {},
+      "room_constraints": [],
+      "time_constraints": [
+        "so"
+      ],
+      "info": {
+        "name": "Backofen",
+        "head": "",
+        "description": "",
+        "reso": false
+      }
+    },
+    {
+      "id": 32,
+      "duration": 1,
+      "properties": {},
+      "room_constraints": [],
+      "time_constraints": [],
+      "info": {
+        "name": "Waschmaschine",
+        "head": "",
+        "description": "",
+        "reso": false
+      }
+    },
+    {
+      "id": 33,
+      "duration": 1,
+      "properties": {},
+      "room_constraints": [],
+      "time_constraints": [],
+      "info": {
+        "name": "Spüle",
+        "head": "",
+        "description": "",
+        "reso": false
+      }
+    },
+    {
+      "id": 34,
+      "duration": 1,
+      "properties": {},
+      "room_constraints": [],
+      "time_constraints": [
+        "notso"
+      ],
+      "info": {
+        "name": "Besen",
+        "head": "",
+        "description": "",
+        "reso": false
+      }
+    },
+    {
+      "id": 35,
+      "duration": 1,
+      "properties": {},
+      "room_constraints": [],
+      "time_constraints": [],
+      "info": {
+        "name": "Eimer",
+        "head": "",
+        "description": "",
+        "reso": false
+      }
+    },
+    {
+      "id": 36,
+      "duration": 2,
+      "properties": {},
+      "room_constraints": [],
+      "time_constraints": [],
+      "info": {
+        "name": "Müll",
+        "head": "",
+        "description": "",
+        "reso": false
+      }
+    }
+  ],
+  "participants": [
+    {
+      "id": 0,
+      "info": {
+        "name": "Alex",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 9,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 12,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 14,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 15,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 18,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 19,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 22,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 26,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 31,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 32,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 33,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 34,
+          "required": false,
+          "preference_score": 2
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "info": {
+        "name": "Max",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 2,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 4,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 5,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 7,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 8,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 11,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 12,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 13,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 18,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 21,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 22,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 26,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 29,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 37,
+          "required": true,
+          "preference_score": -1
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "info": {
+        "name": "Sascha",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 0,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 4,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 8,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 10,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 13,
+          "required": true,
+          "preference_score": -1
+        },
+        {
+          "ak_id": 14,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 17,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 20,
+          "required": true,
+          "preference_score": -1
+        },
+        {
+          "ak_id": 21,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 22,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 23,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 34,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "info": {
+        "name": "Nico",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 2,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 4,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 8,
+          "required": true,
+          "preference_score": -1
+        },
+        {
+          "ak_id": 10,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 13,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 14,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 16,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 17,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 20,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 23,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 26,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "info": {
+        "name": "Robin",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 13,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 17,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 33,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 34,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "info": {
+        "name": "Kim",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 4,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 8,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 10,
+          "required": true,
+          "preference_score": -1
+        },
+        {
+          "ak_id": 14,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 16,
+          "required": true,
+          "preference_score": -1
+        },
+        {
+          "ak_id": 23,
+          "required": true,
+          "preference_score": -1
+        },
+        {
+          "ak_id": 30,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "info": {
+        "name": "Toni",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 0,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 4,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 5,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 6,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 7,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 8,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 14,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 17,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 20,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 23,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 29,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "info": {
+        "name": "Sam",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 0,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 4,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 6,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 7,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 8,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 10,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 12,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 14,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 17,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 20,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 21,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 33,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 34,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 37,
+          "required": false,
+          "preference_score": 2
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "info": {
+        "name": "Luca",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 2,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 4,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 5,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 6,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 7,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 8,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 10,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 21,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 23,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 31,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 32,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 34,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "info": {
+        "name": "Noel",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 4,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 6,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 8,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 9,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 10,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 14,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 21,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 23,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 32,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "info": {
+        "name": "Julian",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 2,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 5,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 6,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 14,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 16,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 20,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 37,
+          "required": false,
+          "preference_score": 2
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "info": {
+        "name": "Jules",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 0,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 4,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 6,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 13,
+          "required": true,
+          "preference_score": -1
+        },
+        {
+          "ak_id": 20,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "info": {
+        "name": "Jamie",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 0,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 5,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 7,
+          "required": true,
+          "preference_score": -1
+        },
+        {
+          "ak_id": 10,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 12,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 14,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 15,
+          "required": true,
+          "preference_score": -1
+        },
+        {
+          "ak_id": 16,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 22,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 26,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 31,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 32,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 34,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 35,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "info": {
+        "name": "Sky",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 0,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 4,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 8,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 10,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 14,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 17,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 20,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 21,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 23,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "info": {
+        "name": "Marian",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 4,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 5,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 6,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 8,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 12,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 14,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 15,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 16,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 17,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 18,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 20,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 22,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 23,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 30,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 34,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 36,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "info": {
+        "name": "Dominique",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 0,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 2,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 4,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 10,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 14,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 20,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 21,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 23,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 31,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 32,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 34,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 37,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "info": {
+        "name": "Kai",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 4,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 6,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 8,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 14,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 37,
+          "required": false,
+          "preference_score": 2
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "info": {
+        "name": "Adrian",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 2,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 4,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 5,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 6,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 13,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 16,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 17,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 18,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 21,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 22,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 34,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "info": {
+        "name": "Charlie",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 4,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 8,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 9,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 10,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 12,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 14,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 16,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 17,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 21,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 23,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 30,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 31,
+          "required": true,
+          "preference_score": -1
+        },
+        {
+          "ak_id": 32,
+          "required": true,
+          "preference_score": -1
+        },
+        {
+          "ak_id": 33,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 34,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "info": {
+        "name": "Levi",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 0,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 6,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 19,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 21,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 30,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "info": {
+        "name": "Jannik",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 4,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 8,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 14,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "info": {
+        "name": "Pascal",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 0,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 4,
+          "required": true,
+          "preference_score": -1
+        },
+        {
+          "ak_id": 14,
+          "required": true,
+          "preference_score": -1
+        },
+        {
+          "ak_id": 17,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 20,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 24,
+          "required": true,
+          "preference_score": -1
+        },
+        {
+          "ak_id": 35,
+          "required": false,
+          "preference_score": 2
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "info": {
+        "name": "Andrea",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 7,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 8,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 9,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 10,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 16,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 29,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 34,
+          "required": false,
+          "preference_score": 2
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "info": {
+        "name": "Jess",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 5,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 14,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "info": {
+        "name": "Danny",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 4,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 7,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 8,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 9,
+          "required": true,
+          "preference_score": -1
+        },
+        {
+          "ak_id": 10,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 12,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 15,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 19,
+          "required": true,
+          "preference_score": -1
+        },
+        {
+          "ak_id": 26,
+          "required": true,
+          "preference_score": -1
+        },
+        {
+          "ak_id": 31,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 32,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 33,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 34,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "info": {
+        "name": "Rene",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 0,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 4,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 5,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 6,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 8,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 10,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 14,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 16,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 17,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 20,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 21,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 23,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 34,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "info": {
+        "name": "Stevie",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 0,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 4,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 5,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 6,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 8,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 14,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 30,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 31,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 32,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 34,
+          "required": false,
+          "preference_score": 2
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "info": {
+        "name": "Andy",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 0,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 4,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 5,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 6,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 8,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 14,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 17,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 20,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 30,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 31,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 32,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 34,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "info": {
+        "name": "Michi",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 6,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 35,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "info": {
+        "name": "Chris",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 4,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 8,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 10,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 14,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 16,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 17,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 21,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 22,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 23,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 29,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "info": {
+        "name": "Flo",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 9,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 21,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 22,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 30,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 31,
+      "info": {
+        "name": "Alexis",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 0,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 5,
+          "required": true,
+          "preference_score": -1
+        },
+        {
+          "ak_id": 6,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 7,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 11,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 12,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 14,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 15,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 17,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 20,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 22,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 34,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 35,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "info": {
+        "name": "Lenny",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 4,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 9,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 10,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 14,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 16,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 19,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 23,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 24,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 29,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 30,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 34,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 36,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 33,
+      "info": {
+        "name": "Marley",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 30,
+          "required": true,
+          "preference_score": -1
+        },
+        {
+          "ak_id": 33,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 34,
+      "info": {
+        "name": "Taylor",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 4,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 6,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 8,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 10,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 13,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 14,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 16,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 17,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 20,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 22,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 23,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 24,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 26,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 35,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 35,
+      "info": {
+        "name": "Sven",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 9,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 15,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 24,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 29,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 31,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 32,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 33,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 34,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 36,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 37,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 36,
+      "info": {
+        "name": "Ben",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 0,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 5,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 6,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 9,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 12,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 14,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 21,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 22,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 29,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 30,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 31,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 33,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 36,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 37,
+      "info": {
+        "name": "Matti",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 6,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 12,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 21,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 22,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 31,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 32,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 34,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 38,
+      "info": {
+        "name": "Finn",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 0,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 4,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 5,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 6,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 8,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 10,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 13,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 14,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 16,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 20,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 23,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 24,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 30,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 34,
+          "required": false,
+          "preference_score": 2
+        }
+      ]
+    },
+    {
+      "id": 39,
+      "info": {
+        "name": "Elliot",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 2,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 5,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 6,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 20,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 21,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 24,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 29,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 37,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 40,
+      "info": {
+        "name": "Ricky",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 0,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 2,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 4,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 5,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 6,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 7,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 8,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 10,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 12,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 14,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 15,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 16,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 17,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 18,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 20,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 21,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 22,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 23,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 24,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 26,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 29,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 30,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 31,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 34,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 35,
+          "required": true,
+          "preference_score": -1
+        }
+      ]
+    },
+    {
+      "id": 41,
+      "info": {
+        "name": "Nikita",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 0,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 9,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 19,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 20,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 29,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 31,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 32,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 36,
+          "required": false,
+          "preference_score": 2
+        }
+      ]
+    },
+    {
+      "id": 42,
+      "info": {
+        "name": "Tobi",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 5,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 6,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 9,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 15,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 17,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 19,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 20,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 21,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 22,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 24,
+          "required": true,
+          "preference_score": -1
+        },
+        {
+          "ak_id": 26,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 32,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 34,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 35,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 36,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 37,
+          "required": false,
+          "preference_score": 2
+        }
+      ]
+    },
+    {
+      "id": 43,
+      "info": {
+        "name": "Dani",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 4,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 5,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 6,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 8,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 13,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 14,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 15,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 17,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 22,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 24,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 33,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 34,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 44,
+      "info": {
+        "name": "Noah",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 4,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 5,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 6,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 10,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 13,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 14,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 17,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 20,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 22,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 23,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 35,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 36,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 45,
+      "info": {
+        "name": "Kris",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 4,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 5,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 6,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 11,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 12,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 13,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 14,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 31,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 34,
+          "required": true,
+          "preference_score": -1
+        }
+      ]
+    },
+    {
+      "id": 46,
+      "info": {
+        "name": "Emil",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 5,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 9,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 13,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 17,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 22,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 30,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 33,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 36,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 47,
+      "info": {
+        "name": "Timo",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 0,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 4,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 5,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 6,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 8,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 10,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 13,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 14,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 23,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 24,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 33,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 34,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 35,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 37,
+          "required": false,
+          "preference_score": 2
+        }
+      ]
+    },
+    {
+      "id": 48,
+      "info": {
+        "name": "Leo",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 12,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 14,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 17,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 21,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 22,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 26,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 33,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 34,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 36,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 49,
+      "info": {
+        "name": "Tim",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 2,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 4,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 5,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 6,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 7,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 8,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 9,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 10,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 14,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 16,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 21,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 22,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 23,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 24,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 31,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 32,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 33,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 34,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 35,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 36,
+          "required": false,
+          "preference_score": 2
+        }
+      ]
+    },
+    {
+      "id": 50,
+      "info": {
+        "name": "Aaron",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 6,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 29,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 31,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 32,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 33,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 34,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 37,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 51,
+      "info": {
+        "name": "Fabian",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 9,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 19,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 52,
+      "info": {
+        "name": "Timon",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 2,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 7,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 9,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 11,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 12,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 17,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 19,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 21,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 29,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 37,
+          "required": false,
+          "preference_score": 2
+        }
+      ]
+    },
+    {
+      "id": 53,
+      "info": {
+        "name": "Jannis",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 0,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 4,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 5,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 6,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 7,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 8,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 10,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 12,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 14,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 15,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 16,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 19,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 22,
+          "required": true,
+          "preference_score": -1
+        },
+        {
+          "ak_id": 23,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 26,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 29,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 35,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 54,
+      "info": {
+        "name": "Basti",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 0,
+          "required": true,
+          "preference_score": -1
+        },
+        {
+          "ak_id": 4,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 5,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 6,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 13,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 14,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 17,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 21,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 22,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 37,
+          "required": false,
+          "preference_score": 2
+        }
+      ]
+    },
+    {
+      "id": 55,
+      "info": {
+        "name": "Linus",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 2,
+          "required": true,
+          "preference_score": -1
+        },
+        {
+          "ak_id": 5,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 6,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 9,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 10,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 14,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 15,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 17,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 21,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 22,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 23,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 24,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 36,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 37,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 56,
+      "info": {
+        "name": "Peer",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 0,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 4,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 5,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 6,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 8,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 10,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 14,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 16,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 17,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 20,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 23,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 57,
+      "info": {
+        "name": "Janis",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 4,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 24,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 29,
+          "required": true,
+          "preference_score": -1
+        },
+        {
+          "ak_id": 32,
+          "required": false,
+          "preference_score": 2
+        }
+      ]
+    },
+    {
+      "id": 58,
+      "info": {
+        "name": "Jo",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 2,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 5,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 6,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 11,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 17,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 20,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 22,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 34,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 37,
+          "required": false,
+          "preference_score": 2
+        }
+      ]
+    },
+    {
+      "id": 59,
+      "info": {
+        "name": "Yannik",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 16,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 60,
+      "info": {
+        "name": "Tom",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 0,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 2,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 4,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 5,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 6,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 9,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 12,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 14,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 15,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 19,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 22,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 24,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 26,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 30,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 32,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 35,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 36,
+          "required": true,
+          "preference_score": -1
+        },
+        {
+          "ak_id": 37,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 61,
+      "info": {
+        "name": "Luis",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 2,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 5,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 6,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 17,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 37,
+          "required": false,
+          "preference_score": 2
+        }
+      ]
+    },
+    {
+      "id": 62,
+      "info": {
+        "name": "Laurin",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 0,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 4,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 5,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 6,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 8,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 10,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 14,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 20,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 21,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 22,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 23,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 29,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 63,
+      "info": {
+        "name": "Elian",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 0,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 4,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 5,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 6,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 8,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 9,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 10,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 12,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 14,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 16,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 17,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 18,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 20,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 22,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 24,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 34,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 35,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 36,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 64,
+      "info": {
+        "name": "Alwin",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 2,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 5,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 6,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 8,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 10,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 17,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 22,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 24,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 30,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 37,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 65,
+      "info": {
+        "name": "Freddy",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 4,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 7,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 8,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 10,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 12,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 14,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 16,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 20,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 23,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 24,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 26,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 29,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 34,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 36,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 66,
+      "info": {
+        "name": "Malin",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 0,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 2,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 4,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 5,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 6,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 8,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 10,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 12,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 13,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 14,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 17,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 20,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 21,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 33,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 34,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 35,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 67,
+      "info": {
+        "name": "Valentin",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 5,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 13,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 20,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 22,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 30,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 68,
+      "info": {
+        "name": "Phil",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [
+        "fr"
+      ],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 4,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 8,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 9,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 10,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 14,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 16,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 26,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 35,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 69,
+      "info": {
+        "name": "Nevio",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 2,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 4,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 8,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 10,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 13,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 14,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 16,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 17,
+          "required": true,
+          "preference_score": -1
+        },
+        {
+          "ak_id": 20,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 21,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 23,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 24,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 26,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 70,
+      "info": {
+        "name": "Benny",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 5,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 14,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 17,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 21,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 34,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 71,
+      "info": {
+        "name": "Franz",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 4,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 5,
+          "required": false,
+          "preference_score": 2
+        }
+      ]
+    },
+    {
+      "id": 72,
+      "info": {
+        "name": "Juli",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 4,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 5,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 6,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 8,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 14,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 17,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 18,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 20,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 21,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 22,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 35,
+          "required": false,
+          "preference_score": 2
+        }
+      ]
+    },
+    {
+      "id": 73,
+      "info": {
+        "name": "Joni",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 0,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 5,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 7,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 15,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 16,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 21,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 22,
+          "required": false,
+          "preference_score": 2
+        }
+      ]
+    },
+    {
+      "id": 74,
+      "info": {
+        "name": "Hannes",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 4,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 5,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 6,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 8,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 13,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 21,
+          "required": false,
+          "preference_score": 2
+        }
+      ]
+    },
+    {
+      "id": 75,
+      "info": {
+        "name": "Henri",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 0,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 4,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 5,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 6,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 8,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 10,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 14,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 17,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 18,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 21,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 22,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 24,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 29,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 30,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 35,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 76,
+      "info": {
+        "name": "Niklas",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 6,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 8,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 12,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 17,
+          "required": false,
+          "preference_score": 1
+        },
+        {
+          "ak_id": 18,
+          "required": false,
+          "preference_score": 2
+        },
+        {
+          "ak_id": 21,
+          "required": false,
+          "preference_score": 1
+        }
+      ]
+    },
+    {
+      "id": 77,
+      "info": {
+        "name": "Konni",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [
+        "notso"
+      ],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 6,
+          "required": true,
+          "preference_score": -1
+        }
+      ]
+    },
+    {
+      "id": 78,
+      "info": {
+        "name": "Milan",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [
+        "fr"
+      ],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 12,
+          "required": true,
+          "preference_score": -1
+        },
+        {
+          "ak_id": 26,
+          "required": true,
+          "preference_score": -1
+        }
+      ]
+    },
+    {
+      "id": 79,
+      "info": {
+        "name": "Ole",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 18,
+          "required": true,
+          "preference_score": -1
+        }
+      ]
+    },
+    {
+      "id": 80,
+      "info": {
+        "name": "Till",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [
+        "notfr"
+      ],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 21,
+          "required": true,
+          "preference_score": -1
+        }
+      ]
+    },
+    {
+      "id": 81,
+      "info": {
+        "name": "Lian",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 11,
+          "required": true,
+          "preference_score": -1
+        }
+      ]
+    },
+    {
+      "id": 82,
+      "info": {
+        "name": "Juri",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [],
+      "room_constraints": [],
+      "preferences": [
+        {
+          "ak_id": 33,
+          "required": true,
+          "preference_score": -1
+        }
+      ]
+    },
+    {
+      "id": 83,
+      "info": {
+        "name": "Arne",
+        "uni": "",
+        "remarks": ""
+      },
+      "time_constraints": [
+        "fr"
+      ],
+      "room_constraints": [],
+      "preferences": []
+    }
+  ],
+  "info": {
+    "name": "This is the input for the KoMa90 in Darmstadt",
+    "author": "Lorenzo Conti"
+  }
+}
