@@ -237,62 +237,58 @@ def create_lp(
         )
     logger.debug("Constraints AKConflict added")
 
-    # TODO vectorize
+    # TODO vectorize more
     for ak_id, (block_id, block_lst) in product(ids.ak, ids.block_dict.items()):
         # AKContiguous
-        for timeslot_idx, timeslot_id_a in enumerate(block_lst):
-            for timeslot_id_b in block_lst[
+        for timeslot_idx, timeslot_id in enumerate(block_lst):
+            other_timeslots = block_lst[
                 timeslot_idx + props.ak_durations.loc[ak_id].item() :
-            ]:
-                m.add_constraints(
-                    time.loc[ak_id, [timeslot_id_a, timeslot_id_b]].sum("timeslot")
-                    <= 1,
-                    name=_construct_constraint_name(
-                        "AKContiguous",
-                        ak_id,
-                        block_id,
-                        timeslot_id_a,
-                        timeslot_id_b,
-                    ),
-                )
+            ]
+            m.add_constraints(
+                time.loc[ak_id, timeslot_id] + time.loc[ak_id, other_timeslots] <= 1,
+                name=_construct_constraint_name(
+                    "AKContiguous",
+                    ak_id,
+                    block_id,
+                    timeslot_id,
+                ),
+            )
     logger.debug("Constraints AKContiguous added")
 
-    # TODO vectorize
-    if input_data.config.max_num_timeslots_before_break > 0:
+    # shorter alias
+    num_max_consec = input_data.config.max_num_timeslots_before_break
+    if num_max_consec > 0:
         # PersonNeedsBreak
         # Any real person needs a break after some number of time slots
         # So in each block at most  consecutive timeslots can be active for any person
-        for block_entry in ids.block_dict.values():
-            for idx in range(
-                len(block_entry) - input_data.config.max_num_timeslots_before_break - 1
-            ):
-                block_subset = block_entry[
-                    idx : idx + input_data.config.max_num_timeslots_before_break + 1
-                ]
-                m.add_constraints(
-                    lhs=person_time.loc[:, block_subset].sum("timeslot"),
-                    sign="<=",
-                    rhs=input_data.config.max_num_timeslots_before_break,
-                    name=_construct_constraint_name("BreakForPerson", block_entry[idx]),
-                )
+
+        # expand person_time to additional block idx
+        block_person_time = props.block_mask * person_time
+
+        # we assume that timeslots are chronologically consecutive
+        rolling_sum = block_person_time.rolling(timeslot=num_max_consec + 1).sum()
+
+        # ignore partial rolling at the beginning of blocks
+        ignore_fist_n_mask = (
+            props.block_mask.cumsum(dim="timeslot") > num_max_consec
+        )
+        m.add_constraints(
+            rolling_sum.where(props.block_mask & ignore_fist_n_mask) <= num_max_consec,
+            name="BreakForPerson",
+        )
     logger.debug("Constraints BreakForPerson added")
 
-    # TODO vectorize
     # AK dependencies
+
+    # calculate cumulative sum. We use `isel` to index 'from the left' of window
+    time_tail_sum = time.isel(timeslot=slice(None, None, -1)).cumsum("timeslot")
     for ak_id in ids.ak:
         if ak_id not in props.dependencies:
             continue
-        other_ak_ids = props.dependencies[ak_id]
-        for idx, timeslot_id in enumerate(ids.timeslot):
-            m.add_constraints(
-                lhs=time.loc[ak_id, ids.timeslot[idx:]].sum("timeslot")
-                - time.loc[other_ak_ids, timeslot_id],
-                sign=">=",
-                rhs=0,
-                name=_construct_constraint_name(
-                    "AKDependenciesDoneBeforeAK", ak_id, timeslot_id
-                ),
-            )
+        m.add_constraints(
+            time_tail_sum.loc[ak_id] - time.loc[props.dependencies[ak_id]] >= 0,
+            name=_construct_constraint_name("AKDependenciesDoneBeforeAK", ak_id),
+        )
     logger.debug("Constraints AKDependenciesDoneBeforeAK added")
 
     time_lp_construction_end = perf_counter()
