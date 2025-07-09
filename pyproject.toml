@@ -27,12 +27,13 @@ dependencies = [
     "pandas",
     "xarray",
     "linopy",
+    "highspy>=1.8.0",
 ]
 
 [project.optional-dependencies]
 format = ["ruff"]
 lint = ["ruff"]
-test = ["highspy", "gurobipy", "pytest", "pytest-timeout"]
+test = ["gurobipy", "pytest", "pytest-timeout"]
 coverage = ["coverage"]
 typing = ["pytest", "mypy"]
 
@@ -61,6 +62,10 @@ strict = true
 install_types = true
 non_interactive = true
 exclude_gitignore = true
+
+[[tool.mypy.overrides]]
+module = ["highspy.*"]
+follow_untyped_imports = true
 
 [tool.ruff]
 extend-exclude = ["*.ipynb"]
