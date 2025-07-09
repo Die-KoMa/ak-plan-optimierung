@@ -160,7 +160,12 @@ def create_lp(
     weighted_prefs = (props.preferences / num_prefs_per_person).where(
         num_prefs_per_person != 0
     )
-    m.add_objective((weighted_prefs * person).sum(), sense="max")
+    m.add_objective(
+        (weighted_prefs * person).sum()
+        + ((props.room_capacities * room).sum("room") - person.sum("person")).sum("ak")
+        * input_data.config.weight_empty_seats,
+        sense="max",
+    )
     logger.debug("Objective added")
 
     c = time + person
