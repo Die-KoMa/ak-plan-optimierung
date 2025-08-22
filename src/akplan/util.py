@@ -230,6 +230,7 @@ class ConfigData:
     max_num_timeslots_before_break: int = 0
     allow_unscheduled_aks: bool = True
     allow_changing_rooms: bool = False
+    weight_error_num_aks_per_time: float = 0.1
 
 
 @dataclass(frozen=True)
@@ -468,6 +469,7 @@ class ProblemProperties:
     room_time_constraints: xr.DataArray
     fulfilled_time_constraints: xr.DataArray
     fulfilled_room_constraints: xr.DataArray
+    expected_num_aks: xr.DataArray
 
     @classmethod
     def init_from_problem(
@@ -591,6 +593,12 @@ class ProblemProperties:
                 timeslot.id, timeslot.fulfilled_time_constraints
             ] = True
 
+        total_ak_duration = ak_durations.sum()
+        expected_num_aks = xr.DataArray(
+            [total_ak_duration / len(ids.timeslot)] * len(ids.timeslot),
+            coords=[ids.timeslot],
+        )
+
         return cls(
             conflict_pairs=conflict_pairs,
             dependencies=dependencies,
@@ -609,6 +617,7 @@ class ProblemProperties:
             room_time_constraints=room_time_constraints,
             fulfilled_time_constraints=fulfilled_time_constraints,
             fulfilled_room_constraints=fulfilled_room_constraints,
+            expected_num_aks=expected_num_aks,
         )
 
 
