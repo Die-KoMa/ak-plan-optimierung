@@ -132,7 +132,7 @@ def create_lp(
         coords=[ids.ak, ids.timeslot],
         lower=time_lower,
         upper=time_upper,
-    )
+    ) 
     block = m.add_variables(name="Block", integer=True, coords=[ids.ak, ids.block])
     person = m.add_variables(
         name="Part",
@@ -160,16 +160,25 @@ def create_lp(
     weighted_prefs = (props.preferences / num_prefs_per_person).where(
         num_prefs_per_person != 0
     )
-    m.add_objective((weighted_prefs * person).sum(), sense="max")
-    logger.debug("Objective added")
+
+    # we want to add a penalty for scheduling AKs later 
+    # we will start with a linear penalty 
+
+    #penalty = [i/len(time) * t for i,t in enumerate(time)]
+    weight_time = pd.Series([i**2 for i in range(1,len(ids.timeslot)+1)], index=ids.timeslot) 
+    weight_block = pd.Series([i**2 for i in range(1,len(ids.block)+1)], index=ids.block) 
+    penalty_time = time * weight_time
+    penalty_block = block * weight_block 
+    m.add_objective((weighted_prefs * person).sum() - int(1e4)*penalty_time.sum() - int(1e4)*penalty_block.sum(), sense="max")   
+    logger.debug("Objective added")     
 
     c = time + person
-    for ak_id1, ak_id2 in combinations(ids.ak, 2):
+    for ak_id1, ak_id2 in combinations(ids.ak, 2): 
         m.add_constraints(
             (c.loc[ak_id1] + c.loc[ak_id2] <= 3),
             name=_construct_constraint_name("MaxOneAKPerPersonAndTime", ak_id1, ak_id2),
         )
-    logger.debug("Constraints MaxOneAKPerPersonAndTime added")
+    logger.debug("Constraints MaxOneAKPerPersonAndTime added") 
 
     c = time + room
     for ak_id1, ak_id2 in combinations(ids.ak, 2):
