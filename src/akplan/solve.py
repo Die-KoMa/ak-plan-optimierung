@@ -167,8 +167,8 @@ def create_lp(
     #penalty = [i/len(time) * t for i,t in enumerate(time)]
     weight = pd.Series(range(1,len(ids.timeslot)+1), index=ids.timeslot) 
     penalty = time * weight
-    m.add_objective((weighted_prefs * person).sum() - 2*penalty, sense="max")
-    logger.debug("Objective added") 
+    m.add_objective((weighted_prefs * person).sum() - 2*penalty.sum(), sense="max") 
+    logger.debug("Objective added")   
 
     c = time + person
     for ak_id1, ak_id2 in combinations(ids.ak, 2):
