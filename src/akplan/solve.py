@@ -132,7 +132,7 @@ def create_lp(
         coords=[ids.ak, ids.timeslot],
         lower=time_lower,
         upper=time_upper,
-    )
+    ) 
     block = m.add_variables(name="Block", integer=True, coords=[ids.ak, ids.block])
     person = m.add_variables(
         name="Part",
@@ -160,7 +160,12 @@ def create_lp(
     weighted_prefs = (props.preferences / num_prefs_per_person).where(
         num_prefs_per_person != 0
     )
-    m.add_objective((weighted_prefs * person).sum(), sense="max")
+
+    # we want to add a penalty for scheduling AKs later 
+    # we will start with a linear penalty 
+
+    penalty = [i/len(time) * t for i,t in enumerate(time)]
+    m.add_objective((weighted_prefs * person).sum() - 2*time.sum(), sense="max")
     logger.debug("Objective added")
 
     c = time + person
