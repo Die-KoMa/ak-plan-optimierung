@@ -167,11 +167,11 @@ def create_lp(
     #penalty = [i/len(time) * t for i,t in enumerate(time)]
     weight = pd.Series(range(1,len(ids.timeslot)+1), index=ids.timeslot) 
     penalty = time * weight
-    m.add_objective((weighted_prefs * person).sum() - 2*penalty.sum(), sense="max") 
+    m.add_objective((weighted_prefs * person).sum() - int(1e7)*penalty.sum(), sense="max") 
     logger.debug("Objective added")   
 
     c = time + person
-    for ak_id1, ak_id2 in combinations(ids.ak, 2):
+    for ak_id1, ak_id2 in combinations(ids.ak, 2): 
         m.add_constraints(
             (c.loc[ak_id1] + c.loc[ak_id2] <= 3),
             name=_construct_constraint_name("MaxOneAKPerPersonAndTime", ak_id1, ak_id2),
