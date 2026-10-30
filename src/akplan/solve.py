@@ -205,10 +205,10 @@ def create_lp(
     )
     logger.debug("Constraints Roomsize added")
 
-    m.add_constraints(room.sum("room") <= 1, name="AtMostOneRoomPerAK")
+    m.add_constraints(room.sum("room") == 1, name="AtMostOneRoomPerAK") # remove <= >= 
     logger.debug("Constraints AtMostOneRoomPerAK added")
-    m.add_constraints(room.sum("room") >= 1, name="AtLeastOneRoomPerAK")
-    logger.debug("Constraints AtLeastOneRoomPerAK added")
+    #m.add_constraints(room.sum("room") >= 1, name="AtLeastOneRoomPerAK")
+    #logger.debug("Constraints AtLeastOneRoomPerAK added")
     m.add_constraints(
         person.sum("person") <= props.ak_num_interested,
         name="NotMorePeopleThanInterested",
@@ -216,8 +216,8 @@ def create_lp(
     logger.debug("Constraints NotMorePeopleThanInterested added")
     m.add_constraints(time + person - person_time <= 1, name="TimePersonVar")
     logger.debug("Constraints TimePersonVar added")
-    m.add_constraints(room.sum("room") >= 1, name="RoomForAK")
-    logger.debug("Constraints RoomForAK added")
+    #m.add_constraints(room.sum("room") >= 1, name="RoomForAK")
+    #logger.debug("Constraints RoomForAK added")
 
     room_impossible_for_person_mask = (
         props.participant_room_constraints & (~props.fulfilled_room_constraints)
